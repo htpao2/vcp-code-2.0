@@ -41,6 +41,7 @@ import {
 	type TelemetrySetting,
 	type ProfileType, // novacode_change - autocomplete profile type system
 	DEFAULT_CHECKPOINT_TIMEOUT_SECONDS,
+	getDefaultVcpConfig, // vcp_change
 	ImageGenerationProvider,
 } from "@roo-code/types"
 
@@ -267,6 +268,8 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 		includeCurrentTime,
 		includeCurrentCost,
 		maxGitStatusFiles,
+		vcpConfig, // vcp_change
+		vcpBridgeStatus, // vcp_change
 	} = cachedState
 
 	const apiConfiguration = useMemo(() => cachedState.apiConfiguration ?? {}, [cachedState.apiConfiguration])
@@ -611,6 +614,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 					customSupportPrompts,
 				},
 			})
+			vscode.postMessage({ type: "updateVcpConfig", config: vcpConfig ?? getDefaultVcpConfig() }) // vcp_change
 			vscode.postMessage({ type: "ttsEnabled", bool: ttsEnabled })
 			vscode.postMessage({ type: "ttsSpeed", value: ttsSpeed })
 			vscode.postMessage({ type: "terminalCommandApiConfigId", text: terminalCommandApiConfigId || "" }) // novacode_change
@@ -1138,6 +1142,8 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 								showAutoApproveMenu={showAutoApproveMenu}
 								browserToolEnabled={browserToolEnabled}
 								remoteBrowserEnabled={remoteBrowserEnabled}
+								vcpConfig={vcpConfig}
+								vcpBridgeStatus={vcpBridgeStatus}
 								ghostServiceSettings={ghostServiceSettings}
 								setCachedStateField={setCachedStateField}
 								setAutocompleteServiceSettingsField={setAutocompleteServiceSettingsField}

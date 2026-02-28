@@ -15,11 +15,14 @@ import {
 	type ExtensionMessage,
 	type ExtensionState,
 	type MarketplaceInstalledMetadata,
+	type VcpBridgeStatus, // vcp_change
+	type VcpConfig, // vcp_change
 	type Command,
 	type McpServer,
 	RouterModels,
 	ORGANIZATION_ALLOW_ALL,
 	DEFAULT_CHECKPOINT_TIMEOUT_SECONDS,
+	getDefaultVcpConfig, // vcp_change
 } from "@roo-code/types"
 
 import { findLastIndex } from "@roo/array"
@@ -364,6 +367,8 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		openRouterImageGenerationSelectedModel: "",
 		includeCurrentTime: true,
 		includeCurrentCost: true,
+		vcpConfig: getDefaultVcpConfig(), // vcp_change
+		vcpBridgeStatus: null, // vcp_change
 	})
 
 	const [didHydrateState, setDidHydrateState] = useState(false)
@@ -529,6 +534,17 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 					if (message.marketplaceInstalledMetadata !== undefined) {
 						setMarketplaceInstalledMetadata(message.marketplaceInstalledMetadata)
 					}
+					break
+				}
+				case "vcpConfigUpdated": {
+					const nextConfig = message.vcpConfig as VcpConfig | undefined
+					if (!nextConfig) break
+					setState((prevState) => ({ ...prevState, vcpConfig: nextConfig }))
+					break
+				}
+				case "vcpBridgeStatus": {
+					const status = (message.vcpBridgeStatus ?? message.status ?? null) as VcpBridgeStatus | null
+					setState((prevState) => ({ ...prevState, vcpBridgeStatus: status }))
 					break
 				}
 			}

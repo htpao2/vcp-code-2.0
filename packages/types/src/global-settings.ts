@@ -15,6 +15,7 @@ import { modeConfigSchema } from "./mode.js"
 import { customModePromptsSchema, customSupportPromptsSchema } from "./mode.js"
 import { languagesSchema } from "./vscode.js"
 import { fastApplyModelSchema, autocompleteServiceSettingsSchema, fastApplyApiProviderSchema } from "./nova/novacode.js"
+import { vcpConfigSchema } from "./vcp.js"
 
 /**
  * Default delay in milliseconds after writes to allow diagnostics to detect potential problems.
@@ -64,6 +65,7 @@ export const globalSettingsSchema = z.object({
 	openRouterImageApiKey: z.string().optional(),
 	openRouterImageGenerationSelectedModel: z.string().optional(),
 	novaCodeImageApiKey: z.string().optional(),
+	vcpConfig: vcpConfigSchema.optional(),
 
 	condensingApiConfigId: z.string().optional(),
 	customCondensingPrompt: z.string().optional(),

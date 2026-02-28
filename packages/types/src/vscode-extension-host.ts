@@ -22,6 +22,7 @@ import type { McpServer } from "./mcp.js"
 import type { ModelRecord, RouterModels, ModelInfo } from "./model.js"
 import type { CommitRange } from "./nova/novacode.js"
 import type { OpenAiCodexRateLimitInfo } from "./providers/openai-codex-rate-limits.js"
+import type { AtomicMemoryItem, VcpBridgeLogEntry, VcpBridgeStatus, VcpConfig } from "./vcp.js"
 
 // novacode_change start: Type definitions for Nova Code-specific features
 // SAP AI Core deployment types
@@ -254,6 +255,10 @@ export interface ExtensionMessage {
 		| "deviceAuthFailed" // novacode_change: Device auth failed
 		| "deviceAuthCancelled" // novacode_change: Device auth cancelled
 		| "chatCompletionResult" // novacode_change: FIM completion result for chat text area
+		| "vcpConfigUpdated" // vcp_change
+		| "vcpBridgeStatus" // vcp_change
+		| "vcpBridgeLog" // vcp_change
+		| "vcpMemoryUpdated" // vcp_change
 		| "claudeCodeRateLimits"
 		| "customToolsResult"
 		| "modes"
@@ -393,6 +398,12 @@ export interface ExtensionMessage {
 		}
 	}>
 	// novacode_change end
+	vcpConfig?: VcpConfig // vcp_change
+	vcpBridgeStatus?: VcpBridgeStatus | null // vcp_change
+	vcpBridgeLogEntries?: VcpBridgeLogEntry[] // vcp_change
+	vcpMemoryItems?: AtomicMemoryItem[] // vcp_change
+	status?: VcpBridgeStatus // vcp_change
+	entries?: VcpBridgeLogEntry[] // vcp_change
 	commands?: Command[]
 	skills?: Array<{
 		// novacode_change: Skills data
@@ -482,6 +493,7 @@ export type ExtensionState = Pick<
 	| "dismissedUpsells"
 	| "autoApprovalEnabled"
 	| "yoloMode" // novacode_change
+	| "vcpConfig" // vcp_change
 	| "alwaysAllowReadOnly"
 	| "alwaysAllowReadOnlyOutsideWorkspace"
 	| "alwaysAllowWrite"
@@ -649,6 +661,7 @@ export type ExtensionState = Pick<
 	lastShownAnnouncementId?: string
 	apiModelId?: string
 	mcpServers?: McpServer[]
+	vcpBridgeStatus?: VcpBridgeStatus | null // vcp_change
 	hasSystemPromptOverride?: boolean
 	mdmCompliant?: boolean
 	remoteControlEnabled: boolean
@@ -900,6 +913,11 @@ export interface WebviewMessage {
 		| "tasksByIdRequest" // novacode_change
 		| "taskHistoryRequest" // novacode_change
 		| "updateGlobalState" // novacode_change
+		| "updateVcpConfig" // vcp_change
+		| "requestVcpBridgeConnect" // vcp_change
+		| "requestVcpBridgeDisconnect" // vcp_change
+		| "vcpMemoryQuery" // vcp_change
+		| "vcpMemoryDelete" // vcp_change
 		| "autoPurgeEnabled" // novacode_change
 		| "autoPurgeDefaultRetentionDays" // novacode_change
 		| "autoPurgeFavoritedTaskRetentionDays" // novacode_change

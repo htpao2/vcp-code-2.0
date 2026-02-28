@@ -934,6 +934,9 @@ describe("getRooModels", () => {
 	})
 
 	it("should select highest matching version from versionedSettings", async () => {
+		const originalVersion = Package.version
+		;(Package as { version: string }).version = "3.5.0"
+
 		const mockResponse = {
 			object: "list",
 			data: [
@@ -971,11 +974,15 @@ describe("getRooModels", () => {
 			json: async () => mockResponse,
 		})
 
-		const models = await getRooModels(baseUrl, apiKey)
-		const model = models["test/multi-version-model"] as Record<string, unknown>
+		try {
+			const models = await getRooModels(baseUrl, apiKey)
+			const model = models["test/multi-version-model"] as Record<string, unknown>
 
-		// Should use 3.0.0 version settings (highest that's <= current plugin version)
-		expect(model.feature).toBe("current")
+			// Should use 3.0.0 version settings (highest that's <= current plugin version)
+			expect(model.feature).toBe("current")
+		} finally {
+			;(Package as { version: string }).version = originalVersion
+		}
 	})
 
 	it("should apply highest versionedSettings for nightly builds (package name)", async () => {

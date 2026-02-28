@@ -48,6 +48,10 @@ import {
 	DEFAULT_MODES,
 	DEFAULT_CHECKPOINT_TIMEOUT_SECONDS,
 	getModelId,
+	getDefaultVcpConfig, // vcp_change
+	type VcpBridgeLogEntry, // vcp_change
+	type VcpBridgeStatus, // vcp_change
+	type VcpToolboxConfig, // vcp_change
 } from "@roo-code/types"
 import { aggregateTaskCostsRecursive, type AggregatedCosts } from "./aggregateTaskCosts"
 import { TelemetryService } from "@roo-code/telemetry"
@@ -76,6 +80,7 @@ import { ShadowCheckpointService } from "../../services/checkpoints/ShadowCheckp
 import { CodeIndexManager } from "../../services/code-index/manager"
 import type { IndexProgressUpdate } from "../../services/code-index/interfaces/manager"
 import { MdmService } from "../../services/mdm/MdmService"
+import { VcpBridgeService } from "../../services/novacode/vcp-bridge" // vcp_change
 import { SessionManager } from "../../shared/nova/cli-sessions/core/SessionManager"
 import { SkillsManager } from "../../services/skills/SkillsManager"
 
@@ -170,6 +175,7 @@ export class ClineProvider
 	private currentWorkspacePath: string | undefined
 	private autoPurgeScheduler?: any // novacode_change - (Any) Prevent circular import
 	private deviceAuthHandler?: DeviceAuthHandler // novacode_change - Device auth handler
+	private vcpBridge?: VcpBridgeService // novacode_change: vcp_change
 
 	private recentTasksCache?: string[]
 	private pendingOperations: Map<string, PendingEditOperation> = new Map()
@@ -694,6 +700,8 @@ export class ClineProvider
 		this.skillsManager = undefined
 		this.marketplaceManager?.cleanup()
 		this.customModesManager?.dispose()
+		this.vcpBridge?.dispose() // novacode_change: vcp_change
+		this.vcpBridge = undefined // novacode_change: vcp_change
 
 		// novacode_change start - Stop auto-purge scheduler and device auth service
 		if (this.autoPurgeScheduler) {
@@ -2072,6 +2080,52 @@ export class ClineProvider
 		}
 	}
 
+	// novacode_change start: vcp_change
+	private ensureVcpBridgeService(toolboxConfig?: VcpToolboxConfig): VcpBridgeService {
+		const vcpConfig = this.getValue("vcpConfig") ?? getDefaultVcpConfig()
+		const effectiveToolbox = toolboxConfig ?? vcpConfig.toolbox
+
+		if (!this.vcpBridge) {
+			this.vcpBridge = new VcpBridgeService(effectiveToolbox)
+			this.vcpBridge.onStatusChanged((status: VcpBridgeStatus) => {
+				void this.postMessageToWebview({
+					type: "vcpBridgeStatus",
+					status,
+					vcpBridgeStatus: status,
+				})
+			})
+			this.vcpBridge.onLogReceived((entries: VcpBridgeLogEntry[]) => {
+				void this.postMessageToWebview({
+					type: "vcpBridgeLog",
+					entries,
+					vcpBridgeLogEntries: entries,
+				})
+			})
+		}
+
+		return this.vcpBridge
+	}
+
+	public async connectVcpBridge(): Promise<void> {
+		const vcpConfig = this.getValue("vcpConfig") ?? getDefaultVcpConfig()
+		const bridge = this.ensureVcpBridgeService(vcpConfig.toolbox)
+		await bridge.connect()
+	}
+
+	public disconnectVcpBridge(): void {
+		this.vcpBridge?.disconnect()
+	}
+
+	public updateVcpBridgeConfig(toolboxConfig: VcpToolboxConfig): void {
+		const bridge = this.ensureVcpBridgeService(toolboxConfig)
+		bridge.updateConfig(toolboxConfig)
+	}
+
+	public getVcpBridgeStatus(): VcpBridgeStatus | null {
+		return this.vcpBridge?.status ?? null
+	}
+	// novacode_change end: vcp_change
+
 	// novacode_change start
 	async postRulesDataToWebview() {
 		const workspacePath = this.cwd
@@ -2314,6 +2368,7 @@ export class ClineProvider
 			openRouterImageGenerationSelectedModel,
 			featureRoomoteControlEnabled,
 			yoloMode, // novacode_change
+			vcpConfig, // vcp_change
 			yoloGatekeeperApiConfigId, // novacode_change: AI gatekeeper for YOLO mode
 			selectedMicrophoneDevice, // novacode_change: Selected microphone device for STT
 			isBrowserSessionActive,
@@ -2388,6 +2443,8 @@ export class ClineProvider
 			alwaysAllowSubtasks: alwaysAllowSubtasks ?? false,
 			isBrowserSessionActive,
 			yoloMode: yoloMode ?? false, // novacode_change
+			vcpConfig: vcpConfig ?? getDefaultVcpConfig(), // novacode_change: vcp_change
+			vcpBridgeStatus: this.getVcpBridgeStatus(), // novacode_change: vcp_change
 			allowedMaxRequests,
 			allowedMaxCost,
 			autoCondenseContext: autoCondenseContext ?? true,
@@ -2711,6 +2768,7 @@ export class ClineProvider
 			alwaysAllowFollowupQuestions: stateValues.alwaysAllowFollowupQuestions ?? false,
 			isBrowserSessionActive,
 			yoloMode: stateValues.yoloMode ?? false, // novacode_change
+			vcpConfig: stateValues.vcpConfig ?? getDefaultVcpConfig(), // novacode_change: vcp_change
 			followupAutoApproveTimeoutMs: stateValues.followupAutoApproveTimeoutMs ?? 60000,
 			diagnosticsEnabled: stateValues.diagnosticsEnabled ?? true,
 			allowedMaxRequests: stateValues.allowedMaxRequests,

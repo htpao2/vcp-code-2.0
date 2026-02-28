@@ -7,7 +7,13 @@ import pWaitFor from "p-wait-for"
 import * as vscode from "vscode"
 // novacode_change start
 import axios from "axios"
-import { fastApplyApiProviderSchema, getNovaUrlFromToken, isGlobalStateKey } from "@roo-code/types"
+import {
+	fastApplyApiProviderSchema,
+	getDefaultVcpConfig,
+	getNovaUrlFromToken,
+	isGlobalStateKey,
+	type VcpConfig,
+} from "@roo-code/types"
 import { getAppUrl } from "@roo-code/types"
 import {
 	MaybeTypedWebviewMessage,
@@ -4186,6 +4192,49 @@ export const webviewMessageHandler = async (
 			const dismissedNotificationIds = getGlobalState("dismissedNotificationIds") || []
 
 			await updateGlobalState("dismissedNotificationIds", [...dismissedNotificationIds, message.notificationId])
+			await provider.postStateToWebview()
+			break
+		}
+		case "requestVcpBridgeConnect": {
+			try {
+				await provider.connectVcpBridge()
+			} catch (error) {
+				provider.log(`Failed to connect VCP bridge: ${error instanceof Error ? error.message : String(error)}`)
+			}
+			break
+		}
+		case "requestVcpBridgeDisconnect": {
+			provider.disconnectVcpBridge()
+			break
+		}
+		case "updateVcpConfig": {
+			const current = getGlobalState("vcpConfig") ?? getDefaultVcpConfig()
+			const incoming = (message.config ?? {}) as Partial<VcpConfig>
+			const merged: VcpConfig = {
+				...current,
+				...incoming,
+				contextFold: { ...current.contextFold, ...(incoming.contextFold ?? {}) },
+				vcpInfo: { ...current.vcpInfo, ...(incoming.vcpInfo ?? {}) },
+				html: { ...current.html, ...(incoming.html ?? {}) },
+				toolRequest: { ...current.toolRequest, ...(incoming.toolRequest ?? {}) },
+				agentTeam: { ...current.agentTeam, ...(incoming.agentTeam ?? {}) },
+				memory: {
+					...current.memory,
+					...(incoming.memory ?? {}),
+					passive: { ...current.memory.passive, ...(incoming.memory?.passive ?? {}) },
+					writer: { ...current.memory.writer, ...(incoming.memory?.writer ?? {}) },
+					retrieval: { ...current.memory.retrieval, ...(incoming.memory?.retrieval ?? {}) },
+					refresh: { ...current.memory.refresh, ...(incoming.memory?.refresh ?? {}) },
+				},
+				toolbox: { ...current.toolbox, ...(incoming.toolbox ?? {}) },
+			}
+
+			await updateGlobalState("vcpConfig", merged)
+			provider.updateVcpBridgeConfig(merged.toolbox)
+			await provider.postMessageToWebview({
+				type: "vcpConfigUpdated",
+				vcpConfig: merged,
+			})
 			await provider.postStateToWebview()
 			break
 		}

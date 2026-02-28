@@ -53,6 +53,7 @@ import { IdeaSuggestionsBox } from "../nova/chat/IdeaSuggestionsBox" // novacode
 import { NovacodeNotifications } from "../nova/NovacodeNotifications" // novacode_change
 import { QueuedMessages } from "./QueuedMessages"
 import { ReviewScopeSelector, type ReviewScopeInfo } from "./ReviewScopeSelector" // novacode_change: Review mode
+import { VcpStatusBadge } from "./VcpStatusBadge" // vcp_change
 import { buildDocLink } from "@/utils/docLinks"
 // import DismissibleUpsell from "../common/DismissibleUpsell" // novacode_change: unused
 // import { useCloudUpsell } from "@src/hooks/useCloudUpsell" // novacode_change: unused
@@ -1675,6 +1676,9 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 						isTaskActive={sendingDisabled}
 						todos={latestTodos}
 					/>
+					<div className="px-3">
+						<VcpStatusBadge />
+					</div>
 					{/* novacode_change start */}
 
 					{hasSystemPromptOverride && (
