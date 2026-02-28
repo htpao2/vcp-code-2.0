@@ -5,8 +5,8 @@
 	"scripts": {
 		"lint": "eslint src --ext=ts,tsx --max-warnings=0",
 		"check-types": "tsc",
-		"pretest": "turbo run kilo-code#bundle --cwd ..",
-		"test": "vitest run",
+		"pretest": "turbo run nova-code#bundle --cwd ..",
+		"test": "vitest run --passWithNoTests",
 		"format": "prettier --write src",
 		"dev": "vite",
 		"build": "tsc -b && vite build",

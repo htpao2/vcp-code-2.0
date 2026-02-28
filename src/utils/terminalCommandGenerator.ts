@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import * as vscode from "vscode"
 import { ContextProxy } from "../core/config/ContextProxy"
 import { ProviderSettingsManager } from "../core/config/ProviderSettingsManager"
@@ -29,7 +29,7 @@ export async function generateTerminalCommand(options: TerminalCommandGeneratorO
 
 		const activeTerminal = vscode.window.activeTerminal
 		if (!activeTerminal) {
-			vscode.window.showErrorMessage(t("kilocode:terminalCommandGenerator.noActiveTerminal"))
+			vscode.window.showErrorMessage(t("novacode:terminalCommandGenerator.noActiveTerminal"))
 			return
 		}
 
@@ -43,13 +43,13 @@ async function showWarningIfNeeded(context: vscode.ExtensionContext): Promise<bo
 	const warningAcknowledged = context.globalState.get<boolean>("terminalCommandWarningAcknowledged") ?? false
 	if (!warningAcknowledged) {
 		const warningChoice = await vscode.window.showInformationMessage(
-			t("kilocode:terminalCommandGenerator.warningDialog.title"),
-			{ modal: true, detail: t("kilocode:terminalCommandGenerator.warningDialog.message") },
-			t("kilocode:terminalCommandGenerator.warningDialog.okButton"),
-			t("kilocode:terminalCommandGenerator.warningDialog.cancelButton"),
+			t("novacode:terminalCommandGenerator.warningDialog.title"),
+			{ modal: true, detail: t("novacode:terminalCommandGenerator.warningDialog.message") },
+			t("novacode:terminalCommandGenerator.warningDialog.okButton"),
+			t("novacode:terminalCommandGenerator.warningDialog.cancelButton"),
 		)
 
-		if (warningChoice !== t("kilocode:terminalCommandGenerator.warningDialog.okButton")) {
+		if (warningChoice !== t("novacode:terminalCommandGenerator.warningDialog.okButton")) {
 			return false
 		}
 
@@ -60,8 +60,8 @@ async function showWarningIfNeeded(context: vscode.ExtensionContext): Promise<bo
 
 async function getUserInput(): Promise<string | undefined> {
 	return await vscode.window.showInputBox({
-		prompt: t("kilocode:terminalCommandGenerator.inputPrompt"),
-		placeHolder: t("kilocode:terminalCommandGenerator.inputPlaceholder"),
+		prompt: t("novacode:terminalCommandGenerator.inputPrompt"),
+		placeHolder: t("novacode:terminalCommandGenerator.inputPlaceholder"),
 		ignoreFocusOut: true,
 	})
 }
@@ -74,7 +74,7 @@ async function executeCommandGeneration(
 	await vscode.window.withProgress(
 		{
 			location: vscode.ProgressLocation.Notification,
-			title: t("kilocode:terminalCommandGenerator.generatingProgress"),
+			title: t("novacode:terminalCommandGenerator.generatingProgress"),
 			cancellable: false,
 		},
 		async () => {
@@ -100,7 +100,7 @@ async function executeCommandGeneration(
 			activeTerminal.sendText(cleanCommand, false)
 			activeTerminal.show()
 			vscode.window.showInformationMessage(
-				t("kilocode:terminalCommandGenerator.commandGenerated", { command: cleanCommand }),
+				t("novacode:terminalCommandGenerator.commandGenerated", { command: cleanCommand }),
 			)
 		},
 	)
@@ -145,7 +145,7 @@ function handleError(error: unknown, outputChannel: vscode.OutputChannel, contex
 	outputChannel.appendLine(`Error in ${context}: ${errorMessage}`)
 
 	if (context === "generateTerminalCommand") {
-		vscode.window.showErrorMessage(t("kilocode:terminalCommandGenerator.generationFailed", { error: errorMessage }))
+		vscode.window.showErrorMessage(t("novacode:terminalCommandGenerator.generationFailed", { error: errorMessage }))
 	} else {
 		vscode.window.showErrorMessage(`Error: ${errorMessage}`)
 	}

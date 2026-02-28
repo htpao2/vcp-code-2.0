@@ -1,4 +1,4 @@
-// kilocode_change - new file: Custom hook to manage STT status and error state
+// novacode_change - new file: Custom hook to manage STT status and error state
 import { useState, useCallback } from "react"
 
 export type SpeechToTextStatus =

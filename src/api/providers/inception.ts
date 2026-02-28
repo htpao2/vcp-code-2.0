@@ -1,4 +1,4 @@
-// kilocode_change - file added
+// novacode_change - file added
 
 import { ApiHandlerCreateMessageMetadata, SingleCompletionHandler } from ".."
 import { ApiHandlerOptions } from "../../shared/api"
@@ -83,7 +83,7 @@ export class InceptionLabsHandler extends RouterProvider implements SingleComple
 			options: {
 				...options,
 				openAiHeaders: {
-					"X-Inceptionlabs-Source": "kilocode",
+					"X-Inceptionlabs-Source": "novacode",
 					"X-Inceptionlabs-Version": `2025-10-31`,
 				},
 			},

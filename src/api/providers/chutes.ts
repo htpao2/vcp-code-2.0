@@ -26,13 +26,13 @@ export class ChutesHandler extends RouterProvider implements SingleCompletionHan
 		})
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	private getRequestOptions() {
 		return {
 			timeout: getApiRequestTimeout(),
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	private getCompletionParams(
 		systemPrompt: string,
@@ -68,7 +68,7 @@ export class ChutesHandler extends RouterProvider implements SingleCompletionHan
 		return params
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	private getToolCallId(
 		toolCall: {
 			id?: string
@@ -92,7 +92,7 @@ export class ChutesHandler extends RouterProvider implements SingleCompletionHan
 		toolCallIdsByIndex.set(toolCallIndex, syntheticId)
 		return syntheticId
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	override async *createMessage(
 		systemPrompt: string,
@@ -118,16 +118,16 @@ export class ChutesHandler extends RouterProvider implements SingleCompletionHan
 						text: chunk.data,
 					}) as const,
 			)
-			// kilocode_change start
+			// novacode_change start
 			const activeToolCallIds = new Set<string>()
 			const toolCallIdsByIndex = new Map<number, string>()
-			// kilocode_change end
+			// novacode_change end
 
 			for await (const chunk of stream) {
 				const delta = chunk.choices[0]?.delta
-				// kilocode_change start
+				// novacode_change start
 				const finishReason = chunk.choices[0]?.finish_reason
-				// kilocode_change end
+				// novacode_change end
 
 				if (delta?.content) {
 					for (const processedChunk of matcher.update(delta.content)) {
@@ -138,10 +138,10 @@ export class ChutesHandler extends RouterProvider implements SingleCompletionHan
 				// Emit raw tool call chunks - NativeToolCallParser handles state management
 				if (delta && "tool_calls" in delta && Array.isArray(delta.tool_calls)) {
 					for (const toolCall of delta.tool_calls) {
-						// kilocode_change start
+						// novacode_change start
 						const toolCallId = this.getToolCallId(toolCall, toolCallIdsByIndex)
 						activeToolCallIds.add(toolCallId)
-						// kilocode_change end
+						// novacode_change end
 						yield {
 							type: "tool_call_partial",
 							index: toolCall.index,
@@ -151,14 +151,14 @@ export class ChutesHandler extends RouterProvider implements SingleCompletionHan
 						}
 					}
 				}
-				// kilocode_change start
+				// novacode_change start
 				if (finishReason === "tool_calls" && activeToolCallIds.size > 0) {
 					for (const id of activeToolCallIds) {
 						yield { type: "tool_call_end", id }
 					}
 					activeToolCallIds.clear()
 				}
-				// kilocode_change end
+				// novacode_change end
 
 				if (chunk.usage) {
 					yield {
@@ -179,22 +179,22 @@ export class ChutesHandler extends RouterProvider implements SingleCompletionHan
 				this.getCompletionParams(systemPrompt, messages, metadata),
 				this.getRequestOptions(),
 			)
-			// kilocode_change start
+			// novacode_change start
 			const activeToolCallIds = new Set<string>()
 			const toolCallIdsByIndex = new Map<number, string>()
-			// kilocode_change end
+			// novacode_change end
 
 			for await (const chunk of stream) {
 				const delta = chunk.choices[0]?.delta
-				// kilocode_change start
+				// novacode_change start
 				const finishReason = chunk.choices[0]?.finish_reason
-				// kilocode_change end
+				// novacode_change end
 
 				if (delta?.content) {
 					yield { type: "text", text: delta.content }
 				}
 
-				// kilocode_change start
+				// novacode_change start
 				if (delta) {
 					for (const key of ["reasoning_content", "reasoning"] as const) {
 						if (key in delta) {
@@ -206,15 +206,15 @@ export class ChutesHandler extends RouterProvider implements SingleCompletionHan
 						}
 					}
 				}
-				// kilocode_change end
+				// novacode_change end
 
 				// Emit raw tool call chunks - NativeToolCallParser handles state management
 				if (delta && "tool_calls" in delta && Array.isArray(delta.tool_calls)) {
 					for (const toolCall of delta.tool_calls) {
-						// kilocode_change start
+						// novacode_change start
 						const toolCallId = this.getToolCallId(toolCall, toolCallIdsByIndex)
 						activeToolCallIds.add(toolCallId)
-						// kilocode_change end
+						// novacode_change end
 						yield {
 							type: "tool_call_partial",
 							index: toolCall.index,
@@ -224,14 +224,14 @@ export class ChutesHandler extends RouterProvider implements SingleCompletionHan
 						}
 					}
 				}
-				// kilocode_change start
+				// novacode_change start
 				if (finishReason === "tool_calls" && activeToolCallIds.size > 0) {
 					for (const id of activeToolCallIds) {
 						yield { type: "tool_call_end", id }
 					}
 					activeToolCallIds.clear()
 				}
-				// kilocode_change end
+				// novacode_change end
 
 				if (chunk.usage) {
 					yield {
@@ -284,7 +284,7 @@ export class ChutesHandler extends RouterProvider implements SingleCompletionHan
 	override getModel() {
 		const model = super.getModel()
 		const configuredModelId = this.options.apiModelId
-		// kilocode_change start
+		// novacode_change start
 		// Keep explicit Chutes model IDs instead of silently switching to the provider default.
 		// This prevents hidden model substitution when model lists are stale/unavailable.
 		const shouldPreserveExplicitModelId =
@@ -295,7 +295,7 @@ export class ChutesHandler extends RouterProvider implements SingleCompletionHan
 
 		const effectiveModelId = shouldPreserveExplicitModelId ? configuredModelId : model.id
 		const baseInfo = shouldPreserveExplicitModelId ? this.defaultModelInfo : model.info
-		// kilocode_change end
+		// novacode_change end
 		const isDeepSeekR1 = effectiveModelId.includes("DeepSeek-R1")
 
 		return {

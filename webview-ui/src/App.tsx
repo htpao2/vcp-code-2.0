@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState, useMemo } from "react"
+﻿import React, { useCallback, useEffect, useRef, useState, useMemo } from "react"
 import { useEvent } from "react-use"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
@@ -14,26 +14,26 @@ import { ExtensionStateContextProvider, useExtensionState } from "./context/Exte
 import ChatView, { ChatViewRef } from "./components/chat/ChatView"
 import HistoryView from "./components/history/HistoryView"
 import SettingsView, { SettingsViewRef } from "./components/settings/SettingsView"
-import OnboardingView from "./components/kilocode/welcome/OnboardingView" // kilocode_change
-import ProfileView from "./components/kilocode/profile/ProfileView" // kilocode_change
-import McpView from "./components/mcp/McpView" // kilocode_change
-import AuthView from "./components/kilocode/auth/AuthView" // kilocode_change
+import OnboardingView from "./components/nova/welcome/OnboardingView" // novacode_change
+import ProfileView from "./components/nova/profile/ProfileView" // novacode_change
+import McpView from "./components/mcp/McpView" // novacode_change
+import AuthView from "./components/nova/auth/AuthView" // novacode_change
 import { MarketplaceView } from "./components/marketplace/MarketplaceView"
-import BottomControls from "./components/kilocode/BottomControls" // kilocode_change
-import { MemoryService } from "./services/MemoryService" // kilocode_change
+import BottomControls from "./components/nova/BottomControls" // novacode_change
+import { MemoryService } from "./services/MemoryService" // novacode_change
 import { HumanRelayDialog } from "./components/human-relay/HumanRelayDialog"
 import { CheckpointRestoreDialog } from "./components/chat/CheckpointRestoreDialog"
 import { DeleteMessageDialog, EditMessageDialog } from "./components/chat/MessageModificationConfirmationDialog"
 import ErrorBoundary from "./components/ErrorBoundary"
-// import { AccountView } from "./components/account/AccountView" // kilocode_change: we have our own profile view
-// import { CloudView } from "./components/cloud/CloudView" // kilocode_change: not rendering this
+// import { AccountView } from "./components/account/AccountView" // novacode_change: we have our own profile view
+// import { CloudView } from "./components/cloud/CloudView" // novacode_change: not rendering this
 import { useAddNonInteractiveClickListener } from "./components/ui/hooks/useNonInteractiveClick"
 import { TooltipProvider } from "./components/ui/tooltip"
 import { STANDARD_TOOLTIP_DELAY } from "./components/ui/standard-tooltip"
-import { useKiloIdentity } from "./utils/kilocode/useKiloIdentity"
-import { MemoryWarningBanner } from "./kilocode/MemoryWarningBanner"
+import { useNovaIdentity } from "./utils/nova/useNovaIdentity"
+import { MemoryWarningBanner } from "./nova/MemoryWarningBanner"
 
-type Tab = "settings" | "history" | "mcp" | "modes" | "chat" | "marketplace" | "account" | "cloud" | "profile" | "auth" // kilocode_change: add "profile" and "auth"
+type Tab = "settings" | "history" | "mcp" | "modes" | "chat" | "marketplace" | "account" | "cloud" | "profile" | "auth" // novacode_change: add "profile" and "auth"
 
 interface HumanRelayDialogState {
 	isOpen: boolean
@@ -67,15 +67,15 @@ const tabsByMessageAction: Partial<Record<NonNullable<ExtensionMessage["action"]
 	historyButtonClicked: "history",
 	profileButtonClicked: "profile",
 	marketplaceButtonClicked: "marketplace",
-	promptsButtonClicked: "settings", // kilocode_change: Navigate to settings with modes section
-	// cloudButtonClicked: "cloud", // kilocode_change: no cloud
+	promptsButtonClicked: "settings", // novacode_change: Navigate to settings with modes section
+	// cloudButtonClicked: "cloud", // novacode_change: no cloud
 }
 
-// kilocode_change start: Map certain actions to a default section when navigating to settings
+// novacode_change start: Map certain actions to a default section when navigating to settings
 const defaultSectionByAction: Partial<Record<NonNullable<ExtensionMessage["action"]>, string>> = {
-	promptsButtonClicked: "modes",
+	promptsButtonClicked: "prompts",
 }
-// kilocode_change end
+// novacode_change end
 
 const App = () => {
 	const {
@@ -84,17 +84,17 @@ const App = () => {
 		telemetrySetting,
 		telemetryKey,
 		machineId,
-		// kilocode_change start: unused
+		// novacode_change start: unused
 		// cloudUserInfo,
 		// cloudIsAuthenticated,
 		// cloudApiUrl,
 		// cloudOrganizations,
-		// kilocode_change end
+		// novacode_change end
 		renderContext,
 		mdmCompliant,
-		apiConfiguration, // kilocode_change
-		hasCompletedOnboarding, // kilocode_change: Track onboarding state
-		taskHistoryFullLength, // kilocode_change: Used to detect existing users
+		apiConfiguration, // novacode_change
+		hasCompletedOnboarding, // novacode_change: Track onboarding state
+		taskHistoryFullLength, // novacode_change: Used to detect existing users
 	} = useExtensionState()
 
 	// Create a persistent state manager
@@ -127,7 +127,7 @@ const App = () => {
 	})
 
 	const settingsRef = useRef<SettingsViewRef>(null)
-	const chatViewRef = useRef<ChatViewRef & { focusInput: () => void }>(null) // kilocode_change
+	const chatViewRef = useRef<ChatViewRef & { focusInput: () => void }>(null) // novacode_change
 
 	const switchTab = useCallback(
 		(newTab: Tab) => {
@@ -142,11 +142,11 @@ const App = () => {
 			setCurrentSection(undefined)
 			setCurrentMarketplaceTab(undefined)
 
-			// kilocode_change: start - Bypass unsaved changes check when navigating to auth tab
+			// novacode_change: start - Bypass unsaved changes check when navigating to auth tab
 			if (newTab === "auth") {
 				setTab(newTab)
 			} else if (settingsRef.current?.checkUnsaveChanges) {
-				// kilocode_change: end
+				// novacode_change: end
 				settingsRef.current.checkUnsaveChanges(() => setTab(newTab))
 			} else {
 				setTab(newTab)
@@ -163,7 +163,7 @@ const App = () => {
 			const message: ExtensionMessage = e.data
 
 			if (message.type === "action" && message.action) {
-				// kilocode_change begin
+				// novacode_change begin
 				if (message.action === "focusChatInput") {
 					if (tab !== "chat") {
 						switchTab("chat")
@@ -171,12 +171,12 @@ const App = () => {
 					chatViewRef.current?.focusInput()
 					return
 				}
-				// kilocode_change end
+				// novacode_change end
 
 				// Handle switchTab action with tab parameter
 				if (message.action === "switchTab" && message.tab) {
 					const targetTab = message.tab as Tab
-					// kilocode_change start - Handle auth tab with returnTo and profileName parameters
+					// novacode_change start - Handle auth tab with returnTo and profileName parameters
 					if (targetTab === "auth") {
 						if (message.values?.returnTo) {
 							const returnTo = message.values.returnTo as "chat" | "settings"
@@ -188,7 +188,7 @@ const App = () => {
 							setSettingsEditingProfile(profileName)
 						}
 					}
-					// kilocode_change end
+					// novacode_change end
 					switchTab(targetTab)
 					// Extract targetSection from values if provided
 					const targetSection = message.values?.section as string | undefined
@@ -197,18 +197,18 @@ const App = () => {
 				} else {
 					// Handle other actions using the mapping
 					const newTab = tabsByMessageAction[message.action]
-					// kilocode_change start
+					// novacode_change start
 					const section =
 						(message.values?.section as string | undefined) ?? defaultSectionByAction[message.action]
-					// kilocode_change end
+					// novacode_change end
 					const marketplaceTab = message.values?.marketplaceTab as string | undefined
-					const editingProfile = message.values?.editingProfile as string | undefined // kilocode_change
+					const editingProfile = message.values?.editingProfile as string | undefined // novacode_change
 
 					if (newTab) {
 						switchTab(newTab)
 						setCurrentSection(section)
 						setCurrentMarketplaceTab(marketplaceTab)
-						// kilocode_change start - If navigating to settings with editingProfile, forward it
+						// novacode_change start - If navigating to settings with editingProfile, forward it
 						if (newTab === "settings" && editingProfile) {
 							// Re-send the message to SettingsView with the editingProfile
 							setTimeout(() => {
@@ -222,7 +222,7 @@ const App = () => {
 								)
 							}, 100)
 						}
-						// kilocode_change end
+						// novacode_change end
 					}
 				}
 			}
@@ -254,7 +254,7 @@ const App = () => {
 				chatViewRef.current?.acceptInput()
 			}
 		},
-		// kilocode_change: add tab
+		// novacode_change: add tab
 		[tab, switchTab],
 	)
 
@@ -267,20 +267,20 @@ const App = () => {
 		}
 	}, [shouldShowAnnouncement, tab])
 
-	// kilocode_change start
-	const telemetryDistinctId = useKiloIdentity(apiConfiguration?.kilocodeToken ?? "", machineId ?? "")
+	// novacode_change start
+	const telemetryDistinctId = useNovaIdentity(apiConfiguration?.novacodeToken ?? "", machineId ?? "")
 	useEffect(() => {
 		if (didHydrateState) {
 			telemetryClient.updateTelemetryState(telemetrySetting, telemetryKey, telemetryDistinctId)
 
-			// kilocode_change start
+			// novacode_change start
 			const memoryService = new MemoryService()
 			memoryService.start()
 			return () => memoryService.stop()
-			// kilocode_change end
+			// novacode_change end
 		}
 	}, [telemetrySetting, telemetryKey, telemetryDistinctId, didHydrateState])
-	// kilocode_change end
+	// novacode_change end
 
 	// Tell the extension that we are ready to receive messages.
 	useEffect(() => vscode.postMessage({ type: "webviewDidLaunch" }), [])
@@ -315,7 +315,7 @@ const App = () => {
 		}
 	}, [tab])
 
-	// kilocode_change start: Onboarding handlers
+	// novacode_change start: Onboarding handlers
 	const handleSelectFreeModels = useCallback(() => {
 		// Mark onboarding as complete - the default profile is already set up with a free model
 		vscode.postMessage({ type: "hasCompletedOnboarding", bool: true })
@@ -344,13 +344,13 @@ const App = () => {
 			vscode.postMessage({ type: "hasCompletedOnboarding", bool: true })
 		}
 	}, [hasCompletedOnboarding, taskHistoryFullLength])
-	// kilocode_change end
+	// novacode_change end
 
 	if (!didHydrateState) {
 		return null
 	}
 
-	// kilocode_change start: Show OnboardingView for new users who haven't completed onboarding
+	// novacode_change start: Show OnboardingView for new users who haven't completed onboarding
 	const showOnboarding = hasCompletedOnboarding !== true
 
 	// Do not conditionally load ChatView, it's expensive and there's state we
@@ -362,14 +362,14 @@ const App = () => {
 			onSelectBYOK={handleSelectBYOK}
 		/>
 	) : (
-		// kilocode_change end
+		// novacode_change end
 		<>
-			{/* kilocode_change start */}
+			{/* novacode_change start */}
 			<MemoryWarningBanner />
 			{tab === "mcp" && <McpView onDone={() => switchTab("chat")} />}
-			{/* kilocode_change end */}
+			{/* novacode_change end */}
 			{tab === "history" && <HistoryView onDone={() => switchTab("chat")} />}
-			{/* kilocode_change: auth redirect / editingProfile */}
+			{/* novacode_change: auth redirect / editingProfile */}
 			{tab === "settings" && (
 				<SettingsView
 					ref={settingsRef}
@@ -378,18 +378,18 @@ const App = () => {
 					editingProfile={settingsEditingProfile}
 				/>
 			)}
-			{/* kilocode_change: add profileview and authview */}
+			{/* novacode_change: add profileview and authview */}
 			{tab === "profile" && <ProfileView onDone={() => switchTab("chat")} />}
 			{tab === "auth" && <AuthView returnTo={authReturnTo} profileName={authProfileName} />}
 			{tab === "marketplace" && (
 				<MarketplaceView
 					stateManager={marketplaceStateManager}
 					onDone={() => switchTab("chat")}
-					// kilocode_change: targetTab="mode"
+					// novacode_change: targetTab="mode"
 					targetTab="mode"
 				/>
 			)}
-			{/* kilocode_change: no cloud view */}
+			{/* novacode_change: no cloud view */}
 			{/* {tab === "cloud" && (
 				<CloudView
 					userInfo={cloudUserInfo}
@@ -398,7 +398,7 @@ const App = () => {
 					organizations={cloudOrganizations}
 				/>
 			)} */}
-			{/* kilocode_change: we have our own profile view */}
+			{/* novacode_change: we have our own profile view */}
 			{/* {tab === "account" && (
 				<AccountView userInfo={cloudUserInfo} isAuthenticated={false} onDone={() => switchTab("chat")} />
 			)} */}
@@ -476,7 +476,7 @@ const App = () => {
 					}}
 				/>
 			)}
-			{/* kilocode_change */}
+			{/* novacode_change */}
 			{/* Chat, and history view contain their own bottom controls, settings doesn't need it */}
 			{!["chat", "settings", "history"].includes(tab) && (
 				<div className="fixed inset-0 top-auto">

@@ -1,4 +1,4 @@
-import { HTMLAttributes } from "react" // kilocode_change
+import { HTMLAttributes } from "react" // novacode_change
 import { useAppTranslation } from "@/i18n/TranslationContext"
 import { VSCodeCheckbox } from "@vscode/webview-ui-toolkit/react"
 
@@ -15,8 +15,8 @@ type NotificationSettingsProps = HTMLAttributes<HTMLDivElement> & {
 	ttsSpeed?: number
 	soundEnabled?: boolean
 	soundVolume?: number
-	systemNotificationsEnabled?: boolean // kilocode_change
-	areSettingsCommitted?: boolean // kilocode_change
+	systemNotificationsEnabled?: boolean // novacode_change
+	areSettingsCommitted?: boolean // novacode_change
 	setCachedStateField: SetCachedStateField<
 		"ttsEnabled" | "ttsSpeed" | "soundEnabled" | "soundVolume" | "systemNotificationsEnabled"
 	>
@@ -27,25 +27,25 @@ export const NotificationSettings = ({
 	ttsSpeed,
 	soundEnabled,
 	soundVolume,
-	systemNotificationsEnabled, // kilocode_change
-	areSettingsCommitted, // kilocode_change
+	systemNotificationsEnabled, // novacode_change
+	areSettingsCommitted, // novacode_change
 	setCachedStateField,
 	...props
 }: NotificationSettingsProps) => {
 	const { t } = useAppTranslation()
 
-	// kilocode_change start
+	// novacode_change start
 	const onTestNotificationClick = () => {
 		vscode.postMessage({
 			type: "showSystemNotification",
 			notificationOptions: {
-				title: t("kilocode:settings.systemNotifications.testTitle"),
-				message: t("kilocode:settings.systemNotifications.testMessage"),
+				title: t("novacode:settings.systemNotifications.testTitle"),
+				message: t("novacode:settings.systemNotifications.testMessage"),
 			},
 			alwaysAllow: true,
 		})
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	return (
 		<div {...props}>
@@ -130,16 +130,16 @@ export const NotificationSettings = ({
 					</div>
 				)}
 
-				{/* kilocode_change start */}
+				{/* novacode_change start */}
 				<div>
 					<VSCodeCheckbox
 						checked={systemNotificationsEnabled}
 						onChange={(e: any) => setCachedStateField("systemNotificationsEnabled", e.target.checked)}
 						data-testid="system-notifications-enabled-checkbox">
-						<span className="font-medium">{t("kilocode:settings.systemNotifications.label")}</span>
+						<span className="font-medium">{t("novacode:settings.systemNotifications.label")}</span>
 					</VSCodeCheckbox>
 					<div className="text-vscode-descriptionForeground text-sm mt-1">
-						{t("kilocode:settings.systemNotifications.description")}
+						{t("novacode:settings.systemNotifications.description")}
 					</div>
 				</div>
 				{systemNotificationsEnabled && (
@@ -147,11 +147,11 @@ export const NotificationSettings = ({
 						<Button
 							className="w-fit text-vscode-button-background hover:text-vscode-button-hoverBackground"
 							onClick={onTestNotificationClick}>
-							{t("kilocode:settings.systemNotifications.testButton")}
+							{t("novacode:settings.systemNotifications.testButton")}
 						</Button>
 					</div>
 				)}
-				{/* kilocode_change end */}
+				{/* novacode_change end */}
 			</Section>
 		</div>
 	)

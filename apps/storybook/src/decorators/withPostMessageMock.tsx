@@ -11,7 +11,7 @@ type PostMessage = Record<string, unknown>
  * export const MyStory: Story = {
  *   parameters: {
  *     postMessages: [
- *       { type: "kilocodeNotificationsResponse", notifications: [...] },
+ *       { type: "novacodeNotificationsResponse", notifications: [...] },
  *     ],
  *   },
  * }

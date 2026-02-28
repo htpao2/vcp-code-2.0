@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 // npx vitest run src/shared/__tests__/getApiMetrics-context-indicator.spec.ts
 // Regression tests for context indicator placeholder message handling
 

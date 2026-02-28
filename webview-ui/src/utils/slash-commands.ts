@@ -1,9 +1,9 @@
-/* eslint no-misleading-character-class: 0 */
-// kilocode_change: this file was pulled from Cline and adjusted for us
+﻿/* eslint no-misleading-character-class: 0 */
+// novacode_change: this file was pulled from Cline and adjusted for us
 
 import { getAllModes } from "@roo/modes"
-import { getBasename } from "./kilocode/path-webview"
-import { Fzf } from "@/lib/word-boundary-fzf" // kilocode_change
+import { getBasename } from "./nova/path-webview"
+import { Fzf } from "@/lib/word-boundary-fzf" // novacode_change
 import { ClineRulesToggles } from "@roo/cline-rules"
 
 export interface SlashCommand {
@@ -26,16 +26,16 @@ export function getSupportedSlashCommands(
 		},
 		{
 			name: "newrule",
-			description: "Create a new Kilo rule with context from your conversation",
+			description: "Create a new Nova rule with context from your conversation",
 		},
-		{ name: "reportbug", description: "Create a KiloCode GitHub issue" },
-		// kilocode_change start
-		{ name: "init", description: "Initialize Kilo Code for this workspace" },
+		{ name: "reportbug", description: "Create a NovaCode GitHub issue" },
+		// novacode_change start
+		{ name: "init", description: "Initialize Nova Code for this workspace" },
 		{ name: "smol", description: "Condenses your current context window" },
 		{ name: "condense", description: "Condenses your current context window" },
 		{ name: "compact", description: "Condenses your current context window" },
 		{ name: "session", description: "Session management <fork|share|show>" },
-		// kilocode_change end
+		// novacode_change end
 	]
 
 	// Add mode-switching commands dynamically
@@ -59,7 +59,7 @@ export const slashCommandRegexGlobal = new RegExp(slashCommandRegex.source, "g")
 /**
  * Determines whether the slash command menu should be displayed based on text input
  */
-// kilocode_change start: Added workflow toggles parameters
+// novacode_change start: Added workflow toggles parameters
 export function shouldShowSlashCommandsMenu(
 	text: string,
 	cursorPosition: number,
@@ -67,7 +67,7 @@ export function shouldShowSlashCommandsMenu(
 	localWorkflowToggles: ClineRulesToggles = {},
 	globalWorkflowToggles: ClineRulesToggles = {},
 ): boolean {
-	// kilocode_change end
+	// novacode_change end
 	const beforeCursor = text.slice(0, cursorPosition)
 
 	// first check if there is a slash before the cursor
@@ -91,11 +91,11 @@ export function shouldShowSlashCommandsMenu(
 		return false
 	}
 
-	// kilocode_change start: If there are no matching commands for the current query, don't show the menu.
+	// novacode_change start: If there are no matching commands for the current query, don't show the menu.
 	// This prevents an empty menu from capturing Enter/Tab and blocking message submission.
 	const matches = getMatchingSlashCommands(textAfterSlash, customModes, localWorkflowToggles, globalWorkflowToggles)
 	return matches.length > 0
-	// kilocode_change end
+	// novacode_change end
 }
 
 function enabledWorkflowToggles(workflowToggles: ClineRulesToggles): SlashCommand[] {
@@ -129,12 +129,12 @@ export function getMatchingSlashCommands(
 		return [...commands]
 	}
 
-	// kilocode_change start: Use Fzf for case-insensitive word-boundary fuzzy matching
+	// novacode_change start: Use Fzf for case-insensitive word-boundary fuzzy matching
 	const fzf = new Fzf(commands, {
 		selector: (cmd: SlashCommand) => cmd.name,
 	})
 	return fzf.find(query).map((result) => result.item)
-	// kilocode_change end: Use Fzf for case-insensitive word-boundary fuzzy matching
+	// novacode_change end: Use Fzf for case-insensitive word-boundary fuzzy matching
 }
 
 /**
@@ -176,7 +176,7 @@ export function validateSlashCommand(
 		return "full"
 	}
 
-	// kilocode_change start: Use FZF for consistent fuzzy matching with getMatchingSlashCommands
+	// novacode_change start: Use FZF for consistent fuzzy matching with getMatchingSlashCommands
 	const fzf = new Fzf(commands, {
 		selector: (cmd: SlashCommand) => cmd.name,
 	})
@@ -184,7 +184,7 @@ export function validateSlashCommand(
 	if (results.length > 0) {
 		return "partial"
 	}
-	// kilocode_change end: Use FZF for consistent fuzzy matching with getMatchingSlashCommands
+	// novacode_change end: Use FZF for consistent fuzzy matching with getMatchingSlashCommands
 
 	return null // no match
 }

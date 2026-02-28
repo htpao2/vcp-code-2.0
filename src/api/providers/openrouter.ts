@@ -1,4 +1,4 @@
-import { Anthropic } from "@anthropic-ai/sdk"
+﻿import { Anthropic } from "@anthropic-ai/sdk"
 import OpenAI from "openai"
 import { z } from "zod"
 
@@ -27,7 +27,7 @@ import { resolveToolProtocol } from "../../utils/resolveToolProtocol"
 import { TOOL_PROTOCOL } from "@roo-code/types"
 import { ApiStreamChunk } from "../transform/stream"
 import { convertToR1Format } from "../transform/r1-format"
-import { addAnthropicCacheBreakpoints } from "../transform/caching/kilocode" // kilocode_change: own implementation that supports tool results
+import { addAnthropicCacheBreakpoints } from "../transform/caching/novacode" // novacode_change: own implementation that supports tool results
 import { addCacheBreakpoints as addGeminiCacheBreakpoints } from "../transform/caching/gemini"
 import type { OpenRouterReasoningParams } from "../transform/reasoning"
 import { getModelParams } from "../transform/model-params"
@@ -37,9 +37,9 @@ import { getModelEndpoints } from "./fetchers/modelEndpointCache"
 
 import { DEFAULT_HEADERS } from "./constants"
 import { BaseProvider } from "./base-provider"
-import { verifyFinishReason } from "./kilocode/verifyFinishReason"
+import { verifyFinishReason } from "./nova/verifyFinishReason"
 
-// kilocode_change start
+// novacode_change start
 type OpenRouterProviderParams = {
 	order?: string[]
 	allow_fallbacks?: boolean
@@ -48,15 +48,15 @@ type OpenRouterProviderParams = {
 	zdr?: boolean
 }
 
-import { safeJsonParse } from "@roo-code/core" // kilocode_change
-import { isAnyRecognizedKiloCodeError } from "../../shared/kilocode/errorUtils"
+import { safeJsonParse } from "@roo-code/core" // novacode_change
+import { isAnyRecognizedNovaCodeError } from "../../shared/nova/errorUtils"
 import { OpenAIError } from "openai"
-// kilocode_change end
+// novacode_change end
 
 import type { ApiHandlerCreateMessageMetadata, SingleCompletionHandler } from "../index"
 import { handleOpenAIError } from "./utils/openai-error-handler"
 import { generateImageWithProvider, ImageGenerationResult } from "./utils/image-generation"
-import { KiloCodeChunkSchema } from "./kilocode/chunk-schema"
+import { NovaCodeChunkSchema } from "./nova/chunk-schema"
 import { applyRouterToolPreferences } from "./utils/router-tool-preferences"
 
 // Add custom interface for OpenRouter params.
@@ -65,7 +65,7 @@ type OpenRouterChatCompletionParams = OpenAI.Chat.ChatCompletionCreateParams & {
 	include_reasoning?: boolean
 	// https://openrouter.ai/docs/use-cases/reasoning-tokens
 	reasoning?: OpenRouterReasoningParams
-	provider?: OpenRouterProviderParams // kilocode_change
+	provider?: OpenRouterProviderParams // novacode_change
 }
 
 // Zod schema for OpenRouter error response structure (for caught exceptions)
@@ -142,7 +142,7 @@ function extractErrorFromMetadataRaw(raw: string | undefined): string | undefine
 // See `OpenAI.Chat.Completions.ChatCompletionChunk["usage"]`
 // `CompletionsAPI.CompletionUsage`
 // See also: https://openrouter.ai/docs/use-cases/usage-accounting
-export // kilocode_change
+export // novacode_change
 interface CompletionUsage {
 	completion_tokens?: number
 	completion_tokens_details?: {
@@ -154,7 +154,7 @@ interface CompletionUsage {
 	}
 	total_tokens?: number
 	cost?: number
-	is_byok?: boolean // kilocode_change
+	is_byok?: boolean // novacode_change
 	cost_details?: {
 		upstream_inference_cost?: number
 	}
@@ -166,11 +166,11 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 	protected models: ModelRecord = {}
 	protected endpoints: ModelRecord = {}
 
-	// kilocode_change start property
-	protected get providerName(): "OpenRouter" | "KiloCode" {
+	// novacode_change start property
+	protected get providerName(): "OpenRouter" | "NovaCode" {
 		return "OpenRouter" as const
 	}
-	// kilocode_change end
+	// novacode_change end
 	private currentReasoningDetails: any[] = []
 
 	constructor(options: ApiHandlerOptions) {
@@ -209,7 +209,7 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 		}
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	customRequestOptions(_metadata?: ApiHandlerCreateMessageMetadata): { headers: Record<string, string> } | undefined {
 		return undefined
 	}
@@ -248,7 +248,7 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 		}
 		return {}
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	getReasoningDetails(): any[] | undefined {
 		return this.currentReasoningDetails.length > 0 ? this.currentReasoningDetails : undefined
@@ -274,7 +274,7 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 		throw new Error(`OpenRouter API Error ${error?.code}: ${rawErrorMessage}`)
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	// the comment below seems incorrect, errors in the stream are still thrown as exceptions
 	override async *createMessage(
 		systemPrompt: string,
@@ -282,20 +282,20 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 		metadata?: ApiHandlerCreateMessageMetadata,
 	): AsyncGenerator<ApiStreamChunk> {
 		try {
-			yield* this.createMessage_implementationRenamedForKilocode(systemPrompt, messages, metadata)
+			yield* this.createMessage_implementationRenamedForNovacode(systemPrompt, messages, metadata)
 		} catch (error) {
 			if (
 				error instanceof OpenAIError &&
-				(this.providerName !== "KiloCode" || !isAnyRecognizedKiloCodeError(error))
+				(this.providerName !== "NovaCode" || !isAnyRecognizedNovaCodeError(error))
 			) {
 				throw new Error(makeOpenRouterErrorReadable(error))
 			}
 			throw error
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 
-	private async *createMessage_implementationRenamedForKilocode(
+	private async *createMessage_implementationRenamedForNovacode(
 		systemPrompt: string,
 		messages: Anthropic.Messages.MessageParam[],
 		metadata?: ApiHandlerCreateMessageMetadata,
@@ -393,7 +393,7 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 		// https://openrouter.ai/docs/features/prompt-caching
 		// TODO: Add a `promptCacheStratey` field to `ModelInfo`.
 		if (
-			modelId.startsWith("anthropic/claude") /* kilocode_change */ ||
+			modelId.startsWith("anthropic/claude") /* novacode_change */ ||
 			OPEN_ROUTER_PROMPT_CACHING_MODELS.has(modelId)
 		) {
 			if (modelId.startsWith("google")) {
@@ -402,7 +402,7 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 				addAnthropicCacheBreakpoints(systemPrompt, openAiMessages)
 			}
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		// https://openrouter.ai/docs/transforms
 		const completionParams: OpenRouterChatCompletionParams = {
@@ -413,23 +413,23 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 			messages: openAiMessages,
 			stream: true,
 			stream_options: { include_usage: true },
-			...this.getProviderParams(), // kilocode_change: original expression was moved into function
+			...this.getProviderParams(), // novacode_change: original expression was moved into function
 			...(reasoning && { reasoning }),
 			...(metadata?.tools && { tools: this.convertToolsForOpenAI(metadata.tools) }),
 			...(metadata?.tool_choice && { tool_choice: metadata.tool_choice }),
-			verbosity: model.verbosity === "max" ? "high" : model.verbosity, // kilocode_change
+			verbosity: model.verbosity === "max" ? "high" : model.verbosity, // novacode_change
 		}
 
-		// kilocode_change start
+		// novacode_change start
 		const requestOptions = this.customRequestOptions(metadata) ?? { headers: {} }
 		if (modelId.startsWith("anthropic/")) {
 			requestOptions.headers["x-anthropic-beta"] = "fine-grained-tool-streaming-2025-05-14"
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		let stream
 		try {
-			// kilocode_change start
+			// novacode_change start
 			let attempts = 0
 			while (true) {
 				try {
@@ -449,14 +449,14 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 					throw error
 				}
 			}
-			// kilocode_change end
+			// novacode_change end
 		} catch (error) {
-			// kilocode_change start
-			// KiloCode backend errors are already user-readable and should be handled upstream.
-			if (this.providerName === "KiloCode" && isAnyRecognizedKiloCodeError(error)) {
+			// novacode_change start
+			// NovaCode backend errors are already user-readable and should be handled upstream.
+			if (this.providerName === "NovaCode" && isAnyRecognizedNovaCodeError(error)) {
 				throw error
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			// Try to parse as OpenRouter error structure using Zod
 			const parseResult = OpenRouterErrorResponseSchema.safeParse(error)
@@ -493,7 +493,7 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 		}
 
 		let lastUsage: CompletionUsage | undefined = undefined
-		let inferenceProvider: string | undefined // kilocode_change
+		let inferenceProvider: string | undefined // novacode_change
 		// Accumulator for reasoning_details FROM the API.
 		// We preserve the original shape of reasoning_details to prevent malformed responses.
 		const reasoningDetailsAccumulator = new Map<
@@ -521,15 +521,15 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 				this.handleStreamingError(chunk.error as OpenRouterError, modelId, "createMessage")
 			}
 
-			// kilocode_change start
-			const kiloCodeChunk = KiloCodeChunkSchema.safeParse(chunk).data
+			// novacode_change start
+			const novaCodeChunk = NovaCodeChunkSchema.safeParse(chunk).data
 			inferenceProvider =
-				kiloCodeChunk?.choices?.[0]?.delta?.provider_metadata?.gateway?.routing?.resolvedProvider ??
-				kiloCodeChunk?.provider ??
+				novaCodeChunk?.choices?.[0]?.delta?.provider_metadata?.gateway?.routing?.resolvedProvider ??
+				novaCodeChunk?.provider ??
 				inferenceProvider
-			// kilocode_change end
+			// novacode_change end
 
-			verifyFinishReason(chunk.choices[0]) // kilocode_change
+			verifyFinishReason(chunk.choices[0]) // novacode_change
 			const delta = chunk.choices[0]?.delta
 			const finishReason = chunk.choices[0]?.finish_reason
 
@@ -609,13 +609,13 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 						yield { type: "reasoning", text: delta.reasoning }
 					}
 				}
-				// kilocode_change start
+				// novacode_change start
 				else if ("reasoning_content" in delta && typeof delta.reasoning_content === "string") {
 					if (!hasYieldedReasoningFromDetails) {
 						yield { type: "reasoning", text: delta.reasoning_content }
 					}
 				}
-				// kilocode_change end
+				// novacode_change end
 
 				// Check for tool calls in delta
 				// Emit raw tool call chunks - NativeToolCallParser handles state management
@@ -664,10 +664,10 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 				outputTokens: lastUsage.completion_tokens || 0,
 				cacheReadTokens: lastUsage.prompt_tokens_details?.cached_tokens,
 				reasoningTokens: lastUsage.completion_tokens_details?.reasoning_tokens,
-				// kilocode_change start
+				// novacode_change start
 				totalCost: this.getTotalCost(lastUsage),
 				inferenceProvider,
-				// kilocode_change end
+				// novacode_change end
 			}
 		}
 	}
@@ -719,7 +719,7 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 			maxTokens,
 			temperature,
 			reasoning,
-			verbosity, // kilocode_change
+			verbosity, // novacode_change
 		} = await this.fetchModel()
 
 		const completionParams: OpenRouterChatCompletionParams = {
@@ -728,17 +728,17 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 			temperature,
 			messages: [{ role: "user", content: prompt }],
 			stream: false,
-			...this.getProviderParams(), // kilocode_change: original expression was moved into function
+			...this.getProviderParams(), // novacode_change: original expression was moved into function
 			...(reasoning && { reasoning }),
-			verbosity: verbosity === "max" ? "high" : verbosity, // kilocode_change
+			verbosity: verbosity === "max" ? "high" : verbosity, // novacode_change
 		}
 
-		// kilocode_change start
+		// novacode_change start
 		const requestOptions = this.customRequestOptions() ?? { headers: {} }
 		if (modelId.startsWith("anthropic/")) {
 			requestOptions.headers["x-anthropic-beta"] = "fine-grained-tool-streaming-2025-05-14"
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		let response
 
@@ -801,7 +801,7 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 		model: string,
 		apiKey: string,
 		inputImage?: string,
-		taskId?: string, // kilocode_change
+		taskId?: string, // novacode_change
 	): Promise<ImageGenerationResult> {
 		if (!apiKey) {
 			return {
@@ -819,12 +819,12 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 			model,
 			prompt,
 			inputImage,
-			headers: { ...DEFAULT_HEADERS, ...this.getCustomRequestHeaders(taskId) }, // kilocode_change
+			headers: { ...DEFAULT_HEADERS, ...this.getCustomRequestHeaders(taskId) }, // novacode_change
 		})
 	}
 }
 
-// kilocode_change start
+// novacode_change start
 function makeOpenRouterErrorReadable(error: any) {
 	const metadata = error?.error?.metadata as { raw?: string; provider_name?: string } | undefined
 	const parsedJson = safeJsonParse(metadata?.raw)
@@ -853,4 +853,4 @@ function makeOpenRouterErrorReadable(error: any) {
 
 	return `Rate limit exceeded, try again later.\n${error?.message || error}`
 }
-// kilocode_change end
+// novacode_change end

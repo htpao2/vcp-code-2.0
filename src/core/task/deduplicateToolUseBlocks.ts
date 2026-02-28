@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { Anthropic } from "@anthropic-ai/sdk"
 import { TelemetryService } from "@roo-code/telemetry"
 

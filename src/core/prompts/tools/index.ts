@@ -1,4 +1,4 @@
-import type { ToolName, ModeConfig } from "@roo-code/types"
+﻿import type { ToolName, ModeConfig } from "@roo-code/types"
 
 import { TOOL_GROUPS, ALWAYS_AVAILABLE_TOOLS, DiffStrategy } from "../../../shared/tools"
 import { Mode, getModeConfig, getGroupName } from "../../../shared/modes"
@@ -26,14 +26,14 @@ import { getCodebaseSearchDescription } from "./codebase-search"
 import { getUpdateTodoListDescription } from "./update-todo-list"
 import { getRunSlashCommandDescription } from "./run-slash-command"
 import { getGenerateImageDescription } from "./generate-image"
-import { getDeleteFileDescription } from "./delete-file" // kilocode_change
+import { getDeleteFileDescription } from "./delete-file" // novacode_change
 
-// kilocode_change start: Morph fast apply
-import { isFastApplyAvailable } from "../../tools/kilocode/editFileTool"
+// novacode_change start: Morph fast apply
+import { isFastApplyAvailable } from "../../tools/nova/editFileTool"
 import { getEditFileDescription } from "./edit-file"
 import { type ClineProviderState } from "../../webview/ClineProvider"
 import { ManagedIndexer } from "../../../services/code-index/managed/ManagedIndexer"
-// kilocode_change end
+// novacode_change end
 
 // Map of tool names to their description functions
 const toolDescriptionMap: Record<string, (args: ToolArgs) => string | undefined> = {
@@ -51,10 +51,10 @@ const toolDescriptionMap: Record<string, (args: ToolArgs) => string | undefined>
 	codebase_search: (args) => getCodebaseSearchDescription(args),
 	switch_mode: () => getSwitchModeDescription(),
 	new_task: (args) => getNewTaskDescription(args),
-	// kilocode_change start: Fast Apply
+	// novacode_change start: Fast Apply
 	fast_edit_file: () => getEditFileDescription(),
-	// kilocode_change end
-	delete_file: (args) => getDeleteFileDescription(args), // kilocode_change
+	// novacode_change end
+	delete_file: (args) => getDeleteFileDescription(args), // novacode_change
 	apply_diff: (args) =>
 		args.diffStrategy ? args.diffStrategy.getToolDescription({ cwd: args.cwd, toolOptions: args.toolOptions }) : "",
 	update_todo_list: (args) => getUpdateTodoListDescription(args),
@@ -76,7 +76,7 @@ export function getToolDescriptionsForMode(
 	settings?: Record<string, any>,
 	enableMcpServerCreation?: boolean,
 	modelId?: string,
-	clineProviderState?: ClineProviderState, // kilocode_change
+	clineProviderState?: ClineProviderState, // novacode_change
 ): string {
 	const config = getModeConfig(mode, customModes)
 	const args: ToolArgs = {
@@ -121,16 +121,16 @@ export function getToolDescriptionsForMode(
 	// Add always available tools
 	ALWAYS_AVAILABLE_TOOLS.forEach((tool) => tools.add(tool))
 
-	// kilocode_change start
+	// novacode_change start
 	// Conditionally exclude ask_followup_question in yolo mode
 	// This prevents the agent from asking itself questions and auto-answering them
 	if (clineProviderState?.yoloMode) {
 		tools.delete("ask_followup_question")
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	// Conditionally exclude codebase_search if feature is disabled or not configured
-	// kilocode_change start
+	// novacode_change start
 	const isCodebaseSearchAvailable =
 		ManagedIndexer.getInstance().isEnabled() ||
 		(codeIndexManager &&
@@ -140,9 +140,9 @@ export function getToolDescriptionsForMode(
 	if (!isCodebaseSearchAvailable) {
 		tools.delete("codebase_search")
 	}
-	// kilocode_change end
+	// novacode_change end
 
-	// kilocode_change start: Fast Apply
+	// novacode_change start: Fast Apply
 	if (isFastApplyAvailable(clineProviderState)) {
 		// When Morph is enabled, disable traditional editing tools
 		const traditionalEditingTools = ["apply_diff", "write_to_file"]
@@ -150,7 +150,7 @@ export function getToolDescriptionsForMode(
 	} else {
 		tools.delete("fast_edit_file")
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	// Conditionally exclude update_todo_list if disabled in settings
 	if (settings?.todoListEnabled === false) {
@@ -199,7 +199,7 @@ export {
 	getUseMcpToolDescription,
 	getAccessMcpResourceDescription,
 	getSwitchModeDescription,
-	getEditFileDescription, // kilocode_change: Morph fast apply
+	getEditFileDescription, // novacode_change: Morph fast apply
 	getCodebaseSearchDescription,
 	getRunSlashCommandDescription,
 	getGenerateImageDescription,

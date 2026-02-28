@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { skillMarketplaceItemSchema } from "./skill.js" // kilocode_change
+import { skillMarketplaceItemSchema } from "./skill.js" // novacode_change
 
 /**
  * Schema for MCP parameter definitions
@@ -28,7 +28,7 @@ export type McpInstallationMethod = z.infer<typeof mcpInstallationMethodSchema>
 /**
  * Component type validation
  */
-export const marketplaceItemTypeSchema = z.enum(["mode", "mcp", "skill"] as const) // kilocode_change: Added "skill"
+export const marketplaceItemTypeSchema = z.enum(["mode", "mcp", "skill"] as const) // novacode_change: Added "skill"
 
 export type MarketplaceItemType = z.infer<typeof marketplaceItemTypeSchema>
 
@@ -74,7 +74,7 @@ export const marketplaceItemSchema = z.discriminatedUnion("type", [
 	mcpMarketplaceItemSchema.extend({
 		type: z.literal("mcp"),
 	}),
-	// kilocode_change: Skill marketplace item
+	// novacode_change: Skill marketplace item
 	skillMarketplaceItemSchema,
 ])
 

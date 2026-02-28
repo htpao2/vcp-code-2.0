@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import type { ModelInfo } from "../model.js"
 
 // Default model for ZenMux - using OpenAI GPT-5 as default
@@ -9,10 +9,10 @@ export const zenmuxDefaultModelInfo: ModelInfo = {
 	contextWindow: 200_000,
 	supportsImages: true,
 	supportsPromptCache: true,
-	// kilocode_change start
+	// novacode_change start
 	supportsNativeTools: true,
 	defaultToolProtocol: "native",
-	// kilocode_change end
+	// novacode_change end
 	inputPrice: 15.0,
 	outputPrice: 75.0,
 	cacheWritesPrice: 18.75,

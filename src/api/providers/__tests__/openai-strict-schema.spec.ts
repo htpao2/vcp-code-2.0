@@ -1,5 +1,5 @@
-import { BaseProvider } from "../base-provider"
-import { normalizeObjectAdditionalPropertiesFalse } from "../kilocode/openai-strict-schema"
+﻿import { BaseProvider } from "../base-provider"
+import { normalizeObjectAdditionalPropertiesFalse } from "../nova/openai-strict-schema"
 
 class TestProvider extends BaseProvider {
 	// Minimal implementations for abstract base class

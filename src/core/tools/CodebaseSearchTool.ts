@@ -8,10 +8,10 @@ import { formatResponse } from "../prompts/responses"
 import { VectorStoreSearchResult } from "../../services/code-index/interfaces"
 import { BaseTool, ToolCallbacks } from "./BaseTool"
 import type {
-	PushToolResult, // kilocode_change
+	PushToolResult, // novacode_change
 	ToolUse,
 } from "../../shared/tools"
-import { ManagedIndexer } from "../../services/code-index/managed/ManagedIndexer" // kilocode_change
+import { ManagedIndexer } from "../../services/code-index/managed/ManagedIndexer" // novacode_change
 
 interface CodebaseSearchParams {
 	query: string
@@ -37,7 +37,7 @@ export class CodebaseSearchTool extends BaseTool<"codebase_search"> {
 
 	async execute(params: CodebaseSearchParams, task: Task, callbacks: ToolCallbacks): Promise<void> {
 		const { askApproval, handleError, pushToolResult, toolProtocol } = callbacks
-		let { query, path: directoryPrefix } = params // kilocode_change: const=>let
+		let { query, path: directoryPrefix } = params // novacode_change: const=>let
 
 		const workspacePath = task.cwd && task.cwd.trim() !== "" ? task.cwd : getWorkspacePath()
 
@@ -53,12 +53,12 @@ export class CodebaseSearchTool extends BaseTool<"codebase_search"> {
 			return
 		}
 
-		// kilocode_change start
+		// novacode_change start
 		// we don't always get relative path here
 		if (directoryPrefix && path.isAbsolute(directoryPrefix)) {
 			directoryPrefix = path.relative(workspacePath, directoryPrefix)
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		const sharedMessageProps = {
 			tool: "codebaseSearch",
@@ -75,11 +75,11 @@ export class CodebaseSearchTool extends BaseTool<"codebase_search"> {
 
 		task.consecutiveMistakeCount = 0
 
-		// kilode_change start - First try mnaaged indexing
+		// novade_change start - First try mnaaged indexing
 		if (await tryManagedSearch(task, pushToolResult, query, directoryPrefix)) {
 			return
 		}
-		// kilode_change end - First try mnaaged indexing
+		// novade_change end - First try mnaaged indexing
 
 		try {
 			const context = task.providerRef.deref()?.context
@@ -100,7 +100,7 @@ export class CodebaseSearchTool extends BaseTool<"codebase_search"> {
 				throw new Error("Code Indexing is not configured (Missing OpenAI Key or Qdrant URL).")
 			}
 
-			// kilocode_change start
+			// novacode_change start
 			const status = manager.getCurrentStatus()
 			if (status.systemStatus !== "Indexed") {
 				const defaultStatusMessage = (() => {
@@ -152,7 +152,7 @@ export class CodebaseSearchTool extends BaseTool<"codebase_search"> {
 				)
 				return
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			const searchResults: VectorStoreSearchResult[] = await manager.searchIndex(query, directoryPrefix)
 
@@ -201,7 +201,7 @@ ${jsonResult.results
 		(result) => `File path: ${result.filePath}
 Score: ${result.score}
 Lines: ${result.startLine}-${result.endLine}
-${result.codeChunk ? `Code Chunk: ${result.codeChunk}\n` : ""}`, // kilocode_change - don't include code chunk managed indexing
+${result.codeChunk ? `Code Chunk: ${result.codeChunk}\n` : ""}`, // novacode_change - don't include code chunk managed indexing
 	)
 	.join("\n")}`
 
@@ -228,7 +228,7 @@ ${result.codeChunk ? `Code Chunk: ${result.codeChunk}\n` : ""}`, // kilocode_cha
 
 export const codebaseSearchTool = new CodebaseSearchTool()
 
-// kilocode_change start - Add managed search block
+// novacode_change start - Add managed search block
 async function tryManagedSearch(
 	cline: Task,
 	pushToolResult: PushToolResult,
@@ -300,4 +300,4 @@ ${result.codeChunk ? `Code Chunk: ${result.codeChunk}\n` : ""}`,
 		return false
 	}
 }
-// kilocode_change end - Add managed search block
+// novacode_change end - Add managed search block

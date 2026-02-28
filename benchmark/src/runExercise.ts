@@ -28,22 +28,25 @@ export async function run() {
 	 * Activate the extension.
 	 */
 
-	const extension = vscode.extensions.getExtension<RooCodeAPI>("kilocode.Kilo-Code")
+	const extensionIds = ["vcpcode-test-1.0.3", "novacode.nova-code", "novacode.Nova-Code"] as const
+	const extension = extensionIds
+		.map((extensionId) => vscode.extensions.getExtension<RooCodeAPI>(extensionId))
+		.find((candidate): candidate is vscode.Extension<RooCodeAPI> => candidate !== undefined)
 
 	if (!extension) {
-		throw new Error("Extension not found.")
+		throw new Error(`Extension not found. Tried: ${extensionIds.join(", ")}`)
 	}
 
 	const api = extension.isActive ? extension.exports : await extension.activate()
 
 	/**
-	 * Wait for the Kilo Code to be ready to accept tasks.
+	 * Wait for the Nova Code to be ready to accept tasks.
 	 */
 
 	await waitUntilReady({ api })
 
 	/**
-	 * Configure Kilo Code as needed.
+	 * Configure Nova Code as needed.
 	 *
 	 * Use Claude 3.7 Sonnet via OpenRouter.
 	 * Don't require approval for anything.
@@ -67,7 +70,7 @@ export async function run() {
 	})
 
 	await vscode.workspace
-		.getConfiguration("kilo-code")
+		.getConfiguration("nova-code")
 		.update("allowedCommands", ["*"], vscode.ConfigurationTarget.Global)
 
 	await sleep(2_000)

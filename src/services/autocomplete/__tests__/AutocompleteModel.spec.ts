@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
 import { AutocompleteModel } from "../AutocompleteModel"
 import { ProviderSettingsManager } from "../../../core/config/ProviderSettingsManager"
-import { AUTOCOMPLETE_PROVIDER_MODELS } from "../utils/kilocode-utils"
+import { AUTOCOMPLETE_PROVIDER_MODELS } from "../utils/novacode-utils"
 import * as apiIndex from "../../../api"
 import { TelemetryService } from "../../../../packages/telemetry/src/TelemetryService"
 
@@ -135,9 +135,9 @@ describe("AutocompleteModel", () => {
 			vi.restoreAllMocks()
 		})
 
-		it("should skip kilocode provider when balance is zero and use openrouter instead", async () => {
+		it("should skip novacode provider when balance is zero and use openrouter instead", async () => {
 			const profiles = [
-				{ id: "1", name: "kilocode-profile", apiProvider: "kilocode" },
+				{ id: "1", name: "novacode-profile", apiProvider: "novacode" },
 				{ id: "2", name: "openrouter-profile", apiProvider: "openrouter" },
 			] as any
 
@@ -148,9 +148,9 @@ describe("AutocompleteModel", () => {
 				if (args.id === "1") {
 					return {
 						id: "1",
-						name: "kilocode-profile",
-						apiProvider: "kilocode",
-						kilocodeToken: "test-token",
+						name: "novacode-profile",
+						apiProvider: "novacode",
+						novacodeToken: "test-token",
 					} as any
 				} else if (args.id === "2") {
 					return {
@@ -163,7 +163,7 @@ describe("AutocompleteModel", () => {
 				return null as any
 			})
 
-			// Mock fetch to return zero balance for kilocode
+			// Mock fetch to return zero balance for novacode
 			;(global.fetch as any).mockImplementation(async (url: string) => {
 				if (url.includes("/api/profile/balance")) {
 					return {
@@ -188,14 +188,14 @@ describe("AutocompleteModel", () => {
 			const model = new AutocompleteModel()
 			const result = await model.reload(mockProviderSettingsManager)
 
-			// Should have tried both providers but used openrouter (since kilocode balance is 0)
+			// Should have tried both providers but used openrouter (since novacode balance is 0)
 			expect(result).toBe(true)
 			expect(model.loaded).toBe(true)
 		})
 
-		it("should use kilocode provider when balance is greater than zero", async () => {
+		it("should use novacode provider when balance is greater than zero", async () => {
 			const profiles = [
-				{ id: "1", name: "kilocode-profile", apiProvider: "kilocode" },
+				{ id: "1", name: "novacode-profile", apiProvider: "novacode" },
 				{ id: "2", name: "openrouter-profile", apiProvider: "openrouter" },
 			] as any
 
@@ -206,9 +206,9 @@ describe("AutocompleteModel", () => {
 				if (args.id === "1") {
 					return {
 						id: "1",
-						name: "kilocode-profile",
-						apiProvider: "kilocode",
-						kilocodeToken: "test-token",
+						name: "novacode-profile",
+						apiProvider: "novacode",
+						novacodeToken: "test-token",
 					} as any
 				} else if (args.id === "2") {
 					return {
@@ -221,7 +221,7 @@ describe("AutocompleteModel", () => {
 				return null as any
 			})
 
-			// Mock fetch to return positive balance for kilocode
+			// Mock fetch to return positive balance for novacode
 			;(global.fetch as any).mockImplementation(async (url: string) => {
 				if (url.includes("/api/profile/balance")) {
 					return {
@@ -246,27 +246,27 @@ describe("AutocompleteModel", () => {
 			const model = new AutocompleteModel()
 			const result = await model.reload(mockProviderSettingsManager)
 
-			// Should have used kilocode provider (first one with positive balance)
+			// Should have used novacode provider (first one with positive balance)
 			expect(result).toBe(true)
 			expect(model.loaded).toBe(true)
 		})
 
-		it("should handle kilocode provider with no token", async () => {
+		it("should handle novacode provider with no token", async () => {
 			const profiles = [
-				{ id: "1", name: "kilocode-profile", apiProvider: "kilocode" },
+				{ id: "1", name: "novacode-profile", apiProvider: "novacode" },
 				{ id: "2", name: "openrouter-profile", apiProvider: "openrouter" },
 			] as any
 
 			vi.mocked(mockProviderSettingsManager.listConfig).mockResolvedValue(profiles)
 
-			// Mock profiles - kilocode without token
+			// Mock profiles - novacode without token
 			vi.mocked(mockProviderSettingsManager.getProfile).mockImplementation(async (args: any) => {
 				if (args.id === "1") {
 					return {
 						id: "1",
-						name: "kilocode-profile",
-						apiProvider: "kilocode",
-						kilocodeToken: "", // No token
+						name: "novacode-profile",
+						apiProvider: "novacode",
+						novacodeToken: "", // No token
 					} as any
 				} else if (args.id === "2") {
 					return {
@@ -305,25 +305,25 @@ describe("AutocompleteModel", () => {
 			const model = new AutocompleteModel()
 			const result = await model.reload(mockProviderSettingsManager)
 
-			// Should skip kilocode (no token) and use openrouter
+			// Should skip novacode (no token) and use openrouter
 			expect(result).toBe(true)
 			expect(model.loaded).toBe(true)
 		})
 
-		it("should set hasKilocodeProfileWithNoBalance when kilocode profile exists but has no balance", async () => {
-			const profiles = [{ id: "1", name: "kilocode-profile", apiProvider: "kilocode" }] as any
+		it("should set hasNovacodeProfileWithNoBalance when novacode profile exists but has no balance", async () => {
+			const profiles = [{ id: "1", name: "novacode-profile", apiProvider: "novacode" }] as any
 
 			vi.mocked(mockProviderSettingsManager.listConfig).mockResolvedValue(profiles)
 
 			// Mock profile with token
 			vi.mocked(mockProviderSettingsManager.getProfile).mockResolvedValue({
 				id: "1",
-				name: "kilocode-profile",
-				apiProvider: "kilocode",
-				kilocodeToken: "test-token",
+				name: "novacode-profile",
+				apiProvider: "novacode",
+				novacodeToken: "test-token",
 			} as any)
 
-			// Mock fetch to return zero balance for kilocode
+			// Mock fetch to return zero balance for novacode
 			;(global.fetch as any).mockImplementation(async (url: string) => {
 				if (url.includes("/api/profile/balance")) {
 					return {
@@ -343,24 +343,24 @@ describe("AutocompleteModel", () => {
 			// Should not find a usable provider
 			expect(result).toBe(false)
 			expect(model.loaded).toBe(true)
-			// Should have set the flag indicating kilocode profile exists but has no balance
-			expect(model.hasKilocodeProfileWithNoBalance).toBe(true)
+			// Should have set the flag indicating novacode profile exists but has no balance
+			expect(model.hasNovacodeProfileWithNoBalance).toBe(true)
 		})
 
-		it("should not set hasKilocodeProfileWithNoBalance when kilocode profile has balance", async () => {
-			const profiles = [{ id: "1", name: "kilocode-profile", apiProvider: "kilocode" }] as any
+		it("should not set hasNovacodeProfileWithNoBalance when novacode profile has balance", async () => {
+			const profiles = [{ id: "1", name: "novacode-profile", apiProvider: "novacode" }] as any
 
 			vi.mocked(mockProviderSettingsManager.listConfig).mockResolvedValue(profiles)
 
 			// Mock profile with token
 			vi.mocked(mockProviderSettingsManager.getProfile).mockResolvedValue({
 				id: "1",
-				name: "kilocode-profile",
-				apiProvider: "kilocode",
-				kilocodeToken: "test-token",
+				name: "novacode-profile",
+				apiProvider: "novacode",
+				novacodeToken: "test-token",
 			} as any)
 
-			// Mock fetch to return positive balance for kilocode and valid models response
+			// Mock fetch to return positive balance for novacode and valid models response
 			;(global.fetch as any).mockImplementation(async (url: string) => {
 				if (url.includes("/api/profile/balance")) {
 					return {
@@ -368,7 +368,7 @@ describe("AutocompleteModel", () => {
 						json: async () => ({ balance: 10.5 }),
 					} as any
 				}
-				// For OpenRouter/Kilocode models endpoint
+				// For OpenRouter/Novacode models endpoint
 				if (url.includes("/models")) {
 					return {
 						ok: true,
@@ -397,20 +397,20 @@ describe("AutocompleteModel", () => {
 			expect(result).toBe(true)
 			expect(model.loaded).toBe(true)
 			// Should not have set the flag
-			expect(model.hasKilocodeProfileWithNoBalance).toBe(false)
+			expect(model.hasNovacodeProfileWithNoBalance).toBe(false)
 		})
 
-		it("should clear hasKilocodeProfileWithNoBalance on reload", async () => {
-			const profiles = [{ id: "1", name: "kilocode-profile", apiProvider: "kilocode" }] as any
+		it("should clear hasNovacodeProfileWithNoBalance on reload", async () => {
+			const profiles = [{ id: "1", name: "novacode-profile", apiProvider: "novacode" }] as any
 
 			vi.mocked(mockProviderSettingsManager.listConfig).mockResolvedValue(profiles)
 
 			// Mock profile with token
 			vi.mocked(mockProviderSettingsManager.getProfile).mockResolvedValue({
 				id: "1",
-				name: "kilocode-profile",
-				apiProvider: "kilocode",
-				kilocodeToken: "test-token",
+				name: "novacode-profile",
+				apiProvider: "novacode",
+				novacodeToken: "test-token",
 			} as any)
 
 			// First reload: zero balance
@@ -429,7 +429,7 @@ describe("AutocompleteModel", () => {
 
 			const model = new AutocompleteModel()
 			await model.reload(mockProviderSettingsManager)
-			expect(model.hasKilocodeProfileWithNoBalance).toBe(true)
+			expect(model.hasNovacodeProfileWithNoBalance).toBe(true)
 
 			// Second reload: positive balance with valid models response
 			;(global.fetch as any).mockImplementation(async (url: string) => {
@@ -439,7 +439,7 @@ describe("AutocompleteModel", () => {
 						json: async () => ({ balance: 10.5 }),
 					} as any
 				}
-				// For OpenRouter/Kilocode models endpoint
+				// For OpenRouter/Novacode models endpoint
 				if (url.includes("/models")) {
 					return {
 						ok: true,
@@ -463,7 +463,7 @@ describe("AutocompleteModel", () => {
 
 			await model.reload(mockProviderSettingsManager)
 			// Flag should be cleared after reload with positive balance
-			expect(model.hasKilocodeProfileWithNoBalance).toBe(false)
+			expect(model.hasNovacodeProfileWithNoBalance).toBe(false)
 		})
 	})
 

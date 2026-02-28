@@ -1,5 +1,5 @@
 {
-	"name": "Kilo Code Development",
+	"name": "Nova Code Development",
 	"dockerFile": "Dockerfile",
 	"context": "..",
 
@@ -49,17 +49,17 @@
 	},
 
 	"postCreateCommand": "bash .devcontainer/setup.sh",
-	"postStartCommand": "echo '🚀 Kilo Code devcontainer is ready!'",
+	"postStartCommand": "echo '🚀 Nova Code devcontainer is ready!'",
 
 	"remoteUser": "root",
 	"containerUser": "root",
 
-	// Mounts for persisting Kilo Code state across container rebuilds
+	// Mounts for persisting Nova Code state across container rebuilds
 	// These mounts preserve threads, settings, and caches
 	"mounts": [
 		"source=${localWorkspaceFolder}/.git,target=/workspace/.git,type=bind,consistency=cached",
-		"source=kilocode-global-storage,target=/root/.vscode-remote/data/User/globalStorage/kilocode.kilo-code,type=volume",
-		"source=kilocode-settings,target=/root/.vscode-remote/data/User,type=volume"
+		"source=novacode-global-storage,target=/root/.vscode-remote/data/User/globalStorage/novacode.nova-code,type=volume",
+		"source=novacode-settings,target=/root/.vscode-remote/data/User,type=volume"
 	],
 
 	// Configure custom properties for workspace storage

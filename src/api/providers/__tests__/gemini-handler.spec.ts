@@ -1,11 +1,11 @@
 import { t } from "i18next"
-import { TelemetryService } from "@roo-code/telemetry" // kilocode_change
+import { TelemetryService } from "@roo-code/telemetry" // novacode_change
 import { FunctionCallingConfigMode } from "@google/genai"
 
 import { GeminiHandler } from "../gemini"
 import type { ApiHandlerOptions } from "../../../shared/api"
 
-// kilocode_change start
+// novacode_change start
 // Mock TelemetryService
 vi.mock("@roo-code/telemetry", () => ({
 	TelemetryService: {
@@ -14,7 +14,7 @@ vi.mock("@roo-code/telemetry", () => ({
 		},
 	},
 }))
-// kilocode_change end
+// novacode_change end
 
 describe("GeminiHandler backend support", () => {
 	it("passes tools for URL context and grounding in config", async () => {

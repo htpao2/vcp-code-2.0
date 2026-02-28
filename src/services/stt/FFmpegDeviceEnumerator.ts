@@ -1,4 +1,4 @@
-// kilocode_change - new file: FFmpeg device enumeration utilities
+// novacode_change - new file: FFmpeg device enumeration utilities
 import { execSync } from "child_process"
 import * as os from "os"
 import { MicrophoneDevice } from "../../shared/sttContract"

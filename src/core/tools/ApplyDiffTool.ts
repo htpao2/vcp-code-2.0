@@ -13,7 +13,7 @@ import { unescapeHtmlEntities } from "../../utils/text-normalization"
 import { EXPERIMENT_IDS, experiments } from "../../shared/experiments"
 import { computeDiffStats, sanitizeUnifiedDiff } from "../diff/stats"
 import type { ToolUse } from "../../shared/tools"
-import { trackContribution } from "../../services/contribution-tracking/ContributionTrackingService" // kilocode_change
+import { trackContribution } from "../../services/contribution-tracking/ContributionTrackingService" // novacode_change
 
 import { BaseTool, ToolCallbacks } from "./BaseTool"
 
@@ -176,7 +176,7 @@ export class ApplyDiffTool extends BaseTool<"apply_diff"> {
 
 				const didApprove = await askApproval("tool", completeMessage, toolProgressStatus, isWriteProtected)
 
-				// kilocode_change start
+				// novacode_change start
 				// Track contribution (fire-and-forget, never blocks user workflow)
 				trackContribution({
 					cwd: task.cwd,
@@ -185,10 +185,10 @@ export class ApplyDiffTool extends BaseTool<"apply_diff"> {
 					newContent: diffResult.content,
 					status: didApprove ? "accepted" : "rejected",
 					taskId: task.taskId,
-					organizationId: state?.apiConfiguration?.kilocodeOrganizationId,
-					kilocodeToken: state?.apiConfiguration?.kilocodeToken || "",
+					organizationId: state?.apiConfiguration?.novacodeOrganizationId,
+					novacodeToken: state?.apiConfiguration?.novacodeToken || "",
 				})
-				// kilocode_change end
+				// novacode_change end
 
 				if (!didApprove) {
 					return
@@ -234,7 +234,7 @@ export class ApplyDiffTool extends BaseTool<"apply_diff"> {
 
 				const didApprove = await askApproval("tool", completeMessage, toolProgressStatus, isWriteProtected)
 
-				// kilocode_change start
+				// novacode_change start
 				// Track contribution (fire-and-forget, never blocks user workflow)
 				trackContribution({
 					cwd: task.cwd,
@@ -243,10 +243,10 @@ export class ApplyDiffTool extends BaseTool<"apply_diff"> {
 					newContent: diffResult.content,
 					status: didApprove ? "accepted" : "rejected",
 					taskId: task.taskId,
-					organizationId: state?.apiConfiguration?.kilocodeOrganizationId,
-					kilocodeToken: state?.apiConfiguration?.kilocodeToken || "",
+					organizationId: state?.apiConfiguration?.novacodeOrganizationId,
+					novacodeToken: state?.apiConfiguration?.novacodeToken || "",
 				})
-				// kilocode_change end
+				// novacode_change end
 
 				if (!didApprove) {
 					await task.diffViewProvider.revertChanges()

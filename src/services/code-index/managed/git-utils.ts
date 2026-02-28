@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 /**
  * Git utility functions for managed codebase indexing
  *

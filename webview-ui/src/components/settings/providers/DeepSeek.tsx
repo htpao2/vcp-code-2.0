@@ -1,4 +1,5 @@
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
+import { Checkbox } from "vscrui"
 import { VSCodeTextField } from "@vscode/webview-ui-toolkit/react"
 
 import type { ProviderSettings } from "@roo-code/types"
@@ -14,8 +15,9 @@ type DeepSeekProps = {
 	simplifySettings?: boolean
 }
 
-export const DeepSeek = ({ apiConfiguration, setApiConfigurationField }: DeepSeekProps) => {
+export const DeepSeek = ({ apiConfiguration, setApiConfigurationField, simplifySettings }: DeepSeekProps) => {
 	const { t } = useAppTranslation()
+	const [deepSeekBaseUrlSelected, setDeepSeekBaseUrlSelected] = useState(!!apiConfiguration?.deepSeekBaseUrl)
 
 	const handleInputChange = useCallback(
 		<K extends keyof ProviderSettings, E>(
@@ -45,6 +47,29 @@ export const DeepSeek = ({ apiConfiguration, setApiConfigurationField }: DeepSee
 				<VSCodeButtonLink href="https://platform.deepseek.com/" appearance="secondary">
 					{t("settings:providers.getDeepSeekApiKey")}
 				</VSCodeButtonLink>
+			)}
+			{!simplifySettings && (
+				<div>
+					<Checkbox
+						checked={deepSeekBaseUrlSelected}
+						onChange={(checked: boolean) => {
+							setDeepSeekBaseUrlSelected(checked)
+							if (!checked) {
+								setApiConfigurationField("deepSeekBaseUrl", "")
+							}
+						}}>
+						{t("settings:providers.useCustomBaseUrl")}
+					</Checkbox>
+					{deepSeekBaseUrlSelected && (
+						<VSCodeTextField
+							value={apiConfiguration?.deepSeekBaseUrl || ""}
+							type="url"
+							onInput={handleInputChange("deepSeekBaseUrl")}
+							placeholder="Default: https://api.deepseek.com"
+							className="w-full mt-1"
+						/>
+					)}
+				</div>
 			)}
 		</>
 	)

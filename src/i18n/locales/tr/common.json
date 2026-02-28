@@ -1,6 +1,6 @@
 {
 	"extension": {
-		"name": "Kilo Code",
+		"name": "Nova Code",
 		"description": "Doğal dilden kod üreten, görevleri otomatikleştiren ve terminal komutlarını çalıştıran açık kaynaklı AI kodlama ajanı. Satır içi otomatik tamamlama, tarayıcı otomasyonu, otomatik yeniden düzenleme ve planlama, kodlama ve hata ayıklama için özel modlar içerir. Claude (Anthropic), Gemini, Grok, GPT, Codex ve GLM dahil 500'den fazla AI modelini destekler."
 	},
 	"number_format": {
@@ -165,7 +165,7 @@
 	"warnings": {
 		"no_terminal_content": "Seçili terminal içeriği yok",
 		"missing_task_files": "Bu görevin dosyaları eksik. Görev listesinden kaldırmak istiyor musunuz?",
-		"auto_import_failed": "Kilo Code ayarları otomatik olarak içe aktarılamadı: {{error}}"
+		"auto_import_failed": "Nova Code ayarları otomatik olarak içe aktarılamadı: {{error}}"
 	},
 	"info": {
 		"no_changes": "Değişiklik bulunamadı.",
@@ -174,7 +174,7 @@
 		"custom_storage_path_set": "Özel depolama yolu ayarlandı: {{path}}",
 		"default_storage_path": "Varsayılan depolama yoluna geri dönüldü",
 		"settings_imported": "Ayarlar başarıyla içe aktarıldı.",
-		"auto_import_success": "Kilo Code ayarları {{filename}} dosyasından otomatik olarak içe aktarıldı",
+		"auto_import_success": "Nova Code ayarları {{filename}} dosyasından otomatik olarak içe aktarıldı",
 		"share_link_copied": "Paylaşım bağlantısı panoya kopyalandı",
 		"image_copied_to_clipboard": "Resim veri URI'si panoya kopyalandı",
 		"image_saved": "Resim {{path}} konumuna kaydedildi",
@@ -208,12 +208,12 @@
 	},
 	"storage": {
 		"prompt_custom_path": "Konuşma geçmişi için özel depolama yolunu girin, varsayılan konumu kullanmak için boş bırakın",
-		"path_placeholder": "D:\\KiloCodeStorage",
-		"enter_absolute_path": "Lütfen mutlak bir yol girin (örn. D:\\KiloCodeStorage veya /home/user/storage)",
+		"path_placeholder": "D:\\NovaCodeStorage",
+		"enter_absolute_path": "Lütfen mutlak bir yol girin (örn. D:\\NovaCodeStorage veya /home/user/storage)",
 		"enter_valid_path": "Lütfen geçerli bir yol girin"
 	},
 	"input": {
-		"task_prompt": "Kilo Code ne yapsın?",
+		"task_prompt": "Nova Code ne yapsın?",
 		"task_placeholder": "Görevini buraya yaz"
 	},
 	"settings": {
@@ -224,8 +224,8 @@
 	},
 	"customModes": {
 		"errors": {
-			"yamlParseError": ".kilocodemodes dosyasının {{line}}. satırında geçersiz YAML. Kontrol et:\n• Doğru girinti (tab değil boşluk kullan)\n• Eşleşen tırnak işaretleri ve parantezler\n• Geçerli YAML sözdizimi",
-			"schemaValidationError": ".kilocodemodes'ta geçersiz özel mod formatı:\n{{issues}}",
+			"yamlParseError": ".novacodemodes dosyasının {{line}}. satırında geçersiz YAML. Kontrol et:\n• Doğru girinti (tab değil boşluk kullan)\n• Eşleşen tırnak işaretleri ve parantezler\n• Geçerli YAML sözdizimi",
+			"schemaValidationError": ".novacodemodes'ta geçersiz özel mod formatı:\n{{issues}}",
 			"invalidFormat": "Geçersiz özel mod formatı. Ayarlarının doğru YAML formatını takip ettiğinden emin ol.",
 			"updateFailed": "Özel mod güncellemesi başarısız: {{error}}",
 			"deleteFailed": "Özel mod silme başarısız: {{error}}",
@@ -274,7 +274,7 @@
 	},
 	"docsLink": {
 		"label": "Docs",
-		"url": "https://kilo.ai/docs"
+		"url": "https://nova.ai/docs"
 	},
 	"errorBoundary": {
 		"title": "Hata",

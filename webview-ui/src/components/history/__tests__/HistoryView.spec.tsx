@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@/utils/test-utils"
+﻿import { render, screen, fireEvent } from "@/utils/test-utils"
 
 import { useExtensionState } from "@src/context/ExtensionStateContext"
 
@@ -13,8 +13,8 @@ vi.mock("@src/i18n/TranslationContext", () => ({
 	}),
 }))
 
-vi.mock("@/kilocode/hooks/useTaskHistory")
-import { useTaskHistory } from "@/kilocode/hooks/useTaskHistory"
+vi.mock("@/nova/hooks/useTaskHistory")
+import { useTaskHistory } from "@/nova/hooks/useTaskHistory"
 
 const mockTaskHistory = [
 	{
@@ -45,7 +45,7 @@ describe("HistoryView", () => {
 			cwd: "/test/workspace",
 		})
 
-		// kilocode_code start
+		// novacode_code start
 		;(useTaskHistory as ReturnType<typeof vi.fn>).mockReturnValue({
 			data: {
 				requestId: "",
@@ -54,7 +54,7 @@ describe("HistoryView", () => {
 				pageCount: 1,
 			},
 		})
-		// kilocode_code end
+		// novacode_code end
 	})
 
 	it("renders the history interface", () => {

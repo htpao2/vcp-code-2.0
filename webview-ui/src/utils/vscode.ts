@@ -1,6 +1,6 @@
 import type { WebviewApi } from "vscode-webview"
 
-import { MaybeTypedWebviewMessage as WebviewMessage } from "@roo/WebviewMessage" // kilocode_change - using MaybeTypedWebviewMessage
+import { MaybeTypedWebviewMessage as WebviewMessage } from "@roo/WebviewMessage" // novacode_change - using MaybeTypedWebviewMessage
 
 /**
  * A utility wrapper around the acquireVsCodeApi() function, which enables
@@ -79,11 +79,11 @@ class VSCodeAPIWrapper {
 // Exports class singleton to prevent multiple invocations of acquireVsCodeApi.
 export const vscode = new VSCodeAPIWrapper()
 
-// kilocode_change start
+// novacode_change start
 // Make vscode available globally - this allows the playwright tests
 // to post messages directly so we can setup provider credentials
 // without having to go through the Settings UI in every test.
 if (typeof window !== "undefined") {
 	;(window as unknown as { vscode: VSCodeAPIWrapper }).vscode = vscode
 }
-// kilocode_change end
+// novacode_change end

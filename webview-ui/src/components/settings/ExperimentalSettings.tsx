@@ -8,30 +8,30 @@ import { useAppTranslation } from "@src/i18n/TranslationContext"
 import { cn } from "@src/lib/utils"
 
 import {
-	SetCachedStateField, // kilocode_change
+	SetCachedStateField, // novacode_change
 	SetExperimentEnabled,
 } from "./types"
 import { SectionHeader } from "./SectionHeader"
 import { Section } from "./Section"
 import { SearchableSetting } from "./SearchableSetting"
 import { ExperimentalFeature } from "./ExperimentalFeature"
-import { FastApplySettings } from "./FastApplySettings" // kilocode_change: Use Fast Apply version
+import { FastApplySettings } from "./FastApplySettings" // novacode_change: Use Fast Apply version
 import { ImageGenerationSettings } from "./ImageGenerationSettings"
 import { CustomToolsSettings } from "./CustomToolsSettings"
-import { STTSettings } from "./STTSettings" // kilocode_change: STT microphone settings
+import { STTSettings } from "./STTSettings" // novacode_change: STT microphone settings
 
 type ExperimentalSettingsProps = HTMLAttributes<HTMLDivElement> & {
 	experiments: Experiments
 	setExperimentEnabled: SetExperimentEnabled
-	// kilocode_change start
+	// novacode_change start
 	morphApiKey?: string
 	fastApplyModel?: string
 	fastApplyApiProvider?: string
 	setCachedStateField: SetCachedStateField<"morphApiKey" | "fastApplyModel" | "fastApplyApiProvider">
-	kiloCodeImageApiKey?: string
-	setKiloCodeImageApiKey?: (apiKey: string) => void
-	currentProfileKilocodeToken?: string
-	// kilocode_change end
+	novaCodeImageApiKey?: string
+	setNovaCodeImageApiKey?: (apiKey: string) => void
+	currentProfileNovacodeToken?: string
+	// novacode_change end
 	apiConfiguration?: any
 	setApiConfigurationField?: any
 	imageGenerationProvider?: ImageGenerationProvider
@@ -54,15 +54,15 @@ export const ExperimentalSettings = ({
 	setOpenRouterImageApiKey,
 	setImageGenerationSelectedModel,
 	className,
-	// kilocode_change start
+	// novacode_change start
 	morphApiKey,
-	fastApplyModel, // kilocode_change: Fast Apply model selection
-	fastApplyApiProvider, // kilocode_change: Fast Apply model api base url
+	fastApplyModel, // novacode_change: Fast Apply model selection
+	fastApplyApiProvider, // novacode_change: Fast Apply model api base url
 	setCachedStateField,
-	setKiloCodeImageApiKey,
-	kiloCodeImageApiKey,
-	currentProfileKilocodeToken,
-	// kilocode_change end
+	setNovaCodeImageApiKey,
+	novaCodeImageApiKey,
+	currentProfileNovacodeToken,
+	// novacode_change end
 	...props
 }: ExperimentalSettingsProps) => {
 	const { t } = useAppTranslation()
@@ -74,7 +74,7 @@ export const ExperimentalSettings = ({
 			<Section>
 				{Object.entries(experimentConfigsMap)
 					.filter(([key]) => key in EXPERIMENT_IDS)
-					.filter((config) => config[0] !== "MARKETPLACE") // kilocode_change: we have our own market place, filter this out for now
+					.filter((config) => config[0] !== "MARKETPLACE") // novacode_change: we have our own market place, filter this out for now
 					// Hide MULTIPLE_NATIVE_TOOL_CALLS - feature is on hold
 					.filter(([key]) => key !== "MULTIPLE_NATIVE_TOOL_CALLS")
 					.map((config) => {
@@ -99,7 +99,7 @@ export const ExperimentalSettings = ({
 								</SearchableSetting>
 							)
 						}
-						// kilocode_change start
+						// novacode_change start
 						if (config[0] === "MORPH_FAST_APPLY") {
 							const enabled =
 								experiments[EXPERIMENT_IDS[config[0] as keyof typeof EXPERIMENT_IDS]] ?? false
@@ -127,7 +127,7 @@ export const ExperimentalSettings = ({
 								</React.Fragment>
 							)
 						}
-						// kilocode_change end
+						// novacode_change end
 						if (config[0] === "SPEECH_TO_TEXT") {
 							const enabled = experiments[EXPERIMENT_IDS.SPEECH_TO_TEXT] ?? false
 							return (
@@ -148,7 +148,7 @@ export const ExperimentalSettings = ({
 							config[0] === "IMAGE_GENERATION" &&
 							setImageGenerationProvider &&
 							setOpenRouterImageApiKey &&
-							setKiloCodeImageApiKey &&
+							setNovaCodeImageApiKey &&
 							setImageGenerationSelectedModel
 						) {
 							return (
@@ -168,9 +168,9 @@ export const ExperimentalSettings = ({
 										setImageGenerationProvider={setImageGenerationProvider}
 										setOpenRouterImageApiKey={setOpenRouterImageApiKey}
 										setImageGenerationSelectedModel={setImageGenerationSelectedModel}
-										kiloCodeImageApiKey={kiloCodeImageApiKey}
-										setKiloCodeImageApiKey={setKiloCodeImageApiKey}
-										currentProfileKilocodeToken={currentProfileKilocodeToken}
+										novaCodeImageApiKey={novaCodeImageApiKey}
+										setNovaCodeImageApiKey={setNovaCodeImageApiKey}
+										currentProfileNovacodeToken={currentProfileNovacodeToken}
 									/>
 								</SearchableSetting>
 							)

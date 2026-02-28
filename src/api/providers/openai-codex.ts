@@ -27,7 +27,7 @@ import { sanitizeOpenAiCallId } from "../../utils/tool-id"
 import { openAiCodexOAuthManager } from "../../integrations/openai-codex/oauth"
 import { t } from "../../i18n"
 
-import { DEFAULT_HEADERS } from "./constants" // kilocode-change
+import { DEFAULT_HEADERS } from "./constants" // novacode-change
 
 // Get extension version for User-Agent header
 const extensionVersion: string = require("../../package.json").version ?? "unknown"
@@ -50,7 +50,7 @@ const CODEX_API_BASE_URL = "https://chatgpt.com/backend-api/codex"
  * - Limited model subset
  * - Custom headers for Codex backend
  */
-export class OpenAiCodexHandler extends BaseProvider /* kilocode_change: implements SingleCompletionHandler */ {
+export class OpenAiCodexHandler extends BaseProvider /* novacode_change: implements SingleCompletionHandler */ {
 	protected options: ApiHandlerOptions
 	private readonly providerName = "OpenAI Codex"
 	private client?: OpenAI
@@ -356,9 +356,9 @@ export class OpenAiCodexHandler extends BaseProvider /* kilocode_change: impleme
 
 				// Build Codex-specific headers. Authorization is provided by the SDK apiKey.
 				const codexHeaders: Record<string, string> = {
-					originator: "kilo-code", // kilocode_change
+					originator: "nova-code", // novacode_change
 					session_id: taskId || this.sessionId,
-					"User-Agent": DEFAULT_HEADERS["User-Agent"], // kilocode_change
+					"User-Agent": DEFAULT_HEADERS["User-Agent"], // novacode_change
 					...(accountId ? { "ChatGPT-Account-Id": accountId } : {}),
 				}
 
@@ -426,7 +426,7 @@ export class OpenAiCodexHandler extends BaseProvider /* kilocode_change: impleme
 							const imageUrl =
 								"media_type" in image.source && "data" in image.source
 									? `data:${image.source.media_type};base64,${image.source.data}`
-									: image.source.url // kilocode_change
+									: image.source.url // novacode_change
 							content.push({ type: "input_image", image_url: imageUrl })
 						} else if (block.type === "tool_result") {
 							const result =
@@ -501,9 +501,9 @@ export class OpenAiCodexHandler extends BaseProvider /* kilocode_change: impleme
 		const headers: Record<string, string> = {
 			"Content-Type": "application/json",
 			Authorization: `Bearer ${accessToken}`,
-			originator: "kilo-code", // kilocode_change
+			originator: "nova-code", // novacode_change
 			session_id: taskId || this.sessionId,
-			"User-Agent": DEFAULT_HEADERS["User-Agent"], // kilocode_change
+			"User-Agent": DEFAULT_HEADERS["User-Agent"], // novacode_change
 		}
 
 		// Add ChatGPT-Account-Id if available (required for organization subscriptions)
@@ -848,7 +848,7 @@ export class OpenAiCodexHandler extends BaseProvider /* kilocode_change: impleme
 		}
 
 		// Handle text deltas
-		/* kilocode_change: don't yield text deltas, the full text is yielded as part of response.output_item.done
+		/* novacode_change: don't yield text deltas, the full text is yielded as part of response.output_item.done
 		if (event?.type === "response.text.delta" || event?.type === "response.output_text.delta") {
 			if (event?.delta) {
 				yield { type: "text", text: event.delta }
@@ -1019,7 +1019,7 @@ export class OpenAiCodexHandler extends BaseProvider /* kilocode_change: impleme
 		return this.lastResponseId
 	}
 
-	async completePrompt_deleted_by_kilocode_because_streaming_is_required(prompt: string): Promise<string> {
+	async completePrompt_deleted_by_novacode_because_streaming_is_required(prompt: string): Promise<string> {
 		this.abortController = new AbortController()
 
 		try {
@@ -1067,9 +1067,9 @@ export class OpenAiCodexHandler extends BaseProvider /* kilocode_change: impleme
 			const headers: Record<string, string> = {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${accessToken}`,
-				originator: "kilo-code", // kilocode_change
+				originator: "nova-code", // novacode_change
 				session_id: this.sessionId,
-				"User-Agent": DEFAULT_HEADERS["User-Agent"], // kilocode_change
+				"User-Agent": DEFAULT_HEADERS["User-Agent"], // novacode_change
 			}
 
 			// Add ChatGPT-Account-Id if available

@@ -18,13 +18,13 @@ type LanguageSettingsProps = HTMLAttributes<HTMLDivElement> & {
 	setCachedStateField: SetCachedStateField<"language">
 }
 
-// kilocode_change start: sort languages
+// novacode_change start: sort languages
 function getSortedLanguages() {
 	// NOTE: `Array.prototype.toSorted` is not available in older Node runtimes used by CI.
 	// `Object.entries()` already returns a new array, so in-place `sort()` is safe here.
 	return Object.entries(LANGUAGES).sort((a, b) => a[0].localeCompare(b[0]))
 }
-// kilocode_change end
+// novacode_change end
 
 export const LanguageSettings = ({ language, setCachedStateField, className, ...props }: LanguageSettingsProps) => {
 	const { t } = useAppTranslation()
@@ -46,7 +46,7 @@ export const LanguageSettings = ({ language, setCachedStateField, className, ...
 						</SelectTrigger>
 						<SelectContent>
 							<SelectGroup>
-								{/* kilocode_change: sort languages */}
+								{/* novacode_change: sort languages */}
 								{getSortedLanguages().map(([code, name]) => (
 									<SelectItem key={code} value={code}>
 										{name}

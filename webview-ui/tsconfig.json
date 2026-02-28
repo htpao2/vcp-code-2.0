@@ -27,5 +27,5 @@
 		}
 	},
 	"include": ["src", "../src/shared", "vitest.setup.ts"],
-	"exclude": ["../src/shared/kilocode/cli-sessions/extension"]
+	"exclude": ["../src/shared/novacode/cli-sessions/extension"]
 }

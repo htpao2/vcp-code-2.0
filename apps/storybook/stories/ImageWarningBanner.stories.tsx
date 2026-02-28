@@ -1,4 +1,4 @@
-// kilocode_change new file - Storybook stories for ImageWarningBanner component
+// novacode_change new file - Storybook stories for ImageWarningBanner component
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { ImageWarningBanner } from "../../../webview-ui/src/components/chat/ImageWarningBanner"
 
@@ -17,12 +17,12 @@ type Story = StoryObj<typeof meta>
 
 export const ModelNoImageSupport: Story = {
 	args: {
-		messageKey: "kilocode:imageWarnings.modelNoImageSupport",
+		messageKey: "novacode:imageWarnings.modelNoImageSupport",
 	},
 }
 
 export const MaxImagesReached: Story = {
 	args: {
-		messageKey: "kilocode:imageWarnings.maxImagesReached",
+		messageKey: "novacode:imageWarnings.maxImagesReached",
 	},
 }

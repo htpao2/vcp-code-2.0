@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */ /* kilocode_change this file is meant to be a stub */
+/* eslint-disable @typescript-eslint/no-unused-vars */ /* novacode_change this file is meant to be a stub */
 import {
 	type TelemetryClient,
 	type TelemetryEvent,
@@ -78,7 +78,7 @@ abstract class BaseTelemetryClient implements TelemetryClient {
 
 	public abstract captureException(error: Error, properties?: Record<string | number, unknown>): void
 
-	public abstract updateIdentity(kilocodeToken: string): Promise<void>
+	public abstract updateIdentity(novacodeToken: string): Promise<void>
 
 	public isTelemetryEnabled(): boolean {
 		return this.telemetryEnabled
@@ -102,7 +102,7 @@ export class CloudTelemetryClient extends BaseTelemetryClient {
 		this.retryQueue = retryQueue || null
 	}
 
-	// kilocode_change
+	// novacode_change
 	private async fetch(path: string, options: RequestInit, allowQueueing = true) {
 		if (!this.authService.isAuthenticated()) {
 			return
@@ -115,7 +115,7 @@ export class CloudTelemetryClient extends BaseTelemetryClient {
 			return
 		}
 
-		/* kilocode_change
+		/* novacode_change
 		const response = await fetch(`${getRooCodeApiUrl()}/api/${path}`, {
 			...options,
 			headers: {
@@ -160,7 +160,7 @@ export class CloudTelemetryClient extends BaseTelemetryClient {
 	}
 
 	public override async capture(event: TelemetryEvent) {
-		/* kilocode_change
+		/* novacode_change
 
 		if (!this.isTelemetryEnabled() || !this.isEventCapturable(event.event)) {
 			if (this.debug) {
@@ -202,7 +202,7 @@ export class CloudTelemetryClient extends BaseTelemetryClient {
 	}
 
 	public async backfillMessages(messages: ClineMessage[], taskId: string): Promise<void> {
-		/* kilocode_change
+		/* novacode_change
 		if (!this.authService.isAuthenticated()) {
 			if (this.debug) {
 				console.info(`[TelemetryClient#backfillMessages] Skipping: Not authenticated`)
@@ -288,9 +288,9 @@ export class CloudTelemetryClient extends BaseTelemetryClient {
 		return true
 	}
 
-	public override captureException(error: Error, properties?: Record<string | number, unknown>): void {} // kilocode_change
+	public override captureException(error: Error, properties?: Record<string | number, unknown>): void {} // novacode_change
 
-	public override async updateIdentity(kilocodeToken: string): Promise<void> {} // kilocode_change
+	public override async updateIdentity(novacodeToken: string): Promise<void> {} // novacode_change
 
 	public override async shutdown() {}
 }

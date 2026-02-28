@@ -1,16 +1,17 @@
-// kilocode_change - new file
+// novacode_change - new file
 import * as vscode from "vscode"
 import { z } from "zod"
 import { AutocompleteServiceManager } from "./AutocompleteServiceManager"
 import { ClineProvider } from "../../core/webview/ClineProvider"
-import { getKiloCodeWrapperProperties } from "../../core/kilocode/wrapper"
+import { getNovaCodeWrapperProperties } from "../../core/nova/wrapper"
 import { languageForFilepath } from "./continuedev/core/autocomplete/constants/AutocompleteLanguageInfo"
 import { AutocompleteContextProvider } from "./types"
 import { FimPromptBuilder } from "./classic-auto-complete/FillInTheMiddle"
 import { HoleFiller } from "./classic-auto-complete/HoleFiller"
 import { MockTextDocument } from "../mocking/MockTextDocument"
+import { Package } from "../../shared/package"
 
-const GET_INLINE_COMPLETIONS_COMMAND = "kilo-code.jetbrains.getInlineCompletions"
+const LEGACY_GET_INLINE_COMPLETIONS_COMMAND = "nova-code.jetbrains.getInlineCompletions"
 
 // Zod schemas for validation
 const PositionSchema = z.object({
@@ -276,16 +277,19 @@ export const registerAutocompleteJetbrainsBridge = (
 	autocomplete: AutocompleteServiceManager,
 ) => {
 	// Check if we are running inside JetBrains IDE
-	const { kiloCodeWrapped, kiloCodeWrapperJetbrains } = getKiloCodeWrapperProperties()
-	if (!kiloCodeWrapped || !kiloCodeWrapperJetbrains) {
+	const { novaCodeWrapped, novaCodeWrapperJetbrains } = getNovaCodeWrapperProperties()
+	if (!novaCodeWrapped || !novaCodeWrapperJetbrains) {
 		return
 	}
 
 	// Initialize the JetBrains Bridge
 	const bridge = new AutocompleteJetbrainsBridge(autocomplete)
+	const primaryCommand = `${Package.name}.jetbrains.getInlineCompletions`
 
-	// Register JetBrains inline completion command
-	context.subscriptions.push(
-		vscode.commands.registerCommand(GET_INLINE_COMPLETIONS_COMMAND, bridge.getInlineCompletions.bind(bridge)),
-	)
+	// Register JetBrains inline completion command (new prefix + legacy alias)
+	const handler = bridge.getInlineCompletions.bind(bridge)
+	context.subscriptions.push(vscode.commands.registerCommand(primaryCommand, handler))
+	if (primaryCommand !== LEGACY_GET_INLINE_COMPLETIONS_COMMAND) {
+		context.subscriptions.push(vscode.commands.registerCommand(LEGACY_GET_INLINE_COMPLETIONS_COMMAND, handler))
+	}
 }

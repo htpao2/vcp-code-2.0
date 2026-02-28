@@ -1,5 +1,5 @@
-import { z } from "zod"
-import { kiloCodeMetaDataSchema } from "./kilocode/kilocode.js"
+﻿import { z } from "zod"
+import { novaCodeMetaDataSchema } from "./nova/novacode.js"
 
 /**
  * ClineAsk
@@ -39,7 +39,7 @@ export const clineAsks = [
 	"browser_action_launch",
 	"use_mcp_server",
 	"auto_approval_max_req_reached",
-	// kilocode_change start
+	// novacode_change start
 	"payment_required_prompt", // Added for the low credits dialog
 	"unauthorized_prompt", // Added for unauthorized error when using paid models
 	"promotion_model_sign_up_required_prompt",
@@ -47,7 +47,7 @@ export const clineAsks = [
 	"report_bug",
 	"condense",
 	"checkpoint_restore", // Added for checkpoint restore approval
-	// kilocode_change end
+	// novacode_change end
 ] as const
 
 export const clineAskSchema = z.enum(clineAsks)
@@ -60,12 +60,12 @@ export type ClineAsk = z.infer<typeof clineAskSchema>
  */
 
 export const idleAsks = [
-	// kilocode_change start
+	// novacode_change start
 	"payment_required_prompt",
 	"unauthorized_prompt",
 	"promotion_model_sign_up_required_prompt",
 	"invalid_model",
-	// kilocode_change end
+	// novacode_change end
 	"completion_result",
 	"api_req_failed",
 	"resume_completed_task",
@@ -100,11 +100,11 @@ export function isResumableAsk(ask: ClineAsk): ask is ResumableAsk {
  */
 
 export const interactiveAsks = [
-	// kilocode_change start
+	// novacode_change start
 	"report_bug",
 	"condense",
 	"checkpoint_restore",
-	// kilocode_change end
+	// novacode_change end
 	"followup",
 	"command",
 	"tool",
@@ -302,13 +302,13 @@ export const clineMessageSchema = z.object({
 	isProtected: z.boolean().optional(),
 	apiProtocol: z.union([z.literal("openai"), z.literal("anthropic")]).optional(),
 	isAnswered: z.boolean().optional(),
-	// kilocode_change start
+	// novacode_change start
 	metadata: z
 		.object({
-			kiloCode: kiloCodeMetaDataSchema.optional(),
+			novaCode: novaCodeMetaDataSchema.optional(),
 		})
 		.optional(),
-	// kilocode_change end
+	// novacode_change end
 })
 
 export type ClineMessage = z.infer<typeof clineMessageSchema>

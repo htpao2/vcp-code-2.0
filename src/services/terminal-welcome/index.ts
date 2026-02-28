@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import * as vscode from "vscode"
 import { TerminalWelcomeService } from "./TerminalWelcomeService"
 

@@ -1,4 +1,4 @@
-import { Anthropic } from "@anthropic-ai/sdk"
+﻿import { Anthropic } from "@anthropic-ai/sdk"
 import OpenAI from "openai"
 
 import type { ModelInfo } from "@roo-code/types"
@@ -11,7 +11,7 @@ import { convertToOpenAiMessages } from "../transform/openai-format"
 import type { SingleCompletionHandler, ApiHandlerCreateMessageMetadata } from "../index"
 import { DEFAULT_HEADERS } from "./constants"
 import { BaseProvider } from "./base-provider"
-import { verifyFinishReason } from "./kilocode/verifyFinishReason"
+import { verifyFinishReason } from "./nova/verifyFinishReason"
 import { handleOpenAIError } from "./utils/openai-error-handler"
 import { calculateApiCostOpenAI } from "../../shared/cost"
 import { getApiRequestTimeout } from "./utils/timeout-config"
@@ -101,7 +101,7 @@ export abstract class BaseOpenAiCompatibleProvider<ModelName extends string>
 			}),
 		}
 
-		// kilocode_change start - Add reasoning effort and thinking parameters
+		// novacode_change start - Add reasoning effort and thinking parameters
 		if (this.options.enableReasoningEffort) {
 			const effort = this.options.reasoningEffort || info.reasoningEffort
 			const isExplicitlyDisabled = effort === "disable"
@@ -116,7 +116,7 @@ export abstract class BaseOpenAiCompatibleProvider<ModelName extends string>
 				}
 			}
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		try {
 			return this.client.chat.completions.create(params, requestOptions)
@@ -145,7 +145,7 @@ export abstract class BaseOpenAiCompatibleProvider<ModelName extends string>
 		const activeToolCallIds = new Set<string>()
 
 		for await (const chunk of stream) {
-			verifyFinishReason(chunk.choices?.[0]) // kilocode_change
+			verifyFinishReason(chunk.choices?.[0]) // novacode_change
 
 			// Check for provider-specific error responses (e.g., MiniMax base_resp)
 			const chunkAny = chunk as any
@@ -244,7 +244,7 @@ export abstract class BaseOpenAiCompatibleProvider<ModelName extends string>
 			messages: [{ role: "user", content: prompt }],
 		}
 
-		// kilocode_change start - Add reasoning effort and thinking parameters
+		// novacode_change start - Add reasoning effort and thinking parameters
 		if (this.options.enableReasoningEffort) {
 			const effort = this.options.reasoningEffort || modelInfo.reasoningEffort
 			const isExplicitlyDisabled = effort === "disable"
@@ -259,7 +259,7 @@ export abstract class BaseOpenAiCompatibleProvider<ModelName extends string>
 				}
 			}
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		try {
 			const response = await this.client.chat.completions.create(params)

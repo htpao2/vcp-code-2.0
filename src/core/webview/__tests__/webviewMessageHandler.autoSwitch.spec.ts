@@ -1,4 +1,4 @@
-// kilocode_change new file
+// novacode_change new file
 
 import type { Mock } from "vitest"
 import { describe, it, expect, vi, beforeEach } from "vitest"
@@ -49,7 +49,7 @@ vi.mock("../../../integrations/notifications", () => ({
 	showSystemNotification: vi.fn(),
 }))
 
-vi.mock("../kiloWebviewMessgeHandlerHelpers", () => ({
+vi.mock("../novaWebviewMessgeHandlerHelpers", () => ({
 	refreshOrganizationModes: vi.fn(),
 	fetchAndRefreshOrganizationModesOnStartup: vi.fn(),
 }))
@@ -67,7 +67,7 @@ import { webviewMessageHandler } from "../webviewMessageHandler"
 import type { ClineProvider } from "../ClineProvider"
 import { getModels, flushModels } from "../../../api/providers/fetchers/modelCache"
 import { showSystemNotification } from "../../../integrations/notifications"
-import { refreshOrganizationModes } from "../kiloWebviewMessgeHandlerHelpers"
+import { refreshOrganizationModes } from "../novaWebviewMessgeHandlerHelpers"
 import { CloudService } from "@roo-code/cloud"
 
 describe("webviewMessageHandler - Automatic Organization Switching", () => {
@@ -98,8 +98,8 @@ describe("webviewMessageHandler - Automatic Organization Switching", () => {
 		mockProvider = {
 			getState: vi.fn().mockResolvedValue({
 				apiConfiguration: {
-					kilocodeToken: "test-token",
-					kilocodeOrganizationId: undefined,
+					novacodeToken: "test-token",
+					novacodeOrganizationId: undefined,
 				},
 				currentApiConfigName: "default",
 			}),
@@ -142,8 +142,8 @@ describe("webviewMessageHandler - Automatic Organization Switching", () => {
 			expect(mockUpsertProviderProfile).toHaveBeenCalledWith(
 				"default",
 				{
-					kilocodeToken: "test-token",
-					kilocodeOrganizationId: "org-1",
+					novacodeToken: "test-token",
+					novacodeOrganizationId: "org-1",
 				},
 				true, // Changed: Now correctly activates the profile (fix for PR #5415 bug)
 			)
@@ -157,16 +157,16 @@ describe("webviewMessageHandler - Automatic Organization Switching", () => {
 			// Verify models were flushed and refetched (via upsertApiConfiguration handler)
 			expect(flushModels).toHaveBeenCalledWith(
 				{
-					provider: "kilocode",
-					kilocodeOrganizationId: "org-1",
-					kilocodeToken: "test-token",
+					provider: "novacode",
+					novacodeOrganizationId: "org-1",
+					novacodeToken: "test-token",
 				},
 				true,
 			)
 			expect(getModels).toHaveBeenCalledWith({
-				provider: "kilocode",
-				kilocodeOrganizationId: "org-1",
-				kilocodeToken: "test-token",
+				provider: "novacode",
+				novacodeOrganizationId: "org-1",
+				novacodeToken: "test-token",
 			})
 
 			// Verify webview state was updated (via upsertApiConfiguration handler)
@@ -212,7 +212,7 @@ describe("webviewMessageHandler - Automatic Organization Switching", () => {
 
 			// Verify it was called with an object containing the organization ID
 			const callArgs = (refreshOrganizationModes as Mock).mock.calls[0]
-			expect(callArgs[0].apiConfiguration.kilocodeOrganizationId).toBe("org-1")
+			expect(callArgs[0].apiConfiguration.novacodeOrganizationId).toBe("org-1")
 			expect(callArgs[1]).toBe(mockProvider)
 		})
 
@@ -232,24 +232,24 @@ describe("webviewMessageHandler - Automatic Organization Switching", () => {
 			// Verify flushModels was called (via upsertApiConfiguration)
 			expect(flushModels).toHaveBeenCalledWith(
 				{
-					provider: "kilocode",
-					kilocodeOrganizationId: "org-1",
-					kilocodeToken: "test-token",
+					provider: "novacode",
+					novacodeOrganizationId: "org-1",
+					novacodeToken: "test-token",
 				},
 				true,
 			)
 
 			// Verify getModels was called with organization ID (via upsertApiConfiguration)
 			expect(getModels).toHaveBeenCalledWith({
-				provider: "kilocode",
-				kilocodeOrganizationId: "org-1",
-				kilocodeToken: "test-token",
+				provider: "novacode",
+				novacodeOrganizationId: "org-1",
+				novacodeToken: "test-token",
 			})
 
 			// Verify models were sent to webview (via upsertApiConfiguration)
 			expect(mockPostMessageToWebview).toHaveBeenCalledWith({
 				type: "routerModels",
-				routerModels: { kilocode: { "model-1": {}, "model-2": {} } },
+				routerModels: { novacode: { "model-1": {}, "model-2": {} } },
 			})
 		})
 	})
@@ -259,8 +259,8 @@ describe("webviewMessageHandler - Automatic Organization Switching", () => {
 			// User already has an organization
 			mockProvider.getState = vi.fn().mockResolvedValue({
 				apiConfiguration: {
-					kilocodeToken: "test-token",
-					kilocodeOrganizationId: "existing-org",
+					novacodeToken: "test-token",
+					novacodeOrganizationId: "existing-org",
 				},
 				currentApiConfigName: "default",
 			})
@@ -372,7 +372,7 @@ describe("webviewMessageHandler - Automatic Organization Switching", () => {
 				payload: {
 					success: true,
 					data: expect.objectContaining({
-						kilocodeToken: "test-token",
+						novacodeToken: "test-token",
 						organizations: mockProfileData.organizations,
 					}),
 				},
@@ -384,16 +384,16 @@ describe("webviewMessageHandler - Automatic Organization Switching", () => {
 		it("should reset flag on token change", async () => {
 			// Mock existing configuration with a different token
 			mockProviderSettingsManager.getProfile.mockResolvedValueOnce({
-				kilocodeToken: "old-token",
-				kilocodeOrganizationId: "org-1",
+				novacodeToken: "old-token",
+				novacodeOrganizationId: "org-1",
 			})
 
 			await webviewMessageHandler(mockProvider, {
 				type: "upsertApiConfiguration",
 				text: "default",
 				apiConfiguration: {
-					kilocodeToken: "new-token",
-					kilocodeOrganizationId: "org-1",
+					novacodeToken: "new-token",
+					novacodeOrganizationId: "org-1",
 				},
 			})
 
@@ -404,8 +404,8 @@ describe("webviewMessageHandler - Automatic Organization Switching", () => {
 			expect(mockUpsertProviderProfile).toHaveBeenCalledWith(
 				"default",
 				{
-					kilocodeToken: "new-token",
-					kilocodeOrganizationId: undefined,
+					novacodeToken: "new-token",
+					novacodeOrganizationId: undefined,
 				},
 				true, // Changed: Now correctly activates the profile (fix for PR #5415 bug)
 			)
@@ -414,16 +414,16 @@ describe("webviewMessageHandler - Automatic Organization Switching", () => {
 		it("should NOT reset flag if token stays the same", async () => {
 			// Mock existing configuration with the same token
 			mockProviderSettingsManager.getProfile.mockResolvedValueOnce({
-				kilocodeToken: "same-token",
-				kilocodeOrganizationId: "org-1",
+				novacodeToken: "same-token",
+				novacodeOrganizationId: "org-1",
 			})
 
 			await webviewMessageHandler(mockProvider, {
 				type: "upsertApiConfiguration",
 				text: "default",
 				apiConfiguration: {
-					kilocodeToken: "same-token",
-					kilocodeOrganizationId: "org-1",
+					novacodeToken: "same-token",
+					novacodeOrganizationId: "org-1",
 				},
 			})
 
@@ -434,14 +434,14 @@ describe("webviewMessageHandler - Automatic Organization Switching", () => {
 		it("should NOT reset flag if previous token was undefined", async () => {
 			// Mock existing configuration with no token
 			mockProviderSettingsManager.getProfile.mockResolvedValueOnce({
-				kilocodeToken: undefined,
+				novacodeToken: undefined,
 			})
 
 			await webviewMessageHandler(mockProvider, {
 				type: "upsertApiConfiguration",
 				text: "default",
 				apiConfiguration: {
-					kilocodeToken: "new-token",
+					novacodeToken: "new-token",
 				},
 			})
 
@@ -475,7 +475,7 @@ describe("webviewMessageHandler - Automatic Organization Switching", () => {
 				payload: {
 					success: true,
 					data: expect.objectContaining({
-						kilocodeToken: "test-token",
+						novacodeToken: "test-token",
 						organizations: mockProfileData.organizations,
 					}),
 				},
@@ -566,8 +566,8 @@ describe("webviewMessageHandler - Automatic Organization Switching", () => {
 			expect(mockUpsertProviderProfile).toHaveBeenCalledWith(
 				"default",
 				{
-					kilocodeToken: "test-token",
-					kilocodeOrganizationId: "org-1",
+					novacodeToken: "test-token",
+					novacodeOrganizationId: "org-1",
 				},
 				true, // Changed: Now correctly activates the profile (fix for PR #5415 bug)
 			)

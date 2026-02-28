@@ -7,8 +7,8 @@
 		"importMode": "Importovat režim",
 		"editModesConfig": "Upravit konfiguraci režimů",
 		"editGlobalModes": "Upravit Global Modes",
-		"editProjectModes": "Upravit Project Modes (.kilocodemodes)",
-		"createModeHelpText": "Režimy jsou specializované persony, které přizpůsobují chování Kilo Code. <0>Zjisti více o Používání režimů</0> nebo <1>Přizpůsobení režimů.</1>",
+		"editProjectModes": "Upravit Project Modes (.novacodemodes)",
+		"createModeHelpText": "Režimy jsou specializované persony, které přizpůsobují chování Nova Code. <0>Zjisti více o Používání režimů</0> nebo <1>Přizpůsobení režimů.</1>",
 		"selectMode": "Hledat režimy",
 		"noMatchFound": "Žádné režimy nenalezeny"
 	},
@@ -18,7 +18,7 @@
 	},
 	"organizationMode": {
 		"title": "Režim organizace",
-		"description": "Tento režim je poskytován tvou organizací a nelze ho zde upravovat. Pro úpravu tohoto režimu navštiv <dashboardLink>Kilo Code Dashboard</dashboardLink>.",
+		"description": "Tento režim je poskytován tvou organizací a nelze ho zde upravovat. Pro úpravu tohoto režimu navštiv <dashboardLink>Nova Code Dashboard</dashboardLink>.",
 		"cannotEdit": "Režimy organizace nelze upravovat"
 	},
 	"tools": {
@@ -39,7 +39,7 @@
 	"roleDefinition": {
 		"title": "Definice role",
 		"resetToDefault": "Obnovit výchozí",
-		"description": "Definuj odbornost a osobnost Kilo Code pro tento režim. Tento popis formuje, jak se Kilo Code prezentuje a jak přistupuje k úkolům."
+		"description": "Definuj odbornost a osobnost Nova Code pro tento režim. Tento popis formuje, jak se Nova Code prezentuje a jak přistupuje k úkolům."
 	},
 	"description": {
 		"title": "Krátký popis (pro lidi)",
@@ -55,11 +55,11 @@
 		"title": "Vlastní instrukce pro režim (volitelné)",
 		"resetToDefault": "Obnovit výchozí",
 		"description": "Přidej pokyny pro chování specifické pro režim {{modeName}}.",
-		"loadFromFile": "Vlastní instrukce specifické pro režim {{mode}} lze také načíst ze složky <span>.kilocode/rules/</span> ve tvém pracovním prostoru (.kilocoderules-{{slug}} je zastaralé a brzy přestane fungovat)."
+		"loadFromFile": "Vlastní instrukce specifické pro režim {{mode}} lze také načíst ze složky <span>.novacode/rules/</span> ve tvém pracovním prostoru (.novacoderules-{{slug}} je zastaralé a brzy přestane fungovat)."
 	},
 	"exportMode": {
 		"title": "Exportovat režim",
-		"description": "Exportuj tento režim s pravidly ze složky .kilocode/rules-{{slug}}/ zkombinovanými do sdílitelného YAML souboru. Původní soubory zůstanou nezměněny.",
+		"description": "Exportuj tento režim s pravidly ze složky .novacode/rules-{{slug}}/ zkombinovanými do sdílitelného YAML souboru. Původní soubory zůstanou nezměněny.",
 		"exporting": "Exportování..."
 	},
 	"importMode": {
@@ -68,11 +68,11 @@
 		"importing": "Importování...",
 		"global": {
 			"label": "Globální úroveň",
-			"description": "Dostupné napříč všemi projekty. Pokud exportovaný režim obsahoval soubory pravidel, budou znovu vytvořeny v globální složce .kilocode/rules-{slug}/."
+			"description": "Dostupné napříč všemi projekty. Pokud exportovaný režim obsahoval soubory pravidel, budou znovu vytvořeny v globální složce .novacode/rules-{slug}/."
 		},
 		"project": {
 			"label": "Úroveň projektu",
-			"description": "Dostupné pouze v tomto pracovním prostoru. Pokud exportovaný režim obsahoval soubory pravidel, budou znovu vytvořeny ve složce .kilocode/rules-{slug}/."
+			"description": "Dostupné pouze v tomto pracovním prostoru. Pokud exportovaný režim obsahoval soubory pravidel, budou znovu vytvořeny ve složce .novacode/rules-{slug}/."
 		}
 	},
 	"advanced": {
@@ -81,7 +81,7 @@
 	"globalCustomInstructions": {
 		"title": "Vlastní instrukce pro všechny režimy",
 		"description": "Tyto instrukce platí pro všechny režimy. Poskytují základní sadu chování, která může být rozšířena instrukcemi specifickými pro režim níže. <0>Zjistit více</0>",
-		"loadFromFile": "Instrukce lze také načíst ze složky <span>.kilocode/rules/</span> ve tvém pracovním prostoru (.kilocoderules je zastaralé a brzy přestane fungovat)."
+		"loadFromFile": "Instrukce lze také načíst ze složky <span>.novacode/rules/</span> ve tvém pracovním prostoru (.novacoderules je zastaralé a brzy přestane fungovat)."
 	},
 	"systemPrompt": {
 		"preview": "Náhled System Prompt",
@@ -110,7 +110,7 @@
 		"types": {
 			"ENHANCE": {
 				"label": "Vylepšit Prompt",
-				"description": "Použij vylepšení promptu k získání přizpůsobených návrhů nebo vylepšení pro tvé vstupy. To zajišťuje, že Kilo Code rozumí tvému záměru a poskytuje nejlepší možné odpovědi. Dostupné přes ikonu ✨ v chatu."
+				"description": "Použij vylepšení promptu k získání přizpůsobených návrhů nebo vylepšení pro tvé vstupy. To zajišťuje, že Nova Code rozumí tvému záměru a poskytuje nejlepší možné odpovědi. Dostupné přes ikonu ✨ v chatu."
 			},
 			"CONDENSE": {
 				"label": "Kondenzace kontextu",
@@ -160,7 +160,7 @@
 	},
 	"advancedSystemPrompt": {
 		"title": "Pokročilé: Přepsat System Prompt",
-		"description": "<2>⚠️ Varování:</2> Tato pokročilá funkce obchází bezpečnostní opatření. <1>PŘEČTI SI TOTO PŘED POUŽITÍM!</1>Přepiš výchozí system prompt vytvořením souboru v <span>.kilocode/system-prompt-{{slug}}</span>."
+		"description": "<2>⚠️ Varování:</2> Tato pokročilá funkce obchází bezpečnostní opatření. <1>PŘEČTI SI TOTO PŘED POUŽITÍM!</1>Přepiš výchozí system prompt vytvořením souboru v <span>.novacode/system-prompt-{{slug}}</span>."
 	},
 	"createModeDialog": {
 		"title": "Vytvořit nový režim",
@@ -181,13 +181,13 @@
 				"description": "Dostupné ve všech pracovních prostorech"
 			},
 			"project": {
-				"label": "Specifické pro projekt (.kilocodemodes)",
+				"label": "Specifické pro projekt (.novacodemodes)",
 				"description": "Dostupné pouze v tomto pracovním prostoru, má přednost před globálním"
 			}
 		},
 		"roleDefinition": {
 			"label": "Definice role",
-			"description": "Definuj odbornost a osobnost Kilo Code pro tento režim."
+			"description": "Definuj odbornost a osobnost Nova Code pro tento režim."
 		},
 		"description": {
 			"label": "Krátký popis (pro lidi)",

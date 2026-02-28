@@ -1,12 +1,12 @@
-// kilocode_change new file
+// novacode_change new file
 import { modelIdKeysByProvider, ProviderName } from "@roo-code/types"
 import { ApiHandler, buildApiHandler, FimHandler } from "../../api"
 import { ProviderSettingsManager } from "../../core/config/ProviderSettingsManager"
 import { OpenRouterHandler } from "../../api/providers"
 import { CompletionUsage } from "../../api/providers/openrouter"
 import { ApiStreamChunk } from "../../api/transform/stream"
-import { AUTOCOMPLETE_PROVIDER_MODELS, checkKilocodeBalance } from "./utils/kilocode-utils"
-import { KilocodeOpenrouterHandler } from "../../api/providers/kilocode-openrouter"
+import { AUTOCOMPLETE_PROVIDER_MODELS, checkNovacodeBalance } from "./utils/novacode-utils"
+import { NovacodeOpenrouterHandler } from "../../api/providers/novacode-openrouter"
 import { PROVIDERS } from "../../../webview-ui/src/components/settings/constants"
 import { ResponseMetaData } from "./types"
 
@@ -29,7 +29,7 @@ export class AutocompleteModel {
 	public profileType: string | null = null
 	private currentProvider: ProviderName | null = null
 	public loaded = false
-	public hasKilocodeProfileWithNoBalance = false
+	public hasNovacodeProfileWithNoBalance = false
 
 	constructor(apiHandler: ApiHandler | null = null) {
 		if (apiHandler) {
@@ -43,7 +43,7 @@ export class AutocompleteModel {
 		this.profileType = null
 		this.currentProvider = null
 		this.loaded = false
-		this.hasKilocodeProfileWithNoBalance = false
+		this.hasNovacodeProfileWithNoBalance = false
 	}
 
 	public async reload(providerSettingsManager: ProviderSettingsManager): Promise<boolean> {
@@ -67,13 +67,13 @@ export class AutocompleteModel {
 			if (!selectedProfile) continue
 			const profile = await providerSettingsManager.getProfile({ id: selectedProfile.id })
 
-			if (provider === "kilocode") {
+			if (provider === "novacode") {
 				// For all other providers, assume they are usable
-				if (!profile.kilocodeToken) continue
-				const hasBalance = await checkKilocodeBalance(profile.kilocodeToken, profile.kilocodeOrganizationId)
+				if (!profile.novacodeToken) continue
+				const hasBalance = await checkNovacodeBalance(profile.novacodeToken, profile.novacodeOrganizationId)
 				if (!hasBalance) {
-					// Track that we found a kilocode profile but it has no balance
-					this.hasKilocodeProfileWithNoBalance = true
+					// Track that we found a novacode profile but it has no balance
+					this.hasNovacodeProfileWithNoBalance = true
 					continue
 				}
 			}
@@ -162,7 +162,7 @@ export class AutocompleteModel {
 
 		console.log("USED MODEL", this.apiHandler.getModel())
 
-		// kilocode_change: pass feature metadata for microdollar usage tracking
+		// novacode_change: pass feature metadata for microdollar usage tracking
 		const stream = this.apiHandler.createMessage(
 			systemPrompt,
 			[{ role: "user", content: [{ type: "text", text: userPrompt }] }],
@@ -214,8 +214,8 @@ export class AutocompleteModel {
 		return PROVIDER_DISPLAY_NAMES[this.currentProvider]
 	}
 
-	public getRolloutHash_IfLoggedInToKilo(): number | undefined {
-		return this.apiHandler instanceof KilocodeOpenrouterHandler ? this.apiHandler.getRolloutHash() : undefined
+	public getRolloutHash_IfLoggedInToNova(): number | undefined {
+		return this.apiHandler instanceof NovacodeOpenrouterHandler ? this.apiHandler.getRolloutHash() : undefined
 	}
 
 	public hasValidCredentials(): boolean {

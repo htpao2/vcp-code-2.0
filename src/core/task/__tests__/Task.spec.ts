@@ -134,7 +134,7 @@ vi.mock("vscode", () => {
 		env: {
 			uriScheme: "vscode",
 			language: "en",
-			appName: "Visual Studio Code", // kilocode_change
+			appName: "Visual Studio Code", // novacode_change
 		},
 		EventEmitter: vi.fn().mockImplementation(() => mockEventEmitter),
 		Disposable: {
@@ -354,7 +354,7 @@ describe("Cline", () => {
 				apiConfiguration: mockApiConfig,
 				task: "test task",
 				startTask: false,
-				context: mockExtensionContext, // kilocode_change
+				context: mockExtensionContext, // novacode_change
 			})
 
 			expect(cline.consecutiveMistakeLimit).toBe(3)
@@ -367,7 +367,7 @@ describe("Cline", () => {
 				consecutiveMistakeLimit: 5,
 				task: "test task",
 				startTask: false,
-				context: mockExtensionContext, // kilocode_change
+				context: mockExtensionContext, // novacode_change
 			})
 
 			expect(cline.consecutiveMistakeLimit).toBe(5)
@@ -380,7 +380,7 @@ describe("Cline", () => {
 				consecutiveMistakeLimit: 0,
 				task: "test task",
 				startTask: false,
-				context: mockExtensionContext, // kilocode_change
+				context: mockExtensionContext, // novacode_change
 			})
 
 			expect(cline.consecutiveMistakeLimit).toBe(0)
@@ -393,7 +393,7 @@ describe("Cline", () => {
 				consecutiveMistakeLimit: 0,
 				task: "test task",
 				startTask: false,
-				context: mockExtensionContext, // kilocode_change
+				context: mockExtensionContext, // novacode_change
 			})
 
 			// The toolRepetitionDetector should be initialized with 0 for unlimited mode
@@ -409,7 +409,7 @@ describe("Cline", () => {
 				consecutiveMistakeLimit: 5,
 				task: "test task",
 				startTask: false,
-				context: mockExtensionContext, // kilocode_change
+				context: mockExtensionContext, // novacode_change
 			})
 
 			// The toolRepetitionDetector should be initialized with the same limit
@@ -900,7 +900,7 @@ describe("Cline", () => {
 				await task.catch(() => {})
 			})
 
-			// kilocode_change start
+			// novacode_change start
 			it("attemptApiRequest should not recursively auto-retry first-chunk Chutes terminated errors", async () => {
 				const chutesConfig = {
 					...mockApiConfig,
@@ -974,7 +974,7 @@ describe("Cline", () => {
 				expect((task as any).hasExceededChutesTerminatedRetryLimit(terminatedError, 1)).toBe(false)
 				expect((task as any).hasExceededChutesTerminatedRetryLimit(terminatedError, 2)).toBe(true)
 			})
-			// kilocode_change end
+			// novacode_change end
 
 			describe("processUserContentMentions", () => {
 				it("should process mentions in task and feedback tags", async () => {
@@ -1084,7 +1084,7 @@ describe("Cline", () => {
 					postStateToWebview: vi.fn().mockResolvedValue(undefined),
 					postMessageToWebview: vi.fn().mockResolvedValue(undefined),
 					updateTaskHistory: vi.fn().mockResolvedValue(undefined),
-					getKiloConfig: vi.fn().mockResolvedValue(undefined),
+					getNovaConfig: vi.fn().mockResolvedValue(undefined),
 				}
 
 				// Get the mocked delay function
@@ -1527,7 +1527,7 @@ describe("Cline", () => {
 					enableDiff: false,
 					task: "test task",
 					startTask: false,
-					context: mockExtensionContext, // kilocode_change
+					context: mockExtensionContext, // novacode_change
 				})
 
 				expect(task.diffEnabled).toBe(false)
@@ -1548,7 +1548,7 @@ describe("Cline", () => {
 					apiConfiguration: anthropicConfig,
 					task: "test task",
 					startTask: false,
-					context: mockExtensionContext, // kilocode_change
+					context: mockExtensionContext, // novacode_change
 				})
 				// Should use anthropic protocol even with non-claude model
 				expect(anthropicTask.apiConfiguration.apiProvider).toBe("anthropic")
@@ -1563,7 +1563,7 @@ describe("Cline", () => {
 					apiConfiguration: openrouterClaudeConfig,
 					task: "test task",
 					startTask: false,
-					context: mockExtensionContext, // kilocode_change
+					context: mockExtensionContext, // novacode_change
 				})
 				expect(openrouterClaudeTask.apiConfiguration.apiProvider).toBe("openrouter")
 
@@ -1577,7 +1577,7 @@ describe("Cline", () => {
 					apiConfiguration: openrouterGptConfig,
 					task: "test task",
 					startTask: false,
-					context: mockExtensionContext, // kilocode_change
+					context: mockExtensionContext, // novacode_change
 				})
 				expect(openrouterGptTask.apiConfiguration.apiProvider).toBe("openrouter")
 
@@ -1600,7 +1600,7 @@ describe("Cline", () => {
 						apiConfiguration: config,
 						task: "test task",
 						startTask: false,
-						context: mockExtensionContext, // kilocode_change
+						context: mockExtensionContext, // novacode_change
 					})
 					// Verify the model ID contains claude (case-insensitive)
 					expect(modelId.toLowerCase()).toContain("claude")
@@ -1617,7 +1617,7 @@ describe("Cline", () => {
 					apiConfiguration: undefinedProviderConfig,
 					task: "test task",
 					startTask: false,
-					context: mockExtensionContext, // kilocode_change
+					context: mockExtensionContext, // novacode_change
 				})
 				expect(undefinedProviderTask.apiConfiguration.apiProvider).toBeUndefined()
 
@@ -1630,7 +1630,7 @@ describe("Cline", () => {
 					apiConfiguration: noModelConfig,
 					task: "test task",
 					startTask: false,
-					context: mockExtensionContext, // kilocode_change
+					context: mockExtensionContext, // novacode_change
 				})
 				expect(noModelTask.apiConfiguration.apiProvider).toBe("openai")
 			})
@@ -1768,7 +1768,7 @@ describe("Cline", () => {
 				apiConfiguration: mockApiConfig,
 				task: "test task",
 				startTask: false,
-				context: mockExtensionContext, // kilocode_change
+				context: mockExtensionContext, // novacode_change
 			})
 
 			// Spy on emit method
@@ -1793,7 +1793,7 @@ describe("Cline", () => {
 				apiConfiguration: mockApiConfig,
 				task: "test task",
 				startTask: false,
-				context: mockExtensionContext, // kilocode_change
+				context: mockExtensionContext, // novacode_change
 			})
 
 			// Mock the dispose method to track cleanup
@@ -1813,7 +1813,7 @@ describe("Cline", () => {
 				apiConfiguration: mockApiConfig,
 				task: "test task",
 				startTask: false,
-				context: mockExtensionContext, // kilocode_change
+				context: mockExtensionContext, // novacode_change
 			})
 
 			// Cast to TaskLike to ensure interface compliance
@@ -1838,7 +1838,7 @@ describe("Cline", () => {
 				apiConfiguration: mockApiConfig,
 				task: "test task",
 				startTask: false,
-				context: mockExtensionContext, // kilocode_change
+				context: mockExtensionContext, // novacode_change
 			})
 
 			// Mock dispose to throw an error
@@ -1869,7 +1869,7 @@ describe("Cline", () => {
 					apiConfiguration: mockApiConfig,
 					task: "test task",
 					startTask: false,
-					context: mockExtensionContext, // kilocode_change
+					context: mockExtensionContext, // novacode_change
 				})
 
 				// Spy on console.error to verify error logging
@@ -1921,7 +1921,7 @@ describe("Cline", () => {
 					apiConfiguration: mockApiConfig,
 					task: "test task",
 					startTask: false,
-					context: mockExtensionContext, // kilocode_change
+					context: mockExtensionContext, // novacode_change
 				})
 
 				// Create a real AbortController and spy on its abort method
@@ -1954,7 +1954,7 @@ describe("Cline", () => {
 					apiConfiguration: mockApiConfig,
 					task: "test task",
 					startTask: false,
-					context: mockExtensionContext, // kilocode_change
+					context: mockExtensionContext, // novacode_change
 				})
 
 				// Ensure no controller exists
@@ -1970,7 +1970,7 @@ describe("Cline", () => {
 					apiConfiguration: mockApiConfig,
 					task: "test task",
 					startTask: false,
-					context: mockExtensionContext, // kilocode_change
+					context: mockExtensionContext, // novacode_change
 				})
 
 				// Spy on cancelCurrentRequest
@@ -2046,7 +2046,7 @@ describe("Queued message processing after condense", () => {
 			apiConfiguration: apiConfig,
 			task: "initial task",
 			startTask: false,
-			context: provider.context, // kilocode_change
+			context: provider.context, // novacode_change
 		})
 
 		// Make condense fast + deterministic
@@ -2077,14 +2077,14 @@ describe("Queued message processing after condense", () => {
 			apiConfiguration: apiConfig,
 			task: "task A",
 			startTask: false,
-			context: providerA.context, // kilocode_change
+			context: providerA.context, // novacode_change
 		})
 		const taskB = new Task({
 			provider: providerB,
 			apiConfiguration: apiConfig,
 			task: "task B",
 			startTask: false,
-			context: providerB.context, // kilocode_change
+			context: providerB.context, // novacode_change
 		})
 
 		vi.spyOn(taskA as any, "getSystemPrompt").mockResolvedValue("system")

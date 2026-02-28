@@ -1,4 +1,4 @@
-// kilocode_change - updated for backwards compatibility
+// novacode_change - updated for backwards compatibility
 import * as vscode from "vscode"
 
 // Git status codes from git status command

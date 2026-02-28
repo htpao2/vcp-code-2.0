@@ -1,12 +1,13 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { describe, it, expect, vi, beforeEach } from "vitest"
+import { TelemetryService } from "@roo-code/telemetry"
 import { ContributionTrackingService } from "../ContributionTrackingService"
 import type { TrackContributionParams } from "../contribution-tracking-types"
 
 // Mock dependencies
 vi.mock("../../../shared/http")
 vi.mock("../../code-index/managed/git-utils")
-vi.mock("../../../utils/kilo-config-file")
+vi.mock("../../../utils/nova-config-file")
 vi.mock("../../../utils/git")
 vi.mock("../FormatterService", () => ({
 	FormatterService: {
@@ -231,7 +232,7 @@ describe("ContributionTrackingService", () => {
 				originalContent: "const x = 1",
 				newContent: "const x = 1\nconst y = 2",
 				status: "accepted",
-				kilocodeToken: "token",
+				novacodeToken: "token",
 				// organizationId is missing
 			}
 
@@ -245,7 +246,7 @@ describe("ContributionTrackingService", () => {
 			const { fetchWithRetries } = await import("../../../shared/http")
 			const mockFetchWithRetries = vi.mocked(fetchWithRetries)
 
-			const { getProjectId } = await import("../../../utils/kilo-config-file")
+			const { getProjectId } = await import("../../../utils/nova-config-file")
 			const mockGetProjectId = vi.mocked(getProjectId)
 			mockGetProjectId.mockResolvedValueOnce(undefined)
 
@@ -268,7 +269,7 @@ describe("ContributionTrackingService", () => {
 				newContent: "const x = 1\nconst y = 2",
 				status: "accepted",
 				organizationId: "org-1",
-				kilocodeToken: "token",
+				novacodeToken: "token",
 			}
 
 			await service.trackContribution(params)
@@ -280,17 +281,22 @@ describe("ContributionTrackingService", () => {
 		it("should successfully track accepted contribution", async () => {
 			const { fetchWithRetries } = await import("../../../shared/http")
 			const mockFetchWithRetries = vi.mocked(fetchWithRetries)
+			mockFetchWithRetries.mockReset()
+			vi.spyOn(TelemetryService.instance, "isTelemetryEnabled").mockReturnValue(true)
 
-			const { getProjectId } = await import("../../../utils/kilo-config-file")
+			const { getProjectId } = await import("../../../utils/nova-config-file")
 			const mockGetProjectId = vi.mocked(getProjectId)
+			mockGetProjectId.mockReset()
 			mockGetProjectId.mockResolvedValueOnce("test-project")
 
 			const { getCurrentBranch } = await import("../../code-index/managed/git-utils")
 			const mockGetCurrentBranch = vi.mocked(getCurrentBranch)
+			mockGetCurrentBranch.mockReset()
 			mockGetCurrentBranch.mockResolvedValueOnce("feature/test")
 
 			const { getGitRepositoryInfo } = await import("../../../utils/git")
 			const mockGetGitRepositoryInfo = vi.mocked(getGitRepositoryInfo)
+			mockGetGitRepositoryInfo.mockReset()
 			mockGetGitRepositoryInfo.mockResolvedValueOnce({
 				repositoryUrl: "https://github.com/test/repo.git",
 				repositoryName: "test/repo",
@@ -323,7 +329,7 @@ describe("ContributionTrackingService", () => {
 				status: "accepted",
 				taskId: "task-123",
 				organizationId: "org-1",
-				kilocodeToken: "main-token",
+				novacodeToken: "main-token",
 			}
 
 			await service.trackContribution(params)
@@ -356,17 +362,22 @@ describe("ContributionTrackingService", () => {
 		it("should handle errors gracefully without throwing", async () => {
 			const { fetchWithRetries } = await import("../../../shared/http")
 			const mockFetchWithRetries = vi.mocked(fetchWithRetries)
+			mockFetchWithRetries.mockReset()
+			vi.spyOn(TelemetryService.instance, "isTelemetryEnabled").mockReturnValue(true)
 
 			const { getCurrentBranch } = await import("../../code-index/managed/git-utils")
 			const mockGetCurrentBranch = vi.mocked(getCurrentBranch)
+			mockGetCurrentBranch.mockReset()
 			mockGetCurrentBranch.mockResolvedValueOnce("main")
 
 			const { getGitRepositoryInfo } = await import("../../../utils/git")
 			const mockGetGitRepositoryInfo = vi.mocked(getGitRepositoryInfo)
+			mockGetGitRepositoryInfo.mockReset()
 			mockGetGitRepositoryInfo.mockResolvedValueOnce({})
 
-			const { getProjectId } = await import("../../../utils/kilo-config-file")
+			const { getProjectId } = await import("../../../utils/nova-config-file")
 			const mockGetProjectId = vi.mocked(getProjectId)
+			mockGetProjectId.mockReset()
 			mockGetProjectId.mockRejectedValueOnce(new Error("Git error"))
 
 			const params: TrackContributionParams = {
@@ -376,7 +387,7 @@ describe("ContributionTrackingService", () => {
 				newContent: "const x = 1\nconst y = 2",
 				status: "accepted",
 				organizationId: "org-1",
-				kilocodeToken: "token",
+				novacodeToken: "token",
 			}
 
 			// Should not throw

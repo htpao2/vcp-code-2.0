@@ -199,7 +199,7 @@ export const ModelInfoView = ({
 	)
 }
 
-export /*kilocode_change*/ const ModelInfoSupportsItem = ({
+export /*novacode_change*/ const ModelInfoSupportsItem = ({
 	isSupported,
 	supportsLabel,
 	doesNotSupportLabel,

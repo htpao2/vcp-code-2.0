@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { z } from "zod"
 
 /**
@@ -54,5 +54,5 @@ export interface TrackContributionParams {
 	status: "accepted" | "rejected"
 	taskId?: string
 	organizationId?: string
-	kilocodeToken: string
+	novacodeToken: string
 }

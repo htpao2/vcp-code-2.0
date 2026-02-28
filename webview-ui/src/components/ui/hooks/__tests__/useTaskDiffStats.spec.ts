@@ -1,9 +1,9 @@
-// kilocode_change - new file
+﻿// novacode_change - new file
 // npx vitest src/components/ui/hooks/__tests__/useTaskDiffStats.spec.ts
 
 import { renderHook } from "@testing-library/react"
 import type { ClineMessage } from "@roo-code/types"
-import { useTaskDiffStats } from "../kilocode/useTaskDiffStats"
+import { useTaskDiffStats } from "../nova/useTaskDiffStats"
 
 describe("useTaskDiffStats", () => {
 	describe("basic functionality", () => {

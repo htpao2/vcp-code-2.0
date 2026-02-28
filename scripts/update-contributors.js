@@ -9,9 +9,9 @@ import { fileURLToPath } from "url"
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const README_FILE = path.join(__dirname, "../README.md")
-const CONTRIBUTORS_JSON_URL = "https://kilo.ai/contributors.json"
+const CONTRIBUTORS_JSON_URL = "https://nova.ai/contributors.json"
 const MAX_CONTRIBUTORS_DISPLAY = 9
-const CONTRIBUTORS_PAGE_URL = "https://kilo.ai/#contributors"
+const CONTRIBUTORS_PAGE_URL = "https://nova.ai/#contributors"
 
 // Function to make HTTP requests
 function makeRequest(url) {
@@ -42,11 +42,11 @@ function makeRequest(url) {
 // Function to generate Markdown contributor list
 function generateContributorMarkdown(contributors) {
 	let markdown = "## Contributors\n\n"
-	markdown += "Thanks to all the contributors who help make Kilo Code better!\n\n"
+	markdown += "Thanks to all the contributors who help make Nova Code better!\n\n"
 
-	// Map the kilo.ai format to expected format
+	// Map the nova.ai format to expected format
 	const validContributors = contributors.map((contributor) => {
-		// Convert kilo.ai format to GitHub-like format
+		// Convert nova.ai format to GitHub-like format
 		return {
 			login: contributor.username,
 			html_url: `https://github.com/${contributor.username}`,
@@ -110,7 +110,7 @@ function generateContributorMarkdown(contributors) {
 // Function to update the contributors section in the README
 async function updateContributorsSection() {
 	try {
-		console.log("Fetching contributors from kilo.ai...")
+		console.log("Fetching contributors from nova.ai...")
 
 		// Fetch contributors from external JSON
 		const contributors = await makeRequest(CONTRIBUTORS_JSON_URL)

@@ -1,27 +1,27 @@
-import * as vscode from "vscode"
+﻿import * as vscode from "vscode"
 import * as path from "path"
 import * as fs from "fs/promises"
 import * as os from "os"
 
 import * as yaml from "yaml"
 import stripBom from "strip-bom"
-import axios from "axios" // kilocode_change
+import axios from "axios" // novacode_change
 
 import { type ModeConfig, type PromptComponent, customModesSettingsSchema, modeConfigSchema } from "@roo-code/types"
 
 import { fileExistsAtPath } from "../../utils/fs"
 import { getWorkspacePath } from "../../utils/path"
-import { getGlobalRooDirectory, getProjectRooDirectoryForCwd /*kilocode_change*/ } from "../../services/roo-config"
+import { getGlobalRooDirectory, getProjectRooDirectoryForCwd /*novacode_change*/ } from "../../services/roo-config"
 import { logger } from "../../utils/logging"
 import { GlobalFileNames } from "../../shared/globalFileNames"
 import { ensureSettingsDirectoryExists } from "../../utils/globalContext"
 import { t } from "../../i18n"
-// kilocode_change start
-import { getKiloUrlFromToken } from "@roo-code/types"
-import { X_KILOCODE_ORGANIZATIONID, X_KILOCODE_TESTER } from "../../shared/kilocode/headers"
-// kilocode_change end
+// novacode_change start
+import { getNovaUrlFromToken } from "@roo-code/types"
+import { X_NOVACODE_ORGANIZATIONID, X_NOVACODE_TESTER } from "../../shared/nova/headers"
+// novacode_change end
 
-const ROOMODES_FILENAME = ".kilocodemodes"
+const ROOMODES_FILENAME = ".novacodemodes"
 
 // Type definitions for import/export functionality
 interface RuleFile {
@@ -228,7 +228,7 @@ export class CustomModesManager {
 		}
 	}
 
-	// kilocode_change start: Added organizationModes parameter and precedence logic
+	// novacode_change start: Added organizationModes parameter and precedence logic
 	private async mergeCustomModes(
 		projectModes: ModeConfig[],
 		globalModes: ModeConfig[],
@@ -254,7 +254,7 @@ export class CustomModesManager {
 				merged.push({ ...mode, source: "project" })
 			}
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		// Add global modes (lowest precedence)
 		for (const mode of globalModes) {
@@ -315,11 +315,11 @@ export class CustomModesManager {
 					return
 				}
 
-				// Get modes from .kilocodemodes if it exists (takes precedence)
+				// Get modes from .novacodemodes if it exists (takes precedence)
 				const roomodesPath = await this.getWorkspaceRoomodes()
 				const roomodesModes = roomodesPath ? await this.loadModesFromFile(roomodesPath) : []
 
-				// kilocode_change start Get organization modes from global state to preserve them
+				// novacode_change start Get organization modes from global state to preserve them
 				const storedModes = (await this.context.globalState.get<ModeConfig[]>("customModes")) || []
 				const organizationModes = storedModes.filter((mode) => mode.source === "organization")
 
@@ -329,7 +329,7 @@ export class CustomModesManager {
 					result.data.customModes,
 					organizationModes,
 				)
-				// kilocode_change end
+				// novacode_change end
 				await this.context.globalState.update("customModes", mergedModes)
 				this.clearCache()
 				await this.onUpdate()
@@ -359,15 +359,15 @@ export class CustomModesManager {
 					const storedModes = (await this.context.globalState.get<ModeConfig[]>("customModes")) || []
 					const organizationModes = storedModes.filter((mode) => mode.source === "organization")
 
-					// kilocode_change start
+					// novacode_change start
 					// Merge with organization modes preserved
 					const mergedModes = await this.mergeCustomModes(roomodesModes, settingsModes, organizationModes)
 					await this.context.globalState.update("customModes", mergedModes)
-					// kilocode_change end
+					// novacode_change end
 					this.clearCache()
 					await this.onUpdate()
 				} catch (error) {
-					console.error(`[CustomModesManager] Error handling .kilocodemodes file change:`, error)
+					console.error(`[CustomModesManager] Error handling .novacodemodes file change:`, error)
 				}
 			}
 
@@ -379,14 +379,14 @@ export class CustomModesManager {
 					try {
 						const settingsModes = await this.loadModesFromFile(settingsPath)
 
-						//// kilocode_change start Get organization modes from global state to preserve them
+						//// novacode_change start Get organization modes from global state to preserve them
 						const storedModes = (await this.context.globalState.get<ModeConfig[]>("customModes")) || []
 						const organizationModes = storedModes.filter((mode) => mode.source === "organization")
 
 						// Merge with organization modes preserved
 						const mergedModes = await this.mergeCustomModes([], settingsModes, organizationModes)
 						await this.context.globalState.update("customModes", mergedModes)
-						// kilocode_change end
+						// novacode_change end
 						this.clearCache()
 						await this.onUpdate()
 					} catch (error) {
@@ -410,18 +410,18 @@ export class CustomModesManager {
 		const settingsPath = await this.getCustomModesFilePath()
 		const settingsModes = await this.loadModesFromFile(settingsPath)
 
-		// Get modes from .kilocodemodes if it exists
+		// Get modes from .novacodemodes if it exists
 		const roomodesPath = await this.getWorkspaceRoomodes()
 		const roomodesModes = roomodesPath ? await this.loadModesFromFile(roomodesPath) : []
 
-		// kilocode_change start: Get organization modes from global state
+		// novacode_change start: Get organization modes from global state
 		// Get organization modes from global state (they were fetched from API)
 		const storedModes = (await this.context.globalState.get<ModeConfig[]>("customModes")) || []
 		const organizationModes = storedModes.filter((mode) => mode.source === "organization")
 
 		// Merge all modes with proper precedence: project > organization > global
 		const mergedModes = await this.mergeCustomModes(roomodesModes, settingsModes, organizationModes)
-		// kilocode_change end
+		// novacode_change end
 
 		await this.context.globalState.update("customModes", mergedModes)
 
@@ -530,13 +530,13 @@ export class CustomModesManager {
 		const settingsModes = await this.loadModesFromFile(settingsPath)
 		const roomodesModes = roomodesPath ? await this.loadModesFromFile(roomodesPath) : []
 
-		// // kilocode_change start Get organization modes from global state to preserve them
+		// // novacode_change start Get organization modes from global state to preserve them
 		const storedModes = (await this.context.globalState.get<ModeConfig[]>("customModes")) || []
 		const organizationModes = storedModes.filter((mode) => mode.source === "organization")
 
 		// Merge with organization modes preserved
 		const mergedModes = await this.mergeCustomModes(roomodesModes, settingsModes, organizationModes)
-		// kilocode_change end
+		// novacode_change end
 
 		await this.context.globalState.update("customModes", mergedModes)
 
@@ -605,13 +605,13 @@ export class CustomModesManager {
 			if (scope === "project") {
 				const workspacePath = getWorkspacePath()
 				if (workspacePath) {
-					rulesFolderPath = path.join(getProjectRooDirectoryForCwd(workspacePath), `rules-${slug}`) // kilocode_change
+					rulesFolderPath = path.join(getProjectRooDirectoryForCwd(workspacePath), `rules-${slug}`) // novacode_change
 				} else {
 					return // No workspace, can't delete project rules
 				}
 			} else {
 				// Global scope - use OS home directory
-				rulesFolderPath = path.join(getGlobalRooDirectory(), `rules-${slug}`) // kilocode_change
+				rulesFolderPath = path.join(getGlobalRooDirectory(), `rules-${slug}`) // novacode_change
 			}
 
 			// Check if the rules folder exists and delete it
@@ -704,7 +704,7 @@ export class CustomModesManager {
 					return false
 				}
 				modeRulesDir = path.join(
-					getProjectRooDirectoryForCwd(workspacePath) /* kilocode_change */,
+					getProjectRooDirectoryForCwd(workspacePath) /* novacode_change */,
 					`rules-${slug}`,
 				)
 			}
@@ -812,7 +812,7 @@ export class CustomModesManager {
 			// Check for .roo/rules-{slug}/ directory (or rules-{slug}/ for global)
 			const modeRulesDir = isGlobalMode
 				? path.join(baseDir, `rules-${slug}`)
-				: path.join(getProjectRooDirectoryForCwd(baseDir) /* kilocode_change */, `rules-${slug}`)
+				: path.join(getProjectRooDirectoryForCwd(baseDir) /* novacode_change */, `rules-${slug}`)
 
 			let rulesFiles: RuleFile[] = []
 			try {
@@ -896,7 +896,7 @@ export class CustomModesManager {
 			rulesFolderPath = path.join(baseDir, `rules-${importMode.slug}`)
 		} else {
 			const workspacePath = getWorkspacePath()
-			baseDir = getProjectRooDirectoryForCwd(workspacePath) // kilocode_change
+			baseDir = getProjectRooDirectoryForCwd(workspacePath) // novacode_change
 			rulesFolderPath = path.join(baseDir, `rules-${importMode.slug}`)
 		}
 
@@ -1039,18 +1039,18 @@ export class CustomModesManager {
 		}
 	}
 
-	// kilocode_change start: New method to fetch organization modes
+	// novacode_change start: New method to fetch organization modes
 	/**
-	 * Fetches custom modes for a specific organization from the KiloCode API
-	 * @param kilocodeToken - The authentication token
+	 * Fetches custom modes for a specific organization from the NovaCode API
+	 * @param novacodeToken - The authentication token
 	 * @param organizationId - The organization ID (undefined for personal account)
-	 * @param kilocodeTesterWarningsDisabledUntil - Timestamp for suppressing tester warnings
+	 * @param novacodeTesterWarningsDisabledUntil - Timestamp for suppressing tester warnings
 	 * @returns Array of organization-specific modes
 	 */
 	public async fetchOrganizationModes(
-		kilocodeToken: string,
+		novacodeToken: string,
 		organizationId?: string,
-		kilocodeTesterWarningsDisabledUntil?: number,
+		novacodeTesterWarningsDisabledUntil?: number,
 	): Promise<ModeConfig[]> {
 		try {
 			// If no organization ID, return empty array (personal account has no org modes)
@@ -1059,20 +1059,20 @@ export class CustomModesManager {
 			}
 
 			const headers: Record<string, string> = {
-				Authorization: `Bearer ${kilocodeToken}`,
+				Authorization: `Bearer ${novacodeToken}`,
 				"Content-Type": "application/json",
 			}
 
-			headers[X_KILOCODE_ORGANIZATIONID] = organizationId
+			headers[X_NOVACODE_ORGANIZATIONID] = organizationId
 
-			// Add X-KILOCODE-TESTER: SUPPRESS header if the setting is enabled
-			if (kilocodeTesterWarningsDisabledUntil && kilocodeTesterWarningsDisabledUntil > Date.now()) {
-				headers[X_KILOCODE_TESTER] = "SUPPRESS"
+			// Add X-NOVACODE-TESTER: SUPPRESS header if the setting is enabled
+			if (novacodeTesterWarningsDisabledUntil && novacodeTesterWarningsDisabledUntil > Date.now()) {
+				headers[X_NOVACODE_TESTER] = "SUPPRESS"
 			}
 
-			const url = getKiloUrlFromToken(
-				`https://api.kilo.ai/api/organizations/${organizationId}/modes`,
-				kilocodeToken,
+			const url = getNovaUrlFromToken(
+				`https://api.nova.ai/api/organizations/${organizationId}/modes`,
+				novacodeToken,
 			)
 			const response = await axios.get(url, { headers })
 
@@ -1129,9 +1129,9 @@ export class CustomModesManager {
 			return []
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 
-	// kilocode_change start: New method to refresh modes with organization modes
+	// novacode_change start: New method to refresh modes with organization modes
 	/**
 	 * Refreshes custom modes with organization-specific modes
 	 * @param organizationModes - Modes fetched from the organization API
@@ -1156,7 +1156,7 @@ export class CustomModesManager {
 		this.clearCache()
 		await this.onUpdate()
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	private clearCache(): void {
 		this.cachedModes = null

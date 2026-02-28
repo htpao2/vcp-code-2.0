@@ -6,7 +6,7 @@ import { BaseTerminal } from "./BaseTerminal"
 import { TerminalProcess } from "./TerminalProcess"
 import { ShellIntegrationManager } from "./ShellIntegrationManager"
 import { mergePromise } from "./mergePromise"
-import { getWorkspacePath } from "../../utils/path" // kilocode_change
+import { getWorkspacePath } from "../../utils/path" // novacode_change
 
 export class Terminal extends BaseTerminal {
 	public terminal: vscode.Terminal
@@ -18,7 +18,7 @@ export class Terminal extends BaseTerminal {
 
 		const env = Terminal.getEnv()
 		const iconPath = new vscode.ThemeIcon("rocket")
-		this.terminal = terminal ?? vscode.window.createTerminal({ cwd, name: "Kilo Code", iconPath, env })
+		this.terminal = terminal ?? vscode.window.createTerminal({ cwd, name: "Nova Code", iconPath, env })
 
 		if (Terminal.getTerminalZdotdir()) {
 			ShellIntegrationManager.terminalTmpDirs.set(id, env.ZDOTDIR)
@@ -159,7 +159,7 @@ export class Terminal extends BaseTerminal {
 			// See https://wiki.gnome.org/Apps/Terminal/VTE
 			VTE_VERSION: "0",
 
-			WORKSPACE_ROOT: getWorkspacePath(), // kilocode_change
+			WORKSPACE_ROOT: getWorkspacePath(), // novacode_change
 		}
 
 		// Set Oh My Zsh shell integration if enabled

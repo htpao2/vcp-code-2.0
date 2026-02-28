@@ -73,9 +73,9 @@ describe("ChatTextArea - autocomplete profile filtering", () => {
 
 		render(<ChatTextArea {...defaultProps} />)
 
-		// The KiloProfileSelector should only receive chat profiles
+		// The NovaProfileSelector should only receive chat profiles
 		// We can verify this by checking that autocomplete profiles are not in the DOM
-		// Note: KiloProfileSelector hides when there's only 1 profile, so we need at least 2 chat profiles
+		// Note: NovaProfileSelector hides when there's only 1 profile, so we need at least 2 chat profiles
 		expect(screen.queryByText("Autocomplete Profile")).not.toBeInTheDocument()
 	})
 

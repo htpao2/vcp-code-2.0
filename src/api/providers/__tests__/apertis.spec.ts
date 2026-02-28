@@ -1,10 +1,10 @@
-// kilocode_change - new file
+// novacode_change - new file
 // Mock DEFAULT_HEADERS before imports
 vi.mock("../constants", () => ({
 	DEFAULT_HEADERS: {
-		"HTTP-Referer": "https://github.com/Kilo-Org/kilocode",
-		"X-Title": "Kilo Code",
-		"User-Agent": "KiloCode/1.0.0",
+		"HTTP-Referer": "https://github.com/Nova-Org/novacode",
+		"X-Title": "Nova Code",
+		"User-Agent": "NovaCode/1.0.0",
 	},
 }))
 

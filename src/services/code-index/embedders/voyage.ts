@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { IEmbedder, EmbeddingResponse, EmbedderInfo } from "../interfaces/embedder"
 import {
 	MAX_BATCH_TOKENS,

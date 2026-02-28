@@ -29,20 +29,20 @@
 		},
 		"jetbrains:bundle": {
 			"cache": false,
-			"dependsOn": ["@kilo-code/jetbrains-plugin#bundle"]
+			"dependsOn": ["@nova-code/jetbrains-plugin#bundle"]
 		},
 		"jetbrains:run-bundle": {
 			"cache": false,
-			"dependsOn": ["@kilo-code/jetbrains-plugin#run:bundle"]
+			"dependsOn": ["@nova-code/jetbrains-plugin#run:bundle"]
 		},
 		"jetbrains:build": {
-			"dependsOn": ["@kilo-code/jetbrains-plugin#build"]
+			"dependsOn": ["@nova-code/jetbrains-plugin#build"]
 		},
 		"jetbrains:run": {
-			"dependsOn": ["@kilo-code/jetbrains-plugin#run"]
+			"dependsOn": ["@nova-code/jetbrains-plugin#run"]
 		},
 		"jetbrains-host:build": {
-			"dependsOn": ["@kilo-code/jetbrains-host#bundle:package"]
+			"dependsOn": ["@nova-code/jetbrains-host#bundle:package"]
 		},
 		"chromatic": {
 			"dependsOn": ["storybook:build"],

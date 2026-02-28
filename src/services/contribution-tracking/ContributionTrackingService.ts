@@ -1,11 +1,11 @@
-// kilocode_change - new file
+// novacode_change - new file
 import crypto from "crypto"
 import { createPatch } from "diff"
-import { getKiloUrlFromToken } from "@roo-code/types"
+import { getNovaUrlFromToken } from "@roo-code/types"
 import { TelemetryService } from "@roo-code/telemetry"
 import { fetchWithRetries } from "../../shared/http"
 import { getCurrentBranch } from "../code-index/managed/git-utils"
-import { getProjectId } from "../../utils/kilo-config-file"
+import { getProjectId } from "../../utils/nova-config-file"
 import { getGitRepositoryInfo } from "../../utils/git"
 import {
 	type ContributionPayload,
@@ -31,7 +31,7 @@ export class ContributionTrackingService {
 	private tokenFetchPromise: Promise<TokenProvisionResponse> | null = null
 
 	// AI Attribution service URL
-	private static readonly CONTRIBUTION_SERVICE_URL = "https://ai-attribution.kiloapps.io/attributions/track"
+	private static readonly CONTRIBUTION_SERVICE_URL = "https://ai-attribution.novaapps.io/attributions/track"
 	// private static readonly CONTRIBUTION_SERVICE_URL = "http://localhost:8787/attributions/track"
 
 	// Refresh token 1 minute before expiry
@@ -81,23 +81,23 @@ export class ContributionTrackingService {
 	}
 
 	/**
-	 * Fetch a new short-lived token from the Kilo backend
+	 * Fetch a new short-lived token from the Nova backend
 	 * @param organizationId - The organization ID to get a token for
-	 * @param kilocodeToken - The main Kilocode authentication token
+	 * @param novacodeToken - The main Novacode authentication token
 	 * @returns The token provision response
 	 */
-	private async fetchToken(organizationId: string, kilocodeToken: string): Promise<TokenProvisionResponse> {
+	private async fetchToken(organizationId: string, novacodeToken: string): Promise<TokenProvisionResponse> {
 		try {
-			const url = getKiloUrlFromToken(
-				`https://api.kilo.ai/api/organizations/${organizationId}/user-tokens`,
-				kilocodeToken,
+			const url = getNovaUrlFromToken(
+				`https://api.nova.ai/api/organizations/${organizationId}/user-tokens`,
+				novacodeToken,
 			)
 
 			const response = await fetchWithRetries({
 				url,
 				method: "POST",
 				headers: {
-					Authorization: `Bearer ${kilocodeToken}`,
+					Authorization: `Bearer ${novacodeToken}`,
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({}), // Empty body as per spec
@@ -121,7 +121,7 @@ export class ContributionTrackingService {
 	 * Get a valid token, fetching a new one if necessary
 	 * Handles caching and concurrent requests
 	 */
-	private async getValidToken(organizationId: string, kilocodeToken: string): Promise<TokenProvisionResponse> {
+	private async getValidToken(organizationId: string, novacodeToken: string): Promise<TokenProvisionResponse> {
 		// If we have a valid cached token, return it
 		if (this.isTokenValid(organizationId)) {
 			return this.cachedToken!
@@ -133,7 +133,7 @@ export class ContributionTrackingService {
 		}
 
 		// Start a new fetch
-		this.tokenFetchPromise = this.fetchToken(organizationId, kilocodeToken)
+		this.tokenFetchPromise = this.fetchToken(organizationId, novacodeToken)
 
 		try {
 			const token = await this.tokenFetchPromise
@@ -285,7 +285,7 @@ export class ContributionTrackingService {
 	 *   status: 'accepted',
 	 *   taskId: 'task_123',
 	 *   organizationId: 'org_456',
-	 *   kilocodeToken: 'token_789'
+	 *   novacodeToken: 'token_789'
 	 * })
 	 * ```
 	 */
@@ -327,7 +327,7 @@ export class ContributionTrackingService {
 			const { linesAdded, linesRemoved } = this.extractLineChanges(formattedDiff, formattedContent)
 
 			// Get a valid token for the attributions service
-			const cachedToken = await this.getValidToken(params.organizationId, params.kilocodeToken)
+			const cachedToken = await this.getValidToken(params.organizationId, params.novacodeToken)
 
 			// Build the payload with snake_case field names
 			const payload: ContributionPayload = {
@@ -398,8 +398,8 @@ export class ContributionTrackingService {
  *   newContent: diffResult.content,
  *   status: didApprove ? "accepted" : "rejected",
  *   taskId: task.taskId,
- *   organizationId: state?.apiConfiguration?.kilocodeOrganizationId,
- *   kilocodeToken: state?.apiConfiguration?.kilocodeToken || "",
+ *   organizationId: state?.apiConfiguration?.novacodeOrganizationId,
+ *   novacodeToken: state?.apiConfiguration?.novacodeToken || "",
  * })
  * ```
  */

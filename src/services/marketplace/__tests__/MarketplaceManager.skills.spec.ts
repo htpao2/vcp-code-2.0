@@ -1,5 +1,5 @@
 // npx vitest services/marketplace/__tests__/MarketplaceManager.skills.spec.ts
-// kilocode_change - new file
+// novacode_change - new file
 
 import * as path from "path"
 
@@ -77,12 +77,12 @@ vi.mock("fs/promises", () => ({
 
 // Mock roo-config
 vi.mock("../../roo-config", () => ({
-	getGlobalRooDirectory: () => "/home/user/.kilocode",
+	getGlobalRooDirectory: () => "/home/user/.novacode",
 }))
 
 // Mock globalContext
 vi.mock("../../../utils/globalContext", () => ({
-	ensureSettingsDirectoryExists: vi.fn().mockResolvedValue("/home/user/.kilocode"),
+	ensureSettingsDirectoryExists: vi.fn().mockResolvedValue("/home/user/.novacode"),
 }))
 
 // Mock yaml
@@ -104,7 +104,7 @@ describe("MarketplaceManager - Skills", () => {
 			const fs = await import("fs/promises")
 
 			// Use path.join for cross-platform compatibility
-			const projectSkillsPath = path.join("/test/workspace", ".kilocode", "skills")
+			const projectSkillsPath = path.join("/test/workspace", ".novacode", "skills")
 			const testSkillPath = path.join(projectSkillsPath, "test-skill", "SKILL.md")
 			const anotherSkillPath = path.join(projectSkillsPath, "another-skill", "SKILL.md")
 
@@ -140,7 +140,7 @@ describe("MarketplaceManager - Skills", () => {
 			const fs = await import("fs/promises")
 
 			// Use path.join for cross-platform compatibility
-			const globalSkillsPath = path.join("/home/user/.kilocode", "skills")
+			const globalSkillsPath = path.join("/home/user/.novacode", "skills")
 			const globalSkillFilePath = path.join(globalSkillsPath, "global-skill", "SKILL.md")
 
 			// Mock readdir to return skill directories
@@ -171,7 +171,7 @@ describe("MarketplaceManager - Skills", () => {
 			const fs = await import("fs/promises")
 
 			// Use path.join for cross-platform compatibility
-			const projectSkillsPath = path.join("/test/workspace", ".kilocode", "skills")
+			const projectSkillsPath = path.join("/test/workspace", ".novacode", "skills")
 			const validSkillPath = path.join(projectSkillsPath, "valid-skill", "SKILL.md")
 
 			// Mock readdir to return skill directories

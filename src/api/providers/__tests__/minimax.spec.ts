@@ -39,7 +39,7 @@ describe("MiniMaxHandler", () => {
 		beforeEach(() => {
 			handler = new MiniMaxHandler({
 				minimaxApiKey: "test-minimax-api-key",
-				minimaxBaseUrl: "https://api.minimax.io/anthropic", // kilocode_change: anthropic
+				minimaxBaseUrl: "https://api.minimax.io/anthropic", // novacode_change: anthropic
 			})
 		})
 
@@ -178,14 +178,14 @@ describe("MiniMaxHandler", () => {
 		beforeEach(() => {
 			handler = new MiniMaxHandler({
 				minimaxApiKey: "test-minimax-api-key",
-				minimaxBaseUrl: "https://api.minimaxi.com/anthropic", // kilocode_change: anthropic
+				minimaxBaseUrl: "https://api.minimaxi.com/anthropic", // novacode_change: anthropic
 			})
 		})
 
 		it("should use the correct China MiniMax base URL", () => {
 			new MiniMaxHandler({
 				minimaxApiKey: "test-minimax-api-key",
-				minimaxBaseUrl: "https://api.minimaxi.com/anthropic", // kilocode_change: anthropic
+				minimaxBaseUrl: "https://api.minimaxi.com/anthropic", // novacode_change: anthropic
 			})
 			expect(Anthropic).toHaveBeenCalledWith(
 				expect.objectContaining({ baseURL: "https://api.minimaxi.com/anthropic" }),
@@ -195,7 +195,7 @@ describe("MiniMaxHandler", () => {
 		it("should convert China /v1 endpoint to /anthropic endpoint", () => {
 			new MiniMaxHandler({
 				minimaxApiKey: "test-minimax-api-key",
-				minimaxBaseUrl: "https://api.minimaxi.com/anthropic", // kilocode_change: anthropic
+				minimaxBaseUrl: "https://api.minimaxi.com/anthropic", // novacode_change: anthropic
 			})
 			expect(Anthropic).toHaveBeenCalledWith(
 				expect.objectContaining({ baseURL: "https://api.minimaxi.com/anthropic" }),
@@ -204,7 +204,7 @@ describe("MiniMaxHandler", () => {
 
 		it("should use the provided API key for China", () => {
 			const minimaxApiKey = "test-minimax-api-key"
-			new MiniMaxHandler({ minimaxApiKey, minimaxBaseUrl: "https://api.minimaxi.com/anthropic" }) // kilocode_change: anthropic
+			new MiniMaxHandler({ minimaxApiKey, minimaxBaseUrl: "https://api.minimaxi.com/anthropic" }) // novacode_change: anthropic
 			expect(Anthropic).toHaveBeenCalledWith(expect.objectContaining({ apiKey: minimaxApiKey }))
 		})
 

@@ -13,16 +13,16 @@ import {
 	minimaxModels,
 	geminiModels,
 	geminiDefaultModelId,
-	// kilocode_change start
+	// novacode_change start
 	syntheticDefaultModelId,
 	ovhCloudAiEndpointsDefaultModelId,
 	inceptionDefaultModelId,
-	// kilocode_change end
+	// novacode_change end
 	mistralModels,
 	openAiModelInfoSaneDefaults,
 	openAiNativeModels,
 	vertexModels,
-	normalizeVertexModelId, // kilocode_change
+	normalizeVertexModelId, // novacode_change
 	xaiModels,
 	groqModels,
 	vscodeLlmModels,
@@ -52,23 +52,23 @@ import {
 import { useRouterModels } from "./useRouterModels"
 import { useOpenRouterModelProviders } from "./useOpenRouterModelProviders"
 import { useLmStudioModels } from "./useLmStudioModels"
-import { useExtensionState } from "@/context/ExtensionStateContext" // kilocode_change
+import { useExtensionState } from "@/context/ExtensionStateContext" // novacode_change
 
-// kilocode_change start
-export const useModelProviders = (kilocodeDefaultModel: string, apiConfiguration?: ProviderSettings) => {
+// novacode_change start
+export const useModelProviders = (novacodeDefaultModel: string, apiConfiguration?: ProviderSettings) => {
 	const provider = apiConfiguration?.apiProvider
 	return useOpenRouterModelProviders(
-		provider === "kilocode"
-			? (apiConfiguration?.kilocodeModel ?? kilocodeDefaultModel)
+		provider === "novacode"
+			? (apiConfiguration?.novacodeModel ?? novacodeDefaultModel)
 			: provider === "openrouter"
 				? (apiConfiguration?.openRouterModelId ?? openRouterDefaultModelId)
 				: undefined,
 		provider === "openrouter" ? apiConfiguration?.openRouterBaseUrl : undefined,
 		apiConfiguration?.apiKey,
-		apiConfiguration?.kilocodeOrganizationId ?? "personal",
+		apiConfiguration?.novacodeOrganizationId ?? "personal",
 	)
 }
-// kilocode_change end
+// novacode_change end
 import { useOllamaModels } from "./useOllamaModels"
 
 /**
@@ -85,34 +85,34 @@ function getValidatedModelId(
 
 export const useSelectedModel = (apiConfiguration?: ProviderSettings) => {
 	const provider = apiConfiguration?.apiProvider || "anthropic"
-	// kilocode_change start
-	const { kilocodeDefaultModel, virtualQuotaActiveModel } = useExtensionState()
+	// novacode_change start
+	const { novacodeDefaultModel, virtualQuotaActiveModel } = useExtensionState()
 	const lmStudioModelId = provider === "lmstudio" ? apiConfiguration?.lmStudioModelId : undefined
 	const ollamaModelId = provider === "ollama" ? apiConfiguration?.ollamaModelId : undefined
-	// kilocode_change end
+	// novacode_change end
 
 	// Only fetch router models for dynamic providers
 	const shouldFetchRouterModels = isDynamicProvider(provider)
 	const routerModels = useRouterModels(
-		//kilocode_change start
+		//novacode_change start
 		{
 			openRouterBaseUrl: apiConfiguration?.openRouterBaseUrl,
 			openRouterApiKey: apiConfiguration?.apiKey,
-			kilocodeOrganizationId: apiConfiguration?.kilocodeOrganizationId,
+			novacodeOrganizationId: apiConfiguration?.novacodeOrganizationId,
 			geminiApiKey: apiConfiguration?.geminiApiKey,
 			googleGeminiBaseUrl: apiConfiguration?.googleGeminiBaseUrl,
 			syntheticApiKey: apiConfiguration?.syntheticApiKey,
 			zenmuxBaseUrl: apiConfiguration?.zenmuxBaseUrl,
 			zenmuxApiKey: apiConfiguration?.zenmuxApiKey,
 		},
-		// kilocode_change end
+		// novacode_change end
 		{
 			provider: shouldFetchRouterModels ? provider : undefined,
 			enabled: shouldFetchRouterModels,
 		},
 	)
 
-	const openRouterModelProviders = useModelProviders(kilocodeDefaultModel, apiConfiguration) // kilocode_change
+	const openRouterModelProviders = useModelProviders(novacodeDefaultModel, apiConfiguration) // novacode_change
 	const lmStudioModels = useLmStudioModels(lmStudioModelId)
 	const ollamaModels = useOllamaModels(ollamaModelId)
 
@@ -143,9 +143,9 @@ export const useSelectedModel = (apiConfiguration?: ProviderSettings) => {
 					routerModels: (routerModels.data || {}) as RouterModels,
 					openRouterModelProviders: (openRouterModelProviders.data || {}) as Record<string, ModelInfo>,
 					lmStudioModels: (lmStudioModels.data || undefined) as ModelRecord | undefined,
-					kilocodeDefaultModel,
+					novacodeDefaultModel,
 					ollamaModels: (ollamaModels.data || undefined) as ModelRecord | undefined,
-					virtualQuotaActiveModel, // kilocode_change: Pass virtual quota active model
+					virtualQuotaActiveModel, // novacode_change: Pass virtual quota active model
 				})
 			: { id: getProviderDefaultModelId(provider), info: undefined }
 
@@ -172,18 +172,18 @@ function getSelectedModel({
 	routerModels,
 	openRouterModelProviders,
 	lmStudioModels,
-	kilocodeDefaultModel,
+	novacodeDefaultModel,
 	ollamaModels,
-	virtualQuotaActiveModel, //kilocode_change
+	virtualQuotaActiveModel, //novacode_change
 }: {
 	provider: ProviderName
 	apiConfiguration: ProviderSettings
 	routerModels: RouterModels
 	openRouterModelProviders: Record<string, ModelInfo>
 	lmStudioModels: ModelRecord | undefined
-	kilocodeDefaultModel: string
+	novacodeDefaultModel: string
 	ollamaModels: ModelRecord | undefined
-	virtualQuotaActiveModel?: { id: string; info: ModelInfo } //kilocode_change
+	virtualQuotaActiveModel?: { id: string; info: ModelInfo } //novacode_change
 }): { id: string; info: ModelInfo | undefined } {
 	// the `undefined` case are used to show the invalid selection to prevent
 	// users from seeing the default model if their selection is invalid
@@ -213,13 +213,13 @@ function getSelectedModel({
 			const info = routerInfo ? { ...NATIVE_TOOL_DEFAULTS, ...routerInfo } : undefined
 			return { id, info }
 		}
-		// kilocode_change start
+		// novacode_change start
 		case "glama": {
 			const id = getValidatedModelId(apiConfiguration.glamaModelId, routerModels.glama, defaultModelId)
 			const info = routerModels.glama?.[id]
 			return { id, info }
 		}
-		// kilocode_change end
+		// novacode_change end
 		case "unbound": {
 			const id = getValidatedModelId(apiConfiguration.unboundModelId, routerModels.unbound, defaultModelId)
 			const routerInfo = routerModels.unbound?.[id]
@@ -294,21 +294,21 @@ function getSelectedModel({
 			return { id, info: baseInfo }
 		}
 		case "vertex": {
-			// kilocode_change start
+			// novacode_change start
 			const rawId = apiConfiguration.apiModelId ?? defaultModelId
 			const id = normalizeVertexModelId(rawId)
 			const info = vertexModels[id as keyof typeof vertexModels]
 			return { id, info }
-			// kilocode_change end
+			// novacode_change end
 		}
-		// kilocode_change start
+		// novacode_change start
 		case "gemini": {
 			const id = apiConfiguration.apiModelId ?? geminiDefaultModelId
 			const remoteInfo = routerModels.gemini?.[id]
 			const staticInfo = geminiModels[id as keyof typeof geminiModels]
 			return { id, info: remoteInfo ?? staticInfo }
 		}
-		// kilocode_change end
+		// novacode_change end
 		case "deepseek": {
 			const id = apiConfiguration.apiModelId ?? defaultModelId
 			const info = deepSeekModels[id as keyof typeof deepSeekModels]
@@ -320,7 +320,7 @@ function getSelectedModel({
 			return { id, info }
 		}
 		case "moonshot": {
-			// kilocode_change start
+			// novacode_change start
 			const configuredId = apiConfiguration.apiModelId ?? defaultModelId
 			const isKimiCodingEndpoint = apiConfiguration.moonshotBaseUrl === "https://api.kimi.com/coding/v1"
 			const firstNonCodingMoonshotModelId =
@@ -329,7 +329,7 @@ function getSelectedModel({
 				configuredId === "kimi-for-coding" && !isKimiCodingEndpoint
 					? firstNonCodingMoonshotModelId
 					: configuredId
-			// kilocode_change end
+			// novacode_change end
 			const info = moonshotModels[id as keyof typeof moonshotModels]
 			return { id, info }
 		}
@@ -339,7 +339,7 @@ function getSelectedModel({
 			return { id, info }
 		}
 		case "zai": {
-			// kilocode_change - china_api uses mainland model catalog too.
+			// novacode_change - china_api uses mainland model catalog too.
 			const isChina =
 				apiConfiguration.zaiApiLine === "china_coding" || apiConfiguration.zaiApiLine === "china_api"
 			const models = isChina ? mainlandZAiModels : internationalZAiModels
@@ -369,7 +369,7 @@ function getSelectedModel({
 			const info = customInfo ? { ...nativeToolDefaults, ...customInfo } : openAiModelInfoSaneDefaults
 			return { id, info }
 		}
-		// kilocode_change start
+		// novacode_change start
 		case "openai-responses": {
 			const id = apiConfiguration.openAiModelId ?? ""
 			const customInfo = apiConfiguration?.openAiCustomModelInfo
@@ -380,8 +380,8 @@ function getSelectedModel({
 			const info = customInfo ? { ...nativeToolDefaults, ...customInfo } : openAiModelInfoSaneDefaults
 			return { id, info }
 		}
-		// kilocode_change end
-		// kilocode_change start - improved context window handling
+		// novacode_change end
+		// novacode_change start - improved context window handling
 		case "ollama": {
 			const id = apiConfiguration.ollamaModelId ?? ""
 			const info = ollamaModels && ollamaModels[apiConfiguration.ollamaModelId!]
@@ -408,7 +408,7 @@ function getSelectedModel({
 				info: adjustedInfo || undefined,
 			}
 		}
-		// kilocode_change end
+		// novacode_change end
 		case "lmstudio": {
 			const id = apiConfiguration.lmStudioModelId ?? ""
 			const modelInfo = lmStudioModels && lmStudioModels[apiConfiguration.lmStudioModelId!]
@@ -428,13 +428,13 @@ function getSelectedModel({
 			const info = routerModels.deepinfra?.[id]
 			return { id, info }
 		}
-		// kilocode_change start
+		// novacode_change start
 		case "poe": {
 			const id = getValidatedModelId(apiConfiguration.poeModelId, routerModels.poe, defaultModelId)
 			const info = routerModels.poe?.[id]
 			return { id, info }
 		}
-		// kilocode_change end
+		// novacode_change end
 		case "vscode-lm": {
 			const id = apiConfiguration?.vsCodeLmModelSelector
 				? `${apiConfiguration.vsCodeLmModelSelector.vendor}/${apiConfiguration.vsCodeLmModelSelector.family}`
@@ -443,14 +443,14 @@ function getSelectedModel({
 			const info = vscodeLlmModels[modelFamily as keyof typeof vscodeLlmModels]
 			return { id, info: { ...openAiModelInfoSaneDefaults, ...info, supportsImages: false } } // VSCode LM API currently doesn't support images.
 		}
-		// kilocode_change begin
-		case "kilocode": {
+		// novacode_change begin
+		case "novacode": {
 			// Use the fetched models from routerModels
-			if (routerModels["kilocode"] && apiConfiguration.kilocodeModel) {
+			if (routerModels["novacode"] && apiConfiguration.novacodeModel) {
 				// Find the model in the fetched models
-				const modelEntries = Object.entries(routerModels["kilocode"])
+				const modelEntries = Object.entries(routerModels["novacode"])
 
-				const selectedModelId = apiConfiguration.kilocodeModel.toLowerCase()
+				const selectedModelId = apiConfiguration.novacodeModel.toLowerCase()
 
 				// Prefer exact match
 				const selectedModel =
@@ -471,10 +471,10 @@ function getSelectedModel({
 				}
 			}
 
-			const invalidOrDefaultModel = apiConfiguration.kilocodeModel ?? kilocodeDefaultModel
+			const invalidOrDefaultModel = apiConfiguration.novacodeModel ?? novacodeDefaultModel
 			return {
 				id: invalidOrDefaultModel,
-				info: routerModels["kilocode"][invalidOrDefaultModel],
+				info: routerModels["novacode"][invalidOrDefaultModel],
 			}
 		}
 		case "virtual-quota-fallback": {
@@ -491,7 +491,7 @@ function getSelectedModel({
 				},
 			}
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		case "claude-code": {
 			// Claude Code models extend anthropic models but with images and prompt caching disabled
@@ -516,13 +516,13 @@ function getSelectedModel({
 			const info = fireworksModels[id as keyof typeof fireworksModels]
 			return { id, info }
 		}
-		// kilocode_change start
+		// novacode_change start
 		case "synthetic": {
 			const id = apiConfiguration.apiModelId ?? syntheticDefaultModelId
 			const info = routerModels.synthetic[id]
 			return { id, info }
 		}
-		// kilocode_change end
+		// novacode_change end
 		case "featherless": {
 			const id = apiConfiguration.apiModelId ?? defaultModelId
 			const info = featherlessModels[id as keyof typeof featherlessModels]
@@ -562,7 +562,7 @@ function getSelectedModel({
 			const info = routerModels["vercel-ai-gateway"]?.[id]
 			return { id, info }
 		}
-		//kilocode_change start
+		//novacode_change start
 		case "nano-gpt": {
 			const id = apiConfiguration.nanoGptModelId ?? "chatgpt-4o-latest"
 			const info = routerModels["nano-gpt"]?.[id]
@@ -599,12 +599,12 @@ function getSelectedModel({
 			const info = routerModels.zenmux?.[id]
 			return { id, info }
 		}
-		// kilocode_change end
+		// novacode_change end
 		// case "anthropic":
 		// case "human-relay":
 		// case "fake-ai":
 		default: {
-			provider satisfies "anthropic" | "fake-ai" | "human-relay" | "kilocode" | "apertis"
+			provider satisfies "anthropic" | "fake-ai" | "human-relay" | "novacode" | "apertis"
 			const id = apiConfiguration.apiModelId ?? defaultModelId
 			const baseInfo = anthropicModels[id as keyof typeof anthropicModels]
 

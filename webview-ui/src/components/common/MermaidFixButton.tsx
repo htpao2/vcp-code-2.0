@@ -1,4 +1,4 @@
-// kilocode_change file added
+// novacode_change file added
 import styled from "styled-components"
 
 export const MermaidFixButton = styled.button`

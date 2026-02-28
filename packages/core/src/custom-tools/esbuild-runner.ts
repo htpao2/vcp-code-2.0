@@ -13,7 +13,7 @@ import path from "path"
 import fs from "fs"
 import { builtinModules } from "module"
 import { fileURLToPath } from "url"
-import { execa } from "execa"
+import { spawn } from "child_process"
 
 /**
  * Node.js built-in modules that should never be bundled.
@@ -48,6 +48,48 @@ function getModuleDir(): string | undefined {
 }
 
 const moduleDir = getModuleDir()
+
+interface ProcessErrorDetails {
+	stderr: string
+	stdout: string
+	exitCode: number | null
+	signal: NodeJS.Signals | null
+}
+
+function runNodeProcess(args: string[], env: NodeJS.ProcessEnv): Promise<void> {
+	return new Promise((resolve, reject) => {
+		const child = spawn(process.execPath, args, {
+			env,
+			stdio: ["ignore", "pipe", "pipe"],
+			windowsHide: true,
+		})
+
+		let stdout = ""
+		let stderr = ""
+
+		child.stdout?.on("data", (chunk: Buffer | string) => {
+			stdout += chunk.toString()
+		})
+
+		child.stderr?.on("data", (chunk: Buffer | string) => {
+			stderr += chunk.toString()
+		})
+
+		child.on("error", (error) => {
+			reject(new Error(`failed to start esbuild process: ${error.message}`))
+		})
+
+		child.on("close", (exitCode, signal) => {
+			if (exitCode === 0) {
+				resolve()
+				return
+			}
+
+			const details: ProcessErrorDetails = { stdout, stderr, exitCode, signal }
+			reject(details)
+		})
+	})
+}
 
 export interface EsbuildOptions {
 	/** Entry point file path (absolute) */
@@ -200,10 +242,16 @@ export async function runEsbuild(options: EsbuildOptions, extensionPath?: string
 	}
 
 	try {
-		await execa(process.execPath, args, { env, stdin: "ignore" })
+		await runNodeProcess(args, env)
 	} catch (error) {
-		const execaError = error as { stderr?: string; stdout?: string; exitCode?: number; message: string }
-		const errorMessage = execaError.stderr || execaError.stdout || `esbuild exited with code ${execaError.exitCode}`
+		const processError = error as Partial<ProcessErrorDetails> & { message?: string }
+		const errorMessage =
+			processError.stderr ||
+			processError.stdout ||
+			(processError.exitCode !== undefined
+				? `esbuild exited with code ${processError.exitCode}`
+				: processError.message) ||
+			"esbuild process failed"
 		throw new Error(`esbuild failed: ${errorMessage}`)
 	}
 }

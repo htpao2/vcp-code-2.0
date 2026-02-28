@@ -1,6 +1,6 @@
-import {
+﻿import {
 	HTMLAttributes,
-	useState, // kilocode_change
+	useState, // novacode_change
 } from "react"
 import { useAppTranslation } from "@/i18n/TranslationContext"
 import { Trans } from "react-i18next"
@@ -17,24 +17,24 @@ import { Button } from "@/components/ui"
 
 import { SectionHeader } from "./SectionHeader"
 import { Section } from "./Section"
-import { getMemoryPercentage } from "@/kilocode/helpers"
+import { getMemoryPercentage } from "@/nova/helpers"
 
 type AboutProps = HTMLAttributes<HTMLDivElement> & {
 	telemetrySetting: TelemetrySetting
 	setTelemetrySetting: (setting: TelemetrySetting) => void
-	isVsCode: boolean // kilocode_change
+	isVsCode: boolean // novacode_change
 }
 
 export const About = ({
 	telemetrySetting,
 	setTelemetrySetting,
 	className,
-	isVsCode, // kilocode_change
+	isVsCode, // novacode_change
 	...props
 }: AboutProps) => {
 	const { t } = useAppTranslation()
 
-	const [kiloCodeBloat, setKiloCodeBloat] = useState<number[][]>([])
+	const [vcpCodeBloat, setVcpCodeBloat] = useState<number[][]>([])
 
 	return (
 		<div className={cn("flex flex-col gap-2", className)} {...props}>
@@ -46,7 +46,7 @@ export const About = ({
 				}>
 				<div className="flex items-center gap-2">
 					<Info className="w-4" />
-					<div>{t("settings:sections.about")}</div>
+					<div>About VCP Code</div>
 				</div>
 			</SectionHeader>
 
@@ -64,7 +64,7 @@ export const About = ({
 						<Trans
 							i18nKey="settings:footer.telemetry.description"
 							components={{
-								privacyLink: <VSCodeLink href="https://kilo.ai/privacy" />,
+								privacyLink: <VSCodeLink href="https://github.com/DerstedtCasper/vcp-code-2.0" />,
 							}}
 						/>
 					</p>
@@ -74,23 +74,25 @@ export const About = ({
 					<Trans
 						i18nKey="settings:footer.feedback"
 						components={{
-							githubLink: <VSCodeLink href="https://github.com/Kilo-Org/kilocode" />,
-							redditLink: <VSCodeLink href="https://reddit.com/r/kilocode" />,
-							discordLink: <VSCodeLink href="https://kilo.ai/discord" />,
+							githubLink: <VSCodeLink href="https://github.com/DerstedtCasper/vcp-code-2.0" />,
+							redditLink: (
+								<VSCodeLink href="https://github.com/DerstedtCasper/vcp-code-2.0/discussions" />
+							),
+							discordLink: <VSCodeLink href="https://github.com/DerstedtCasper/vcp-code-2.0/issues" />,
 						}}
 					/>
 				</div>
 
-				{/* kilocode_change start */}
+				{/* novacode_change start */}
 				<div>
 					<Trans
 						i18nKey="settings:footer.support"
 						components={{
-							supportLink: <VSCodeLink href="https://kilo.ai/support" />,
+							supportLink: <VSCodeLink href="https://github.com/DerstedtCasper/vcp-code-2.0/issues" />,
 						}}
 					/>
 				</div>
-				{/* kilocode_change end */}
+				{/* novacode_change end */}
 
 				<div className="flex flex-wrap items-center gap-2 mt-2">
 					<Button onClick={() => vscode.postMessage({ type: "exportSettings" })} className="w-28">
@@ -111,20 +113,20 @@ export const About = ({
 				</div>
 
 				{
-					// kilocode_change start
+					// novacode_change start
 					process.env.NODE_ENV === "development" && (
 						<div className="flex flex-wrap items-center gap-2 mt-2">
 							<Button
 								variant="destructive"
 								onClick={() => {
-									setKiloCodeBloat([...kiloCodeBloat, new Array<number>(20_000_000).fill(0)])
+									setVcpCodeBloat([...vcpCodeBloat, new Array<number>(20_000_000).fill(0)])
 									console.debug(`Memory percentage: ${getMemoryPercentage()}`)
 								}}>
 								Development: Allocate memory
 							</Button>
 						</div>
 					)
-					// kilocode_change end
+					// novacode_change end
 				}
 			</Section>
 		</div>

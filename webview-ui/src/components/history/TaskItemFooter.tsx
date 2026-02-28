@@ -1,12 +1,12 @@
-import React from "react"
+﻿import React from "react"
 import type { HistoryItem } from "@roo-code/types"
 import { formatTimeAgo } from "@/utils/format"
 import { formatCost } from "@/utils/costFormatting"
 import { CopyButton } from "./CopyButton"
 import { ExportButton } from "./ExportButton"
 import { DeleteButton } from "./DeleteButton"
-import { FavoriteButton } from "../kilocode/history/FavoriteButton" // kilocode_change
-import { KiloShareSessionButton } from "./KiloShareSessionButton" // kilocode_change
+import { FavoriteButton } from "../nova/history/FavoriteButton" // novacode_change
+import { NovaShareSessionButton } from "./NovaShareSessionButton" // novacode_change
 import { StandardTooltip } from "../ui/standard-tooltip"
 
 export interface TaskItemFooterProps {
@@ -38,7 +38,7 @@ const TaskItemFooter: React.FC<TaskItemFooterProps> = ({ item, variant, isSelect
 				<div className="flex flex-row gap-0 -mx-2 items-center text-vscode-descriptionForeground/60 hover:text-vscode-descriptionForeground">
 					<CopyButton itemTask={item.task} />
 					<FavoriteButton isFavorited={item.isFavorited ?? false} id={item.id} />
-					<KiloShareSessionButton id={item.id} />
+					<NovaShareSessionButton id={item.id} />
 					{variant === "full" && <ExportButton itemId={item.id} />}
 					{onDelete && <DeleteButton itemId={item.id} onDelete={onDelete} />}
 				</div>

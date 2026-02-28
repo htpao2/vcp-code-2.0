@@ -1,4 +1,4 @@
-import { Anthropic } from "@anthropic-ai/sdk"
+﻿import { Anthropic } from "@anthropic-ai/sdk"
 import OpenAI from "openai"
 
 import { type XAIModelId, xaiDefaultModelId, xaiModels, ApiProviderError } from "@roo-code/types"
@@ -14,7 +14,7 @@ import { getModelParams } from "../transform/model-params"
 import { DEFAULT_HEADERS } from "./constants"
 import { BaseProvider } from "./base-provider"
 import type { SingleCompletionHandler, ApiHandlerCreateMessageMetadata } from "../index"
-import { verifyFinishReason } from "./kilocode/verifyFinishReason" // kilocode_change
+import { verifyFinishReason } from "./nova/verifyFinishReason" // novacode_change
 import { handleOpenAIError } from "./utils/openai-error-handler"
 
 const XAI_DEFAULT_TEMPERATURE = 0
@@ -88,7 +88,7 @@ export class XAIHandler extends BaseProvider implements SingleCompletionHandler 
 		}
 
 		for await (const chunk of stream) {
-			verifyFinishReason(chunk.choices[0]) // kilocode_change
+			verifyFinishReason(chunk.choices[0]) // novacode_change
 			const delta = chunk.choices[0]?.delta
 			const finishReason = chunk.choices[0]?.finish_reason
 

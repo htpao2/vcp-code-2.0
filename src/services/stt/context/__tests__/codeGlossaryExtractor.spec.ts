@@ -5,7 +5,7 @@ import { extractCodeGlossary, formatGlossaryAsPrompt } from "../codeGlossaryExtr
 import type { VisibleCodeContext } from "../../../autocomplete/types"
 
 describe("extractCodeGlossary", () => {
-	it("always includes core Kilocode terms", () => {
+	it("always includes core Novacode terms", () => {
 		const visibleCode: VisibleCodeContext = {
 			timestamp: Date.now(),
 			editors: [],
@@ -14,8 +14,8 @@ describe("extractCodeGlossary", () => {
 		const glossary = extractCodeGlossary(visibleCode)
 
 		// Core terms should always be present
-		expect(glossary.identifiers).toContain("Kilocode")
-		expect(glossary.identifiers).toContain("Kilo Code")
+		expect(glossary.identifiers).toContain("Novacode")
+		expect(glossary.identifiers).toContain("Nova Code")
 		expect(glossary.identifiers).toContain("VSCode")
 		expect(glossary.identifiers).toContain("MCP")
 	})
@@ -46,7 +46,7 @@ describe("extractCodeGlossary", () => {
 		const glossary = extractCodeGlossary(visibleCode)
 
 		// Core terms are present
-		expect(glossary.identifiers).toContain("Kilocode")
+		expect(glossary.identifiers).toContain("Novacode")
 
 		// Meaningful identifiers (4+ chars) are included
 		expect(glossary.identifiers).toContain("userName")
@@ -121,7 +121,7 @@ describe("extractCodeGlossary", () => {
 		expect(glossary.identifiers).not.toContain("deg")
 
 		// Core terms should still be present
-		expect(glossary.identifiers).toContain("Kilocode")
+		expect(glossary.identifiers).toContain("Novacode")
 		expect(glossary.identifiers).toContain("VSCode")
 	})
 
@@ -135,7 +135,7 @@ describe("extractCodeGlossary", () => {
 
 		// Should have core terms even without visible code
 		expect(glossary.identifiers.length).toBeGreaterThan(0)
-		expect(glossary.identifiers).toContain("Kilocode")
+		expect(glossary.identifiers).toContain("Novacode")
 	})
 })
 
@@ -166,7 +166,7 @@ describe("formatGlossaryAsPrompt", () => {
 
 	it("prioritizes core terms then limits to 50 total terms", () => {
 		// Create glossary with core terms + many extracted terms
-		const coreTerms = ["Kilocode", "Kilo Code", "VSCode", "MCP"]
+		const coreTerms = ["Novacode", "Nova Code", "VSCode", "MCP"]
 		const extractedTerms = Array(100)
 			.fill(0)
 			.map((_, i) => `id${i}`)
@@ -178,7 +178,7 @@ describe("formatGlossaryAsPrompt", () => {
 		const prompt = formatGlossaryAsPrompt(glossary)
 
 		// Core terms should be present
-		expect(prompt).toContain("Kilocode")
+		expect(prompt).toContain("Novacode")
 		expect(prompt).toContain("VSCode")
 
 		// Count total comma-separated terms

@@ -4,11 +4,12 @@ import delay from "delay"
 import type { CommandId } from "@roo-code/types"
 import { TelemetryService } from "@roo-code/telemetry"
 
-import { getCommand } from "../utils/commands"
+import { getCommand, getLegacyCommand } from "../utils/commands"
 import { ClineProvider } from "../core/webview/ClineProvider"
-import { exportSettings } from "../core/config/importExport" // kilocode_change
+import { exportSettings } from "../core/config/importExport" // novacode_change
 import { ContextProxy } from "../core/config/ContextProxy"
 import { focusPanel } from "../utils/focusPanel"
+import { Package } from "../shared/package"
 
 import { registerHumanRelayCallback, unregisterHumanRelayCallback, handleHumanRelayResponse } from "./humanRelay"
 import { handleNewTask } from "./handleTask"
@@ -16,9 +17,10 @@ import { CodeIndexManager } from "../services/code-index/manager"
 import { importSettingsWithFeedback } from "../core/config/importExport"
 import { MdmService } from "../services/mdm/MdmService"
 import { t } from "../i18n"
-import { getAppUrl } from "@roo-code/types" // kilocode_change
-import { generateTerminalCommand } from "../utils/terminalCommandGenerator" // kilocode_change
-import { AgentManagerProvider } from "../core/kilocode/agent-manager/AgentManagerProvider" // kilocode_change
+import { getAppUrl } from "@roo-code/types" // novacode_change
+import { generateTerminalCommand } from "../utils/terminalCommandGenerator" // novacode_change
+import { AgentManagerProvider } from "../core/nova/agent-manager/AgentManagerProvider" // novacode_change
+import { focusSidebarProvider } from "../utils/commandFallback"
 
 /**
  * Helper to get the visible ClineProvider instance or log if not found.
@@ -26,7 +28,7 @@ import { AgentManagerProvider } from "../core/kilocode/agent-manager/AgentManage
 export function getVisibleProviderOrLog(outputChannel: vscode.OutputChannel): ClineProvider | undefined {
 	const visibleProvider = ClineProvider.getVisibleInstance()
 	if (!visibleProvider) {
-		outputChannel.appendLine("Cannot find any visible Kilo Code instances.")
+		outputChannel.appendLine("Cannot find any visible Nova Code instances.")
 		return undefined
 	}
 	return visibleProvider
@@ -66,7 +68,7 @@ export type RegisterCommandOptions = {
 	provider: ClineProvider
 }
 
-// kilocode_change start - Agent Manager provider
+// novacode_change start - Agent Manager provider
 let agentManagerProvider: AgentManagerProvider | undefined
 
 const registerAgentManager = (options: RegisterCommandOptions) => {
@@ -75,28 +77,89 @@ const registerAgentManager = (options: RegisterCommandOptions) => {
 	agentManagerProvider = new AgentManagerProvider(context, outputChannel, provider)
 	context.subscriptions.push(agentManagerProvider)
 }
-// kilocode_change end
+// novacode_change end
+
+const KNOWN_COMMAND_PREFIXES = ["nova-code", "nova-code", "vcp-code.new", "vcpcode-test-1.0.3"] as const
+
+const getCommandPrefixes = () => Array.from(new Set([Package.name, ...KNOWN_COMMAND_PREFIXES]))
+
+const getAllCommandAliases = (id: CommandId) =>
+	Array.from(
+		new Set([getCommand(id), getLegacyCommand(id), ...getCommandPrefixes().map((prefix) => `${prefix}.${id}`)]),
+	)
+
+const registerAliasedCommand = (
+	context: vscode.ExtensionContext,
+	registeredCommands: Set<string>,
+	command: string,
+	callback: (...args: any[]) => any,
+) => {
+	if (registeredCommands.has(command)) {
+		return
+	}
+	context.subscriptions.push(vscode.commands.registerCommand(command, callback))
+	registeredCommands.add(command)
+}
+
+const getVisibleProviderWithFocus = async (outputChannel: vscode.OutputChannel) => {
+	const existing = ClineProvider.getVisibleInstance()
+	if (existing) {
+		return existing
+	}
+
+	await focusSidebarProvider()
+	await delay(100)
+
+	return getVisibleProviderOrLog(outputChannel)
+}
+
+const showSettingsSection = async (outputChannel: vscode.OutputChannel, section?: string) => {
+	const visibleProvider = await getVisibleProviderWithFocus(outputChannel)
+	if (!visibleProvider) {
+		return
+	}
+
+	visibleProvider.postMessageToWebview({
+		type: "action",
+		action: "settingsButtonClicked",
+		values: section ? { section } : undefined,
+	})
+	visibleProvider.postMessageToWebview({ type: "action", action: "didBecomeVisible" })
+}
 
 export const registerCommands = (options: RegisterCommandOptions) => {
 	const { context, outputChannel } = options
 
-	// kilocode_change start
+	// novacode_change start
 	registerAgentManager(options)
-	// kilocode_change end
+	// novacode_change end
+
+	const registeredCommands = new Set<string>()
 
 	for (const [id, callback] of Object.entries(getCommandsMap(options))) {
-		const command = getCommand(id as CommandId)
-		context.subscriptions.push(vscode.commands.registerCommand(command, callback))
+		const typedId = id as CommandId
+		for (const command of getAllCommandAliases(typedId)) {
+			registerAliasedCommand(context, registeredCommands, command, callback)
+		}
+	}
+
+	const openVcpSettings = async () => {
+		TelemetryService.instance.captureTitleButtonClicked("settings")
+		await showSettingsSection(outputChannel, "vcp")
+	}
+
+	for (const prefix of getCommandPrefixes()) {
+		registerAliasedCommand(context, registeredCommands, `${prefix}.vcpButtonClicked`, openVcpSettings)
 	}
 }
 
 const getCommandsMap = ({ context, outputChannel }: RegisterCommandOptions): Record<CommandId, any> => ({
 	activationCompleted: () => {},
-	// kilocode_change start
+	// novacode_change start
 	agentManagerOpen: () => {
 		agentManagerProvider?.openPanel()
 	},
-	// kilocode_change end
+	// novacode_change end
 	cloudButtonClicked: () => {
 		const visibleProvider = getVisibleProviderOrLog(outputChannel)
 
@@ -129,23 +192,14 @@ const getCommandsMap = ({ context, outputChannel }: RegisterCommandOptions): Rec
 
 		return openClineInNewTab({ context, outputChannel })
 	},
-	open: () => openClineInNewTab({ context, outputChannel }), // kilocode_change
+	open: () => openClineInNewTab({ context, outputChannel }), // novacode_change
 	openInNewTab: () => openClineInNewTab({ context, outputChannel }),
-	settingsButtonClicked: () => {
-		const visibleProvider = getVisibleProviderOrLog(outputChannel)
-
-		if (!visibleProvider) {
-			return
-		}
-
+	settingsButtonClicked: async () => {
 		TelemetryService.instance.captureTitleButtonClicked("settings")
-
-		visibleProvider.postMessageToWebview({ type: "action", action: "settingsButtonClicked" })
-		// Also explicitly post the visibility message to trigger scroll reliably
-		visibleProvider.postMessageToWebview({ type: "action", action: "didBecomeVisible" })
+		await showSettingsSection(outputChannel)
 	},
-	historyButtonClicked: () => {
-		const visibleProvider = getVisibleProviderOrLog(outputChannel)
+	historyButtonClicked: async () => {
+		const visibleProvider = await getVisibleProviderWithFocus(outputChannel)
 
 		if (!visibleProvider) {
 			return
@@ -155,9 +209,9 @@ const getCommandsMap = ({ context, outputChannel }: RegisterCommandOptions): Rec
 
 		visibleProvider.postMessageToWebview({ type: "action", action: "historyButtonClicked" })
 	},
-	// kilocode_change begin
-	promptsButtonClicked: () => {
-		const visibleProvider = getVisibleProviderOrLog(outputChannel)
+	// novacode_change begin
+	promptsButtonClicked: async () => {
+		const visibleProvider = await getVisibleProviderWithFocus(outputChannel)
 
 		if (!visibleProvider) {
 			return
@@ -167,8 +221,8 @@ const getCommandsMap = ({ context, outputChannel }: RegisterCommandOptions): Rec
 
 		visibleProvider.postMessageToWebview({ type: "action", action: "promptsButtonClicked" })
 	},
-	profileButtonClicked: () => {
-		const visibleProvider = getVisibleProviderOrLog(outputChannel)
+	profileButtonClicked: async () => {
+		const visibleProvider = await getVisibleProviderWithFocus(outputChannel)
 
 		if (!visibleProvider) {
 			return
@@ -179,9 +233,9 @@ const getCommandsMap = ({ context, outputChannel }: RegisterCommandOptions): Rec
 	helpButtonClicked: () => {
 		vscode.env.openExternal(vscode.Uri.parse(getAppUrl()))
 	},
-	// kilocode_change end
-	marketplaceButtonClicked: () => {
-		const visibleProvider = getVisibleProviderOrLog(outputChannel)
+	// novacode_change end
+	marketplaceButtonClicked: async () => {
+		const visibleProvider = await getVisibleProviderWithFocus(outputChannel)
 		if (!visibleProvider) return
 		visibleProvider.postMessageToWebview({ type: "action", action: "marketplaceButtonClicked" })
 	},
@@ -235,10 +289,10 @@ const getCommandsMap = ({ context, outputChannel }: RegisterCommandOptions): Rec
 		}
 
 		visibleProvider.postMessageToWebview({ type: "acceptInput" })
-	}, // kilocode_change begin
+	}, // novacode_change begin
 	focusChatInput: async () => {
 		try {
-			await vscode.commands.executeCommand("kilo-code.SidebarProvider.focus")
+			await focusSidebarProvider()
 			await delay(100)
 
 			let visibleProvider = getVisibleProviderOrLog(outputChannel)
@@ -258,7 +312,7 @@ const getCommandsMap = ({ context, outputChannel }: RegisterCommandOptions): Rec
 			outputChannel.appendLine(`Error in focusChatInput: ${error}`)
 		}
 	},
-	generateTerminalCommand: async () => await generateTerminalCommand({ outputChannel, context }), // kilocode_change
+	generateTerminalCommand: async () => await generateTerminalCommand({ outputChannel, context }), // novacode_change
 	exportSettings: async () => {
 		const visibleProvider = getVisibleProviderOrLog(outputChannel)
 		if (!visibleProvider) return
@@ -288,7 +342,7 @@ const getCommandsMap = ({ context, outputChannel }: RegisterCommandOptions): Rec
 			outputChannel.appendLine(`Error handling external URI: ${uriString}, error: ${error}`)
 		}
 	},
-	// kilocode_change end
+	// novacode_change end
 	toggleAutoApprove: async () => {
 		const visibleProvider = getVisibleProviderOrLog(outputChannel)
 
@@ -333,7 +387,7 @@ export const openClineInNewTab = async ({ context, outputChannel }: Omit<Registe
 
 	const targetCol = hasVisibleEditors ? Math.max(lastCol + 1, 1) : vscode.ViewColumn.Two
 
-	const newPanel = vscode.window.createWebviewPanel(ClineProvider.tabPanelId, "Kilo Code", targetCol, {
+	const newPanel = vscode.window.createWebviewPanel(ClineProvider.tabPanelId, "Nova Code", targetCol, {
 		enableScripts: true,
 		retainContextWhenHidden: true,
 		localResourceRoots: [context.extensionUri],
@@ -343,8 +397,8 @@ export const openClineInNewTab = async ({ context, outputChannel }: Omit<Registe
 	setPanel(newPanel, "tab")
 
 	newPanel.iconPath = {
-		light: vscode.Uri.joinPath(context.extensionUri, "assets", "icons", "kilo.png"),
-		dark: vscode.Uri.joinPath(context.extensionUri, "assets", "icons", "kilo-dark.png"),
+		light: vscode.Uri.joinPath(context.extensionUri, "assets", "icons", "nova.png"),
+		dark: vscode.Uri.joinPath(context.extensionUri, "assets", "icons", "nova-dark.png"),
 	}
 
 	await tabProvider.resolveWebviewView(newPanel)

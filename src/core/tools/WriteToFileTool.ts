@@ -15,7 +15,7 @@ import { unescapeHtmlEntities } from "../../utils/text-normalization"
 import { EXPERIMENT_IDS, experiments } from "../../shared/experiments"
 import { convertNewFileToUnifiedDiff, computeDiffStats, sanitizeUnifiedDiff } from "../diff/stats"
 import type { ToolUse } from "../../shared/tools"
-import { trackContribution } from "../../services/contribution-tracking/ContributionTrackingService" // kilocode_change
+import { trackContribution } from "../../services/contribution-tracking/ContributionTrackingService" // novacode_change
 
 import { BaseTool, ToolCallbacks } from "./BaseTool"
 
@@ -80,12 +80,12 @@ export class WriteToFileTool extends BaseTool<"write_to_file"> {
 		if (!fileExists) {
 			await createDirectoriesForFile(absolutePath)
 		}
-		// kilocode_change start
+		// novacode_change start
 		if (typeof newContent !== "string") {
 			console.warn(`[WriteToFileTool] converting incorrect model output ${typeof newContent} to string`)
 			newContent = JSON.stringify(newContent, null, "\t")
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		if (newContent.startsWith("```")) {
 			newContent = newContent.split("\n").slice(1).join("\n")
@@ -143,7 +143,7 @@ export class WriteToFileTool extends BaseTool<"write_to_file"> {
 
 				const didApprove = await askApproval("tool", completeMessage, undefined, isWriteProtected)
 
-				// kilocode_change start
+				// novacode_change start
 				// Track contribution (fire-and-forget, never blocks user workflow)
 				trackContribution({
 					cwd: task.cwd,
@@ -152,10 +152,10 @@ export class WriteToFileTool extends BaseTool<"write_to_file"> {
 					newContent,
 					status: didApprove ? "accepted" : "rejected",
 					taskId: task.taskId,
-					organizationId: state?.apiConfiguration?.kilocodeOrganizationId,
-					kilocodeToken: state?.apiConfiguration?.kilocodeToken || "",
+					organizationId: state?.apiConfiguration?.novacodeOrganizationId,
+					novacodeToken: state?.apiConfiguration?.novacodeToken || "",
 				})
-				// kilocode_change end
+				// novacode_change end
 
 				if (!didApprove) {
 					return
@@ -189,7 +189,7 @@ export class WriteToFileTool extends BaseTool<"write_to_file"> {
 
 				const didApprove = await askApproval("tool", completeMessage, undefined, isWriteProtected)
 
-				// kilocode_change start
+				// novacode_change start
 				// Track contribution (fire-and-forget, never blocks user workflow)
 				trackContribution({
 					cwd: task.cwd,
@@ -198,10 +198,10 @@ export class WriteToFileTool extends BaseTool<"write_to_file"> {
 					newContent,
 					status: didApprove ? "accepted" : "rejected",
 					taskId: task.taskId,
-					organizationId: state?.apiConfiguration?.kilocodeOrganizationId,
-					kilocodeToken: state?.apiConfiguration?.kilocodeToken || "",
+					organizationId: state?.apiConfiguration?.novacodeOrganizationId,
+					novacodeToken: state?.apiConfiguration?.novacodeToken || "",
 				})
-				// kilocode_change end
+				// novacode_change end
 
 				if (!didApprove) {
 					await task.diffViewProvider.revertChanges()

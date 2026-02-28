@@ -14,13 +14,13 @@ describe("askFollowupQuestionTool", () => {
 			ask: vi.fn().mockResolvedValue({ text: "Test response" }),
 			say: vi.fn().mockResolvedValue(undefined),
 			consecutiveMistakeCount: 0,
-			// kilocode_change start
+			// novacode_change start
 			providerRef: {
 				deref: () => ({
 					getState: () => Promise.resolve({ yoloMode: false }),
 				}),
 			},
-			// kilocode_change end
+			// novacode_change end
 		}
 
 		mockPushToolResult = vi.fn((result) => {
@@ -110,7 +110,7 @@ describe("askFollowupQuestionTool", () => {
 		)
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	describe("yoloMode behavior", () => {
 		it("should return error message when yoloMode is enabled", async () => {
 			const yoloMockCline = {
@@ -146,7 +146,7 @@ describe("askFollowupQuestionTool", () => {
 			expect(toolResult).toContain("not available in yolo mode")
 		})
 	})
-	// kilocode_change end
+	// novacode_change end
 
 	describe("handlePartial with native protocol", () => {
 		it("should only send question during partial streaming to avoid raw JSON display", async () => {

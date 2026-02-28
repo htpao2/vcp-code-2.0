@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 /**
  * Tests for getBaseBranch and getDefaultBranchFromRemote functionality
  */

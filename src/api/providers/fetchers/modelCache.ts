@@ -19,15 +19,15 @@ import { fileExistsAtPath } from "../../../utils/fs"
 import { getOpenRouterModels } from "./openrouter"
 import { getVercelAiGatewayModels } from "./vercel-ai-gateway"
 import { getRequestyModels } from "./requesty"
-import { getGlamaModels } from "./glama" // kilocode_change
+import { getGlamaModels } from "./glama" // novacode_change
 import { getUnboundModels } from "./unbound"
 import { getLiteLLMModels } from "./litellm"
 import { GetModelsOptions } from "../../../shared/api"
-import { getKiloUrlFromToken } from "@roo-code/types"
+import { getNovaUrlFromToken } from "@roo-code/types"
 import { getOllamaModels } from "./ollama"
 import { getLMStudioModels } from "./lmstudio"
 import { getIOIntelligenceModels } from "./io-intelligence"
-// kilocode_change start
+// novacode_change start
 import { getOvhCloudAiEndpointsModels } from "./ovhcloud"
 import { getGeminiModels } from "./gemini"
 import { getInceptionModels } from "./inception"
@@ -35,14 +35,14 @@ import { getSyntheticModels } from "./synthetic"
 import { getSapAiCoreModels } from "./sap-ai-core"
 import { getAihubmixModels } from "./aihubmix"
 import { getApertisModels } from "./apertis"
-// kilocode_change end
+// novacode_change end
 
 import { getDeepInfraModels } from "./deepinfra"
 import { getHuggingFaceModels } from "./huggingface"
 import { getRooModels } from "./roo"
 import { getChutesModels } from "./chutes"
-import { getNanoGptModels } from "./nano-gpt" //kilocode_change
-import { getPoeModels } from "./poe" // kilocode_change
+import { getNanoGptModels } from "./nano-gpt" //novacode_change
+import { getPoeModels } from "./poe" // novacode_change
 import { getZenmuxModels } from "./zenmux"
 
 const memoryCache = new NodeCache({ stdTTL: 5 * 60, checkperiod: 5 * 60 })
@@ -54,13 +54,13 @@ const modelRecordSchema = z.record(z.string(), modelInfoSchema)
 // This prevents race conditions where multiple calls might overwrite each other's results
 const inFlightRefresh = new Map<RouterName, Promise<ModelRecord>>()
 
-export /*kilocode_change*/ async function writeModels(router: RouterName, data: ModelRecord) {
+export /*novacode_change*/ async function writeModels(router: RouterName, data: ModelRecord) {
 	const filename = `${router}_models.json`
 	const cacheDir = await getCacheDirectoryPath(ContextProxy.instance.globalStorageUri.fsPath)
 	await safeWriteJson(path.join(cacheDir, filename), data)
 }
 
-export /*kilocode_change*/ async function readModels(router: RouterName): Promise<ModelRecord | undefined> {
+export /*novacode_change*/ async function readModels(router: RouterName): Promise<ModelRecord | undefined> {
 	const filename = `${router}_models.json`
 	const cacheDir = await getCacheDirectoryPath(ContextProxy.instance.globalStorageUri.fsPath)
 	const filePath = path.join(cacheDir, filename)
@@ -81,12 +81,12 @@ async function fetchModelsFromProvider(options: GetModelsOptions): Promise<Model
 	let models: ModelRecord
 	switch (provider) {
 		case "openrouter":
-			// kilocode_change start: base url and bearer token
+			// novacode_change start: base url and bearer token
 			models = await getOpenRouterModels({
 				openRouterBaseUrl: options.baseUrl,
 				headers: options.apiKey ? { Authorization: `Bearer ${options.apiKey}` } : undefined,
 			})
-			// kilocode_change end
+			// novacode_change end
 			break
 		case "zenmux":
 			models = await getZenmuxModels({
@@ -98,28 +98,28 @@ async function fetchModelsFromProvider(options: GetModelsOptions): Promise<Model
 			// Requesty models endpoint requires an API key for per-user custom policies.
 			models = await getRequestyModels(options.baseUrl, options.apiKey)
 			break
-		// kilocode_change start
+		// novacode_change start
 		case "glama":
 			models = await getGlamaModels()
 			break
-		// kilocode_change end
+		// novacode_change end
 		case "unbound":
 			// Unbound models endpoint requires an API key to fetch application specific models.
 			models = await getUnboundModels(options.apiKey)
 			break
 		case "litellm":
 			// Type safety ensures apiKey and baseUrl are always provided for LiteLLM.
-			models = await getLiteLLMModels(options.apiKey ?? "", options.baseUrl ?? "") // kilocode_change: null coalescing
+			models = await getLiteLLMModels(options.apiKey ?? "", options.baseUrl ?? "") // novacode_change: null coalescing
 			break
-		// kilocode_change start
-		case "kilocode": {
-			const backendUrl = options.kilocodeOrganizationId
-				? `https://api.kilo.ai/api/organizations/${options.kilocodeOrganizationId}`
-				: "https://api.kilo.ai/api/openrouter"
-			const openRouterBaseUrl = getKiloUrlFromToken(backendUrl, options.kilocodeToken ?? "")
+		// novacode_change start
+		case "novacode": {
+			const backendUrl = options.novacodeOrganizationId
+				? `https://api.nova.ai/api/organizations/${options.novacodeOrganizationId}`
+				: "https://api.nova.ai/api/openrouter"
+			const openRouterBaseUrl = getNovaUrlFromToken(backendUrl, options.novacodeToken ?? "")
 			models = await getOpenRouterModels({
 				openRouterBaseUrl,
-				headers: options.kilocodeToken ? { Authorization: `Bearer ${options.kilocodeToken}` } : undefined,
+				headers: options.novacodeToken ? { Authorization: `Bearer ${options.novacodeToken}` } : undefined,
 			})
 			break
 		}
@@ -132,9 +132,9 @@ async function fetchModelsFromProvider(options: GetModelsOptions): Promise<Model
 				baseUrl: options.baseUrl,
 			})
 			break
-		// kilocode_change end
+		// novacode_change end
 		case "ollama":
-			models = await getOllamaModels(options.baseUrl, options.apiKey, options.numCtx /*kilocode_change*/)
+			models = await getOllamaModels(options.baseUrl, options.apiKey, options.numCtx /*novacode_change*/)
 			break
 		case "lmstudio":
 			models = await getLMStudioModels(options.baseUrl)
@@ -151,7 +151,7 @@ async function fetchModelsFromProvider(options: GetModelsOptions): Promise<Model
 		case "huggingface":
 			models = await getHuggingFaceModels()
 			break
-		// kilocode_change start
+		// novacode_change start
 		case "sap-ai-core":
 			models = await getSapAiCoreModels(
 				options.sapAiCoreServiceKey,
@@ -171,7 +171,7 @@ async function fetchModelsFromProvider(options: GetModelsOptions): Promise<Model
 				baseUrl: options.baseUrl,
 			})
 			break
-		// kilocode_change end
+		// novacode_change end
 		case "roo": {
 			// Roo Code Cloud provider requires baseUrl and optional apiKey
 			const rooBaseUrl = options.baseUrl ?? process.env.ROO_CODE_PROVIDER_URL ?? "https://api.roocode.com/proxy"
@@ -181,7 +181,7 @@ async function fetchModelsFromProvider(options: GetModelsOptions): Promise<Model
 		case "chutes":
 			models = await getChutesModels(options.apiKey)
 			break
-		//kilocode_change start
+		//novacode_change start
 		case "nano-gpt":
 			models = await getNanoGptModels({
 				nanoGptModelList: options.nanoGptModelList,
@@ -194,12 +194,12 @@ async function fetchModelsFromProvider(options: GetModelsOptions): Promise<Model
 				apiKey: options.apiKey,
 			})
 			break
-		//kilocode_change end
-		// kilocode_change start
+		//novacode_change end
+		// novacode_change start
 		case "poe":
 			models = await getPoeModels(options.apiKey)
 			break
-		// kilocode_change end
+		// novacode_change end
 		default: {
 			// Ensures router is exhaustively checked if RouterName is a strict union.
 			const exhaustiveCheck: never = provider
@@ -239,13 +239,13 @@ export const getModels = async (options: GetModelsOptions): Promise<ModelRecord>
 		if (modelCount > 0) {
 			memoryCache.set(provider, models)
 
-			// kilocode_change start: prevent eternal caching of kilocode models
-			if (provider !== "kilocode") {
+			// novacode_change start: prevent eternal caching of novacode models
+			if (provider !== "novacode") {
 				await writeModels(provider, models).catch((err) =>
 					console.error(`[MODEL_CACHE] Error writing ${provider} models to file cache:`, err),
 				)
 			}
-			// kilocode_change end
+			// novacode_change end
 		} else {
 			TelemetryService.instance.captureEvent(TelemetryEventName.MODEL_CACHE_EMPTY_RESPONSE, {
 				provider,
@@ -344,24 +344,24 @@ export async function initializeModelCacheRefresh(): Promise<void> {
 		// Providers that work without API keys
 		const publicProviders: Array<{ provider: RouterName; options: GetModelsOptions }> = [
 			{ provider: "openrouter", options: { provider: "openrouter" } },
-			{ provider: "glama", options: { provider: "glama" } }, // kilocode_change
+			{ provider: "glama", options: { provider: "glama" } }, // novacode_change
 			{ provider: "vercel-ai-gateway", options: { provider: "vercel-ai-gateway" } },
 			{ provider: "chutes", options: { provider: "chutes" } },
-			{ provider: "synthetic", options: { provider: "synthetic" } }, // kilocode_change: Add synthetic to background refresh
-			{ provider: "nano-gpt", options: { provider: "nano-gpt" } }, // kilocode_change: Add nanogpt to background refresh
-			{ provider: "huggingface", options: { provider: "huggingface" } }, // kilocode_change: Add huggingface to background refresh
-			{ provider: "deepinfra", options: { provider: "deepinfra" } }, // kilocode_change: Add deepinfra to background refresh
-			{ provider: "inception", options: { provider: "inception" } }, // kilocode_change: Add inception to background refresh
-			{ provider: "lmstudio", options: { provider: "lmstudio" } }, // kilocode_change: Add lmstudio to background refresh
-			{ provider: "requesty", options: { provider: "requesty" } }, // kilocode_change: Add requesty to background refresh
-			{ provider: "sap-ai-core", options: { provider: "sap-ai-core" } }, // kilocode_change: Add sap-ai-core to background refresh
-			{ provider: "unbound", options: { provider: "unbound" } }, // kilocode_change: Add unbound to background refresh
-			{ provider: "ollama", options: { provider: "ollama" } }, // kilocode_change: Add ollama to background refresh
-			{ provider: "io-intelligence", options: { provider: "io-intelligence" } }, // kilocode_change: Add io-intelligence to background refresh
-			{ provider: "ovhcloud", options: { provider: "ovhcloud" } }, // kilocode_change: Add ovhcloud to background refresh
-			{ provider: "litellm", options: { provider: "litellm" } }, // kilocode_change: Add litellm to background refresh
-			{ provider: "apertis", options: { provider: "apertis" } }, // kilocode_change: Add apertis to background refresh
-			{ provider: "aihubmix", options: { provider: "aihubmix" } }, // kilocode_change: Add aihubmix to background refresh
+			{ provider: "synthetic", options: { provider: "synthetic" } }, // novacode_change: Add synthetic to background refresh
+			{ provider: "nano-gpt", options: { provider: "nano-gpt" } }, // novacode_change: Add nanogpt to background refresh
+			{ provider: "huggingface", options: { provider: "huggingface" } }, // novacode_change: Add huggingface to background refresh
+			{ provider: "deepinfra", options: { provider: "deepinfra" } }, // novacode_change: Add deepinfra to background refresh
+			{ provider: "inception", options: { provider: "inception" } }, // novacode_change: Add inception to background refresh
+			{ provider: "lmstudio", options: { provider: "lmstudio" } }, // novacode_change: Add lmstudio to background refresh
+			{ provider: "requesty", options: { provider: "requesty" } }, // novacode_change: Add requesty to background refresh
+			{ provider: "sap-ai-core", options: { provider: "sap-ai-core" } }, // novacode_change: Add sap-ai-core to background refresh
+			{ provider: "unbound", options: { provider: "unbound" } }, // novacode_change: Add unbound to background refresh
+			{ provider: "ollama", options: { provider: "ollama" } }, // novacode_change: Add ollama to background refresh
+			{ provider: "io-intelligence", options: { provider: "io-intelligence" } }, // novacode_change: Add io-intelligence to background refresh
+			{ provider: "ovhcloud", options: { provider: "ovhcloud" } }, // novacode_change: Add ovhcloud to background refresh
+			{ provider: "litellm", options: { provider: "litellm" } }, // novacode_change: Add litellm to background refresh
+			{ provider: "apertis", options: { provider: "apertis" } }, // novacode_change: Add apertis to background refresh
+			{ provider: "aihubmix", options: { provider: "aihubmix" } }, // novacode_change: Add aihubmix to background refresh
 		]
 
 		// Refresh each provider in background (fire and forget)
@@ -408,20 +408,20 @@ export function getModelsFromCache(provider: ProviderName): ModelRecord | undefi
 	// Check memory cache first (fast)
 	const memoryModels = memoryCache.get<ModelRecord>(provider)
 	if (memoryModels) {
-		// kilocode_change start
+		// novacode_change start
 		if (provider === "zenmux" && hasInvalidZenmuxContextWindow(memoryModels)) {
 			console.warn("[MODEL_CACHE] Ignoring stale ZenMux model cache with invalid contextWindow values")
 			return undefined
 		}
-		// kilocode_change end
+		// novacode_change end
 		return memoryModels
 	}
 
-	// kilocode_change start: prevent eternal caching of kilocode models
-	if (provider === "kilocode") {
+	// novacode_change start: prevent eternal caching of novacode models
+	if (provider === "novacode") {
 		return undefined
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	// Memory cache miss - try to load from disk synchronously
 	// This is acceptable because it only happens on cold start or after cache expiry
@@ -449,13 +449,13 @@ export function getModelsFromCache(provider: ProviderName): ModelRecord | undefi
 				)
 				return undefined
 			}
-			// kilocode_change start
+			// novacode_change start
 			// Self-heal stale ZenMux cache entries from v5.7.0 where contextWindow was persisted as 0.
 			if (provider === "zenmux" && hasInvalidZenmuxContextWindow(validation.data)) {
 				console.warn("[MODEL_CACHE] Ignoring stale ZenMux model cache with invalid contextWindow values")
 				return undefined
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			// Populate memory cache for future fast access
 			memoryCache.set(provider, validation.data)
@@ -487,8 +487,8 @@ function getCacheDirectoryPathSync(): string | undefined {
 	}
 }
 
-// kilocode_change start
+// novacode_change start
 function hasInvalidZenmuxContextWindow(models: ModelRecord): boolean {
 	return Object.values(models).some((model) => (model.contextWindow ?? 0) <= 0)
 }
-// kilocode_change end
+// novacode_change end

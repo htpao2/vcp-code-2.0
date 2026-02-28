@@ -1,19 +1,19 @@
-// kilocode_change - new file
+﻿// novacode_change - new file
 /**
  * API client for managed codebase indexing
  *
- * This module provides pure functions for communicating with the Kilo Code
+ * This module provides pure functions for communicating with the Nova Code
  * backend API for managed indexing operations (upsert, search, delete, manifest).
  */
 
 import { SearchRequest, SearchResult, ServerManifest } from "./types"
 import { logger } from "../../../utils/logging"
-import { getKiloBaseUriFromToken } from "../../../../packages/types/src/kilocode/kilocode"
+import { getNovaBaseUriFromToken } from "../../../../packages/types/src/nova/novacode"
 import { fetchWithRetries } from "../../../shared/http"
 
-export async function isEnabled(kilocodeToken: string, organizationId: string | null): Promise<boolean> {
+export async function isEnabled(novacodeToken: string, organizationId: string | null): Promise<boolean> {
 	try {
-		const baseUrl = getKiloBaseUriFromToken(kilocodeToken)
+		const baseUrl = getNovaBaseUriFromToken(novacodeToken)
 		let url = `${baseUrl}/api/code-indexing/enabled`
 		if (organizationId) {
 			url += `?${new URLSearchParams({ organizationId }).toString()}`
@@ -23,7 +23,7 @@ export async function isEnabled(kilocodeToken: string, organizationId: string | 
 			method: "GET",
 			retries: 2,
 			headers: {
-				Authorization: `Bearer ${kilocodeToken}`,
+				Authorization: `Bearer ${novacodeToken}`,
 				"Content-Type": "application/json",
 			},
 		})
@@ -45,17 +45,17 @@ export async function isEnabled(kilocodeToken: string, organizationId: string | 
  * Searches code in the managed index with branch preferences
  *
  * @param request Search request with preferences
- * @param kilocodeToken Authentication token
+ * @param novacodeToken Authentication token
  * @param signal Optional AbortSignal to cancel the request
  * @returns Array of search results sorted by relevance
  * @throws Error if the request fails
  */
 export async function searchCode(
 	request: SearchRequest,
-	kilocodeToken: string,
+	novacodeToken: string,
 	signal?: AbortSignal,
 ): Promise<SearchResult[]> {
-	const baseUrl = getKiloBaseUriFromToken(kilocodeToken)
+	const baseUrl = getNovaBaseUriFromToken(novacodeToken)
 
 	try {
 		const response = await fetchWithRetries({
@@ -63,7 +63,7 @@ export async function searchCode(
 			method: "POST",
 			retries: 2,
 			headers: {
-				Authorization: `Bearer ${kilocodeToken}`,
+				Authorization: `Bearer ${novacodeToken}`,
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(request),
@@ -103,7 +103,7 @@ export interface UpsertFileParams {
 	/** Whether this is from a base branch (defaults to true) */
 	isBaseBranch?: boolean
 	/** Authentication token */
-	kilocodeToken: string
+	novacodeToken: string
 }
 
 /**
@@ -122,10 +122,10 @@ export async function upsertFile(params: UpsertFileParams, signal?: AbortSignal)
 		fileHash,
 		gitBranch = "main",
 		isBaseBranch = true,
-		kilocodeToken,
+		novacodeToken,
 	} = params
 
-	const baseUrl = getKiloBaseUriFromToken(kilocodeToken)
+	const baseUrl = getNovaBaseUriFromToken(novacodeToken)
 
 	try {
 		// Create FormData for multipart upload
@@ -148,7 +148,7 @@ export async function upsertFile(params: UpsertFileParams, signal?: AbortSignal)
 			method: "PUT",
 			retries: 2,
 			headers: {
-				Authorization: `Bearer ${kilocodeToken}`,
+				Authorization: `Bearer ${novacodeToken}`,
 			},
 			body: formData,
 			signal,
@@ -173,7 +173,7 @@ export async function upsertFile(params: UpsertFileParams, signal?: AbortSignal)
  * @param organizationId Organization ID
  * @param projectId Project ID
  * @param gitBranch Git branch name
- * @param kilocodeToken Authentication token
+ * @param novacodeToken Authentication token
  * @param signal Optional AbortSignal to cancel the request
  * @returns Server manifest with file metadata
  * @throws Error if the request fails
@@ -182,10 +182,10 @@ export async function getServerManifest(
 	organizationId: string | null,
 	projectId: string,
 	gitBranch: string,
-	kilocodeToken: string,
+	novacodeToken: string,
 	signal?: AbortSignal,
 ): Promise<ServerManifest> {
-	const baseUrl = getKiloBaseUriFromToken(kilocodeToken)
+	const baseUrl = getNovaBaseUriFromToken(novacodeToken)
 
 	try {
 		const params = new URLSearchParams({
@@ -202,7 +202,7 @@ export async function getServerManifest(
 			method: "GET",
 			retries: 2,
 			headers: {
-				Authorization: `Bearer ${kilocodeToken}`,
+				Authorization: `Bearer ${novacodeToken}`,
 				"Content-Type": "application/json",
 			},
 			signal,
@@ -235,7 +235,7 @@ export interface DeleteFilesParams {
 	/** Array of file paths to delete (optional - if not provided, deletes all files for the branch) */
 	filePaths?: string[]
 	/** Authentication token */
-	kilocodeToken: string
+	novacodeToken: string
 }
 
 /**
@@ -246,9 +246,9 @@ export interface DeleteFilesParams {
  * @throws Error if the request fails
  */
 export async function deleteFiles(params: DeleteFilesParams, signal?: AbortSignal): Promise<void> {
-	const { organizationId, projectId, gitBranch, filePaths, kilocodeToken } = params
+	const { organizationId, projectId, gitBranch, filePaths, novacodeToken } = params
 
-	const baseUrl = getKiloBaseUriFromToken(kilocodeToken)
+	const baseUrl = getNovaBaseUriFromToken(novacodeToken)
 
 	try {
 		const requestBody: any = {
@@ -272,7 +272,7 @@ export async function deleteFiles(params: DeleteFilesParams, signal?: AbortSigna
 			method: "POST",
 			retries: 2,
 			headers: {
-				Authorization: `Bearer ${kilocodeToken}`,
+				Authorization: `Bearer ${novacodeToken}`,
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(requestBody),

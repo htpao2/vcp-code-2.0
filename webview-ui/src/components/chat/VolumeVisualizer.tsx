@@ -1,4 +1,4 @@
-// kilocode_change - new file: Volume visualizer component for microphone input
+// novacode_change - new file: Volume visualizer component for microphone input
 import { useEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 

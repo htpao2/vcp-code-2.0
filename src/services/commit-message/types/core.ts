@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 
 export interface CommitMessageRequest {
 	workspacePath: string

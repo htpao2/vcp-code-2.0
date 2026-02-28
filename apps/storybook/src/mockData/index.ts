@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 export * from "./clineMessages"
 
 export const mockMarketplaceItems = [
@@ -26,7 +26,7 @@ export const mockMarketplaceItems = [
 		id: "architect-mode",
 		name: "Architect Mode",
 		description: "Plan and design system architecture before implementation. Perfect for complex projects.",
-		author: "Kilocode",
+		author: "Novacode",
 		tags: ["planning", "design", "architecture"],
 		type: "mode" as const,
 		content:
@@ -36,7 +36,7 @@ export const mockMarketplaceItems = [
 		id: "debug-mode",
 		name: "Debug Mode",
 		description: "Advanced debugging capabilities with step-by-step analysis and error tracking.",
-		author: "Kilocode",
+		author: "Novacode",
 		tags: ["debugging", "analysis", "troubleshooting"],
 		type: "mode" as const,
 		content:
@@ -51,7 +51,7 @@ export const mockModes = [
 		description:
 			"Write, modify, or refactor code. Ideal for implementing features, fixing bugs, creating new files, or making code improvements across any programming language or framework.",
 		roleDefinition:
-			"You are Kilo Code, a highly skilled software engineer with extensive knowledge in many programming languages, frameworks, design patterns, and best practices.",
+			"You are Nova Code, a highly skilled software engineer with extensive knowledge in many programming languages, frameworks, design patterns, and best practices.",
 		whenToUse: "Use this mode when you need to write, modify, or refactor code.",
 		groups: ["edit", "read", "command"],
 		source: "builtin" as const,

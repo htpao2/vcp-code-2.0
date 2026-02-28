@@ -1,4 +1,4 @@
-// kilocode_change - new file: Microphone button component for speech-to-text recording
+// novacode_change - new file: Microphone button component for speech-to-text recording
 import React, { useEffect, useCallback } from "react"
 import { Mic, Square } from "lucide-react"
 import { useTranslation } from "react-i18next"
@@ -50,18 +50,18 @@ export const MicrophoneButton: React.FC<MicrophoneButtonProps> = ({
 	})
 
 	const tooltipContent = disabled
-		? t("kilocode:speechToText.misconfiguredState")
+		? t("novacode:speechToText.misconfiguredState")
 		: hasError
-			? t("kilocode:speechToText.errorState")
+			? t("novacode:speechToText.errorState")
 			: isRecording
-				? t("kilocode:speechToText.stopRecording")
-				: t("kilocode:speechToText.startRecording")
+				? t("novacode:speechToText.stopRecording")
+				: t("novacode:speechToText.startRecording")
 
 	return (
 		<StandardTooltip content={tooltipContent}>
 			<button
 				aria-label={
-					isRecording ? t("kilocode:speechToText.stopRecording") : t("kilocode:speechToText.startRecording")
+					isRecording ? t("novacode:speechToText.stopRecording") : t("novacode:speechToText.startRecording")
 				}
 				onClick={onClick}
 				onMouseEnter={checkAvailability}

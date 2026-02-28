@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import * as vscode from "vscode"
 import { ICommitMessageAdapter } from "./ICommitMessageAdapter"
 import { ICommitMessageIntegration } from "./ICommitMessageIntegration"
@@ -27,7 +27,7 @@ export class VSCodeCommitMessageAdapter implements ICommitMessageAdapter {
 			return await vscode.window.withProgress(
 				{
 					location: vscode.ProgressLocation.SourceControl,
-					title: t("kilocode:commitMessage.generating"),
+					title: t("novacode:commitMessage.generating"),
 					cancellable: false,
 				},
 				async (progress) => {
@@ -35,7 +35,7 @@ export class VSCodeCommitMessageAdapter implements ICommitMessageAdapter {
 						reportProgress: (percentage: number, message?: string) => {
 							progress.report({
 								increment: Math.max(0, percentage - (progress as any)._lastPercentage || 0),
-								message: message || t("kilocode:commitMessage.generating"),
+								message: message || t("novacode:commitMessage.generating"),
 							})
 							;(progress as any)._lastPercentage = percentage
 						},
@@ -58,7 +58,7 @@ export class VSCodeCommitMessageAdapter implements ICommitMessageAdapter {
 									message: string,
 								) => Thenable<string | undefined>
 								await method(
-									t("kilocode:commitMessage.generationFailed", { errorMessage: result.error }),
+									t("novacode:commitMessage.generationFailed", { errorMessage: result.error }),
 								)
 							}
 						},

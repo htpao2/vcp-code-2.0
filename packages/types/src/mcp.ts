@@ -45,7 +45,7 @@ export type McpExecutionStatus = z.infer<typeof mcpExecutionStatusSchema>
  * McpServer
  */
 
-// kilocode_change start: Add authStatus to McpServer type
+// novacode_change start: Add authStatus to McpServer type
 /**
  * OAuth authentication status for MCP servers
  */
@@ -81,7 +81,7 @@ export type McpAuthDebugInfo = {
 	/** Whether all required metadata for token refresh is available */
 	canRefresh?: boolean
 }
-// kilocode_change end
+// novacode_change end
 
 export type McpServer = {
 	name: string
@@ -97,7 +97,7 @@ export type McpServer = {
 	source?: "global" | "project"
 	projectPath?: string
 	instructions?: string
-	authStatus?: McpAuthStatus // kilocode_change: OAuth authentication status
+	authStatus?: McpAuthStatus // novacode_change: OAuth authentication status
 }
 
 export type McpTool = {
@@ -163,7 +163,7 @@ export type McpToolCallResponse = {
 				}
 				_meta?: Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
 		  }
-		// kilocode_change start
+		// novacode_change start
 		| {
 				type: "resource_link"
 				uri: string
@@ -172,7 +172,7 @@ export type McpToolCallResponse = {
 				mimeType?: string
 				_meta?: Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
 		  }
-		// kilocode_change end
+		// novacode_change end
 	>
 	structuredContent?: Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
 	isError?: boolean

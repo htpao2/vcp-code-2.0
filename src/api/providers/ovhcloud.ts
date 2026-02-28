@@ -1,4 +1,4 @@
-// kilocode_change - file added
+﻿// novacode_change - file added
 import { ovhCloudAiEndpointsDefaultModelId, ovhCloudAiEndpointsDefaultModelInfo } from "@roo-code/types"
 import type { ApiHandlerOptions } from "../../shared/api"
 
@@ -11,7 +11,7 @@ import { convertToOpenAiMessages } from "../transform/openai-format"
 import { calculateApiCostOpenAI } from "../../shared/cost"
 import { convertToR1Format } from "../transform/r1-format"
 import { XmlMatcher } from "../../utils/xml-matcher"
-import { verifyFinishReason } from "./kilocode/verifyFinishReason"
+import { verifyFinishReason } from "./nova/verifyFinishReason"
 
 export class OVHcloudAIEndpointsHandler extends RouterProvider implements SingleCompletionHandler {
 	constructor(options: ApiHandlerOptions) {

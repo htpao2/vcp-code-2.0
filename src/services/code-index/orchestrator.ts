@@ -15,7 +15,7 @@ import { t } from "../../i18n"
 export class CodeIndexOrchestrator {
 	private _fileWatcherSubscriptions: vscode.Disposable[] = []
 	private _isProcessing: boolean = false
-	private _cancelRequested: boolean = false // kilocode_change
+	private _cancelRequested: boolean = false // novacode_change
 
 	constructor(
 		private readonly configManager: CodeIndexConfigManager,
@@ -27,7 +27,7 @@ export class CodeIndexOrchestrator {
 		private readonly fileWatcher: IFileWatcher,
 	) {}
 
-	// kilocode_change start
+	// novacode_change start
 	/**
 	 * Updates the batch segment threshold for both scanner and file watcher
 	 * @param newThreshold New batch segment threshold value
@@ -36,7 +36,7 @@ export class CodeIndexOrchestrator {
 		this.scanner.updateBatchSegmentThreshold(newThreshold)
 		this.fileWatcher.updateBatchSegmentThreshold(newThreshold)
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	/**
 	 * Starts the file watcher if not already running.
@@ -132,7 +132,7 @@ export class CodeIndexOrchestrator {
 			return
 		}
 
-		this._cancelRequested = false // kilocode_change
+		this._cancelRequested = false // novacode_change
 		this._isProcessing = true
 		this.stateManager.setSystemState("Indexing", "Initializing services...")
 
@@ -161,13 +161,13 @@ export class CodeIndexOrchestrator {
 					"[CodeIndexOrchestrator] Collection already has indexed data. Running incremental scan for new/changed files...",
 				)
 
-				// kilocode_change start
+				// novacode_change start
 				if (this._cancelRequested) {
 					this._isProcessing = false
 					this.stateManager.setSystemState("Standby", t("embeddings:orchestrator.indexingCancelled"))
 					return
 				}
-				// kilocode_change end
+				// novacode_change end
 
 				this.stateManager.setSystemState("Indexing", "Checking for new or modified files...")
 
@@ -206,7 +206,7 @@ export class CodeIndexOrchestrator {
 					throw new Error("Incremental scan failed, is scanner initialized?")
 				}
 
-				// kilocode_change start
+				// novacode_change start
 				if (this._cancelRequested || this.scanner.isCancelled) {
 					this._isProcessing = false
 					if (this.stateManager.state !== "Error") {
@@ -214,7 +214,7 @@ export class CodeIndexOrchestrator {
 					}
 					return
 				}
-				// kilocode_change end
+				// novacode_change end
 
 				// If new files were found and indexed, log the results
 				if (cumulativeBlocksFoundSoFar > 0) {
@@ -374,7 +374,7 @@ export class CodeIndexOrchestrator {
 		this._isProcessing = false
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	/**
 	 * Gracefully cancels any ongoing indexing work.
 	 * - Stops the watcher if active
@@ -398,7 +398,7 @@ export class CodeIndexOrchestrator {
 		// Clear processing flag
 		this._isProcessing = false
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	/**
 	 * Clears all index data by stopping the watcher, clearing the vector store,

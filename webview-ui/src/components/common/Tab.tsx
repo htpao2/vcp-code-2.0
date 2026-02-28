@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 type TabProps = HTMLAttributes<HTMLDivElement>
 
 export const Tab = ({ className, children, ...props }: TabProps) => (
-	// kilocode_change
+	// novacode_change
 	<div className={cn("fixed inset-0 bottom-9 flex flex-col", className)} {...props}>
 		{children}
 	</div>

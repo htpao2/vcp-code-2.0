@@ -1,9 +1,12 @@
 // npx vitest core/webview/__tests__/webviewMessageHandler.spec.ts
 
-import type { Mock } from "vitest"
+import type { Mock, MockInstance } from "vitest"
 
 // Mock dependencies - must come before imports
 vi.mock("../../../api/providers/fetchers/modelCache")
+vi.mock("../../../api/providers/fetchers/huggingface", () => ({
+	getHuggingFaceModelsWithMetadata: vi.fn(),
+}))
 
 vi.mock("../../../integrations/openai-codex/oauth", () => ({
 	openAiCodexOAuthManager: {
@@ -25,11 +28,17 @@ import type { ModelRecord } from "@roo-code/types"
 
 import { webviewMessageHandler } from "../webviewMessageHandler"
 import type { ClineProvider } from "../ClineProvider"
-import { getModels } from "../../../api/providers/fetchers/modelCache"
+import { getModels, flushModels } from "../../../api/providers/fetchers/modelCache"
+import { getHuggingFaceModelsWithMetadata } from "../../../api/providers/fetchers/huggingface"
+import { CloudService } from "@roo-code/cloud"
 const { openAiCodexOAuthManager } = await import("../../../integrations/openai-codex/oauth")
 const { fetchOpenAiCodexRateLimitInfo } = await import("../../../integrations/openai-codex/rate-limits")
 
 const mockGetModels = getModels as Mock<typeof getModels>
+const mockFlushModels = flushModels as Mock<typeof flushModels>
+const mockGetHuggingFaceModelsWithMetadata = getHuggingFaceModelsWithMetadata as Mock<
+	typeof getHuggingFaceModelsWithMetadata
+>
 const mockGetAccessToken = vi.mocked(openAiCodexOAuthManager.getAccessToken)
 const mockGetAccountId = vi.mocked(openAiCodexOAuthManager.getAccountId)
 const mockFetchOpenAiCodexRateLimitInfo = vi.mocked(fetchOpenAiCodexRateLimitInfo)
@@ -74,7 +83,7 @@ vi.mock("vscode", () => {
 			showInformationMessage,
 			showErrorMessage,
 			showTextDocument,
-			createTextEditorDecorationType: vi.fn(() => ({ dispose: vi.fn() })), // kilocode_change
+			createTextEditorDecorationType: vi.fn(() => ({ dispose: vi.fn() })), // novacode_change
 		},
 		workspace: {
 			workspaceFolders: [{ uri: { fsPath: "/mock/workspace" } }],
@@ -179,10 +188,12 @@ describe("webviewMessageHandler - requestLmStudioModels", () => {
 
 		expect(mockGetModels).toHaveBeenCalledWith({ provider: "lmstudio", baseUrl: "http://localhost:1234" })
 
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "lmStudioModels",
-			lmStudioModels: mockModels,
-		})
+		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith(
+			expect.objectContaining({
+				type: "lmStudioModels",
+				lmStudioModels: mockModels,
+			}),
+		)
 	})
 })
 
@@ -252,25 +263,256 @@ describe("webviewMessageHandler - requestOllamaModels", () => {
 
 		expect(mockGetModels).toHaveBeenCalledWith({ provider: "ollama", baseUrl: "http://localhost:1234" })
 
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "ollamaModels",
-			ollamaModels: mockModels,
+		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith(
+			expect.objectContaining({
+				type: "ollamaModels",
+				ollamaModels: mockModels,
+			}),
+		)
+	})
+})
+
+describe("webviewMessageHandler - requestRooModels", () => {
+	let hasInstanceSpy: MockInstance
+	let instanceGetterSpy: MockInstance
+
+	beforeEach(() => {
+		vi.clearAllMocks()
+		hasInstanceSpy = vi.spyOn(CloudService, "hasInstance").mockReturnValue(true)
+		instanceGetterSpy = vi.spyOn(CloudService, "instance", "get").mockReturnValue({
+			authService: {
+				getSessionToken: vi.fn().mockReturnValue("roo-session-token"),
+			},
+		} as unknown as CloudService)
+	})
+
+	afterEach(() => {
+		hasInstanceSpy.mockRestore()
+		instanceGetterSpy.mockRestore()
+	})
+
+	it("posts connecting and ready states with observability metadata", async () => {
+		const mockModels: ModelRecord = {
+			"roo-model-1": {
+				maxTokens: 4096,
+				contextWindow: 8192,
+				supportsPromptCache: false,
+				description: "Test Roo model 1",
+			},
+		}
+		mockFlushModels.mockResolvedValue(undefined)
+		mockGetModels.mockResolvedValue(mockModels)
+
+		await webviewMessageHandler(mockClineProvider, {
+			type: "requestRooModels",
+			requestId: "roo-request-1",
 		})
+
+		expect(mockFlushModels).toHaveBeenCalledWith(
+			{
+				provider: "roo",
+				baseUrl: "https://api.roocode.com/proxy",
+				apiKey: "roo-session-token",
+			},
+			true,
+		)
+		expect(mockGetModels).toHaveBeenCalledWith({
+			provider: "roo",
+			baseUrl: "https://api.roocode.com/proxy",
+			apiKey: "roo-session-token",
+		})
+		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith(
+			expect.objectContaining({
+				type: "singleRouterModelFetchResponse",
+				requestId: "roo-request-1",
+				success: true,
+				values: expect.objectContaining({
+					requestId: "roo-request-1",
+					provider: "roo",
+					url: "https://api.roocode.com/proxy",
+					state: "connecting",
+				}),
+			}),
+		)
+		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith(
+			expect.objectContaining({
+				type: "singleRouterModelFetchResponse",
+				requestId: "roo-request-1",
+				success: true,
+				values: expect.objectContaining({
+					requestId: "roo-request-1",
+					provider: "roo",
+					url: "https://api.roocode.com/proxy",
+					state: "ready",
+					models: mockModels,
+				}),
+			}),
+		)
+	})
+
+	it("posts error state when roo model fetch fails", async () => {
+		mockFlushModels.mockResolvedValue(undefined)
+		mockGetModels.mockRejectedValue(new Error("Roo API down"))
+
+		await webviewMessageHandler(mockClineProvider, {
+			type: "requestRooModels",
+			requestId: "roo-request-err",
+		})
+
+		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith(
+			expect.objectContaining({
+				type: "singleRouterModelFetchResponse",
+				requestId: "roo-request-err",
+				success: false,
+				error: "Roo API down",
+				values: expect.objectContaining({
+					requestId: "roo-request-err",
+					provider: "roo",
+					url: "https://api.roocode.com/proxy",
+					state: "error",
+				}),
+			}),
+		)
+	})
+})
+
+describe("webviewMessageHandler - requestHuggingFaceModels", () => {
+	beforeEach(() => {
+		vi.clearAllMocks()
+	})
+
+	it("posts connecting and ready states while preserving huggingFaceModels payload", async () => {
+		const huggingFaceModels = [
+			{
+				id: "hf/model-1",
+				object: "model" as const,
+				created: 1,
+				owned_by: "huggingface",
+				providers: [],
+			},
+		]
+		mockGetHuggingFaceModelsWithMetadata.mockResolvedValue({
+			models: huggingFaceModels,
+			cached: false,
+			timestamp: Date.now(),
+		})
+
+		await webviewMessageHandler(mockClineProvider, {
+			type: "requestHuggingFaceModels",
+			requestId: "hf-request-1",
+		})
+
+		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith(
+			expect.objectContaining({
+				type: "singleRouterModelFetchResponse",
+				requestId: "hf-request-1",
+				success: true,
+				values: expect.objectContaining({
+					requestId: "hf-request-1",
+					provider: "huggingface",
+					url: "https://router.huggingface.co/v1/models",
+					state: "connecting",
+				}),
+			}),
+		)
+		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith(
+			expect.objectContaining({
+				type: "huggingFaceModels",
+				requestId: "hf-request-1",
+				huggingFaceModels,
+				values: expect.objectContaining({
+					requestId: "hf-request-1",
+					provider: "huggingface",
+					url: "https://router.huggingface.co/v1/models",
+					state: "ready",
+				}),
+			}),
+		)
+		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith(
+			expect.objectContaining({
+				type: "singleRouterModelFetchResponse",
+				requestId: "hf-request-1",
+				success: true,
+				values: expect.objectContaining({
+					requestId: "hf-request-1",
+					provider: "huggingface",
+					url: "https://router.huggingface.co/v1/models",
+					state: "ready",
+				}),
+			}),
+		)
+	})
+
+	it("posts error state and empty list when Hugging Face model fetch fails", async () => {
+		mockGetHuggingFaceModelsWithMetadata.mockRejectedValue(new Error("HF unavailable"))
+
+		await webviewMessageHandler(mockClineProvider, {
+			type: "requestHuggingFaceModels",
+			requestId: "hf-request-err",
+		})
+
+		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith(
+			expect.objectContaining({
+				type: "huggingFaceModels",
+				requestId: "hf-request-err",
+				huggingFaceModels: [],
+				values: expect.objectContaining({
+					requestId: "hf-request-err",
+					provider: "huggingface",
+					url: "https://router.huggingface.co/v1/models",
+					state: "error",
+				}),
+			}),
+		)
+		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith(
+			expect.objectContaining({
+				type: "singleRouterModelFetchResponse",
+				requestId: "hf-request-err",
+				success: false,
+				error: "HF unavailable",
+				values: expect.objectContaining({
+					requestId: "hf-request-err",
+					provider: "huggingface",
+					url: "https://router.huggingface.co/v1/models",
+					state: "error",
+				}),
+			}),
+		)
 	})
 })
 
 describe("webviewMessageHandler - requestRouterModels", () => {
+	const expectProviderErrorMessage = (provider: string, error: string) => {
+		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith(
+			expect.objectContaining({
+				type: "singleRouterModelFetchResponse",
+				success: false,
+				error,
+				values: expect.objectContaining({ provider }),
+			}),
+		)
+	}
+
+	const expectRouterModelsMessage = (subset: Record<string, unknown>) => {
+		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith(
+			expect.objectContaining({
+				type: "routerModels",
+				routerModels: expect.objectContaining(subset),
+			}),
+		)
+	}
+
 	beforeEach(() => {
 		vi.clearAllMocks()
 		mockClineProvider.getState = vi.fn().mockResolvedValue({
 			apiConfiguration: {
 				openRouterApiKey: "openrouter-key",
 				requestyApiKey: "requesty-key",
-				glamaApiKey: "glama-key", // kilocode_change
+				glamaApiKey: "glama-key", // novacode_change
 				unboundApiKey: "unbound-key",
 				litellmApiKey: "litellm-key",
 				litellmBaseUrl: "http://localhost:4000",
-				// kilocode_change start
+				// novacode_change start
 				chutesApiKey: "chutes-key",
 				geminiApiKey: "gemini-key",
 				googleGeminiBaseUrl: "https://gemini.example.com",
@@ -279,7 +521,7 @@ describe("webviewMessageHandler - requestRouterModels", () => {
 				inceptionLabsApiKey: "inception-key",
 				inceptionLabsBaseUrl: "https://api.inceptionlabs.ai/v1/",
 				poeApiKey: "poe-key",
-				// kilocode_change end
+				// novacode_change end
 			},
 		})
 	})
@@ -307,16 +549,16 @@ describe("webviewMessageHandler - requestRouterModels", () => {
 		})
 
 		// Verify getModels was called for each provider
-		expect(mockGetModels).toHaveBeenCalledWith({ provider: "openrouter", apiKey: "openrouter-key" }) // kilocode_change: apiKey
+		expect(mockGetModels).toHaveBeenCalledWith({ provider: "openrouter", apiKey: "openrouter-key" }) // novacode_change: apiKey
 		expect(mockGetModels).toHaveBeenCalledWith({ provider: "requesty", apiKey: "requesty-key" })
-		expect(mockGetModels).toHaveBeenCalledWith({ provider: "glama" }) // kilocode_change
+		expect(mockGetModels).toHaveBeenCalledWith({ provider: "glama" }) // novacode_change
 		expect(mockGetModels).toHaveBeenCalledWith({ provider: "unbound", apiKey: "unbound-key" })
 		expect(mockGetModels).toHaveBeenCalledWith({
 			provider: "zenmux",
 			apiKey: undefined,
 			baseUrl: "https://zenmux.ai/api/v1",
 		})
-		// kilocode_change start
+		// novacode_change start
 		expect(mockGetModels).toHaveBeenCalledWith({ provider: "chutes", apiKey: "chutes-key" })
 		expect(mockGetModels).toHaveBeenCalledWith({
 			provider: "gemini",
@@ -337,7 +579,7 @@ describe("webviewMessageHandler - requestRouterModels", () => {
 			provider: "poe",
 			apiKey: "poe-key",
 		})
-		// kilocode_change end
+		// novacode_change end
 		expect(mockGetModels).toHaveBeenCalledWith({ provider: "vercel-ai-gateway" })
 		expect(mockGetModels).toHaveBeenCalledWith({ provider: "deepinfra" })
 		expect(mockGetModels).toHaveBeenCalledWith(
@@ -355,35 +597,12 @@ describe("webviewMessageHandler - requestRouterModels", () => {
 		// Note: io-intelligence is not fetched because no API key is provided in the mock state
 
 		// Verify response was sent
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "routerModels",
-			routerModels: {
-				apertis: {}, // kilocode_change
-				deepinfra: mockModels,
-				openrouter: mockModels,
-				gemini: mockModels, // kilocode_change
-				requesty: mockModels,
-				glama: mockModels, // kilocode_change
-				synthetic: mockModels, // kilocode_change
-				unbound: mockModels,
-				litellm: mockModels,
-				kilocode: mockModels,
-				"nano-gpt": mockModels, // kilocode_change
-				aihubmix: mockModels, // kilocode_change
-				roo: mockModels,
-				chutes: mockModels,
-				poe: mockModels, // kilocode_change
-				zenmux: mockModels,
-				ollama: mockModels, // kilocode_change
-				lmstudio: {},
-				"vercel-ai-gateway": mockModels,
-				huggingface: {},
-				"io-intelligence": {},
-				ovhcloud: mockModels, // kilocode_change
-				inception: mockModels, // kilocode_change
-				"sap-ai-core": {}, // kilocode_change
-			},
-			values: undefined,
+		expectRouterModelsMessage({
+			openrouter: mockModels,
+			requesty: mockModels,
+			unbound: mockModels,
+			litellm: mockModels,
+			novacode: mockModels,
 		})
 	})
 
@@ -392,9 +611,9 @@ describe("webviewMessageHandler - requestRouterModels", () => {
 			apiConfiguration: {
 				openRouterApiKey: "openrouter-key",
 				requestyApiKey: "requesty-key",
-				glamaApiKey: "glama-key", // kilocode_change
+				glamaApiKey: "glama-key", // novacode_change
 				unboundApiKey: "unbound-key",
-				ovhCloudAiEndpointsApiKey: "ovhcloud-key", // kilocode_change
+				ovhCloudAiEndpointsApiKey: "ovhcloud-key", // novacode_change
 				// Missing litellm config
 			},
 		})
@@ -432,12 +651,12 @@ describe("webviewMessageHandler - requestRouterModels", () => {
 				openRouterApiKey: "openrouter-key",
 				requestyApiKey: "requesty-key",
 				unboundApiKey: "unbound-key",
-				// kilocode_change start
+				// novacode_change start
 				ovhCloudAiEndpointsApiKey: "ovhcloud-key",
 				chutesApiKey: "chutes-key",
 				nanoGptApiKey: "nano-gpt-key",
 				poeApiKey: "poe-key",
-				// kilocode_change end
+				// novacode_change end
 				// Missing litellm config
 			},
 		})
@@ -466,35 +685,11 @@ describe("webviewMessageHandler - requestRouterModels", () => {
 		)
 
 		// Verify response includes empty object for LiteLLM
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "routerModels",
-			routerModels: {
-				apertis: {}, // kilocode_change
-				deepinfra: mockModels,
-				openrouter: mockModels,
-				gemini: mockModels, // kilocode_change
-				requesty: mockModels,
-				glama: mockModels, // kilocode_change
-				synthetic: mockModels, // kilocode_change
-				unbound: mockModels,
-				roo: mockModels,
-				chutes: mockModels,
-				poe: mockModels, // kilocode_change
-				zenmux: mockModels,
-				litellm: {},
-				kilocode: mockModels,
-				"nano-gpt": mockModels, // kilocode_change
-				aihubmix: mockModels, // kilocode_change
-				ollama: mockModels, // kilocode_change
-				lmstudio: {},
-				"vercel-ai-gateway": mockModels,
-				huggingface: {},
-				"io-intelligence": {},
-				ovhcloud: mockModels, // kilocode_change
-				inception: mockModels, // kilocode_change
-				"sap-ai-core": {}, // kilocode_change
-			},
-			values: undefined,
+		expectRouterModelsMessage({
+			openrouter: mockModels,
+			requesty: mockModels,
+			unbound: mockModels,
+			litellm: {},
 		})
 	})
 
@@ -511,22 +706,22 @@ describe("webviewMessageHandler - requestRouterModels", () => {
 		// Mock some providers to succeed and others to fail
 		mockGetModels
 			.mockResolvedValueOnce(mockModels) // openrouter
-			.mockResolvedValueOnce(mockModels) // kilocode_change: gemini
+			.mockResolvedValueOnce(mockModels) // novacode_change: gemini
 			.mockRejectedValueOnce(new Error("Requesty API error")) // requesty
-			.mockResolvedValueOnce(mockModels) // kilocode_change: glama
+			.mockResolvedValueOnce(mockModels) // novacode_change: glama
 			.mockRejectedValueOnce(new Error("Unbound API error")) // unbound
-			.mockResolvedValueOnce(mockModels) // kilocode-openrouter
-			.mockRejectedValueOnce(new Error("Ollama API error")) // kilocode_change
+			.mockResolvedValueOnce(mockModels) // novacode-openrouter
+			.mockRejectedValueOnce(new Error("Ollama API error")) // novacode_change
 			.mockResolvedValueOnce(mockModels) // vercel-ai-gateway
 			.mockResolvedValueOnce(mockModels) // deepinfra
-			.mockResolvedValueOnce(mockModels) // nano-gpt // kilocode_change
-			.mockResolvedValueOnce(mockModels) // kilocode_change aihubmix
-			.mockResolvedValueOnce(mockModels) // kilocode_change ovhcloud
-			.mockRejectedValueOnce(new Error("Inception API error")) // kilocode_change
-			.mockRejectedValueOnce(new Error("Synthetic API error")) // kilocode_change
+			.mockResolvedValueOnce(mockModels) // nano-gpt // novacode_change
+			.mockResolvedValueOnce(mockModels) // novacode_change aihubmix
+			.mockResolvedValueOnce(mockModels) // novacode_change ovhcloud
+			.mockRejectedValueOnce(new Error("Inception API error")) // novacode_change
+			.mockRejectedValueOnce(new Error("Synthetic API error")) // novacode_change
 			.mockResolvedValueOnce(mockModels) // roo
 			.mockRejectedValueOnce(new Error("Chutes API error")) // chutes
-			.mockResolvedValueOnce(mockModels) // poe // kilocode_change
+			.mockResolvedValueOnce(mockModels) // poe // novacode_change
 			.mockResolvedValueOnce(mockModels) // zenmux
 			.mockRejectedValueOnce(new Error("LiteLLM connection failed")) // litellm
 
@@ -535,82 +730,27 @@ describe("webviewMessageHandler - requestRouterModels", () => {
 		})
 
 		// Verify error messages were sent for failed providers (these come first)
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Requesty API error",
-			values: { provider: "requesty" },
-		})
+		expectProviderErrorMessage("requesty", "Requesty API error")
 
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Unbound API error",
-			values: { provider: "unbound" },
-		})
+		expectProviderErrorMessage("unbound", "Unbound API error")
 
-		// kilocode_change start
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Inception API error",
-			values: { provider: "inception" },
-		})
+		// novacode_change start
+		expectProviderErrorMessage("inception", "Inception API error")
 
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Synthetic API error",
-			values: { provider: "synthetic" },
-		})
-		// kilocode_change end
+		expectProviderErrorMessage("synthetic", "Synthetic API error")
+		// novacode_change end
 
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Chutes API error",
-			values: { provider: "chutes" },
-		})
+		expectProviderErrorMessage("chutes", "Chutes API error")
 
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "LiteLLM connection failed",
-			values: { provider: "litellm" },
-		})
+		expectProviderErrorMessage("litellm", "LiteLLM connection failed")
 
 		// Verify final routerModels response includes successful providers and empty objects for failed ones
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "routerModels",
-			routerModels: {
-				apertis: {}, // kilocode_change
-				deepinfra: mockModels,
-				openrouter: mockModels,
-				requesty: {},
-				glama: mockModels, // kilocode_change
-				unbound: {},
-				roo: mockModels,
-				chutes: {},
-				poe: mockModels, // kilocode_change
-				zenmux: mockModels,
-				litellm: {},
-				ollama: {},
-				lmstudio: {},
-				"vercel-ai-gateway": mockModels,
-				huggingface: {},
-				"io-intelligence": {},
-				// kilocode_change start
-				kilocode: mockModels,
-				"nano-gpt": mockModels,
-				aihubmix: mockModels, // kilocode_change
-				inception: {},
-				synthetic: {},
-				gemini: mockModels,
-				ovhcloud: mockModels,
-				"sap-ai-core": {},
-				// kilocode_change end
-			},
-			values: undefined,
+		expectRouterModelsMessage({
+			openrouter: mockModels,
+			requesty: {},
+			unbound: {},
+			chutes: {},
+			litellm: {},
 		})
 	})
 
@@ -618,22 +758,22 @@ describe("webviewMessageHandler - requestRouterModels", () => {
 		// Mock providers to fail with different error types
 		mockGetModels
 			.mockRejectedValueOnce(new Error("Structured error message")) // openrouter
-			.mockRejectedValueOnce(new Error("Gemini API error")) // // kilocode_change: gemini
+			.mockRejectedValueOnce(new Error("Gemini API error")) // // novacode_change: gemini
 			.mockRejectedValueOnce(new Error("Requesty API error")) // requesty
-			.mockRejectedValueOnce(new Error("Glama API error")) // kilocode_change: glama
+			.mockRejectedValueOnce(new Error("Glama API error")) // novacode_change: glama
 			.mockRejectedValueOnce(new Error("Unbound API error")) // unbound
-			.mockResolvedValueOnce({}) // kilocode-openrouter - Success
+			.mockResolvedValueOnce({}) // novacode-openrouter - Success
 			.mockRejectedValueOnce(new Error("Ollama API error")) // ollama
 			.mockRejectedValueOnce(new Error("Vercel AI Gateway error")) // vercel-ai-gateway
 			.mockRejectedValueOnce(new Error("DeepInfra API error")) // deepinfra
-			.mockRejectedValueOnce(new Error("Nano-GPT API error")) // nano-gpt // kilocode_change
-			.mockRejectedValueOnce(new Error("Aihubmix API error")) // aihubmix // kilocode_change
-			.mockRejectedValueOnce(new Error("OVHcloud AI Endpoints error")) // ovhcloud // kilocode_change
-			.mockRejectedValueOnce(new Error("Inception API error")) // kilocode_change inception
-			.mockRejectedValueOnce(new Error("Synthetic API error")) // kilocode_change synthetic
+			.mockRejectedValueOnce(new Error("Nano-GPT API error")) // nano-gpt // novacode_change
+			.mockRejectedValueOnce(new Error("Aihubmix API error")) // aihubmix // novacode_change
+			.mockRejectedValueOnce(new Error("OVHcloud AI Endpoints error")) // ovhcloud // novacode_change
+			.mockRejectedValueOnce(new Error("Inception API error")) // novacode_change inception
+			.mockRejectedValueOnce(new Error("Synthetic API error")) // novacode_change synthetic
 			.mockRejectedValueOnce(new Error("Roo API error")) // roo
 			.mockRejectedValueOnce(new Error("Chutes API error")) // chutes
-			.mockRejectedValueOnce(new Error("Poe API error")) // poe // kilocode_change
+			.mockRejectedValueOnce(new Error("Poe API error")) // poe // novacode_change
 			.mockResolvedValueOnce({}) // zenmux
 			.mockRejectedValueOnce(new Error("LiteLLM connection failed")) // litellm
 
@@ -642,141 +782,51 @@ describe("webviewMessageHandler - requestRouterModels", () => {
 		})
 
 		// Verify error handling for different error types
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Structured error message",
-			values: { provider: "openrouter" },
-		})
+		expectProviderErrorMessage("openrouter", "Structured error message")
 
-		// kilocode_change start
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Gemini API error",
-			values: { provider: "gemini" },
-		})
-		// kilocode_change end
+		// novacode_change start
+		expectProviderErrorMessage("gemini", "Gemini API error")
+		// novacode_change end
 
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Requesty API error",
-			values: { provider: "requesty" },
-		})
+		expectProviderErrorMessage("requesty", "Requesty API error")
 
-		// kilocode_change start
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Glama API error",
-			values: { provider: "glama" },
-		})
-		// kilocode_change end
+		// novacode_change start
+		expectProviderErrorMessage("glama", "Glama API error")
+		// novacode_change end
 
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Unbound API error",
-			values: { provider: "unbound" },
-		})
+		expectProviderErrorMessage("unbound", "Unbound API error")
 
-		// kilocode_change start
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Ollama API error",
-			values: { provider: "ollama" },
-		})
+		// novacode_change start
+		expectProviderErrorMessage("ollama", "Ollama API error")
 
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Vercel AI Gateway error",
-			values: { provider: "vercel-ai-gateway" },
-		})
+		expectProviderErrorMessage("vercel-ai-gateway", "Vercel AI Gateway error")
 
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Chutes API error",
-			values: { provider: "chutes" },
-		})
-		// kilocode_change end
+		expectProviderErrorMessage("chutes", "Chutes API error")
+		// novacode_change end
 
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "DeepInfra API error",
-			values: { provider: "deepinfra" },
-		})
+		expectProviderErrorMessage("deepinfra", "DeepInfra API error")
 
-		// kilocode_change start
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Nano-GPT API error",
-			values: { provider: "nano-gpt" },
-		})
-		// kilocode_change end
+		// novacode_change start
+		expectProviderErrorMessage("nano-gpt", "Nano-GPT API error")
+		// novacode_change end
 
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Vercel AI Gateway error",
-			values: { provider: "vercel-ai-gateway" },
-		})
+		expectProviderErrorMessage("vercel-ai-gateway", "Vercel AI Gateway error")
 
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Roo API error",
-			values: { provider: "roo" },
-		})
+		expectProviderErrorMessage("roo", "Roo API error")
 
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Chutes API error",
-			values: { provider: "chutes" },
-		})
+		expectProviderErrorMessage("chutes", "Chutes API error")
 
-		// kilocode_change start
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Poe API error",
-			values: { provider: "poe" },
-		})
-		// kilocode_change end
+		// novacode_change start
+		expectProviderErrorMessage("poe", "Poe API error")
+		// novacode_change end
 
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "LiteLLM connection failed",
-			values: { provider: "litellm" },
-		})
+		expectProviderErrorMessage("litellm", "LiteLLM connection failed")
 
-		// kilocode_change start
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Aihubmix API error",
-			values: { provider: "aihubmix" },
-		})
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "OVHcloud AI Endpoints error",
-			values: { provider: "ovhcloud" },
-		})
-		expect(mockClineProvider.postMessageToWebview).toHaveBeenCalledWith({
-			type: "singleRouterModelFetchResponse",
-			success: false,
-			error: "Inception API error",
-			values: { provider: "inception" },
-		})
-		// kilocode_change end
+		// novacode_change start
+		expectProviderErrorMessage("aihubmix", "Aihubmix API error")
+		expectProviderErrorMessage("ovhcloud", "OVHcloud AI Endpoints error")
+		expectProviderErrorMessage("inception", "Inception API error")
+		// novacode_change end
 	})
 
 	it("prefers config values over message values for LiteLLM", async () => {
@@ -842,12 +892,12 @@ describe("webviewMessageHandler - deleteCustomMode", () => {
 		vi.clearAllMocks()
 		vi.mocked(getWorkspacePath).mockReturnValue("/mock/workspace")
 		vi.mocked(vscode.window.showErrorMessage).mockResolvedValue(undefined)
-		vi.mocked(ensureSettingsDirectoryExists).mockResolvedValue("/mock/global/storage/.kilocode")
+		vi.mocked(ensureSettingsDirectoryExists).mockResolvedValue("/mock/global/storage/.novacode")
 	})
 
 	it("should delete a project mode and its rules folder", async () => {
 		const slug = "test-project-mode"
-		const rulesFolderPath = path.join("/mock/workspace", ".kilocode", `rules-${slug}`)
+		const rulesFolderPath = path.join("/mock/workspace", ".novacode", `rules-${slug}`)
 
 		vi.mocked(mockClineProvider.customModesManager.getCustomModes).mockResolvedValue([
 			{
@@ -872,7 +922,7 @@ describe("webviewMessageHandler - deleteCustomMode", () => {
 	it("should delete a global mode and its rules folder", async () => {
 		const slug = "test-global-mode"
 		const homeDir = os.homedir()
-		const rulesFolderPath = path.join(homeDir, ".kilocode", `rules-${slug}`)
+		const rulesFolderPath = path.join(homeDir, ".novacode", `rules-${slug}`)
 
 		vi.mocked(mockClineProvider.customModesManager.getCustomModes).mockResolvedValue([
 			{
@@ -918,7 +968,7 @@ describe("webviewMessageHandler - deleteCustomMode", () => {
 
 	it("should handle errors when deleting rules folder", async () => {
 		const slug = "test-mode-error"
-		const rulesFolderPath = path.join("/mock/workspace", ".kilocode", `rules-${slug}`)
+		const rulesFolderPath = path.join("/mock/workspace", ".novacode", `rules-${slug}`)
 		const error = new Error("Permission denied")
 
 		vi.mocked(mockClineProvider.customModesManager.getCustomModes).mockResolvedValue([

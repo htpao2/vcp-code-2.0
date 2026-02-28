@@ -38,14 +38,14 @@ vi.mock("@vscode/webview-ui-toolkit/react", () => ({
 			{children}
 		</label>
 	),
-	// kilocode_change start
+	// novacode_change start
 	VSCodeDropdown: ({ children, value, onChange, className }: any) => (
 		<select value={value} onChange={onChange} className={className}>
 			{children}
 		</select>
 	),
 	VSCodeOption: ({ children, value }: any) => <option value={value}>{children}</option>,
-	// kilocode_change start
+	// novacode_change start
 }))
 
 // Mock other components
@@ -289,14 +289,14 @@ vi.mock("@src/components/ui/hooks/useSelectedModel", () => ({
 			}
 		}
 	}),
-	// kilocode_change start
+	// novacode_change start
 	useModelProviders: vi.fn(() => ({
 		data: {
 			openai: { id: "openai", name: "OpenAI" },
 			anthropic: { id: "anthropic", name: "Anthropic" },
 		},
 	})),
-	// kilocode_change end
+	// novacode_change end
 }))
 
 const renderApiOptions = (props: Partial<ApiOptionsProps> = {}) => {
@@ -344,7 +344,7 @@ describe("ApiOptions", () => {
 		expect(mockSetApiConfigurationField).toHaveBeenCalledWith("apiModelId", openAiCodexDefaultModelId, false)
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	it("resets model to mainland Z.ai default when switching to Z.ai with china_api line", () => {
 		const mockSetApiConfigurationField = vi.fn()
 
@@ -366,7 +366,7 @@ describe("ApiOptions", () => {
 		expect(mockSetApiConfigurationField).toHaveBeenCalledWith("apiProvider", "zai")
 		expect(mockSetApiConfigurationField).toHaveBeenCalledWith("apiModelId", mainlandZAiDefaultModelId, false)
 	})
-	// kilocode_change end
+	// novacode_change end
 
 	it("hides kimi-for-coding from model options when Moonshot endpoint is not coding", () => {
 		renderApiOptions({
@@ -390,7 +390,7 @@ describe("ApiOptions", () => {
 		})
 
 		expect(screen.getByRole("option", { name: "kimi-for-coding" })).toBeInTheDocument()
-		expect(screen.getByRole("option", { name: "kimi-k2-thinking" })).toBeInTheDocument() // kilocode_change
+		expect(screen.getByRole("option", { name: "kimi-k2-thinking" })).toBeInTheDocument() // novacode_change
 	})
 
 	it("shows diff settings, temperature and rate limit controls by default", () => {
@@ -453,7 +453,7 @@ describe("ApiOptions", () => {
 		// it's included in the ApiOptions component when appropriate.
 	})
 
-	// kilocode_change: skip, we use a custom provider select component
+	// novacode_change: skip, we use a custom provider select component
 	it.skip("filters providers by search input and shows no match message when appropriate", () => {
 		renderApiOptions({
 			apiConfiguration: {},
@@ -618,7 +618,7 @@ describe("ApiOptions", () => {
 		})
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	describe("Anthropic provider deployment name settings", () => {
 		it("shows deployment name checkbox and input when deployment name is set", () => {
 			const mockSetApiConfigurationField = vi.fn()
@@ -660,7 +660,7 @@ describe("ApiOptions", () => {
 			expect(mockSetApiConfigurationField).toHaveBeenCalledWith("anthropicDeploymentName", "")
 		})
 	})
-	// kilocode_change end
+	// novacode_change end
 
 	describe("LiteLLM provider tests", () => {
 		it("renders LiteLLM component when provider is selected", () => {

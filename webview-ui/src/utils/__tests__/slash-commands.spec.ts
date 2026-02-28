@@ -1,4 +1,4 @@
-// kilocode-change - new file
+// novacode-change - new file
 import { describe, it, expect } from "vitest"
 import {
 	getMatchingSlashCommands,

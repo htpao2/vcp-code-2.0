@@ -1,5 +1,6 @@
-// kilocode_change - new file Support JSON-based launch configurations
+// novacode_change - new file Support JSON-based launch configurations
 import * as vscode from "vscode"
+import { executeCommandWithPrefixFallback, focusSidebarProvider } from "./commandFallback"
 
 interface LaunchConfig {
 	prompt: string
@@ -9,7 +10,7 @@ interface LaunchConfig {
 
 /**
  * Checks for launch configuration and runs the task immediately if found.
- * Reads .kilocode/launchConfig.json from the workspace root.
+ * Reads .novacode/launchConfig.json from the workspace root (fallback: .novacode/launchConfig.json).
  */
 export async function checkAndRunAutoLaunchingTask(context: vscode.ExtensionContext): Promise<void> {
 	if (!vscode.workspace.workspaceFolders || vscode.workspace.workspaceFolders.length === 0) {
@@ -17,22 +18,30 @@ export async function checkAndRunAutoLaunchingTask(context: vscode.ExtensionCont
 	}
 
 	const workspaceFolderUri = vscode.workspace.workspaceFolders[0].uri
-	const configPath = vscode.Uri.joinPath(workspaceFolderUri, ".kilocode", "launchConfig.json")
+	const configCandidates = [
+		vscode.Uri.joinPath(workspaceFolderUri, ".novacode", "launchConfig.json"),
+		vscode.Uri.joinPath(workspaceFolderUri, ".novacode", "launchConfig.json"),
+	]
 
-	try {
-		const configContent = await vscode.workspace.fs.readFile(configPath)
-		const configText = Buffer.from(configContent).toString("utf8")
-		const config = JSON.parse(configText) as LaunchConfig
-		console.log(`🚀 Auto-launching task from '${configPath}' with config:\n${JSON.stringify(config)}`)
+	for (const configPath of configCandidates) {
+		try {
+			const configContent = await vscode.workspace.fs.readFile(configPath)
+			const configText = Buffer.from(configContent).toString("utf8")
+			const config = JSON.parse(configText) as LaunchConfig
+			console.log(`🚀 Auto-launching task from '${configPath}' with config:\n${JSON.stringify(config)}`)
 
-		await new Promise((resolve) => setTimeout(resolve, 500))
-		await vscode.commands.executeCommand("kilo-code.SidebarProvider.focus")
-
-		vscode.commands.executeCommand("kilo-code.newTask", config) // Pass the full config to newTask
-	} catch (error) {
-		if (error instanceof vscode.FileSystemError && error.code === "FileNotFound") {
-			return // No config file found
+			await new Promise((resolve) => setTimeout(resolve, 500))
+			await focusSidebarProvider()
+			await executeCommandWithPrefixFallback("newTask", config) // Pass the full config to newTask
+			return
+		} catch (error) {
+			if (error instanceof vscode.FileSystemError && error.code === "FileNotFound") {
+				continue
+			}
+			console.error(`Error reading launch config:`, error)
+			return
 		}
-		console.error(`Error reading launch config:`, error)
 	}
+
+	// No config file found
 }

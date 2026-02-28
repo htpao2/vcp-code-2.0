@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { fn } from "storybook/test"
@@ -132,7 +132,7 @@ export const EmptyWithNotificationsAndHistory: Story = {
 	},
 	decorators: [
 		(Story) => {
-			// Mock notifications for KilocodeNotifications component
+			// Mock notifications for NovacodeNotifications component
 			React.useEffect(() => {
 				const mockNotifications = [
 					{
@@ -141,7 +141,7 @@ export const EmptyWithNotificationsAndHistory: Story = {
 						message: "Try our new AI-powered code analysis feature to improve your development workflow.",
 						action: {
 							actionText: "Learn More",
-							actionURL: "https://kilocode.com/features/code-analysis",
+							actionURL: "https://novacode.com/features/code-analysis",
 						},
 					},
 					{
@@ -152,10 +152,10 @@ export const EmptyWithNotificationsAndHistory: Story = {
 					},
 				]
 
-				// Simulate the message event that KilocodeNotifications listens for
+				// Simulate the message event that NovacodeNotifications listens for
 				const mockEvent = new MessageEvent("message", {
 					data: {
-						type: "kilocodeNotificationsResponse",
+						type: "novacodeNotificationsResponse",
 						notifications: mockNotifications,
 					},
 				})
@@ -227,7 +227,7 @@ export const EmptyWithNotificationsAndHistory: Story = {
 				},
 			],
 			apiConfiguration: {
-				apiProvider: "kilocode", // Set to kilocode to show notifications
+				apiProvider: "novacode", // Set to novacode to show notifications
 				apiModelId: "claude-3-5-sonnet-20241022",
 				apiKey: "mock-key",
 			},

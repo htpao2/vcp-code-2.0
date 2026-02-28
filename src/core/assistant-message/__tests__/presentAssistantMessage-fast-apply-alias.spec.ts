@@ -1,4 +1,4 @@
-// kilocode_change - new file
+﻿// novacode_change - new file
 
 import { describe, it, expect, beforeEach, vi } from "vitest"
 import { presentAssistantMessage } from "../presentAssistantMessage"
@@ -22,7 +22,7 @@ vi.mock("@roo-code/telemetry", () => ({
 	},
 }))
 
-vi.mock("../../tools/kilocode/editFileTool", async (importOriginal) => {
+vi.mock("../../tools/nova/editFileTool", async (importOriginal) => {
 	const actual = (await importOriginal()) as any
 	return {
 		...actual,

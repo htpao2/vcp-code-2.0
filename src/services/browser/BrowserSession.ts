@@ -34,6 +34,29 @@ export class BrowserSession {
 	private lastViewportWidth?: number
 	private lastViewportHeight?: number
 
+	private createBrowserRequestId(): string {
+		return `browser-connect-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
+	}
+
+	private logBrowserConnection(
+		level: "log" | "warn" | "error",
+		context: string,
+		requestId: string,
+		url: string,
+		error?: unknown,
+	): void {
+		const message = `[BrowserSession:${context}] requestId=${requestId} provider=browser url=${url}`
+		if (level === "error") {
+			console.error(message, error)
+			return
+		}
+		if (level === "warn") {
+			console.warn(message, error)
+			return
+		}
+		console.log(message)
+	}
+
 	constructor(context: vscode.ExtensionContext, onStateChange?: (isActive: boolean) => void) {
 		this.context = context
 		this.onStateChange = onStateChange
@@ -89,7 +112,7 @@ export class BrowserSession {
 	/**
 	 * Connects to a browser using a WebSocket URL
 	 */
-	private async connectWithChromeHostUrl(chromeHostUrl: string): Promise<boolean> {
+	private async connectWithChromeHostUrl(chromeHostUrl: string, requestId: string): Promise<boolean> {
 		try {
 			this.browser = await connect({
 				browserURL: chromeHostUrl,
@@ -97,14 +120,14 @@ export class BrowserSession {
 			})
 
 			// Cache the successful endpoint
-			console.log(`Connected to remote browser at ${chromeHostUrl}`)
+			this.logBrowserConnection("log", "connected", requestId, chromeHostUrl)
 			this.context.globalState.update("cachedChromeHostUrl", chromeHostUrl)
 			this.lastConnectionAttempt = Date.now()
 			this.isUsingRemoteBrowser = true
 
 			return true
 		} catch (error) {
-			console.log(`Failed to connect using WebSocket endpoint: ${error}`)
+			this.logBrowserConnection("warn", "connect-failed", requestId, chromeHostUrl, error)
 			return false
 		}
 	}
@@ -113,19 +136,19 @@ export class BrowserSession {
 	 * Attempts to connect to a remote browser using various methods
 	 * Returns true if connection was successful, false otherwise
 	 */
-	private async connectToRemoteBrowser(): Promise<boolean> {
+	private async connectToRemoteBrowser(requestId: string): Promise<boolean> {
 		let remoteBrowserHost = this.context.globalState.get("remoteBrowserHost") as string | undefined
 		let reconnectionAttempted = false
 
 		// Try to connect with cached endpoint first if it exists and is recent (less than 1 hour old)
 		const cachedChromeHostUrl = this.context.globalState.get("cachedChromeHostUrl") as string | undefined
 		if (cachedChromeHostUrl && this.lastConnectionAttempt && Date.now() - this.lastConnectionAttempt < 3_600_000) {
-			console.log(`Attempting to connect using cached Chrome Host Url: ${cachedChromeHostUrl}`)
-			if (await this.connectWithChromeHostUrl(cachedChromeHostUrl)) {
+			this.logBrowserConnection("log", "attempt-cached-endpoint", requestId, cachedChromeHostUrl)
+			if (await this.connectWithChromeHostUrl(cachedChromeHostUrl, requestId)) {
 				return true
 			}
 
-			console.log(`Failed to connect using cached Chrome Host Url: ${cachedChromeHostUrl}`)
+			this.logBrowserConnection("warn", "cached-endpoint-unavailable", requestId, cachedChromeHostUrl)
 			// Clear the cached endpoint since it's no longer valid
 			this.context.globalState.update("cachedChromeHostUrl", undefined)
 
@@ -137,7 +160,7 @@ export class BrowserSession {
 
 		// If user provided a remote browser host, try to connect to it
 		else if (remoteBrowserHost && !reconnectionAttempted) {
-			console.log(`Attempting to connect to remote browser at ${remoteBrowserHost}`)
+			this.logBrowserConnection("log", "attempt-configured-endpoint", requestId, remoteBrowserHost)
 			try {
 				const hostIsValid = await tryChromeHostUrl(remoteBrowserHost)
 
@@ -145,26 +168,26 @@ export class BrowserSession {
 					throw new Error("Could not find chromeHostUrl in the response")
 				}
 
-				console.log(`Found WebSocket endpoint: ${remoteBrowserHost}`)
+				this.logBrowserConnection("log", "discovered-remote-endpoint", requestId, remoteBrowserHost)
 
-				if (await this.connectWithChromeHostUrl(remoteBrowserHost)) {
+				if (await this.connectWithChromeHostUrl(remoteBrowserHost, requestId)) {
 					return true
 				}
 			} catch (error) {
-				console.error(`Failed to connect to remote browser: ${error}`)
+				this.logBrowserConnection("warn", "configured-endpoint-failed", requestId, remoteBrowserHost, error)
 				// Fall back to auto-discovery if remote connection fails
 			}
 		}
 
 		try {
-			console.log("Attempting browser auto-discovery...")
+			this.logBrowserConnection("log", "attempt-auto-discovery", requestId, "ws://auto-discovery")
 			const chromeHostUrl = await discoverChromeHostUrl()
 
-			if (chromeHostUrl && (await this.connectWithChromeHostUrl(chromeHostUrl))) {
+			if (chromeHostUrl && (await this.connectWithChromeHostUrl(chromeHostUrl, requestId))) {
 				return true
 			}
 		} catch (error) {
-			console.error(`Auto-discovery failed: ${error}`)
+			this.logBrowserConnection("warn", "auto-discovery-failed", requestId, "ws://auto-discovery", error)
 			// Fall back to local browser if auto-discovery fails
 		}
 
@@ -172,13 +195,14 @@ export class BrowserSession {
 	}
 
 	async launchBrowser(): Promise<void> {
-		console.log("launch browser called")
+		const requestId = this.createBrowserRequestId()
+		this.logBrowserConnection("log", "launch-start", requestId, "browser://launch")
 
 		// Check if remote browser connection is enabled
 		const remoteBrowserEnabled = this.context.globalState.get("remoteBrowserEnabled") as boolean | undefined
 
 		if (!remoteBrowserEnabled) {
-			console.log("Launching local browser")
+			this.logBrowserConnection("log", "launch-local", requestId, "local://chromium")
 			if (this.browser) {
 				// throw new Error("Browser already launched")
 				await this.closeBrowser() // this may happen when the model launches a browser again after having used it already before
@@ -188,13 +212,13 @@ export class BrowserSession {
 			}
 			await this.launchLocalBrowser()
 		} else {
-			console.log("Connecting to remote browser")
+			this.logBrowserConnection("log", "launch-remote", requestId, "ws://remote-browser")
 			// Remote browser connection is enabled
-			const remoteConnected = await this.connectToRemoteBrowser()
+			const remoteConnected = await this.connectToRemoteBrowser(requestId)
 
 			// If all remote connection attempts fail, fall back to local browser
 			if (!remoteConnected) {
-				console.log("Falling back to local browser")
+				this.logBrowserConnection("warn", "fallback-local-after-remote-failure", requestId, "local://chromium")
 				await this.launchLocalBrowser()
 			}
 		}
@@ -258,8 +282,9 @@ export class BrowserSession {
 			lastLogTs = Date.now()
 		}
 
-		const errorListener = (err: Error) => {
-			logs.push(`[Page Error] ${err.toString()}`)
+		const errorListener = (err: unknown) => {
+			const errText = err instanceof Error ? err.toString() : String(err)
+			logs.push(`[Page Error] ${errText}`)
 			lastLogTs = Date.now()
 		}
 

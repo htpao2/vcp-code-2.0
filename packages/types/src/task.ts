@@ -155,7 +155,7 @@ export type TaskEvents = {
 	[RooCodeEventName.Message]: [{ action: "created" | "updated"; message: ClineMessage }]
 	[RooCodeEventName.TaskModeSwitched]: [taskId: string, mode: string]
 
-	modelChanged: [] // kilocode_change: Add modelChanged event for virtual quota fallback
+	modelChanged: [] // novacode_change: Add modelChanged event for virtual quota fallback
 
 	[RooCodeEventName.TaskAskResponded]: []
 	[RooCodeEventName.TaskUserMessage]: [taskId: string]

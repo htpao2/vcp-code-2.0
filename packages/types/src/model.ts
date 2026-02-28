@@ -39,7 +39,7 @@ export const reasoningEffortSettingSchema = z.enum(reasoningEffortSettingValues)
  * Verbosity
  */
 
-export const verbosityLevels = ["low", "medium", "high", "max"] as const // kilocode_change
+export const verbosityLevels = ["low", "medium", "high", "max"] as const // novacode_change
 
 export const verbosityLevelsSchema = z.enum(verbosityLevels)
 
@@ -74,16 +74,16 @@ export const modelInfoSchema = z.object({
 	maxThinkingTokens: z.number().nullish(),
 	contextWindow: z.number(),
 	supportsImages: z.boolean().optional(),
-	supportsComputerUse: z.boolean().optional(), // kilocode_change
+	supportsComputerUse: z.boolean().optional(), // novacode_change
 	supportsPromptCache: z.boolean(),
 	// Optional default prompt cache retention policy for providers that support it.
 	// When set to "24h", extended prompt caching will be requested; when omitted
 	// or set to "in_memory", the default in‑memory cache is used.
 	promptCacheRetention: z.enum(["in_memory", "24h"]).optional(),
 	// Capability flag to indicate whether the model supports an output verbosity parameter
-	supportsVerbosity: z.union([z.boolean(), z.array(z.enum(verbosityLevels))]).optional(), // kilocode_change
+	supportsVerbosity: z.union([z.boolean(), z.array(z.enum(verbosityLevels))]).optional(), // novacode_change
 	supportsReasoningBudget: z.boolean().optional(),
-	supportsAdaptiveThinking: z.boolean().optional(), // kilocode_change
+	supportsAdaptiveThinking: z.boolean().optional(), // novacode_change
 	// Capability flag to indicate whether the model supports simple on/off binary reasoning
 	supportsReasoningBinary: z.boolean().optional(),
 	// Capability flag to indicate whether the model supports temperature parameter
@@ -106,10 +106,10 @@ export const modelInfoSchema = z.object({
 	minTokensPerCachePoint: z.number().optional(),
 	maxCachePoints: z.number().optional(),
 	cachableFields: z.array(z.string()).optional(),
-	// kilocode_change start
+	// novacode_change start
 	displayName: z.string().nullish(),
 	preferredIndex: z.number().nullish(),
-	// kilocode_change end
+	// novacode_change end
 	// Flag to indicate if the model is deprecated and should not be used
 	deprecated: z.boolean().optional(),
 	// Flag to indicate if the model should hide vendor/company identity in responses

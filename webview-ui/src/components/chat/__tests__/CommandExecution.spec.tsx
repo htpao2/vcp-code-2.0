@@ -1,4 +1,4 @@
-// pnpm --filter @roo-code/vscode-webview test src/components/chat/__tests__/CommandExecution.spec.tsx
+﻿// pnpm --filter @roo-code/vscode-webview test src/components/chat/__tests__/CommandExecution.spec.tsx
 
 import React from "react"
 import { render, screen, fireEvent } from "@testing-library/react"
@@ -19,7 +19,7 @@ vi.mock("../../../utils/vscode", () => ({
 	},
 }))
 
-vi.mock("../../kilocode/common/CodeBlock", () => ({
+vi.mock("../../nova/common/CodeBlock", () => ({
 	default: ({ source }: { source: string }) => <div data-testid="code-block">{source}</div>,
 }))
 

@@ -30,7 +30,7 @@ const __dirname = path.dirname(__filename)
 
 // Create ExtensionManager instance and register extension
 const extensionManager = new ExtensionManager()
-const rooCodeIdentifier = extensionManager.registerExtension("kilocode").identifier
+const rooCodeIdentifier = extensionManager.registerExtension("novacode").identifier
 
 // Declare extension host process variables
 let extHostProcess: ReturnType<typeof fork>

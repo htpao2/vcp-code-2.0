@@ -63,7 +63,7 @@ export function containsDangerousSubstitution(source: string): boolean {
 		hereStringWithSubstitution ||
 		zshProcessSubstitution ||
 		zshGlobQualifier ||
-		((process as any).platform === "win32" && /\^/.test(source)) // kilocode_change: Windows CMD specific escape character
+		((process as any).platform === "win32" && /\^/.test(source)) // novacode_change: Windows CMD specific escape character
 	)
 }
 
@@ -273,7 +273,7 @@ export function getCommandDecision(
 		// Remove simple PowerShell-like redirections (e.g. 2>&1) before checking
 		const cmdWithoutRedirection = cmd.replace(/\d*>&\d*/, "").trim()
 
-		// kilocode_change start
+		// novacode_change start
 		// Try matching both the original command and the stripped command.
 		// This handles the case where the allowlist contains a pattern with redirection
 		// (e.g., "pnpm compile 2>&1") but the stripped command doesn't match it.
@@ -293,7 +293,7 @@ export function getCommandDecision(
 			return "auto_approve"
 		}
 		return "ask_user"
-		// kilocode_change end
+		// novacode_change end
 	})
 
 	// If any sub-command is denied, deny the whole command

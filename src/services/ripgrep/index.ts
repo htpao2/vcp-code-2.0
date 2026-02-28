@@ -6,7 +6,7 @@ import * as vscode from "vscode"
 
 import { RooIgnoreController } from "../../core/ignore/RooIgnoreController"
 import { fileExistsAtPath } from "../../utils/fs"
-import { checkBunPath } from "./index.kilocode" // kilocode_change
+import { checkBunPath } from "./index.novacode" // novacode_change
 import "../../utils/path" // Import to enable String.prototype.toPosix()
 /*
 This file provides functionality to perform regex searches on files using ripgrep.
@@ -95,7 +95,7 @@ export async function getBinPath(vscodeAppRoot: string): Promise<string | undefi
 		(await checkPath("node_modules/vscode-ripgrep/bin")) ||
 		(await checkPath("node_modules.asar.unpacked/vscode-ripgrep/bin/")) ||
 		(await checkPath("node_modules.asar.unpacked/@vscode/ripgrep/bin/")) ||
-		(await checkBunPath(vscodeAppRoot, binName)) // kilocode_change
+		(await checkBunPath(vscodeAppRoot, binName)) // novacode_change
 	)
 }
 

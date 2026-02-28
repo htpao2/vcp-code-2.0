@@ -5,7 +5,7 @@
 		"clean": {
 			"cache": false
 		},
-		"clean:resource-kilocode": {
+		"clean:resource-novacode": {
 			"cache": false
 		},
 		"clean:resource-host": {
@@ -17,23 +17,23 @@
 		"clean:resource-nodemodules": {
 			"cache": false
 		},
-		"clean:kilocode": {
+		"clean:novacode": {
 			"cache": false
 		},
-		"copy:kilocode": {
+		"copy:novacode": {
 			"cache": false,
-			"dependsOn": ["clean:kilocode", "kilo-code#vsix", "kilo-code#vsix:unpacked"]
+			"dependsOn": ["clean:novacode", "nova-code#vsix", "nova-code#vsix:unpacked"]
 		},
-		"copy:resource-kilocode": {
+		"copy:resource-novacode": {
 			"cache": false,
-			"dependsOn": ["clean:resource-kilocode", "kilo-code#vsix", "kilo-code#vsix:unpacked"]
+			"dependsOn": ["clean:resource-novacode", "nova-code#vsix", "nova-code#vsix:unpacked"]
 		},
 		"copy:resource-host": {
 			"cache": false,
 			"dependsOn": [
 				"clean:resource-host",
-				"@kilo-code/jetbrains-host#bundle",
-				"@kilo-code/jetbrains-host#prop:deps"
+				"@nova-code/jetbrains-host#bundle",
+				"@nova-code/jetbrains-host#prop:deps"
 			]
 		},
 		"copy:resource-logs": {
@@ -73,8 +73,8 @@
 			"dependsOn": [
 				"sync:version",
 				"sync:changelog",
-				"copy:kilocode",
-				"copy:resource-kilocode",
+				"copy:novacode",
+				"copy:resource-novacode",
 				"copy:resource-host",
 				"copy:resource-logs",
 				"copy:resource-nodemodules",
@@ -88,8 +88,8 @@
 			"dependsOn": [
 				"sync:version",
 				"sync:changelog",
-				"copy:kilocode",
-				"copy:resource-kilocode",
+				"copy:novacode",
+				"copy:resource-novacode",
 				"copy:resource-host",
 				"copy:resource-logs",
 				"copy:resource-nodemodules",

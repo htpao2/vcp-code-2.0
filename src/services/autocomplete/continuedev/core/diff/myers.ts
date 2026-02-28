@@ -28,16 +28,43 @@ export function myersDiff(oldContent: string, newContent: string): DiffLine[] {
 	})
 	const ourFormat = theirFormat.flatMap(convertMyersChangeToDiffLines)
 
-	// Combine consecutive old/new pairs that are identical after trimming
-	for (let i = 0; i < ourFormat.length - 1; i++) {
-		if (
-			ourFormat[i]?.type === "old" &&
-			ourFormat[i + 1]?.type === "new" &&
-			ourFormat[i].line.trim() === ourFormat[i + 1].line.trim()
-		) {
-			ourFormat[i] = { type: "same", line: ourFormat[i].line }
-			ourFormat.splice(i + 1, 1)
+	// Combine consecutive old/new groups that only differ by leading/trailing whitespace.
+	for (let i = 0; i < ourFormat.length; i++) {
+		if (ourFormat[i]?.type !== "old") {
+			continue
 		}
+
+		let oldEnd = i
+		while (ourFormat[oldEnd + 1]?.type === "old") {
+			oldEnd++
+		}
+		const newStart = oldEnd + 1
+		if (ourFormat[newStart]?.type !== "new") {
+			i = oldEnd
+			continue
+		}
+
+		let newEnd = newStart
+		while (ourFormat[newEnd + 1]?.type === "new") {
+			newEnd++
+		}
+
+		const oldGroup = ourFormat.slice(i, oldEnd + 1)
+		const newGroup = ourFormat.slice(newStart, newEnd + 1)
+		const isWhitespaceOnlyDiff =
+			oldGroup.length === newGroup.length &&
+			oldGroup.every((entry, index) => entry.line.trim() === newGroup[index].line.trim())
+
+		if (!isWhitespaceOnlyDiff) {
+			i = newEnd
+			continue
+		}
+
+		for (let j = i; j <= oldEnd; j++) {
+			ourFormat[j] = { type: "same", line: ourFormat[j].line }
+		}
+		ourFormat.splice(newStart, newGroup.length)
+		i = oldEnd
 	}
 
 	// Remove trailing empty old lines

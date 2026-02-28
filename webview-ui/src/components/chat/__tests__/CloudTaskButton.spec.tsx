@@ -19,11 +19,6 @@ vi.mock("qrcode", () => ({
 // Mock react-i18next
 vi.mock("react-i18next")
 
-// Mock the cloud config
-vi.mock("@roo-code/cloud/src/config", () => ({
-	getRooCodeApiUrl: vi.fn(() => "https://app.roocode.com"),
-}))
-
 // Mock the extension state context
 vi.mock("@/context/ExtensionStateContext", () => ({
 	ExtensionStateContextProvider: ({ children }: { children: React.ReactNode }) => children,
@@ -218,17 +213,23 @@ describe("CloudTaskButton", () => {
 		})
 	})
 
-	test("uses correct URL from getRooCodeApiUrl", async () => {
-		// Mock getRooCodeApiUrl to return a custom URL
-		vi.doMock("@roo-code/cloud/src/config", () => ({
-			getRooCodeApiUrl: vi.fn(() => "https://custom.roocode.com"),
-		}))
+	test("uses cloudApiUrl from extension state to build task URL", async () => {
+		mockUseExtensionState.mockReturnValue({
+			cloudUserInfo: {
+				id: "test-user",
+				email: "test@example.com",
+				extensionBridgeEnabled: true,
+			},
+			cloudApiUrl: "https://custom.roocode.com",
+		} as any)
 
-		// Clear module cache and re-import to get the mocked version
-		vi.resetModules()
+		render(<CloudTaskButton item={mockItem} />)
+		const button = screen.getByTestId("cloud-task-button")
+		fireEvent.click(button)
 
-		// Since we can't easily test the dynamic import, let's skip this specific test
-		// The functionality is already covered by the main component using getRooCodeApiUrl
-		expect(true).toBe(true)
+		await waitFor(() => {
+			const input = screen.getByDisplayValue("https://custom.roocode.com/task/test-task-id")
+			expect(input).toBeInTheDocument()
+		})
 	})
 })

@@ -1,5 +1,5 @@
-import React, { memo, useState, useEffect } from "react"
-import BottomControls from "../kilocode/BottomControls" // kilocode_change
+﻿import React, { memo, useState, useEffect } from "react"
+import BottomControls from "../nova/BottomControls" // novacode_change
 import { ArrowLeft, Filter, ListChecks, Check, X, Trash2 } from "lucide-react"
 import { DeleteTaskDialog } from "./DeleteTaskDialog"
 import { BatchDeleteTaskDialog } from "./BatchDeleteTaskDialog"
@@ -22,7 +22,7 @@ type SortOption = "newest" | "oldest" | "mostExpensive" | "mostTokens" | "mostRe
 
 const HistoryView = ({ onDone }: HistoryViewProps) => {
 	const {
-		data, // kilocode_change
+		data, // novacode_change
 		searchQuery,
 		setSearchQuery,
 		sortOption,
@@ -30,18 +30,18 @@ const HistoryView = ({ onDone }: HistoryViewProps) => {
 		setLastNonRelevantSort,
 		showAllWorkspaces,
 		setShowAllWorkspaces,
-		// kilocode_change start
+		// novacode_change start
 		showFavoritesOnly,
 		setShowFavoritesOnly,
 		setRequestedPageIndex,
-		// kilocode_change end
+		// novacode_change end
 	} = useTaskSearch()
-	// kilocode_change start
+	// novacode_change start
 	const tasks = data?.historyItems ?? []
 	const pageIndex = data?.pageIndex ?? 0
 	const pageCount = data?.pageCount ?? 1
 	const totalItems = data?.totalItems ?? 0
-	// kilocode_change end
+	// novacode_change end
 	const { t } = useAppTranslation()
 
 	const [deleteTaskId, setDeleteTaskId] = useState<string | null>(null)
@@ -327,7 +327,7 @@ const HistoryView = ({ onDone }: HistoryViewProps) => {
 				/>
 			</TabContent>
 
-			{/* kilocode_change: more nesting so we can add more rows, removed fixed class */}
+			{/* novacode_change: more nesting so we can add more rows, removed fixed class */}
 			<div className="bg-vscode-editor-background">
 				{/* Fixed action bar at bottom - only shown in selection mode with selected items */}
 				{isSelectionMode && selectedTaskIds.length > 0 && (
@@ -350,9 +350,9 @@ const HistoryView = ({ onDone }: HistoryViewProps) => {
 					</div>
 				)}
 				{
-					// kilocode_change start
+					// novacode_change start
 					<div className="border-t border-b border-vscode-panel-border p-2 flex justify-between items-center">
-						{t("kilocode:pagination.page", {
+						{t("novacode:pagination.page", {
 							page: pageIndex + 1,
 							count: pageCount,
 						})}
@@ -364,7 +364,7 @@ const HistoryView = ({ onDone }: HistoryViewProps) => {
 										setRequestedPageIndex(pageIndex - 1)
 									}
 								}}>
-								{t("kilocode:pagination.previous")}
+								{t("novacode:pagination.previous")}
 							</Button>
 							<Button
 								disabled={pageIndex >= pageCount - 1}
@@ -373,11 +373,11 @@ const HistoryView = ({ onDone }: HistoryViewProps) => {
 										setRequestedPageIndex(pageIndex + 1)
 									}
 								}}>
-								{t("kilocode:pagination.next")}
+								{t("novacode:pagination.next")}
 							</Button>
 						</div>
 					</div>
-					// kilocode_change end
+					// novacode_change end
 				}
 			</div>
 
@@ -401,11 +401,11 @@ const HistoryView = ({ onDone }: HistoryViewProps) => {
 				/>
 			)}
 			{
-				// kilocode_change start
+				// novacode_change start
 				<div className="fixed bottom-0 right-0">
 					<BottomControls />
 				</div>
-				// kilocode_change end
+				// novacode_change end
 			}
 		</Tab>
 	)

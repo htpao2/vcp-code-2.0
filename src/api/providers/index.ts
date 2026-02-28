@@ -9,7 +9,7 @@ export { DoubaoHandler } from "./doubao"
 export { MoonshotHandler } from "./moonshot"
 export { FakeAIHandler } from "./fake-ai"
 export { GeminiHandler } from "./gemini"
-export { GlamaHandler } from "./glama" // kilocode_change
+export { GlamaHandler } from "./glama" // novacode_change
 export { GroqHandler } from "./groq"
 export { HuggingFaceHandler } from "./huggingface"
 export { HumanRelayHandler } from "./human-relay"
@@ -17,22 +17,22 @@ export { IOIntelligenceHandler } from "./io-intelligence"
 export { LiteLLMHandler } from "./lite-llm"
 export { LmStudioHandler } from "./lm-studio"
 export { MistralHandler } from "./mistral"
-export { NanoGptHandler } from "./nano-gpt" // kilocode_change
+export { NanoGptHandler } from "./nano-gpt" // novacode_change
 export { OpenAiCodexHandler } from "./openai-codex"
 export { OpenAiNativeHandler } from "./openai-native"
 export { OpenAiHandler } from "./openai"
-export { OpenAiCompatibleResponsesHandler } from "./openai-responses" // kilocode_change
+export { OpenAiCompatibleResponsesHandler } from "./openai-responses" // novacode_change
 export { OpenAICompatibleHandler } from "./openai-compatible"
 export type { OpenAICompatibleConfig } from "./openai-compatible"
 export { OpenRouterHandler } from "./openrouter"
-export { PoeHandler } from "./poe" // kilocode_change
-export { ZenMuxHandler } from "./zenmux" // kilocode_change
+export { PoeHandler } from "./poe" // novacode_change
+export { ZenMuxHandler } from "./zenmux" // novacode_change
 export { QwenCodeHandler } from "./qwen-code"
 export { RequestyHandler } from "./requesty"
 export { SambaNovaHandler } from "./sambanova"
 export { UnboundHandler } from "./unbound"
 export { VertexHandler } from "./vertex"
-// kilocode_change start
+// novacode_change start
 export { OVHcloudAIEndpointsHandler } from "./ovhcloud"
 export { VirtualQuotaFallbackHandler } from "./virtual-quota-fallback"
 export { SyntheticHandler } from "./synthetic"
@@ -40,7 +40,7 @@ export { InceptionLabsHandler } from "./inception"
 export { SapAiCoreHandler } from "./sap-ai-core"
 export { AihubmixHandler } from "./aihubmix"
 export { ApertisHandler } from "./apertis"
-// kilocode_change end
+// novacode_change end
 export { VsCodeLmHandler } from "./vscode-lm"
 export { XAIHandler } from "./xai"
 export { ZAiHandler } from "./zai"

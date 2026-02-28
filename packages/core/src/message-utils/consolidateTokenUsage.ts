@@ -1,17 +1,17 @@
 import type { TokenUsage, ToolUsage, ToolName, ClineMessage } from "@roo-code/types"
 
-// kilocode_change start
+// novacode_change start
 // import { type ClineSayTool } from "./ExtensionMessage"
 // import { safeJsonParse } from "./safeJsonParse"
-// kilocode_change end
+// novacode_change end
 
-// kilocode_change start
+// novacode_change start
 import { type ClineSayTool } from "@roo-code/types"
 // Use relative import to avoid circular dependency - importing from "@roo-code/core"
 // causes the main index.ts to load, which includes custom-tools/esbuild-runner.ts
 // that depends on Node-only packages like execa, breaking browser builds.
 import { safeJsonParse } from "./safeJsonParse.js"
-// kilocode_change end
+// novacode_change end
 
 export type ParsedApiReqStartedTextType = {
 	tokensIn: number
@@ -81,20 +81,20 @@ export function consolidateTokenUsage(messages: ClineMessage[]): TokenUsage {
 		} else if (message.type === "say" && message.say === "condense_context") {
 			result.totalCost += message.contextCondense?.cost ?? 0
 		} else {
-			// kilocode_change start
+			// novacode_change start
 			if (message.type === "ask" && message.ask === "tool" && message.text) {
 				const fastApplyResult = safeJsonParse<ClineSayTool>(message.text)?.fastApplyResult
 				result.totalTokensIn += fastApplyResult?.tokensIn ?? 0
 				result.totalTokensOut += fastApplyResult?.tokensOut ?? 0
 				result.totalCost += fastApplyResult?.cost ?? 0
 			}
-			// kilocode_change end
+			// novacode_change end
 		}
 	})
 
 	// Calculate context tokens, from the last API request started or condense
 	// context message.
-	// kilocode_change start - skip placeholder messages without token data
+	// novacode_change start - skip placeholder messages without token data
 	// When a new API request starts, a placeholder api_req_started message is created
 	// with only apiProtocol (no token data). We need to skip these placeholders and
 	// find the last message with actual token data to avoid showing 0% context.

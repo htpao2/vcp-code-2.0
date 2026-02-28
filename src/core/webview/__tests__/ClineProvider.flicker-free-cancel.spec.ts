@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest"
+﻿import { beforeEach, describe, expect, it, vi } from "vitest"
 import * as vscode from "vscode"
 
 import { ClineProvider } from "../ClineProvider"
@@ -88,7 +88,7 @@ vi.mock("../../../shared/embeddingModels", () => ({
 	EMBEDDING_MODEL_PROFILES: [],
 }))
 
-vi.mock("../../../shared/kilocode/cli-sessions/core/SessionManager", () => ({
+vi.mock("../../../shared/nova/cli-sessions/core/SessionManager", () => ({
 	SessionManager: {
 		init: vi.fn().mockReturnValue({
 			startTimer: vi.fn(),

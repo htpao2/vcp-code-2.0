@@ -1,4 +1,4 @@
-// kilocode_change: file added
+// novacode_change: file added
 // npx vitest run api/providers/__tests__/synthetic.spec.ts
 
 import { Anthropic } from "@anthropic-ai/sdk"

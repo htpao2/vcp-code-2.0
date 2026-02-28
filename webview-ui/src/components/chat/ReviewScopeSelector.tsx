@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { useState, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { GitBranch, FileText, AlertCircle } from "lucide-react"

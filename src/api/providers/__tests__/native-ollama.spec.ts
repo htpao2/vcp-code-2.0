@@ -134,7 +134,7 @@ describe("NativeOllamaHandler", () => {
 			)
 		})
 
-		// kilocode_change: skip, model is not guaranteed to exist
+		// novacode_change: skip, model is not guaranteed to exist
 		it.skip("should handle DeepSeek R1 models with reasoning detection", async () => {
 			const options: ApiHandlerOptions = {
 				apiModelId: "deepseek-r1",

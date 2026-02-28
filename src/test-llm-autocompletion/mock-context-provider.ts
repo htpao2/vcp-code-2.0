@@ -18,7 +18,7 @@ import type { ContextFile } from "./test-cases.js"
 
 /**
  * Check if a model supports FIM (Fill-In-Middle) completions.
- * This mirrors the logic in KilocodeOpenrouterHandler.supportsFim()
+ * This mirrors the logic in NovacodeOpenrouterHandler.supportsFim()
  */
 export function modelSupportsFim(modelId: string): boolean {
 	return modelId.includes("codestral")
@@ -35,9 +35,9 @@ export function createTestAutocompleteModel(llmClient: LLMClient, modelId: strin
 
 		supportsFim: () => supportsFim,
 		getModelName: () => modelId,
-		getProviderDisplayName: () => "kilocode",
+		getProviderDisplayName: () => "novacode",
 		hasValidCredentials: () => true,
-		getRolloutHash_IfLoggedInToKilo: () => undefined,
+		getRolloutHash_IfLoggedInToNova: () => undefined,
 
 		generateFimResponse: async (
 			prefix: string,

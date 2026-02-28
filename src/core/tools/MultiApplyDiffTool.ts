@@ -16,7 +16,7 @@ import { EXPERIMENT_IDS, experiments } from "../../shared/experiments"
 import { applyDiffTool as applyDiffToolClass } from "./ApplyDiffTool"
 import { computeDiffStats, sanitizeUnifiedDiff } from "../diff/stats"
 import { resolveToolProtocol } from "../../utils/resolveToolProtocol"
-import { trackContribution } from "../../services/contribution-tracking/ContributionTrackingService" // kilocode_change
+import { trackContribution } from "../../services/contribution-tracking/ContributionTrackingService" // novacode_change
 
 export interface DiffOperation {
 	path: string
@@ -638,7 +638,7 @@ ${errorDetails ? `\nTechnical details:\n${errorDetails}\n` : ""}
 					const isWriteProtected = cline.rooProtectedController?.isWriteProtected(relPath) || false
 					didApprove = await askApproval("tool", operationMessage, toolProgressStatus, isWriteProtected)
 
-					// kilocode_change start
+					// novacode_change start
 					// Track contribution for single file operation (fire-and-forget)
 					trackContribution({
 						cwd: cline.cwd,
@@ -647,10 +647,10 @@ ${errorDetails ? `\nTechnical details:\n${errorDetails}\n` : ""}
 						newContent: originalContent!,
 						status: didApprove ? "accepted" : "rejected",
 						taskId: cline.taskId,
-						organizationId: state?.apiConfiguration?.kilocodeOrganizationId,
-						kilocodeToken: state?.apiConfiguration?.kilocodeToken || "",
+						organizationId: state?.apiConfiguration?.novacodeOrganizationId,
+						novacodeToken: state?.apiConfiguration?.novacodeToken || "",
 					})
-					// kilocode_change end
+					// novacode_change end
 
 					if (!didApprove) {
 						// Revert changes if diff view was shown
@@ -677,7 +677,7 @@ ${errorDetails ? `\nTechnical details:\n${errorDetails}\n` : ""}
 					}
 				} else {
 					// Batch operations - already approved above
-					// kilocode_change start
+					// novacode_change start
 					// Track contribution for batch file operation (fire-and-forget)
 					trackContribution({
 						cwd: cline.cwd,
@@ -686,10 +686,10 @@ ${errorDetails ? `\nTechnical details:\n${errorDetails}\n` : ""}
 						newContent: originalContent!,
 						status: "accepted", // Batch operations are already approved at this point
 						taskId: cline.taskId,
-						organizationId: state?.apiConfiguration?.kilocodeOrganizationId,
-						kilocodeToken: state?.apiConfiguration?.kilocodeToken || "",
+						organizationId: state?.apiConfiguration?.novacodeOrganizationId,
+						novacodeToken: state?.apiConfiguration?.novacodeToken || "",
 					})
-					// kilocode_change end
+					// novacode_change end
 
 					if (isPreventFocusDisruptionEnabled) {
 						// Direct file write without diff view or opening the file

@@ -5,9 +5,9 @@ import * as fs from "fs/promises"
 import { getRooDirectoriesForCwd } from "../../services/roo-config/index.js"
 import pWaitFor from "p-wait-for"
 import * as vscode from "vscode"
-// kilocode_change start
+// novacode_change start
 import axios from "axios"
-import { fastApplyApiProviderSchema, getKiloUrlFromToken, isGlobalStateKey } from "@roo-code/types"
+import { fastApplyApiProviderSchema, getNovaUrlFromToken, isGlobalStateKey } from "@roo-code/types"
 import { getAppUrl } from "@roo-code/types"
 import {
 	MaybeTypedWebviewMessage,
@@ -17,7 +17,7 @@ import {
 	TasksByIdRequestPayload,
 	UpdateGlobalStateMessage,
 } from "../../shared/WebviewMessage"
-// kilocode_change end
+// novacode_change end
 
 import {
 	type Language,
@@ -29,16 +29,16 @@ import {
 	type WebviewMessage,
 	type EditQueuedMessagePayload,
 	TelemetryEventName,
-	// kilocode_change start
+	// novacode_change start
 	autocompleteServiceSettingsSchema,
 	fastApplyModelSchema,
-	// kilocode_change end
+	// novacode_change end
 	DEFAULT_CHECKPOINT_TIMEOUT_SECONDS,
 	RooCodeSettings,
 	ExperimentId,
 	checkoutDiffPayloadSchema,
 	checkoutRestorePayloadSchema,
-	requestCheckpointRestoreApprovalPayloadSchema, // kilocode_change
+	requestCheckpointRestoreApprovalPayloadSchema, // novacode_change
 } from "@roo-code/types"
 import { customToolRegistry } from "@roo-code/core"
 import { CloudService } from "@roo-code/cloud"
@@ -67,8 +67,8 @@ import { discoverChromeHostUrl, tryChromeHostUrl } from "../../services/browser/
 import { searchWorkspaceFiles } from "../../services/search/file-search"
 import { fileExistsAtPath } from "../../utils/fs"
 import { playTts, setTtsEnabled, setTtsSpeed, stopTts } from "../../utils/tts"
-import { showSystemNotification } from "../../integrations/notifications" // kilocode_change
-import { singleCompletionHandler } from "../../utils/single-completion-handler" // kilocode_change
+import { showSystemNotification } from "../../integrations/notifications" // novacode_change
+import { singleCompletionHandler } from "../../utils/single-completion-handler" // novacode_change
 import { searchCommits } from "../../utils/git"
 import { exportSettings, importSettingsWithFeedback } from "../config/importExport"
 import { getOpenAiModels } from "../../api/providers/openai"
@@ -82,36 +82,37 @@ import { getModels, flushModels } from "../../api/providers/fetchers/modelCache"
 import { GetModelsOptions } from "../../shared/api"
 import { generateSystemPrompt } from "./generateSystemPrompt"
 import { getCommand } from "../../utils/commands"
-import { toggleWorkflow, toggleRule, createRuleFile, deleteRuleFile } from "./kilorules"
-import { mermaidFixPrompt } from "../prompts/utilities/mermaid" // kilocode_change
-// kilocode_change start
+import { toggleWorkflow, toggleRule, createRuleFile, deleteRuleFile } from "./novarules"
+import { mermaidFixPrompt } from "../prompts/utilities/mermaid" // novacode_change
+// novacode_change start
 import {
 	editMessageHandler,
-	fetchKilocodeNotificationsHandler,
+	fetchNovacodeNotificationsHandler,
 	deviceAuthMessageHandler,
-} from "../kilocode/webview/webviewMessageHandlerUtils"
+} from "../nova/webview/webviewMessageHandlerUtils"
 import { AutocompleteServiceManager } from "../../services/autocomplete/AutocompleteServiceManager"
 import { handleChatCompletionRequest } from "../../services/autocomplete/chat-autocomplete/handleChatCompletionRequest"
 import { handleChatCompletionAccepted } from "../../services/autocomplete/chat-autocomplete/handleChatCompletionAccepted"
-// kilocode_change end
+// novacode_change end
 
 const ALLOWED_VSCODE_SETTINGS = new Set(["terminal.integrated.inheritEnv"])
 
 import { MarketplaceManager, MarketplaceItemType } from "../../services/marketplace"
-import { UsageTracker } from "../../utils/usage-tracker" // kilocode_change
-import { seeNewChanges } from "../checkpoints/kilocode/seeNewChanges" // kilocode_change
-import { getTaskHistory } from "../../shared/kilocode/getTaskHistory" // kilocode_change
-import { fetchAndRefreshOrganizationModesOnStartup, refreshOrganizationModes } from "./kiloWebviewMessgeHandlerHelpers" // kilocode_change
-import { getSapAiCoreDeployments } from "../../api/providers/fetchers/sap-ai-core" // kilocode_change
-import { AutoPurgeScheduler } from "../../services/auto-purge" // kilocode_change
+import { UsageTracker } from "../../utils/usage-tracker" // novacode_change
+import { seeNewChanges } from "../checkpoints/nova/seeNewChanges" // novacode_change
+import { getTaskHistory } from "../../shared/nova/getTaskHistory" // novacode_change
+import { fetchAndRefreshOrganizationModesOnStartup, refreshOrganizationModes } from "./novaWebviewMessgeHandlerHelpers" // novacode_change
+import { getSapAiCoreDeployments } from "../../api/providers/fetchers/sap-ai-core" // novacode_change
+import { AutoPurgeScheduler } from "../../services/auto-purge" // novacode_change
 import { setPendingTodoList } from "../tools/UpdateTodoListTool"
 import { ManagedIndexer } from "../../services/code-index/managed/ManagedIndexer"
-import { SessionManager } from "../../shared/kilocode/cli-sessions/core/SessionManager" // kilocode_change
-import { getEffectiveTelemetrySetting } from "../kilocode/wrapper"
+import { SessionManager } from "../../shared/nova/cli-sessions/core/SessionManager" // novacode_change
+import { getEffectiveTelemetrySetting } from "../nova/wrapper"
+import { executeCommandWithPrefixFallback } from "../../utils/commandFallback"
 
 export const webviewMessageHandler = async (
 	provider: ClineProvider,
-	message: MaybeTypedWebviewMessage, // kilocode_change switch to MaybeTypedWebviewMessage for better type-safety
+	message: MaybeTypedWebviewMessage, // novacode_change switch to MaybeTypedWebviewMessage for better type-safety
 	marketplaceManager?: MarketplaceManager,
 ) => {
 	// Utility functions provided for concise get/update of global state via contextProxy API.
@@ -121,6 +122,55 @@ export const webviewMessageHandler = async (
 
 	const getCurrentCwd = () => {
 		return provider.getCurrentTask()?.cwd || provider.cwd
+	}
+
+	type ModelRequestState = "connecting" | "ready" | "error"
+	type ModelRequestMeta = {
+		requestId: string
+		provider: string
+		url?: string
+	}
+
+	const messageRecord = message as Record<string, unknown>
+	const messageValues =
+		messageRecord.values && typeof messageRecord.values === "object"
+			? (messageRecord.values as Record<string, unknown>)
+			: undefined
+
+	const createModelRequestMeta = (fallbackProvider: string, fallbackUrl?: string): ModelRequestMeta => ({
+		requestId:
+			(typeof messageRecord.requestId === "string" && messageRecord.requestId) ||
+			(typeof messageValues?.requestId === "string" && messageValues.requestId) ||
+			`model-request-${fallbackProvider}-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
+		provider: (typeof messageValues?.provider === "string" && messageValues.provider) || fallbackProvider,
+		url: (typeof messageValues?.providerUrl === "string" && messageValues.providerUrl) || fallbackUrl,
+	})
+
+	const postModelFetchState = (
+		meta: ModelRequestMeta,
+		state: ModelRequestState,
+		options?: { error?: string; models?: ModelRecord },
+	) => {
+		provider.postMessageToWebview({
+			type: "singleRouterModelFetchResponse",
+			requestId: meta.requestId,
+			success: state !== "error",
+			error: options?.error,
+			values: {
+				requestId: meta.requestId,
+				provider: meta.provider,
+				url: meta.url,
+				state,
+				models: options?.models,
+			},
+		})
+	}
+
+	const logModelFetchError = (meta: ModelRequestMeta, error: unknown, context: string) => {
+		console.error(
+			`[${context}] requestId=${meta.requestId} provider=${meta.provider} url=${meta.url ?? "n/a"}`,
+			error,
+		)
 	}
 
 	/**
@@ -256,7 +306,7 @@ export const webviewMessageHandler = async (
 					vscode.window.showWarningMessage("No checkpoint found before this message")
 				}
 			} else {
-				// kilocode_change start: calculate the cost of messages being deleted before removing them
+				// novacode_change start: calculate the cost of messages being deleted before removing them
 				const messagesToDelete = currentCline.clineMessages.slice(messageIndex)
 				let deletedCost = 0
 				for (const msg of messagesToDelete) {
@@ -276,7 +326,7 @@ export const webviewMessageHandler = async (
 				if (deletedCost > 0) {
 					currentCline.addDeletedApiCost(deletedCost)
 				}
-				// kilocode_change end
+				// novacode_change end
 
 				// For non-checkpoint deletes, preserve checkpoint associations for remaining messages
 				// Store checkpoints from messages that will be preserved
@@ -516,17 +566,17 @@ export const webviewMessageHandler = async (
 			const customModes = await provider.customModesManager.getCustomModes()
 			await updateGlobalState("customModes", customModes)
 
-			// kilocode_change start: Fetch organization modes on startup
+			// novacode_change start: Fetch organization modes on startup
 			// Fetch organization modes on startup if an organization is selected
 			await fetchAndRefreshOrganizationModesOnStartup(provider, updateGlobalState)
-			// kilocode_change end
+			// novacode_change end
 
 			// Refresh workflow toggles
-			const { refreshWorkflowToggles } = await import("../context/instructions/workflows") // kilocode_change
-			await refreshWorkflowToggles(provider.context, provider.cwd) // kilocode_change
+			const { refreshWorkflowToggles } = await import("../context/instructions/workflows") // novacode_change
+			await refreshWorkflowToggles(provider.context, provider.cwd) // novacode_change
 
 			provider.postStateToWebview()
-			provider.postRulesDataToWebview() // kilocode_change: send workflows and rules immediately
+			provider.postRulesDataToWebview() // novacode_change: send workflows and rules immediately
 			provider.workspaceTracker?.initializeFilePaths() // Don't await.
 
 			getTheme().then((theme) => provider.postMessageToWebview({ type: "theme", text: JSON.stringify(theme) }))
@@ -587,11 +637,11 @@ export const webviewMessageHandler = async (
 				)
 
 			// If user already opted in to telemetry, enable telemetry service
-			provider.getStateToPostToWebview().then(async (/*kilocode_change*/ state) => {
+			provider.getStateToPostToWebview().then(async (/*novacode_change*/ state) => {
 				const { telemetrySetting } = state
-				const isOptedIn = getEffectiveTelemetrySetting(telemetrySetting) === "enabled" // kilocode_change
+				const isOptedIn = getEffectiveTelemetrySetting(telemetrySetting) === "enabled" // novacode_change
 				TelemetryService.instance.updateTelemetryState(isOptedIn)
-				await TelemetryService.instance.updateIdentity(state.apiConfiguration.kilocodeToken ?? "") // kilocode_change
+				await TelemetryService.instance.updateIdentity(state.apiConfiguration.novacodeToken ?? "") // novacode_change
 			})
 
 			provider.isViewLaunched = true
@@ -614,11 +664,11 @@ export const webviewMessageHandler = async (
 				)
 			}
 			break
-		// kilocode_change start
+		// novacode_change start
 		case "condense":
 			provider.getCurrentTask()?.handleWebviewAskResponse("yesButtonClicked")
 			break
-		// kilocode_change end
+		// novacode_change end
 		case "customInstructions":
 			await provider.updateCustomInstructions(message.text)
 			break
@@ -822,7 +872,7 @@ export const webviewMessageHandler = async (
 			const excludeFavorites = message.excludeFavorites
 
 			if (Array.isArray(ids)) {
-				// kilocode_change start: Use deleteMultipleTasks which handles excludeFavorites
+				// novacode_change start: Use deleteMultipleTasks which handles excludeFavorites
 				try {
 					await provider.deleteMultipleTasks(ids, excludeFavorites)
 					await provider.postStateToWebview()
@@ -830,7 +880,7 @@ export const webviewMessageHandler = async (
 				} catch (error) {
 					console.log(`Batch deletion failed: ${error instanceof Error ? error.message : String(error)}`)
 				}
-				// kilocode_change end
+				// novacode_change end
 			}
 			break
 		}
@@ -895,6 +945,8 @@ export const webviewMessageHandler = async (
 			// Optional single provider filter from webview
 			const requestedProvider = message?.values?.provider
 			const providerFilter = requestedProvider ? toRouterName(requestedProvider) : undefined
+			const routerRequestMeta = createModelRequestMeta(requestedProvider || "all")
+			postModelFetchState(routerRequestMeta, "connecting")
 
 			// Optional refresh flag to flush cache before fetching (useful for providers requiring credentials)
 			const shouldRefresh = message?.values?.refresh === true
@@ -902,13 +954,13 @@ export const webviewMessageHandler = async (
 			const routerModels: Record<RouterName, ModelRecord> = providerFilter
 				? ({} as Record<RouterName, ModelRecord>)
 				: {
-						// kilocode_change start
+						// novacode_change start
 						ovhcloud: {},
 						inception: {},
-						kilocode: {},
+						novacode: {},
 						gemini: {},
 						apertis: {},
-						// kilocode_change end
+						// novacode_change end
 						openrouter: {},
 						"vercel-ai-gateway": {},
 						huggingface: {},
@@ -917,32 +969,35 @@ export const webviewMessageHandler = async (
 						"io-intelligence": {},
 						requesty: {},
 						unbound: {},
-						glama: {}, // kilocode_change
+						glama: {}, // novacode_change
 						ollama: {},
 						lmstudio: {},
 						roo: {},
-						synthetic: {}, // kilocode_change
-						"sap-ai-core": {}, // kilocode_change
+						synthetic: {}, // novacode_change
+						"sap-ai-core": {}, // novacode_change
 						chutes: {},
-						"nano-gpt": {}, // kilocode_change
-						poe: {}, // kilocode_change
-						aihubmix: {}, // kilocode_change
+						"nano-gpt": {}, // novacode_change
+						poe: {}, // novacode_change
+						aihubmix: {}, // novacode_change
 						zenmux: {},
 					}
-			const safeGetModels = async (options: GetModelsOptions): Promise<ModelRecord> => {
+			const safeGetModels = async (
+				routerProvider: RouterName,
+				options: GetModelsOptions,
+			): Promise<ModelRecord> => {
 				try {
 					return await getModels(options)
 				} catch (error) {
-					console.error(
-						`Failed to fetch models in webviewMessageHandler requestRouterModels for ${options.provider}:`,
-						error,
+					const providerMeta = createModelRequestMeta(
+						routerProvider,
+						(typeof options.baseUrl === "string" ? options.baseUrl : undefined) || routerRequestMeta.url,
 					)
-
+					logModelFetchError(providerMeta, error, "requestRouterModels")
 					throw error // Re-throw to be caught by Promise.allSettled.
 				}
 			}
 
-			// kilocode_change start: openrouter auth, kilocode provider
+			// novacode_change start: openrouter auth, novacode provider
 			const openRouterApiKey = apiConfiguration.openRouterApiKey || message?.values?.openRouterApiKey
 			const openRouterBaseUrl = apiConfiguration.openRouterBaseUrl || message?.values?.openRouterBaseUrl
 
@@ -968,14 +1023,14 @@ export const webviewMessageHandler = async (
 						baseUrl: apiConfiguration.requestyBaseUrl,
 					},
 				},
-				{ key: "glama", options: { provider: "glama" } }, // kilocode_change
+				{ key: "glama", options: { provider: "glama" } }, // novacode_change
 				{ key: "unbound", options: { provider: "unbound", apiKey: apiConfiguration.unboundApiKey } },
 				{
-					key: "kilocode",
+					key: "novacode",
 					options: {
-						provider: "kilocode",
-						kilocodeToken: apiConfiguration.kilocodeToken,
-						kilocodeOrganizationId: apiConfiguration.kilocodeOrganizationId,
+						provider: "novacode",
+						novacodeToken: apiConfiguration.novacodeToken,
+						novacodeOrganizationId: apiConfiguration.novacodeOrganizationId,
 					},
 				},
 				{ key: "ollama", options: { provider: "ollama", baseUrl: apiConfiguration.ollamaBaseUrl } },
@@ -988,7 +1043,7 @@ export const webviewMessageHandler = async (
 						baseUrl: apiConfiguration.deepInfraBaseUrl,
 					},
 				},
-				// kilocode_change start
+				// novacode_change start
 				{
 					key: "nano-gpt",
 					options: {
@@ -1005,7 +1060,7 @@ export const webviewMessageHandler = async (
 						baseUrl: apiConfiguration.aihubmixBaseUrl,
 					},
 				},
-				// kilocode_change end
+				// novacode_change end
 				{
 					key: "ovhcloud",
 					options: {
@@ -1022,7 +1077,7 @@ export const webviewMessageHandler = async (
 						baseUrl: apiConfiguration.inceptionLabsBaseUrl,
 					},
 				},
-				{ key: "synthetic", options: { provider: "synthetic", apiKey: apiConfiguration.syntheticApiKey } }, // kilocode_change
+				{ key: "synthetic", options: { provider: "synthetic", apiKey: apiConfiguration.syntheticApiKey } }, // novacode_change
 				{
 					key: "roo",
 					options: {
@@ -1037,12 +1092,12 @@ export const webviewMessageHandler = async (
 					key: "chutes",
 					options: { provider: "chutes", apiKey: apiConfiguration.chutesApiKey },
 				},
-				// kilocode_change start
+				// novacode_change start
 				{
 					key: "poe",
 					options: { provider: "poe", apiKey: apiConfiguration.poeApiKey },
 				},
-				// kilocode_change end
+				// novacode_change end
 				{
 					key: "zenmux",
 					options: {
@@ -1052,7 +1107,7 @@ export const webviewMessageHandler = async (
 					},
 				},
 			]
-			// kilocode_change end
+			// novacode_change end
 
 			// IO Intelligence is conditional on api key
 			if (apiConfiguration.ioIntelligenceApiKey) {
@@ -1092,66 +1147,107 @@ export const webviewMessageHandler = async (
 
 			const results = await Promise.allSettled(
 				modelFetchPromises.map(async ({ key, options }) => {
-					const models = await safeGetModels(options)
+					const models = await safeGetModels(key, options)
 					return { key, models } // The key is `ProviderName` here.
 				}),
 			)
 
+			let hasModelFetchError = false
 			results.forEach((result, index) => {
 				const routerName = modelFetchPromises[index].key
 				if (result.status === "fulfilled") {
 					routerModels[routerName] = result.value.models
+					postModelFetchState(
+						createModelRequestMeta(
+							routerName,
+							(typeof modelFetchPromises[index].options.baseUrl === "string"
+								? modelFetchPromises[index].options.baseUrl
+								: undefined) || routerRequestMeta.url,
+						),
+						"ready",
+						{ models: result.value.models },
+					)
 
 					// Ollama and LM Studio settings pages still need these events. They are not fetched here.
 				} else {
 					// Handle rejection: Post a specific error message for this provider.
+					hasModelFetchError = true
 					const errorMessage = result.reason instanceof Error ? result.reason.message : String(result.reason)
-					console.error(`Error fetching models for ${routerName}:`, result.reason)
+					const providerMeta = createModelRequestMeta(
+						routerName,
+						(typeof modelFetchPromises[index].options.baseUrl === "string"
+							? modelFetchPromises[index].options.baseUrl
+							: undefined) || routerRequestMeta.url,
+					)
+					logModelFetchError(providerMeta, result.reason, "requestRouterModels.result")
 
 					routerModels[routerName] = {} // Ensure it's an empty object in the main routerModels message.
-
-					provider.postMessageToWebview({
-						type: "singleRouterModelFetchResponse",
-						success: false,
-						error: errorMessage,
-						values: { provider: routerName },
-					})
+					postModelFetchState(providerMeta, "error", { error: errorMessage })
 				}
 			})
 
 			provider.postMessageToWebview({
 				type: "routerModels",
+				requestId: routerRequestMeta.requestId,
 				routerModels,
-				values: providerFilter ? { provider: requestedProvider } : undefined,
+				values: {
+					requestId: routerRequestMeta.requestId,
+					provider: providerFilter ? requestedProvider : undefined,
+					state: hasModelFetchError ? "error" : "ready",
+				},
 			})
 			break
 		case "requestOllamaModels": {
 			// Specific handler for Ollama models only.
 			const { apiConfiguration: ollamaApiConfig } = await provider.getState()
+			const ollamaMeta = createModelRequestMeta("ollama", ollamaApiConfig.ollamaBaseUrl)
+			postModelFetchState(ollamaMeta, "connecting")
 			try {
 				const ollamaOptions = {
 					provider: "ollama" as const,
 					baseUrl: ollamaApiConfig.ollamaBaseUrl,
 					apiKey: ollamaApiConfig.ollamaApiKey,
-					numCtx: ollamaApiConfig.ollamaNumCtx, // kilocode_change
+					numCtx: ollamaApiConfig.ollamaNumCtx, // novacode_change
 				}
 				// Flush cache and refresh to ensure fresh models.
 				await flushModels(ollamaOptions, true)
 
 				const ollamaModels = await getModels(ollamaOptions)
-
-				if (Object.keys(ollamaModels).length > 0) {
-					provider.postMessageToWebview({ type: "ollamaModels", ollamaModels: ollamaModels })
-				}
+				provider.postMessageToWebview({
+					type: "ollamaModels",
+					requestId: ollamaMeta.requestId,
+					ollamaModels,
+					values: {
+						requestId: ollamaMeta.requestId,
+						provider: "ollama",
+						url: ollamaMeta.url,
+						state: "ready",
+					},
+				})
+				postModelFetchState(ollamaMeta, "ready", { models: ollamaModels })
 			} catch (error) {
-				// Silently fail - user hasn't configured Ollama yet
-				console.debug("Ollama models fetch failed:", error)
+				const errorMessage = error instanceof Error ? error.message : String(error)
+				logModelFetchError(ollamaMeta, error, "requestOllamaModels")
+				provider.postMessageToWebview({
+					type: "ollamaModels",
+					requestId: ollamaMeta.requestId,
+					ollamaModels: {},
+					values: {
+						requestId: ollamaMeta.requestId,
+						provider: "ollama",
+						url: ollamaMeta.url,
+						state: "error",
+					},
+				})
+				postModelFetchState(ollamaMeta, "error", { error: errorMessage })
 			}
 			break
 		}
 		case "requestLmStudioModels": {
 			// Specific handler for LM Studio models only.
 			const { apiConfiguration: lmStudioApiConfig } = await provider.getState()
+			const lmStudioMeta = createModelRequestMeta("lmstudio", lmStudioApiConfig.lmStudioBaseUrl)
+			postModelFetchState(lmStudioMeta, "connecting")
 			try {
 				const lmStudioOptions = {
 					provider: "lmstudio" as const,
@@ -1161,25 +1257,45 @@ export const webviewMessageHandler = async (
 				await flushModels(lmStudioOptions, true)
 
 				const lmStudioModels = await getModels(lmStudioOptions)
-
-				if (Object.keys(lmStudioModels).length > 0) {
-					provider.postMessageToWebview({
-						type: "lmStudioModels",
-						lmStudioModels: lmStudioModels,
-					})
-				}
+				provider.postMessageToWebview({
+					type: "lmStudioModels",
+					requestId: lmStudioMeta.requestId,
+					lmStudioModels,
+					values: {
+						requestId: lmStudioMeta.requestId,
+						provider: "lmstudio",
+						url: lmStudioMeta.url,
+						state: "ready",
+					},
+				})
+				postModelFetchState(lmStudioMeta, "ready", { models: lmStudioModels })
 			} catch (error) {
-				// Silently fail - user hasn't configured LM Studio yet.
-				console.debug("LM Studio models fetch failed:", error)
+				const errorMessage = error instanceof Error ? error.message : String(error)
+				logModelFetchError(lmStudioMeta, error, "requestLmStudioModels")
+				provider.postMessageToWebview({
+					type: "lmStudioModels",
+					requestId: lmStudioMeta.requestId,
+					lmStudioModels: {},
+					values: {
+						requestId: lmStudioMeta.requestId,
+						provider: "lmstudio",
+						url: lmStudioMeta.url,
+						state: "error",
+					},
+				})
+				postModelFetchState(lmStudioMeta, "error", { error: errorMessage })
 			}
 			break
 		}
 		case "requestRooModels": {
 			// Specific handler for Roo models only - flushes cache to ensure fresh auth token is used
+			const rooBaseUrl = process.env.ROO_CODE_PROVIDER_URL ?? "https://api.roocode.com/proxy"
+			const rooMeta = createModelRequestMeta("roo", rooBaseUrl)
+			postModelFetchState(rooMeta, "connecting")
 			try {
 				const rooOptions = {
 					provider: "roo" as const,
-					baseUrl: process.env.ROO_CODE_PROVIDER_URL ?? "https://api.roocode.com/proxy",
+					baseUrl: rooMeta.url ?? rooBaseUrl,
 					apiKey: CloudService.hasInstance()
 						? CloudService.instance.authService?.getSessionToken()
 						: undefined,
@@ -1188,22 +1304,11 @@ export const webviewMessageHandler = async (
 				await flushModels(rooOptions, true)
 
 				const rooModels = await getModels(rooOptions)
-
-				// Always send a response, even if no models are returned
-				provider.postMessageToWebview({
-					type: "singleRouterModelFetchResponse",
-					success: true,
-					values: { provider: "roo", models: rooModels },
-				})
+				postModelFetchState(rooMeta, "ready", { models: rooModels })
 			} catch (error) {
-				// Send error response
 				const errorMessage = error instanceof Error ? error.message : String(error)
-				provider.postMessageToWebview({
-					type: "singleRouterModelFetchResponse",
-					success: false,
-					error: errorMessage,
-					values: { provider: "roo" },
-				})
+				logModelFetchError(rooMeta, error, "requestRooModels")
+				postModelFetchState(rooMeta, "error", { error: errorMessage })
 			}
 			break
 		}
@@ -1233,40 +1338,138 @@ export const webviewMessageHandler = async (
 			break
 		}
 		case "requestOpenAiModels":
-			if (message?.values?.baseUrl && message?.values?.apiKey) {
+			const openAiMeta = createModelRequestMeta("openai", message?.values?.baseUrl)
+			postModelFetchState(openAiMeta, "connecting")
+			if (!message?.values?.baseUrl || !message?.values?.apiKey) {
+				const errorMessage = "Missing OpenAI baseUrl/apiKey"
+				provider.postMessageToWebview({
+					type: "openAiModels",
+					requestId: openAiMeta.requestId,
+					openAiModels: [],
+					values: {
+						requestId: openAiMeta.requestId,
+						provider: "openai",
+						url: openAiMeta.url,
+						state: "error",
+					},
+				})
+				postModelFetchState(openAiMeta, "error", { error: errorMessage })
+				break
+			}
+			try {
 				const openAiModels = await getOpenAiModels(
 					message?.values?.baseUrl,
 					message?.values?.apiKey,
 					message?.values?.openAiHeaders,
 				)
 
-				provider.postMessageToWebview({ type: "openAiModels", openAiModels })
+				provider.postMessageToWebview({
+					type: "openAiModels",
+					requestId: openAiMeta.requestId,
+					openAiModels,
+					values: {
+						requestId: openAiMeta.requestId,
+						provider: "openai",
+						url: openAiMeta.url,
+						state: "ready",
+					},
+				})
+				postModelFetchState(openAiMeta, "ready")
+			} catch (error) {
+				const errorMessage = error instanceof Error ? error.message : String(error)
+				logModelFetchError(openAiMeta, error, "requestOpenAiModels")
+				provider.postMessageToWebview({
+					type: "openAiModels",
+					requestId: openAiMeta.requestId,
+					openAiModels: [],
+					values: {
+						requestId: openAiMeta.requestId,
+						provider: "openai",
+						url: openAiMeta.url,
+						state: "error",
+					},
+				})
+				postModelFetchState(openAiMeta, "error", { error: errorMessage })
 			}
-
 			break
 		case "requestVsCodeLmModels":
-			const vsCodeLmModels = await getVsCodeLmModels()
-			// TODO: Cache like we do for OpenRouter, etc?
-			provider.postMessageToWebview({ type: "vsCodeLmModels", vsCodeLmModels })
+			const vsCodeLmMeta = createModelRequestMeta("vscode-lm", "vscode-lm://builtin")
+			postModelFetchState(vsCodeLmMeta, "connecting")
+			try {
+				const vsCodeLmModels = await getVsCodeLmModels()
+				// TODO: Cache like we do for OpenRouter, etc?
+				provider.postMessageToWebview({
+					type: "vsCodeLmModels",
+					requestId: vsCodeLmMeta.requestId,
+					vsCodeLmModels,
+					values: {
+						requestId: vsCodeLmMeta.requestId,
+						provider: "vscode-lm",
+						url: vsCodeLmMeta.url,
+						state: "ready",
+					},
+				})
+				postModelFetchState(vsCodeLmMeta, "ready")
+			} catch (error) {
+				const errorMessage = error instanceof Error ? error.message : String(error)
+				logModelFetchError(vsCodeLmMeta, error, "requestVsCodeLmModels")
+				provider.postMessageToWebview({
+					type: "vsCodeLmModels",
+					requestId: vsCodeLmMeta.requestId,
+					vsCodeLmModels: [],
+					values: {
+						requestId: vsCodeLmMeta.requestId,
+						provider: "vscode-lm",
+						url: vsCodeLmMeta.url,
+						state: "error",
+					},
+				})
+				postModelFetchState(vsCodeLmMeta, "error", { error: errorMessage })
+			}
 			break
-		case "requestHuggingFaceModels":
+		case "requestHuggingFaceModels": {
 			// TODO: Why isn't this handled by `requestRouterModels` above?
+			const huggingFaceMeta = createModelRequestMeta("huggingface", "https://router.huggingface.co/v1/models")
+			postModelFetchState(huggingFaceMeta, "connecting")
 			try {
 				const { getHuggingFaceModelsWithMetadata } = await import("../../api/providers/fetchers/huggingface")
 				const huggingFaceModelsResponse = await getHuggingFaceModelsWithMetadata()
 
 				provider.postMessageToWebview({
 					type: "huggingFaceModels",
+					requestId: huggingFaceMeta.requestId,
 					huggingFaceModels: huggingFaceModelsResponse.models,
+					values: {
+						requestId: huggingFaceMeta.requestId,
+						provider: huggingFaceMeta.provider,
+						url: huggingFaceMeta.url,
+						state: "ready",
+					},
 				})
+				postModelFetchState(huggingFaceMeta, "ready")
 			} catch (error) {
-				console.error("Failed to fetch Hugging Face models:", error)
-				provider.postMessageToWebview({ type: "huggingFaceModels", huggingFaceModels: [] })
+				const errorMessage = error instanceof Error ? error.message : String(error)
+				logModelFetchError(huggingFaceMeta, error, "requestHuggingFaceModels")
+				provider.postMessageToWebview({
+					type: "huggingFaceModels",
+					requestId: huggingFaceMeta.requestId,
+					huggingFaceModels: [],
+					values: {
+						requestId: huggingFaceMeta.requestId,
+						provider: huggingFaceMeta.provider,
+						url: huggingFaceMeta.url,
+						state: "error",
+					},
+				})
+				postModelFetchState(huggingFaceMeta, "error", { error: errorMessage })
 			}
 			break
-		// kilocode_change start
+		}
+		// novacode_change start
 		case "requestSapAiCoreModels": {
 			// Specific handler for SAP AI Core models only.
+			const sapAiCoreMeta = createModelRequestMeta("sap-ai-core")
+			postModelFetchState(sapAiCoreMeta, "connecting")
 			if (message?.values?.sapAiCoreServiceKey) {
 				try {
 					// Flush cache first to ensure fresh models.
@@ -1280,13 +1483,48 @@ export const webviewMessageHandler = async (
 					const sapAiCoreModels = await getModels({
 						provider: "sap-ai-core",
 					})
-
-					if (Object.keys(sapAiCoreModels).length > 0) {
-						provider.postMessageToWebview({ type: "sapAiCoreModels", sapAiCoreModels: sapAiCoreModels })
-					}
+					provider.postMessageToWebview({
+						type: "sapAiCoreModels",
+						requestId: sapAiCoreMeta.requestId,
+						sapAiCoreModels,
+						values: {
+							requestId: sapAiCoreMeta.requestId,
+							provider: "sap-ai-core",
+							url: sapAiCoreMeta.url,
+							state: "ready",
+						},
+					})
+					postModelFetchState(sapAiCoreMeta, "ready", { models: sapAiCoreModels })
 				} catch (error) {
-					console.error("SAP AI Core models fetch failed:", error)
+					const errorMessage = error instanceof Error ? error.message : String(error)
+					logModelFetchError(sapAiCoreMeta, error, "requestSapAiCoreModels")
+					provider.postMessageToWebview({
+						type: "sapAiCoreModels",
+						requestId: sapAiCoreMeta.requestId,
+						sapAiCoreModels: {},
+						values: {
+							requestId: sapAiCoreMeta.requestId,
+							provider: "sap-ai-core",
+							url: sapAiCoreMeta.url,
+							state: "error",
+						},
+					})
+					postModelFetchState(sapAiCoreMeta, "error", { error: errorMessage })
 				}
+			} else {
+				const errorMessage = "Missing SAP AI Core service key"
+				provider.postMessageToWebview({
+					type: "sapAiCoreModels",
+					requestId: sapAiCoreMeta.requestId,
+					sapAiCoreModels: {},
+					values: {
+						requestId: sapAiCoreMeta.requestId,
+						provider: "sap-ai-core",
+						url: sapAiCoreMeta.url,
+						state: "error",
+					},
+				})
+				postModelFetchState(sapAiCoreMeta, "error", { error: errorMessage })
 			}
 			break
 		}
@@ -1303,7 +1541,7 @@ export const webviewMessageHandler = async (
 							type: "sapAiCoreDeployments",
 							sapAiCoreDeployments:
 								// Cast to canonical type from @roo-code/types to avoid drift.
-								sapAiCoreDeployments as unknown as import("@roo-code/types").DeploymentRecord, // kilocode_change
+								sapAiCoreDeployments as unknown as import("@roo-code/types").DeploymentRecord, // novacode_change
 						})
 					}
 				} catch (error) {
@@ -1312,7 +1550,7 @@ export const webviewMessageHandler = async (
 			}
 			break
 		}
-		// kilocode_change end
+		// novacode_change end
 		case "openImage":
 			openImage(message.text!, { values: message.values })
 			break
@@ -1342,7 +1580,7 @@ export const webviewMessageHandler = async (
 			}
 
 			break
-		// kilocode_change start
+		// novacode_change start
 		case "seeNewChanges":
 			const task = provider.getCurrentTask()
 			if (task && message.payload && message.payload) {
@@ -1371,7 +1609,7 @@ export const webviewMessageHandler = async (
 			})
 			break
 		}
-		// kilocode_change end
+		// novacode_change end
 		case "requestCheckpointRestoreApproval": {
 			const result = requestCheckpointRestoreApprovalPayloadSchema.safeParse(message.payload)
 
@@ -1559,7 +1797,7 @@ export const webviewMessageHandler = async (
 			}
 
 			const workspaceFolder = getCurrentCwd()
-			const rooDir = path.join(workspaceFolder, ".kilocode")
+			const rooDir = path.join(workspaceFolder, ".novacode")
 			const mcpPath = path.join(rooDir, "mcp.json")
 
 			try {
@@ -1606,7 +1844,7 @@ export const webviewMessageHandler = async (
 			}
 			break
 		}
-		// kilocode_change start: MCP OAuth sign-in handler
+		// novacode_change start: MCP OAuth sign-in handler
 		case "mcpServerOAuthSignIn": {
 			try {
 				const mcpHub = provider.getMcpHub()
@@ -1628,7 +1866,7 @@ export const webviewMessageHandler = async (
 			}
 			break
 		}
-		// kilocode_change end
+		// novacode_change end
 		case "toggleToolAlwaysAllow": {
 			try {
 				await provider
@@ -1683,9 +1921,9 @@ export const webviewMessageHandler = async (
 			await updateGlobalState("enableMcpServerCreation", message.bool ?? true)
 			await provider.postStateToWebview()
 			break
-		// kilocode_change begin
+		// novacode_change begin
 		case "openGlobalKeybindings":
-			vscode.commands.executeCommand("workbench.action.openGlobalKeybindings", message.text ?? "kilo-code.")
+			vscode.commands.executeCommand("workbench.action.openGlobalKeybindings", message.text ?? `${Package.name}.`)
 			break
 		case "showSystemNotification":
 			const isSystemNotificationsEnabled = getGlobalState("systemNotificationsEnabled") ?? true
@@ -1706,7 +1944,7 @@ export const webviewMessageHandler = async (
 				vscode.env.openExternal(vscode.Uri.parse(message.url))
 			}
 			break
-		// kilocode_change end
+		// novacode_change end
 		case "remoteControlEnabled":
 			try {
 				await CloudService.instance.updateUserSettings({ extensionBridgeEnabled: message.bool ?? false })
@@ -1805,7 +2043,7 @@ export const webviewMessageHandler = async (
 				})
 			}
 			break
-		// kilocode_change start
+		// novacode_change start
 		case "morphApiKey":
 			await updateGlobalState("morphApiKey", message.text)
 			await provider.postStateToWebview()
@@ -1822,7 +2060,7 @@ export const webviewMessageHandler = async (
 			await provider.postStateToWebview()
 			break
 		}
-		// kilocode_change end
+		// novacode_change end
 		case "updateVSCodeSetting": {
 			const { setting, value } = message
 
@@ -1861,7 +2099,7 @@ export const webviewMessageHandler = async (
 			break
 
 		case "mode":
-			// kilocode_change: pass reviewScope option to skip scope dialog when starting review from completion suggestion
+			// novacode_change: pass reviewScope option to skip scope dialog when starting review from completion suggestion
 			await provider.handleModeSwitch(message.text as Mode, {
 				reviewScope: message.reviewScope,
 			})
@@ -1930,13 +2168,13 @@ export const webviewMessageHandler = async (
 			await updateGlobalState("hasOpenedModeSelector", message.bool ?? true)
 			await provider.postStateToWebview()
 			break
-		// kilocode_change start
+		// novacode_change start
 		case "hasCompletedOnboarding":
 			await updateGlobalState("hasCompletedOnboarding", message.bool ?? true)
 			await provider.postStateToWebview()
 			break
-		case "kiloCodeImageApiKey":
-			await provider.contextProxy.setValue("kiloCodeImageApiKey", message.text)
+		case "novaCodeImageApiKey":
+			await provider.contextProxy.setValue("novaCodeImageApiKey", message.text)
 			await provider.postStateToWebview()
 			break
 		case "showAutoApproveMenu":
@@ -1951,17 +2189,17 @@ export const webviewMessageHandler = async (
 			await updateGlobalState("sendMessageOnEnter", message.bool ?? false)
 			await provider.postStateToWebview()
 			break
-		// kilocode_change end
+		// novacode_change end
 		case "showTimestamps":
 			await updateGlobalState("showTimestamps", message.bool ?? false)
 			await provider.postStateToWebview()
 			break
-		// kilocode_change start
+		// novacode_change start
 		case "showDiffStats":
 			await updateGlobalState("showDiffStats", message.bool ?? true)
 			await provider.postStateToWebview()
 			break
-		// kilocode_change end
+		// novacode_change end
 		case "hideCostBelowThreshold":
 			await updateGlobalState("hideCostBelowThreshold", message.value)
 			await provider.postStateToWebview()
@@ -1970,7 +2208,7 @@ export const webviewMessageHandler = async (
 			await updateGlobalState("allowVeryLargeReads", message.bool ?? false)
 			await provider.postStateToWebview()
 			break
-		// kilocode_change end
+		// novacode_change end
 
 		case "setReasoningBlockCollapsed":
 			await updateGlobalState("reasoningBlockCollapsed", message.bool ?? true)
@@ -1999,19 +2237,19 @@ export const webviewMessageHandler = async (
 			await updateGlobalState("enhancementApiConfigId", message.text)
 			await provider.postStateToWebview()
 			break
-		// kilocode_change start - commitMessageApiConfigId
+		// novacode_change start - commitMessageApiConfigId
 		case "commitMessageApiConfigId":
 			await updateGlobalState("commitMessageApiConfigId", message.text)
 			await provider.postStateToWebview()
 			break
-		// kilocode_change end - commitMessageApiConfigId
-		// kilocode_change start - terminalCommandApiConfigId
+		// novacode_change end - commitMessageApiConfigId
+		// novacode_change start - terminalCommandApiConfigId
 		case "terminalCommandApiConfigId":
 			await updateGlobalState("terminalCommandApiConfigId", message.text)
 			await provider.postStateToWebview()
 			break
-		// kilocode_change end - terminalCommandApiConfigId
-		// kilocode_change start - ghostServiceSettings
+		// novacode_change end - terminalCommandApiConfigId
+		// novacode_change start - ghostServiceSettings
 		case "ghostServiceSettings":
 			if (!message.values) {
 				return
@@ -2020,7 +2258,7 @@ export const webviewMessageHandler = async (
 			const validatedSettings = autocompleteServiceSettingsSchema.parse(message.values)
 			await updateGlobalState("ghostServiceSettings", validatedSettings)
 			await provider.postStateToWebview()
-			vscode.commands.executeCommand("kilo-code.autocomplete.reload")
+			void executeCommandWithPrefixFallback("autocomplete.reload")
 			break
 		case "snoozeAutocomplete":
 			if (typeof message.value === "number" && message.value > 0) {
@@ -2029,13 +2267,13 @@ export const webviewMessageHandler = async (
 				await AutocompleteServiceManager.getInstance()?.unsnooze()
 			}
 			break
-		// kilocode_change end
-		// kilocode_change start: AI gatekeeper for YOLO mode
+		// novacode_change end
+		// novacode_change start: AI gatekeeper for YOLO mode
 		case "yoloGatekeeperApiConfigId":
 			await updateGlobalState("yoloGatekeeperApiConfigId", message.text)
 			await provider.postStateToWebview()
 			break
-		// kilocode_change end
+		// novacode_change end
 		case "updateCondensingPrompt":
 			// Store the condensing prompt in customSupportPrompts["CONDENSE"]
 			// instead of customCondensingPrompt.
@@ -2050,12 +2288,12 @@ export const webviewMessageHandler = async (
 			await updateGlobalState("autoApprovalEnabled", message.bool ?? false)
 			await provider.postStateToWebview()
 			break
-		// kilocode_change start: yolo mode
+		// novacode_change start: yolo mode
 		case "yoloMode":
 			await updateGlobalState("yoloMode", message.bool ?? false)
 			await provider.postStateToWebview()
 			break
-		// kilocode_change end
+		// novacode_change end
 		case "enhancePrompt":
 			if (message.text) {
 				try {
@@ -2093,7 +2331,7 @@ export const webviewMessageHandler = async (
 						`Error enhancing prompt: ${JSON.stringify(error, Object.getOwnPropertyNames(error), 2)}`,
 					)
 
-					TelemetryService.instance.captureException(error, { context: "enhance_prompt" }) // kilocode_change
+					TelemetryService.instance.captureException(error, { context: "enhance_prompt" }) // novacode_change
 					vscode.window.showErrorMessage(t("common:errors.enhance_prompt"))
 					await provider.postMessageToWebview({ type: "enhancedPrompt" })
 				}
@@ -2146,7 +2384,7 @@ export const webviewMessageHandler = async (
 			}
 			break
 		}
-		// kilocode_change start
+		// novacode_change start
 		case "showFeedbackOptions": {
 			const githubIssuesText = t("common:feedback.githubIssues")
 			const discordText = t("common:feedback.discord")
@@ -2161,7 +2399,7 @@ export const webviewMessageHandler = async (
 			)
 
 			if (answer === githubIssuesText) {
-				await vscode.env.openExternal(vscode.Uri.parse("https://github.com/Kilo-Org/kilocode/issues"))
+				await vscode.env.openExternal(vscode.Uri.parse("https://github.com/Nova-Org/nova/issues"))
 			} else if (answer === discordText) {
 				await vscode.env.openExternal(vscode.Uri.parse("https://discord.gg/fxrhCFGhkP"))
 			} else if (answer === customerSupport) {
@@ -2169,7 +2407,7 @@ export const webviewMessageHandler = async (
 			}
 			break
 		}
-		// kilocode_change end
+		// novacode_change end
 		case "searchFiles": {
 			const workspacePath = getCurrentCwd()
 
@@ -2270,7 +2508,7 @@ export const webviewMessageHandler = async (
 					await provider.providerSettingsManager.saveConfig(message.text, message.apiConfiguration)
 					const listApiConfig = await provider.providerSettingsManager.listConfig()
 					await updateGlobalState("listApiConfigMeta", listApiConfig)
-					vscode.commands.executeCommand("kilo-code.autocomplete.reload") // kilocode_change: Reload autocomplete model when API provider settings change
+					void executeCommandWithPrefixFallback("autocomplete.reload") // novacode_change: Reload autocomplete model when API provider settings change
 				} catch (error) {
 					provider.log(
 						`Error save api configuration: ${JSON.stringify(error, Object.getOwnPropertyNames(error), 2)}`,
@@ -2280,7 +2518,7 @@ export const webviewMessageHandler = async (
 			}
 			break
 		case "upsertApiConfiguration":
-			// kilocode_change start: check for kilocodeToken change to remove organizationId and fetch organization modes
+			// novacode_change start: check for novacodeToken change to remove organizationId and fetch organization modes
 			if (message.text && message.apiConfiguration) {
 				let configToSave = message.apiConfiguration
 				let organizationChanged = false
@@ -2289,18 +2527,18 @@ export const webviewMessageHandler = async (
 					const { ...currentConfig } = await provider.providerSettingsManager.getProfile({
 						name: message.text,
 					})
-					// Only clear organization ID if we actually had a kilocode token before and it's different now
-					const hadPreviousToken = currentConfig.kilocodeToken !== undefined
-					const hasNewToken = message.apiConfiguration.kilocodeToken !== undefined
-					const tokensAreDifferent = currentConfig.kilocodeToken !== message.apiConfiguration.kilocodeToken
+					// Only clear organization ID if we actually had a novacode token before and it's different now
+					const hadPreviousToken = currentConfig.novacodeToken !== undefined
+					const hasNewToken = message.apiConfiguration.novacodeToken !== undefined
+					const tokensAreDifferent = currentConfig.novacodeToken !== message.apiConfiguration.novacodeToken
 
 					if (hadPreviousToken && hasNewToken && tokensAreDifferent) {
-						configToSave = { ...message.apiConfiguration, kilocodeOrganizationId: undefined }
+						configToSave = { ...message.apiConfiguration, novacodeOrganizationId: undefined }
 						await updateGlobalState("hasPerformedOrganizationAutoSwitch", undefined)
 					}
 
 					organizationChanged =
-						currentConfig.kilocodeOrganizationId !== message.apiConfiguration.kilocodeOrganizationId
+						currentConfig.novacodeOrganizationId !== message.apiConfiguration.novacodeOrganizationId
 
 					if (organizationChanged) {
 						// Fetch organization-specific custom modes
@@ -2309,42 +2547,42 @@ export const webviewMessageHandler = async (
 						// Flush and refetch models
 						await flushModels(
 							{
-								provider: "kilocode",
-								kilocodeOrganizationId: message.apiConfiguration.kilocodeOrganizationId,
-								kilocodeToken: message.apiConfiguration.kilocodeToken,
+								provider: "novacode",
+								novacodeOrganizationId: message.apiConfiguration.novacodeOrganizationId,
+								novacodeToken: message.apiConfiguration.novacodeToken,
 							},
 							true,
 						)
 						const models = await getModels({
-							provider: "kilocode",
-							kilocodeOrganizationId: message.apiConfiguration.kilocodeOrganizationId,
-							kilocodeToken: message.apiConfiguration.kilocodeToken,
+							provider: "novacode",
+							novacodeOrganizationId: message.apiConfiguration.novacodeOrganizationId,
+							novacodeToken: message.apiConfiguration.novacodeToken,
 						})
 						provider.postMessageToWebview({
 							type: "routerModels",
-							routerModels: { kilocode: models } as Record<RouterName, ModelRecord>,
+							routerModels: { novacode: models } as Record<RouterName, ModelRecord>,
 						})
 					}
 				} catch (error) {
 					// Config might not exist yet, that's fine
 				}
 
-				// kilocode_change start: If we're updating the active profile, we need to activate it to ensure it's persisted
+				// novacode_change start: If we're updating the active profile, we need to activate it to ensure it's persisted
 				const currentApiConfigName = getGlobalState("currentApiConfigName") || "default"
 				const isActiveProfile = message.text === currentApiConfigName
 				await provider.upsertProviderProfile(message.text, configToSave, isActiveProfile) // Activate if it's the current active profile
-				vscode.commands.executeCommand("kilo-code.autocomplete.reload")
-				// kilocode_change end
+				void executeCommandWithPrefixFallback("autocomplete.reload")
+				// novacode_change end
 
 				// Ensure state is posted to webview after profile update to reflect organization mode changes
 				if (organizationChanged) {
 					await provider.postStateToWebview()
 				}
 
-				// kilocode_change: Reload autocomplete model when API provider settings change
-				vscode.commands.executeCommand("kilo-code.autocomplete.reload")
+				// novacode_change: Reload autocomplete model when API provider settings change
+				void executeCommandWithPrefixFallback("autocomplete.reload")
 			}
-			// kilocode_change end: check for kilocodeToken change to remove organizationId and fetch organization modes
+			// novacode_change end: check for novacodeToken change to remove organizationId and fetch organization modes
 			break
 		case "renameApiConfiguration":
 			if (message.values && message.apiConfiguration) {
@@ -2368,8 +2606,8 @@ export const webviewMessageHandler = async (
 					// currently activated provider profile.
 					await provider.activateProviderProfile({ name: newName })
 
-					// kilocode_change: Reload autocomplete model when API provider settings change
-					vscode.commands.executeCommand("kilo-code.autocomplete.reload")
+					// novacode_change: Reload autocomplete model when API provider settings change
+					void executeCommandWithPrefixFallback("autocomplete.reload")
 				} catch (error) {
 					provider.log(
 						`Error rename api configuration: ${JSON.stringify(error, Object.getOwnPropertyNames(error), 2)}`,
@@ -2403,7 +2641,7 @@ export const webviewMessageHandler = async (
 				}
 			}
 			break
-		// kilocode_change start: Load profile configuration for editing without activating
+		// novacode_change start: Load profile configuration for editing without activating
 		case "getProfileConfigurationForEditing":
 			if (message.text) {
 				const { name: _, ...profileConfig } = await provider.providerSettingsManager.getProfile({
@@ -2417,7 +2655,7 @@ export const webviewMessageHandler = async (
 				})
 			}
 			break
-		// kilocode_change end
+		// novacode_change end
 		case "deleteApiConfiguration":
 			if (message.text) {
 				const answer = await vscode.window.showInformationMessage(
@@ -2445,8 +2683,8 @@ export const webviewMessageHandler = async (
 					await provider.providerSettingsManager.deleteConfig(oldName)
 					await provider.activateProviderProfile({ name: newName })
 
-					// kilocode_change: Reload autocomplete model when API provider settings change
-					vscode.commands.executeCommand("kilo-code.autocomplete.reload")
+					// novacode_change: Reload autocomplete model when API provider settings change
+					void executeCommandWithPrefixFallback("autocomplete.reload")
 				} catch (error) {
 					provider.log(
 						`Error delete api configuration: ${JSON.stringify(error, Object.getOwnPropertyNames(error), 2)}`,
@@ -2573,14 +2811,14 @@ export const webviewMessageHandler = async (
 				if (scope === "project") {
 					const workspacePath = getWorkspacePath()
 					if (workspacePath) {
-						rulesFolderPath = path.join(workspacePath, ".kilocode", `rules-${message.slug}`)
+						rulesFolderPath = path.join(workspacePath, ".novacode", `rules-${message.slug}`)
 					} else {
-						rulesFolderPath = path.join(".kilocode", `rules-${message.slug}`)
+						rulesFolderPath = path.join(".novacode", `rules-${message.slug}`)
 					}
 				} else {
 					// Global scope - use OS home directory
 					const homeDir = os.homedir()
-					rulesFolderPath = path.join(homeDir, ".kilocode", `rules-${message.slug}`)
+					rulesFolderPath = path.join(homeDir, ".novacode", `rules-${message.slug}`)
 				}
 
 				// Check if the rules folder exists
@@ -2833,46 +3071,46 @@ export const webviewMessageHandler = async (
 			}
 			break
 
-		// kilocode_change_start
+		// novacode_change_start
 		case "fetchProfileDataRequest":
 			try {
 				const { apiConfiguration, currentApiConfigName } = await provider.getState()
-				const kilocodeToken = apiConfiguration?.kilocodeToken
+				const novacodeToken = apiConfiguration?.novacodeToken
 
-				if (!kilocodeToken) {
-					provider.log("KiloCode token not found in extension state.")
+				if (!novacodeToken) {
+					provider.log("NovaCode token not found in extension state.")
 					provider.postMessageToWebview({
 						type: "profileDataResponse",
-						payload: { success: false, error: "KiloCode API token not configured." },
+						payload: { success: false, error: "NovaCode API token not configured." },
 					})
 					break
 				}
 
 				// Changed to /api/profile
 				const headers: Record<string, string> = {
-					Authorization: `Bearer ${kilocodeToken}`,
+					Authorization: `Bearer ${novacodeToken}`,
 					"Content-Type": "application/json",
 				}
 
-				// Add X-KILOCODE-TESTER: SUPPRESS header if the setting is enabled
+				// Add X-NOVACODE-TESTER: SUPPRESS header if the setting is enabled
 				if (
-					apiConfiguration.kilocodeTesterWarningsDisabledUntil &&
-					apiConfiguration.kilocodeTesterWarningsDisabledUntil > Date.now()
+					apiConfiguration.novacodeTesterWarningsDisabledUntil &&
+					apiConfiguration.novacodeTesterWarningsDisabledUntil > Date.now()
 				) {
-					headers["X-KILOCODE-TESTER"] = "SUPPRESS"
+					headers["X-NOVACODE-TESTER"] = "SUPPRESS"
 				}
 
-				const url = getKiloUrlFromToken("https://api.kilo.ai/api/profile", kilocodeToken)
-				const response = await axios.get<Omit<ProfileData, "kilocodeToken">>(url, { headers })
+				const url = getNovaUrlFromToken("https://api.nova.ai/api/profile", novacodeToken)
+				const response = await axios.get<Omit<ProfileData, "novacodeToken">>(url, { headers })
 
 				// Go back to Personal when no longer part of the current set organization
 				const organizationExists = (response.data.organizations ?? []).some(
-					({ id }: { id: string }) => id === apiConfiguration?.kilocodeOrganizationId,
+					({ id }: { id: string }) => id === apiConfiguration?.novacodeOrganizationId,
 				)
-				if (apiConfiguration?.kilocodeOrganizationId && !organizationExists) {
+				if (apiConfiguration?.novacodeOrganizationId && !organizationExists) {
 					provider.upsertProviderProfile(currentApiConfigName ?? "default", {
 						...apiConfiguration,
-						kilocodeOrganizationId: undefined,
+						novacodeOrganizationId: undefined,
 					})
 				}
 
@@ -2882,7 +3120,7 @@ export const webviewMessageHandler = async (
 						!getGlobalState("yoloMode") &&
 						response.data.organizations &&
 						response.data.organizations.length > 0 &&
-						!apiConfiguration.kilocodeOrganizationId &&
+						!apiConfiguration.novacodeOrganizationId &&
 						!getGlobalState("hasPerformedOrganizationAutoSwitch")
 
 					if (shouldAutoSwitch) {
@@ -2896,7 +3134,7 @@ export const webviewMessageHandler = async (
 							text: currentApiConfigName ?? "default",
 							apiConfiguration: {
 								...apiConfiguration,
-								kilocodeOrganizationId: firstOrg.id,
+								novacodeOrganizationId: firstOrg.id,
 							},
 						}
 
@@ -2915,7 +3153,7 @@ export const webviewMessageHandler = async (
 
 				provider.postMessageToWebview({
 					type: "profileDataResponse",
-					payload: { success: true, data: { kilocodeToken, ...response.data } },
+					payload: { success: true, data: { novacodeToken, ...response.data } },
 				})
 			} catch (error: any) {
 				const errorMessage =
@@ -2932,35 +3170,35 @@ export const webviewMessageHandler = async (
 		case "fetchBalanceDataRequest": // New handler
 			try {
 				const { apiConfiguration } = await provider.getState()
-				const { kilocodeToken, kilocodeOrganizationId } = apiConfiguration ?? {}
+				const { novacodeToken, novacodeOrganizationId } = apiConfiguration ?? {}
 
-				if (!kilocodeToken) {
-					provider.log("KiloCode token not found in extension state for balance data.")
+				if (!novacodeToken) {
+					provider.log("NovaCode token not found in extension state for balance data.")
 					provider.postMessageToWebview({
 						type: "balanceDataResponse", // New response type
-						payload: { success: false, error: "KiloCode API token not configured." },
+						payload: { success: false, error: "NovaCode API token not configured." },
 					})
 					break
 				}
 
 				const headers: Record<string, string> = {
-					Authorization: `Bearer ${kilocodeToken}`,
+					Authorization: `Bearer ${novacodeToken}`,
 					"Content-Type": "application/json",
 				}
 
-				if (kilocodeOrganizationId) {
-					headers["X-KiloCode-OrganizationId"] = kilocodeOrganizationId
+				if (novacodeOrganizationId) {
+					headers["X-NovaCode-OrganizationId"] = novacodeOrganizationId
 				}
 
-				// Add X-KILOCODE-TESTER: SUPPRESS header if the setting is enabled
+				// Add X-NOVACODE-TESTER: SUPPRESS header if the setting is enabled
 				if (
-					apiConfiguration.kilocodeTesterWarningsDisabledUntil &&
-					apiConfiguration.kilocodeTesterWarningsDisabledUntil > Date.now()
+					apiConfiguration.novacodeTesterWarningsDisabledUntil &&
+					apiConfiguration.novacodeTesterWarningsDisabledUntil > Date.now()
 				) {
-					headers["X-KILOCODE-TESTER"] = "SUPPRESS"
+					headers["X-NOVACODE-TESTER"] = "SUPPRESS"
 				}
 
-				const url = getKiloUrlFromToken("https://api.kilo.ai/api/profile/balance", kilocodeToken)
+				const url = getNovaUrlFromToken("https://api.nova.ai/api/profile/balance", novacodeToken)
 				const response = await axios.get(url, { headers })
 				provider.postMessageToWebview({
 					type: "balanceDataResponse", // New response type
@@ -2979,9 +3217,9 @@ export const webviewMessageHandler = async (
 		case "shopBuyCredits": // New handler
 			try {
 				const { apiConfiguration } = await provider.getState()
-				const kilocodeToken = apiConfiguration?.kilocodeToken
-				if (!kilocodeToken) {
-					provider.log("KiloCode token not found in extension state for buy credits.")
+				const novacodeToken = apiConfiguration?.novacodeToken
+				if (!novacodeToken) {
+					provider.log("NovaCode token not found in extension state for buy credits.")
 					break
 				}
 				const credits = message.values?.credits || 50
@@ -2989,16 +3227,16 @@ export const webviewMessageHandler = async (
 				const uiKind = message.values?.uiKind || "Desktop"
 				const source = uiKind === "Web" ? "web" : uriScheme
 
-				const url = getKiloUrlFromToken(
-					`https://api.kilo.ai/payments/topup?origin=extension&source=${source}&amount=${credits}`,
-					kilocodeToken,
+				const url = getNovaUrlFromToken(
+					`https://api.nova.ai/payments/topup?origin=extension&source=${source}&amount=${credits}`,
+					novacodeToken,
 				)
 				const response = await axios.post(
 					url,
 					{},
 					{
 						headers: {
-							Authorization: `Bearer ${kilocodeToken}`,
+							Authorization: `Bearer ${novacodeToken}`,
 							"Content-Type": "application/json",
 						},
 						maxRedirects: 0, // Prevent axios from following redirects automatically
@@ -3055,12 +3293,12 @@ export const webviewMessageHandler = async (
 			break
 		}
 
-		// kilocode_change start
+		// novacode_change start
 		case "refreshSkills": {
 			await provider.postSkillsDataToWebview()
 			break
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		case "toggleRule": {
 			if (message.rulePath && typeof message.enabled === "boolean" && typeof message.isGlobal === "boolean") {
@@ -3086,7 +3324,7 @@ export const webviewMessageHandler = async (
 					await createRuleFile(message.filename, message.isGlobal, message.ruleType)
 				} catch (error) {
 					console.error("Error creating rule file:", error)
-					vscode.window.showErrorMessage(t("kilocode:rules.errors.failedToCreateRuleFile"))
+					vscode.window.showErrorMessage(t("novacode:rules.errors.failedToCreateRuleFile"))
 				}
 				await provider.postRulesDataToWebview()
 			}
@@ -3099,7 +3337,7 @@ export const webviewMessageHandler = async (
 					await deleteRuleFile(message.rulePath)
 				} catch (error) {
 					console.error("Error deleting rule file:", error)
-					vscode.window.showErrorMessage(t("kilocode:rules.errors.failedToDeleteRuleFile"))
+					vscode.window.showErrorMessage(t("novacode:rules.errors.failedToDeleteRuleFile"))
 				}
 				await provider.postRulesDataToWebview()
 			}
@@ -3109,11 +3347,11 @@ export const webviewMessageHandler = async (
 		case "reportBug":
 			provider.getCurrentTask()?.handleWebviewAskResponse("yesButtonClicked")
 			break
-		// end kilocode_change
+		// end novacode_change
 		case "telemetrySetting": {
 			const telemetrySetting = message.text as TelemetrySetting
 			const previousSetting = getGlobalState("telemetrySetting") || "unset"
-			const isOptedIn = getEffectiveTelemetrySetting(telemetrySetting) === "enabled" // kilocode_change
+			const isOptedIn = getEffectiveTelemetrySetting(telemetrySetting) === "enabled" // novacode_change
 			const wasPreviouslyOptedIn = previousSetting !== "disabled"
 
 			// If turning telemetry OFF, fire event BEFORE disabling
@@ -3362,10 +3600,10 @@ export const webviewMessageHandler = async (
 					codebaseIndexEnabled: settings.codebaseIndexEnabled,
 					codebaseIndexQdrantUrl: settings.codebaseIndexQdrantUrl,
 					codebaseIndexEmbedderProvider: settings.codebaseIndexEmbedderProvider,
-					// kilocode_change start
+					// novacode_change start
 					codebaseIndexVectorStoreProvider: settings.codebaseIndexVectorStoreProvider,
 					codebaseIndexLancedbVectorStoreDirectory: settings.codebaseIndexLancedbVectorStoreDirectory,
-					// kilocode_change end
+					// novacode_change end
 					codebaseIndexEmbedderBaseUrl: settings.codebaseIndexEmbedderBaseUrl,
 					codebaseIndexEmbedderModelId: settings.codebaseIndexEmbedderModelId,
 					codebaseIndexEmbedderModelDimension: settings.codebaseIndexEmbedderModelDimension, // Generic dimension
@@ -3374,24 +3612,24 @@ export const webviewMessageHandler = async (
 					codebaseIndexBedrockProfile: settings.codebaseIndexBedrockProfile,
 					codebaseIndexSearchMaxResults: settings.codebaseIndexSearchMaxResults,
 					codebaseIndexSearchMinScore: settings.codebaseIndexSearchMinScore,
-					// kilocode_change start
+					// novacode_change start
 					codebaseIndexEmbeddingBatchSize: settings.codebaseIndexEmbeddingBatchSize,
 					codebaseIndexScannerMaxBatchRetries: settings.codebaseIndexScannerMaxBatchRetries,
-					// kilocode_change end
+					// novacode_change end
 					codebaseIndexOpenRouterSpecificProvider: settings.codebaseIndexOpenRouterSpecificProvider,
 				}
 
 				// Save global state first
 				await updateGlobalState("codebaseIndexConfig", globalStateConfig)
 
-				// kilocode_change start: Update the batch size in the running scanner and file watcher
+				// novacode_change start: Update the batch size in the running scanner and file watcher
 				if (settings.codebaseIndexEmbeddingBatchSize !== undefined) {
 					const currentCodeIndexManager = provider.getCurrentWorkspaceCodeIndexManager()
 					if (currentCodeIndexManager) {
 						currentCodeIndexManager.updateBatchSegmentThreshold(settings.codebaseIndexEmbeddingBatchSize)
 					}
 				}
-				// kilocode_change end
+				// novacode_change end
 
 				// Save secrets directly using context proxy
 				if (settings.codeIndexOpenAiKey !== undefined) {
@@ -3430,14 +3668,14 @@ export const webviewMessageHandler = async (
 						settings.codebaseIndexOpenRouterApiKey,
 					)
 				}
-				// kilocode_change start
+				// novacode_change start
 				if (settings.codebaseIndexVoyageApiKey !== undefined) {
 					await provider.contextProxy.storeSecret(
 						"codebaseIndexVoyageApiKey",
 						settings.codebaseIndexVoyageApiKey,
 					)
 				}
-				// kilocode_change end
+				// novacode_change end
 
 				// Send success response first - settings are saved regardless of validation
 				await provider.postMessageToWebview({
@@ -3576,7 +3814,7 @@ export const webviewMessageHandler = async (
 				"codebaseIndexVercelAiGatewayApiKey",
 			))
 			const hasOpenRouterApiKey = !!(await provider.context.secrets.get("codebaseIndexOpenRouterApiKey"))
-			const hasVoyageApiKey = !!(await provider.context.secrets.get("codebaseIndexVoyageApiKey")) // kilocode_change
+			const hasVoyageApiKey = !!(await provider.context.secrets.get("codebaseIndexVoyageApiKey")) // novacode_change
 
 			provider.postMessageToWebview({
 				type: "codeIndexSecretStatus",
@@ -3588,7 +3826,7 @@ export const webviewMessageHandler = async (
 					hasMistralApiKey,
 					hasVercelAiGatewayApiKey,
 					hasOpenRouterApiKey,
-					hasVoyageApiKey, // kilocode_change
+					hasVoyageApiKey, // novacode_change
 				},
 			})
 			break
@@ -3639,7 +3877,7 @@ export const webviewMessageHandler = async (
 			}
 			break
 		}
-		// kilocode_change start
+		// novacode_change start
 		case "cancelIndexing": {
 			try {
 				const manager = provider.getCurrentWorkspaceCodeIndexManager()
@@ -3670,7 +3908,7 @@ export const webviewMessageHandler = async (
 			}
 			break
 		}
-		// kilocode_change end
+		// novacode_change end
 		case "clearIndexData": {
 			try {
 				const manager = provider.getCurrentWorkspaceCodeIndexManager()
@@ -3686,14 +3924,14 @@ export const webviewMessageHandler = async (
 					return
 				}
 
-				// kilocode_change start
+				// novacode_change start
 				// Clear any prior error banner in UI even if config is still invalid.
 				manager.clearErrorState()
 				provider.postMessageToWebview({
 					type: "indexingStatusUpdate",
 					values: manager.getCurrentStatus(),
 				})
-				// kilocode_change end
+				// novacode_change end
 
 				await manager.clearIndexData()
 				provider.postMessageToWebview({ type: "indexCleared", values: { success: true } })
@@ -3709,7 +3947,7 @@ export const webviewMessageHandler = async (
 			}
 			break
 		}
-		// kilocode_change start - add clearUsageData
+		// novacode_change start - add clearUsageData
 		case "clearUsageData": {
 			try {
 				const usageTracker = UsageTracker.getInstance()
@@ -3722,7 +3960,7 @@ export const webviewMessageHandler = async (
 			}
 			break
 		}
-		// kilocode_change start - add getUsageData
+		// novacode_change start - add getUsageData
 		case "getUsageData": {
 			if (message.text) {
 				try {
@@ -3740,14 +3978,14 @@ export const webviewMessageHandler = async (
 			}
 			break
 		}
-		// kilocode_change end - add getUsageData
-		// kilocode_change start - add toggleTaskFavorite
+		// novacode_change end - add getUsageData
+		// novacode_change start - add toggleTaskFavorite
 		case "toggleTaskFavorite":
 			if (message.text) {
 				await provider.toggleTaskFavorite(message.text)
 			}
 			break
-		// kilocode_change start - add fixMermaidSyntax
+		// novacode_change start - add fixMermaidSyntax
 		case "fixMermaidSyntax":
 			if (message.text && message.requestId) {
 				try {
@@ -3776,7 +4014,7 @@ export const webviewMessageHandler = async (
 				}
 			}
 			break
-		// kilocode_change end
+		// novacode_change end
 		case "focusPanelRequest": {
 			// Execute the focusPanel command to focus the WebView
 			await vscode.commands.executeCommand(getCommand("focusPanel"))
@@ -3840,7 +4078,7 @@ export const webviewMessageHandler = async (
 				try {
 					await marketplaceManager.removeInstalledMarketplaceItem(message.mpItem, message.mpInstallOptions)
 
-					// kilocode_change start: Force skills refresh after skill deletion
+					// novacode_change start: Force skills refresh after skill deletion
 					// If the removed item is a skill, force a refresh of the SkillsManager
 					// to ensure the cache is updated before sending data to the webview
 					if (message.mpItem.type === "skill") {
@@ -3850,7 +4088,7 @@ export const webviewMessageHandler = async (
 						}
 						await provider.postSkillsDataToWebview()
 					}
-					// kilocode_change end
+					// novacode_change end
 
 					await provider.postStateToWebview()
 
@@ -3931,13 +4169,13 @@ export const webviewMessageHandler = async (
 			}
 			break
 		}
-		// kilocode_change start
+		// novacode_change start
 		case "editMessage": {
 			await editMessageHandler(provider, message)
 			break
 		}
-		case "fetchKilocodeNotifications": {
-			await fetchKilocodeNotificationsHandler(provider)
+		case "fetchNovacodeNotifications": {
+			await fetchNovacodeNotificationsHandler(provider)
 			break
 		}
 		case "dismissNotificationId": {
@@ -3951,8 +4189,8 @@ export const webviewMessageHandler = async (
 			await provider.postStateToWebview()
 			break
 		}
-		// kilocode_change end
-		// kilocode_change start: Type-safe global state handler
+		// novacode_change end
+		// novacode_change start: Type-safe global state handler
 		case "updateGlobalState": {
 			const { stateKey, stateValue } = message as UpdateGlobalStateMessage
 			if (stateKey !== undefined && stateValue !== undefined && isGlobalStateKey(stateKey)) {
@@ -3961,8 +4199,8 @@ export const webviewMessageHandler = async (
 			}
 			break
 		}
-		// kilocode_change end: Type-safe global state handler
-		// kilocode_change start: STT (Speech-to-Text) handlers
+		// novacode_change end: Type-safe global state handler
+		// novacode_change start: STT (Speech-to-Text) handlers
 		case "stt:start":
 		case "stt:stop":
 		case "stt:cancel":
@@ -3973,7 +4211,7 @@ export const webviewMessageHandler = async (
 			await handleSTTCommand(provider, message as any)
 			break
 		}
-		// kilocode_change end: STT (Speech-to-Text) handlers
+		// novacode_change end: STT (Speech-to-Text) handlers
 		case "insertTextToChatArea":
 			provider.postMessageToWebview({ type: "insertTextToChatArea", text: message.text })
 			break
@@ -4017,7 +4255,7 @@ export const webviewMessageHandler = async (
 				await provider.postMessageToWebview({ type: "keybindingsResponse", keybindings: {} })
 			}
 			break
-		} // kilocode_change start: Chat text area FIM autocomplete
+		} // novacode_change start: Chat text area FIM autocomplete
 		case "requestChatCompletion": {
 			await handleChatCompletionRequest(
 				message as WebviewMessage & { type: "requestChatCompletion" },
@@ -4030,7 +4268,7 @@ export const webviewMessageHandler = async (
 			handleChatCompletionAccepted(message as WebviewMessage & { type: "chatCompletionAccepted" })
 			break
 		}
-		// kilocode_change end: Chat text area FIM autocomplete
+		// novacode_change end: Chat text area FIM autocomplete
 		case "openCommandFile": {
 			try {
 				if (message.text) {
@@ -4084,7 +4322,7 @@ export const webviewMessageHandler = async (
 				// Determine the commands directory based on source
 				let commandsDir: string
 				if (source === "global") {
-					const globalConfigDir = path.join(os.homedir(), ".kilocode")
+					const globalConfigDir = path.join(os.homedir(), ".novacode")
 					commandsDir = path.join(globalConfigDir, "commands")
 				} else {
 					if (!vscode.workspace.workspaceFolders?.length) {
@@ -4097,7 +4335,7 @@ export const webviewMessageHandler = async (
 						vscode.window.showErrorMessage(t("common:errors.no_workspace_for_project_command"))
 						break
 					}
-					commandsDir = path.join(workspaceRoot, ".kilocode", "commands")
+					commandsDir = path.join(workspaceRoot, ".novacode", "commands")
 				}
 
 				// Ensure the commands directory exists
@@ -4208,7 +4446,7 @@ export const webviewMessageHandler = async (
 			break
 		}
 
-		// kilocode_change start - Auto-purge settings handlers
+		// novacode_change start - Auto-purge settings handlers
 		case "autoPurgeEnabled":
 			await updateGlobalState("autoPurgeEnabled", message.bool ?? false)
 			await provider.postStateToWebview()
@@ -4269,7 +4507,7 @@ export const webviewMessageHandler = async (
 			}
 			break
 
-		// kilocode_change end
+		// novacode_change end
 
 		/**
 		 * Chat Message Queue
@@ -4327,7 +4565,7 @@ export const webviewMessageHandler = async (
 			})
 			break
 		}
-		// kilocode_change start
+		// novacode_change start
 		case "addTaskToHistory": {
 			if (message.historyItem) {
 				await provider.updateTaskHistory(message.historyItem)
@@ -4368,7 +4606,7 @@ export const webviewMessageHandler = async (
 					throw new Error("SessionManager not initialized")
 				}
 
-				const shareUrl = `https://app.kilo.ai/share/${result.share_id}`
+				const shareUrl = `https://app.nova.ai/share/${result.share_id}`
 
 				// Copy URL to clipboard and show success notification
 				await vscode.env.clipboard.writeText(shareUrl)
@@ -4399,7 +4637,7 @@ export const webviewMessageHandler = async (
 					throw new Error("SessionManager not initialized")
 				}
 
-				const shareUrl = `https://app.kilo.ai/share/${result.share_id}`
+				const shareUrl = `https://app.nova.ai/share/${result.share_id}`
 
 				await vscode.env.clipboard.writeText(shareUrl)
 				vscode.window.showInformationMessage(
@@ -4489,13 +4727,13 @@ export const webviewMessageHandler = async (
 			}
 			break
 		}
-		// kilocode_change end
-		// kilocode_change start - ManagedIndexer state
+		// novacode_change end
+		// novacode_change start - ManagedIndexer state
 		case "requestManagedIndexerState": {
 			ManagedIndexer.getInstance()?.sendStateToWebview()
 			break
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		case "openMarkdownPreview": {
 			if (message.text) {
@@ -4637,14 +4875,14 @@ export const webviewMessageHandler = async (
 			break
 		}
 
-		// kilocode_change start - Device Auth handlers
+		// novacode_change start - Device Auth handlers
 		case "startDeviceAuth":
 		case "cancelDeviceAuth":
 		case "deviceAuthCompleteWithProfile": {
 			await deviceAuthMessageHandler(provider, message)
 			break
 		}
-		// kilocode_change end
+		// novacode_change end
 		case "downloadErrorDiagnostics": {
 			const currentTask = provider.getCurrentTask()
 			if (!currentTask) {
@@ -4661,7 +4899,7 @@ export const webviewMessageHandler = async (
 			break
 		}
 
-		// kilocode_change start: Review mode scope selection
+		// novacode_change start: Review mode scope selection
 		case "reviewScopeSelected": {
 			const scope = message.reviewScope
 			if (scope === "uncommitted" || scope === "branch") {
@@ -4669,7 +4907,7 @@ export const webviewMessageHandler = async (
 			}
 			break
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		default: {
 			// console.log(`Unhandled message type: ${message.type}`)

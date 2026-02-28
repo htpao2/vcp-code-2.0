@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react"
+﻿import { render } from "@testing-library/react"
 import BrowserSessionRow from "../BrowserSessionRow"
 import { ClineMessage } from "@roo-code/types"
 import { TooltipProvider } from "@src/components/ui/tooltip"
@@ -46,7 +46,7 @@ vi.mock("@src/context/ExtensionStateContext", () => ({
 	}),
 }))
 
-vi.mock("../kilocode/common/CodeBlock", () => ({
+vi.mock("../nova/common/CodeBlock", () => ({
 	default: ({ source }: { source: string }) => <div>{source}</div>,
 }))
 

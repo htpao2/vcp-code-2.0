@@ -1,4 +1,4 @@
-// npx vitest run src/__tests__/App.spec.tsx
+﻿// npx vitest run src/__tests__/App.spec.tsx
 
 import React from "react"
 import { render, screen, act, cleanup } from "@/utils/test-utils"
@@ -58,7 +58,7 @@ vi.mock("@src/components/history/HistoryView", () => ({
 	},
 }))
 
-vi.mock("../components/kilocodeMcp/marketplace/McpMarketplaceView", () => ({
+vi.mock("../components/novaMcp/marketplace/McpMarketplaceView", () => ({
 	__esModule: true,
 	default: function McpMarketplaceView() {
 		return <div data-testid="mcp-marketplace-view">MCP Marketplace View</div>
@@ -175,10 +175,10 @@ describe("App", () => {
 			didHydrateState: true,
 			showWelcome: false,
 			shouldShowAnnouncement: false,
-			// kilocode_change start: avoid rendering onboarding screen in App tests
+			// novacode_change start: avoid rendering onboarding screen in App tests
 			hasCompletedOnboarding: true,
 			taskHistoryFullLength: 1,
-			// kilocode_change end
+			// novacode_change end
 			experiments: {},
 			language: "en",
 			telemetrySetting: "enabled",
@@ -236,7 +236,7 @@ describe("App", () => {
 		expect(chatView.getAttribute("data-hidden")).toBe("true")
 	})
 
-	// kilocode_change start: Test changed to expect settings-view instead of prompts-view
+	// novacode_change start: Test changed to expect settings-view instead of prompts-view
 	it("switches to settings view with modes section when receiving promptsButtonClicked action", async () => {
 		render(<AppWithProviders />)
 
@@ -250,7 +250,7 @@ describe("App", () => {
 		const chatView = screen.getByTestId("chat-view")
 		expect(chatView.getAttribute("data-hidden")).toBe("true")
 	})
-	// kilocode_change end
+	// novacode_change end
 
 	it("returns to chat view when clicking done in settings view", async () => {
 		render(<AppWithProviders />)
@@ -270,7 +270,7 @@ describe("App", () => {
 		expect(screen.queryByTestId("settings-view")).not.toBeInTheDocument()
 	})
 
-	// kilocode_change start: Split tests for history view and settings view (via promptsButtonClicked)
+	// novacode_change start: Split tests for history view and settings view (via promptsButtonClicked)
 	it("returns to chat view when clicking done in history view", async () => {
 		render(<AppWithProviders />)
 
@@ -306,7 +306,7 @@ describe("App", () => {
 		expect(chatView.getAttribute("data-hidden")).toBe("false")
 		expect(screen.queryByTestId("settings-view")).not.toBeInTheDocument()
 	})
-	// kilocode_change end
+	// novacode_change end
 
 	it.skip("switches to marketplace view when receiving marketplaceButtonClicked action", async () => {
 		render(<AppWithProviders />)

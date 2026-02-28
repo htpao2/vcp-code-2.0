@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import packageJson from "../package.json"
 import { readUserConfigFile } from "./vscode-config"
 

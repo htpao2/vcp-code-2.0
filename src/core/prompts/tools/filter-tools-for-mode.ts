@@ -1,4 +1,4 @@
-import type OpenAI from "openai"
+﻿import type OpenAI from "openai"
 import type { ModeConfig, ToolName, ToolGroup, ModelInfo } from "@roo-code/types"
 import { getModeBySlug, getToolsForMode } from "../../../shared/modes"
 import { TOOL_GROUPS, ALWAYS_AVAILABLE_TOOLS, TOOL_ALIASES } from "../../../shared/tools"
@@ -7,11 +7,11 @@ import type { CodeIndexManager } from "../../../services/code-index/manager"
 import type { McpHub } from "../../../services/mcp/McpHub"
 import { isToolAllowedForMode } from "../../../core/tools/validateToolUse"
 
-// kilocode_change start
+// novacode_change start
 import { ClineProviderState } from "../../webview/ClineProvider"
-import { isFastApplyAvailable } from "../../tools/kilocode/editFileTool"
+import { isFastApplyAvailable } from "../../tools/nova/editFileTool"
 import { ManagedIndexer } from "../../../services/code-index/managed/ManagedIndexer"
-// kilocode_change end
+// novacode_change end
 
 /**
  * Reverse lookup map - maps alias name to canonical tool name.
@@ -235,9 +235,9 @@ export function filterNativeToolsForMode(
 	experiments: Record<string, boolean> | undefined,
 	codeIndexManager?: CodeIndexManager,
 	settings?: Record<string, any>,
-	// kilocode_change start
+	// novacode_change start
 	state?: ClineProviderState,
-	// kilocode_change end
+	// novacode_change end
 	mcpHub?: McpHub,
 ): OpenAI.Chat.ChatCompletionTool[] {
 	// Get mode configuration and all tools for this mode
@@ -268,7 +268,7 @@ export function filterNativeToolsForMode(
 		),
 	)
 
-	// kilocode_change start
+	// novacode_change start
 	// Apply Fast Apply logic BEFORE model customization so that explicit inclusions can override it
 	if (state && isFastApplyAvailable(state)) {
 		// When Fast Apply is enabled, disable traditional editing tools
@@ -278,7 +278,7 @@ export function filterNativeToolsForMode(
 		// Only expose the Fast Apply tool when Fast Apply is actually available.
 		allowedToolNames.delete("fast_edit_file")
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	// Apply model-specific tool customization (can re-add tools if explicitly included)
 	const modelInfo = settings?.modelInfo as ModelInfo | undefined
@@ -291,7 +291,7 @@ export function filterNativeToolsForMode(
 
 	// Conditionally exclude codebase_search if feature is disabled or not configured
 
-	// kilocode_change start
+	// novacode_change start
 	const isCodebaseSearchAvailable =
 		ManagedIndexer.getInstance().isEnabled() ||
 		(codeIndexManager &&
@@ -301,7 +301,7 @@ export function filterNativeToolsForMode(
 	if (!isCodebaseSearchAvailable) {
 		allowedToolNames.delete("codebase_search")
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	// Conditionally exclude update_todo_list if disabled in settings
 	if (settings?.todoListEnabled === false) {
@@ -321,7 +321,7 @@ export function filterNativeToolsForMode(
 	// Conditionally exclude browser_action if disabled in settings
 	if (
 		settings?.browserToolEnabled === false ||
-		modelInfo?.supportsImages === false // kilocode_change
+		modelInfo?.supportsImages === false // novacode_change
 	) {
 		allowedToolNames.delete("browser_action")
 	}
@@ -331,13 +331,13 @@ export function filterNativeToolsForMode(
 		allowedToolNames.delete("apply_diff")
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	// Conditionally exclude ask_followup_question in yolo mode
 	// This prevents the agent from asking itself questions and auto-answering them
 	if (state?.yoloMode) {
 		allowedToolNames.delete("ask_followup_question")
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	// Conditionally exclude access_mcp_resource if MCP is not enabled or there are no resources
 	if (!mcpHub || !hasAnyMcpResources(mcpHub)) {

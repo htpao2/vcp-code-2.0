@@ -66,7 +66,7 @@ export const toolParamNames = [
 	"replace",
 	"use_regex",
 	"ignore_case",
-	// kilocode_change start
+	// novacode_change start
 	"title",
 	"description",
 	"target_file",
@@ -74,7 +74,7 @@ export const toolParamNames = [
 	"code_edit",
 	"old_str",
 	"new_str",
-	// kilocode_change end
+	// novacode_change end
 	"query",
 	"args",
 	"start_line",
@@ -108,9 +108,9 @@ export type NativeToolArgs = {
 	search_and_replace: { path: string; operations: Array<{ search: string; replace: string }> }
 	search_replace: { file_path: string; old_string: string; new_string: string }
 	edit_file: { file_path: string; old_string: string; new_string: string; expected_replacements?: number }
-	// kilocode_change start: Fast Apply
+	// novacode_change start: Fast Apply
 	fast_edit_file: { target_file: string; instructions: string; code_edit: string }
-	// kilocode_change end
+	// novacode_change end
 	apply_patch: { patch: string }
 	ask_followup_question: {
 		question: string
@@ -147,7 +147,7 @@ export interface ToolUse<TName extends ToolName = ToolName> {
 	// params is a partial record, allowing only some or none of the possible parameters to be used
 	params: Partial<Record<ToolParamName, string>>
 	partial: boolean
-	toolUseId?: string // kilocode_change
+	toolUseId?: string // novacode_change
 	// nativeArgs is properly typed based on TName if it's in NativeToolArgs, otherwise never
 	nativeArgs?: TName extends keyof NativeToolArgs ? NativeToolArgs[TName] : never
 	/**
@@ -203,12 +203,12 @@ export interface WriteToFileToolUse extends ToolUse<"write_to_file"> {
 	params: Partial<Pick<Record<ToolParamName, string>, "path" | "content">>
 }
 
-// kilocode_change start
+// novacode_change start
 export interface DeleteFileToolUse extends ToolUse {
 	name: "delete_file"
 	params: Partial<Pick<Record<ToolParamName, string>, "path">>
 }
-// kilocode_change end
+// novacode_change end
 
 export interface CodebaseSearchToolUse extends ToolUse<"codebase_search"> {
 	name: "codebase_search"
@@ -265,13 +265,13 @@ export interface RunSlashCommandToolUse extends ToolUse<"run_slash_command"> {
 	params: Partial<Pick<Record<ToolParamName, string>, "command" | "args">>
 }
 
-// kilocode_change start: Morph fast apply
+// novacode_change start: Morph fast apply
 
 export interface FastEditFileToolUse extends ToolUse {
 	name: "fast_edit_file"
 	params: Required<Pick<Record<ToolParamName, string>, "target_file" | "instructions" | "code_edit">>
 }
-// kilocode_change end
+// novacode_change end
 
 export interface GenerateImageToolUse extends ToolUse<"generate_image"> {
 	name: "generate_image"
@@ -291,18 +291,18 @@ export const TOOL_DISPLAY_NAMES: Record<ToolName, string> = {
 	fetch_instructions: "fetch instructions",
 	write_to_file: "write files",
 	apply_diff: "apply changes",
-	// kilocode_change start
+	// novacode_change start
 	// edit_file: "edit file",
 	delete_file: "delete files",
 	report_bug: "report bug",
 	condense: "condense the current context window",
-	// kilocode_change start
+	// novacode_change start
 	search_and_replace: "apply changes using search and replace",
 	search_replace: "apply single search and replace",
 	edit_file: "edit files using search and replace",
-	// kilocode_change start: Fast Apply
+	// novacode_change start: Fast Apply
 	fast_edit_file: "edit files using Fast Apply",
-	// kilocode_change end
+	// novacode_change end
 	apply_patch: "apply patches using codex format",
 	search_files: "search files",
 	list_files: "list files",
@@ -330,12 +330,12 @@ export const TOOL_GROUPS: Record<ToolGroup, ToolGroupConfig> = {
 		tools: [
 			"apply_diff",
 			"edit_file",
-			// kilocode_change start: Fast Apply
+			// novacode_change start: Fast Apply
 			"fast_edit_file",
-			// kilocode_change end
+			// novacode_change end
 			"write_to_file",
-			"delete_file", // kilocode_change
-			"new_rule", // kilocode_change
+			"delete_file", // novacode_change
+			"new_rule", // novacode_change
 			"generate_image",
 		],
 		customTools: ["search_and_replace", "search_replace", "edit_file", "apply_patch"],
@@ -362,7 +362,7 @@ export const ALWAYS_AVAILABLE_TOOLS: ToolName[] = [
 	"switch_mode",
 	"new_task",
 	"report_bug",
-	"condense", // kilocode_Change
+	"condense", // novacode_Change
 	"update_todo_list",
 	"run_slash_command",
 ] as const

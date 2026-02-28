@@ -1,15 +1,15 @@
-# Kilo Code Development Container
+# Nova Code Development Container
 
-This development container provides a standardized environment for developing Kilo Code.
+This development container provides a standardized environment for developing Nova Code.
 
 ## Persistence
 
-Kilo Code stores thread conversations, settings, and caches in the following locations:
+Nova Code stores thread conversations, settings, and caches in the following locations:
 
-- **Threads/Conversations**: `~/.vscode-remote/data/User/globalStorage/kilocode.kilo-code/`
+- **Threads/Conversations**: `~/.vscode-remote/data/User/globalStorage/novacode.nova-code/`
 - **Settings**: `~/.vscode-remote/data/User/settings/`
-- **Cache**: `~/.vscode-remote/data/User/globalStorage/kilocode.kilo-code/cache/`
-- **Vector Store**: `~/.vscode-remote/data/User/globalStorage/kilocode.kilo-code/vector/`
+- **Cache**: `~/.vscode-remote/data/User/globalStorage/novacode.nova-code/cache/`
+- **Vector Store**: `~/.vscode-remote/data/User/globalStorage/novacode.nova-code/vector/`
 
 ### Volume Mounts
 
@@ -17,8 +17,8 @@ The dev container is configured with named volumes to persist this data across c
 
 | Volume                    | Target                                                            | Purpose                      |
 | ------------------------- | ----------------------------------------------------------------- | ---------------------------- |
-| `kilocode-global-storage` | `/root/.vscode-remote/data/User/globalStorage/kilocode.kilo-code` | Threads, cache, vector store |
-| `kilocode-settings`       | `/root/.vscode-remote/data/User/settings`                         | VS Code settings             |
+| `novacode-global-storage` | `/root/.vscode-remote/data/User/globalStorage/novacode.nova-code` | Threads, cache, vector store |
+| `novacode-settings`       | `/root/.vscode-remote/data/User/settings`                         | VS Code settings             |
 
 ### Preserving Threads Across Rebuilds
 
@@ -35,13 +35,13 @@ If threads don't appear after a container rebuild:
 1. **Verify volumes exist**:
 
     ```bash
-    docker volume ls | grep kilocode
+    docker volume ls | grep novacode
     ```
 
 2. **Inspect volume contents**:
 
     ```bash
-    docker volume inspect kilocode-global-storage
+    docker volume inspect novacode-global-storage
     ```
 
 3. **Reattach volumes**: If volumes were detached, rebuild with:
@@ -59,7 +59,7 @@ To back up your threads:
 1. Copy the global storage directory:
 
     ```bash
-    cp -r ~/.vscode-remote/data/User/globalStorage/kilocode.kilo-code ~/kilocode-backup
+    cp -r ~/.vscode-remote/data/User/globalStorage/novacode.nova-code ~/novacode-backup
     ```
 
 2. Store the backup outside the dev container environment.
@@ -69,7 +69,7 @@ To back up your threads:
 If you need threads stored in a different location, configure a custom storage path in VS Code settings:
 
 1. Open VS Code settings (`Ctrl+,` or `Cmd+,`)
-2. Search for "Kilo Code: Custom Storage Path"
+2. Search for "Nova Code: Custom Storage Path"
 3. Enter an absolute path that's mounted into the container
 
 Example `devcontainer.json` mount for custom path:
@@ -77,11 +77,11 @@ Example `devcontainer.json` mount for custom path:
 ```json
 "mounts": [
   {
-    "source": "/path/on/host/kilocode-data",
-    "target": "/home/vscode/kilocode-data",
+    "source": "/path/on/host/novacode-data",
+    "target": "/home/vscode/novacode-data",
     "type": "bind"
   }
 ]
 ```
 
-Then set the custom storage path to `/home/vscode/kilocode-data`.
+Then set the custom storage path to `/home/vscode/novacode-data`.

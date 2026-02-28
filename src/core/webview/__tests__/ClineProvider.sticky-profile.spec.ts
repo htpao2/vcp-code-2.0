@@ -30,7 +30,7 @@ vi.mock("vscode", () => ({
 		showWarningMessage: vi.fn(),
 		showErrorMessage: vi.fn(),
 		onDidChangeActiveTextEditor: vi.fn(() => ({ dispose: vi.fn() })),
-		createTextEditorDecorationType: vi.fn(() => ({ dispose: vi.fn() })), // kilocode_change
+		createTextEditorDecorationType: vi.fn(() => ({ dispose: vi.fn() })), // novacode_change
 	},
 	workspace: {
 		getConfiguration: vi.fn().mockReturnValue({
@@ -82,7 +82,7 @@ vi.mock("../../task/Task", () => ({
 		setTaskApiConfigName: vi.fn(),
 		_taskApiConfigName: options.historyItem?.apiConfigName,
 		taskApiConfigName: options.historyItem?.apiConfigName,
-		getCumulativeTotalCost: vi.fn().mockReturnValue(0), // kilocode_change
+		getCumulativeTotalCost: vi.fn().mockReturnValue(0), // novacode_change
 	})),
 }))
 
@@ -187,9 +187,9 @@ vi.mock("@roo-code/telemetry", () => ({
 				trackEvent: vi.fn(),
 				trackError: vi.fn(),
 				setProvider: vi.fn(),
-				updateIdentity: vi.fn().mockResolvedValue(undefined), // kilocode_change
+				updateIdentity: vi.fn().mockResolvedValue(undefined), // novacode_change
 				captureModeSwitch: vi.fn(),
-				captureException: vi.fn(), // kilocode_change
+				captureException: vi.fn(), // novacode_change
 			}
 		},
 	},
@@ -301,7 +301,7 @@ describe("ClineProvider - Sticky Provider Profile", () => {
 				clineMessages: [],
 				apiConversationHistory: [],
 				updateApiConfiguration: vi.fn(),
-				getCumulativeTotalCost: vi.fn().mockReturnValue(0), // kilocode_change
+				getCumulativeTotalCost: vi.fn().mockReturnValue(0), // novacode_change
 			}
 
 			// Add task to provider stack
@@ -367,7 +367,7 @@ describe("ClineProvider - Sticky Provider Profile", () => {
 				clineMessages: [],
 				apiConversationHistory: [],
 				updateApiConfiguration: vi.fn(),
-				getCumulativeTotalCost: vi.fn().mockReturnValue(0), // kilocode_change
+				getCumulativeTotalCost: vi.fn().mockReturnValue(0), // novacode_change
 			}
 
 			// Add task to provider stack
@@ -424,7 +424,7 @@ describe("ClineProvider - Sticky Provider Profile", () => {
 				clineMessages: [],
 				apiConversationHistory: [],
 				updateApiConfiguration: vi.fn(),
-				getCumulativeTotalCost: vi.fn().mockReturnValue(0), // kilocode_change
+				getCumulativeTotalCost: vi.fn().mockReturnValue(0), // novacode_change
 			}
 
 			await provider.addClineToStack(mockTask as any)
@@ -614,7 +614,7 @@ describe("ClineProvider - Sticky Provider Profile", () => {
 				clineMessages: [],
 				apiConversationHistory: [],
 				updateApiConfiguration: vi.fn(),
-				getCumulativeTotalCost: vi.fn().mockReturnValue(0), // kilocode_change
+				getCumulativeTotalCost: vi.fn().mockReturnValue(0), // novacode_change
 			}
 
 			// Mock getGlobalState to return task history with our task
@@ -682,7 +682,7 @@ describe("ClineProvider - Sticky Provider Profile", () => {
 				clineMessages: [],
 				apiConversationHistory: [],
 				updateApiConfiguration: vi.fn(),
-				getCumulativeTotalCost: vi.fn().mockReturnValue(0), // kilocode_change
+				getCumulativeTotalCost: vi.fn().mockReturnValue(0), // novacode_change
 			}
 
 			// Create task 2 with profile B
@@ -697,7 +697,7 @@ describe("ClineProvider - Sticky Provider Profile", () => {
 				clineMessages: [],
 				apiConversationHistory: [],
 				updateApiConfiguration: vi.fn(),
-				getCumulativeTotalCost: vi.fn().mockReturnValue(0), // kilocode_change
+				getCumulativeTotalCost: vi.fn().mockReturnValue(0), // novacode_change
 			}
 
 			// Add task 1 to stack
@@ -782,7 +782,7 @@ describe("ClineProvider - Sticky Provider Profile", () => {
 				clineMessages: [],
 				apiConversationHistory: [],
 				updateApiConfiguration: vi.fn(),
-				getCumulativeTotalCost: vi.fn().mockReturnValue(0), // kilocode_change
+				getCumulativeTotalCost: vi.fn().mockReturnValue(0), // novacode_change
 			}
 
 			// Add task to provider stack

@@ -1,4 +1,5 @@
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
+import { Checkbox } from "vscrui"
 import { VSCodeTextField } from "@vscode/webview-ui-toolkit/react"
 
 import type { ProviderSettings } from "@roo-code/types"
@@ -14,8 +15,9 @@ type DoubaoProps = {
 	simplifySettings?: boolean
 }
 
-export const Doubao = ({ apiConfiguration, setApiConfigurationField }: DoubaoProps) => {
+export const Doubao = ({ apiConfiguration, setApiConfigurationField, simplifySettings }: DoubaoProps) => {
 	const { t } = useAppTranslation()
+	const [doubaoBaseUrlSelected, setDoubaoBaseUrlSelected] = useState(!!apiConfiguration?.doubaoBaseUrl)
 
 	const handleInputChange = useCallback(
 		<K extends keyof ProviderSettings, E>(
@@ -47,6 +49,29 @@ export const Doubao = ({ apiConfiguration, setApiConfigurationField }: DoubaoPro
 					appearance="secondary">
 					{t("settings:providers.getDoubaoApiKey")}
 				</VSCodeButtonLink>
+			)}
+			{!simplifySettings && (
+				<div>
+					<Checkbox
+						checked={doubaoBaseUrlSelected}
+						onChange={(checked: boolean) => {
+							setDoubaoBaseUrlSelected(checked)
+							if (!checked) {
+								setApiConfigurationField("doubaoBaseUrl", "")
+							}
+						}}>
+						{t("settings:providers.useCustomBaseUrl")}
+					</Checkbox>
+					{doubaoBaseUrlSelected && (
+						<VSCodeTextField
+							value={apiConfiguration?.doubaoBaseUrl || ""}
+							type="url"
+							onInput={handleInputChange("doubaoBaseUrl")}
+							placeholder="Default: https://ark.cn-beijing.volces.com/api/v3"
+							className="w-full mt-1"
+						/>
+					)}
+				</div>
 			)}
 		</>
 	)

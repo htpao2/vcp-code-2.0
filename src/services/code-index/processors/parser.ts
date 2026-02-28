@@ -20,6 +20,20 @@ export class CodeParser implements ICodeParser {
 	// Markdown files are now supported using the custom markdown parser
 	// which extracts headers and sections for semantic indexing
 
+	private captureCodeIndexError(error: unknown, location: string) {
+		const errorMessage = error instanceof Error ? error.message : String(error)
+		const errorStack = error instanceof Error ? error.stack || "" : undefined
+		try {
+			TelemetryService.instance.captureEvent(TelemetryEventName.CODE_INDEX_ERROR, {
+				error: sanitizeErrorMessage(errorMessage),
+				stack: errorStack ? sanitizeErrorMessage(errorStack) : undefined,
+				location,
+			})
+		} catch {
+			// Keep parsing resilient in tests and non-telemetry environments.
+		}
+	}
+
 	/**
 	 * Parses a code file into code blocks
 	 * @param filePath Path to the file to parse
@@ -54,11 +68,7 @@ export class CodeParser implements ICodeParser {
 				fileHash = this.createFileHash(content)
 			} catch (error) {
 				console.error(`Error reading file ${filePath}:`, error)
-				TelemetryService.instance.captureEvent(TelemetryEventName.CODE_INDEX_ERROR, {
-					error: sanitizeErrorMessage(error instanceof Error ? error.message : String(error)),
-					stack: error instanceof Error ? sanitizeErrorMessage(error.stack || "") : undefined,
-					location: "parseFile",
-				})
+				this.captureCodeIndexError(error, "parseFile")
 				return []
 			}
 		}
@@ -114,11 +124,7 @@ export class CodeParser implements ICodeParser {
 					await pendingLoad
 				} catch (error) {
 					console.error(`Error in pending parser load for ${filePath}:`, error)
-					TelemetryService.instance.captureEvent(TelemetryEventName.CODE_INDEX_ERROR, {
-						error: sanitizeErrorMessage(error instanceof Error ? error.message : String(error)),
-						stack: error instanceof Error ? sanitizeErrorMessage(error.stack || "") : undefined,
-						location: "parseContent:loadParser",
-					})
+					this.captureCodeIndexError(error, "parseContent:loadParser")
 					return []
 				}
 			} else {
@@ -131,11 +137,7 @@ export class CodeParser implements ICodeParser {
 					}
 				} catch (error) {
 					console.error(`Error loading language parser for ${filePath}:`, error)
-					TelemetryService.instance.captureEvent(TelemetryEventName.CODE_INDEX_ERROR, {
-						error: sanitizeErrorMessage(error instanceof Error ? error.message : String(error)),
-						stack: error instanceof Error ? sanitizeErrorMessage(error.stack || "") : undefined,
-						location: "parseContent:loadParser",
-					})
+					this.captureCodeIndexError(error, "parseContent:loadParser")
 					return []
 				} finally {
 					this.pendingLoads.delete(ext)

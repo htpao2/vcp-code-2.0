@@ -1,4 +1,4 @@
-import os from "os"
+﻿import os from "os"
 import * as path from "path"
 import fs from "fs/promises"
 import EventEmitter from "events"
@@ -38,10 +38,10 @@ import {
 	type ExtensionState,
 	type MarketplaceInstalledMetadata,
 	RooCodeEventName,
-	TelemetryEventName, // kilocode_change
+	TelemetryEventName, // novacode_change
 	requestyDefaultModelId,
 	openRouterDefaultModelId,
-	glamaDefaultModelId, // kilocode_change
+	glamaDefaultModelId, // novacode_change
 	DEFAULT_TERMINAL_OUTPUT_CHARACTER_LIMIT,
 	DEFAULT_WRITE_DELAY_MS,
 	ORGANIZATION_ALLOW_ALL,
@@ -76,7 +76,7 @@ import { ShadowCheckpointService } from "../../services/checkpoints/ShadowCheckp
 import { CodeIndexManager } from "../../services/code-index/manager"
 import type { IndexProgressUpdate } from "../../services/code-index/interfaces/manager"
 import { MdmService } from "../../services/mdm/MdmService"
-import { SessionManager } from "../../shared/kilocode/cli-sessions/core/SessionManager"
+import { SessionManager } from "../../shared/nova/cli-sessions/core/SessionManager"
 import { SkillsManager } from "../../services/skills/SkillsManager"
 
 import { fileExistsAtPath } from "../../utils/fs"
@@ -94,7 +94,7 @@ import { forceFullModelDetailsLoad, hasLoadedFullDetails } from "../../api/provi
 import { VirtualQuotaFallbackHandler } from "../../api/providers/virtual-quota-fallback"
 
 import { ContextProxy } from "../config/ContextProxy"
-import { getEnabledRules } from "./kilorules"
+import { getEnabledRules } from "./novarules"
 import { ProviderSettingsManager } from "../config/ProviderSettingsManager"
 import { CustomModesManager } from "../config/CustomModesManager"
 import { Task } from "../task/Task"
@@ -109,21 +109,21 @@ import { getUri } from "./getUri"
 import { REQUESTY_BASE_URL } from "../../shared/utils/requesty"
 import { validateAndFixToolResultIds } from "../task/validateToolResultIds"
 
-//kilocode_change start
-import { McpDownloadResponse, McpMarketplaceCatalog } from "../../shared/kilocode/mcp"
+//novacode_change start
+import { McpDownloadResponse, McpMarketplaceCatalog } from "../../shared/nova/mcp"
 import { McpServer } from "../../shared/mcp"
 import { OpenRouterHandler } from "../../api/providers"
-import { stringifyError } from "../../shared/kilocode/errorUtils"
+import { stringifyError } from "../../shared/nova/errorUtils"
 import isWsl from "is-wsl"
-import { getKilocodeDefaultModel } from "../../api/providers/kilocode/getKilocodeDefaultModel"
-import { getEffectiveTelemetrySetting, getKiloCodeWrapperProperties } from "../../core/kilocode/wrapper"
-import { getKilocodeConfig, KilocodeConfig } from "../../utils/kilo-config-file"
+import { getNovacodeDefaultModel } from "../../api/providers/nova/getNovacodeDefaultModel"
+import { getEffectiveTelemetrySetting, getNovaCodeWrapperProperties } from "../../core/nova/wrapper"
+import { getNovacodeConfig, NovacodeConfig } from "../../utils/nova-config-file"
 import { resolveToolProtocol } from "../../utils/resolveToolProtocol"
-import { kilo_execIfExtension } from "../../shared/kilocode/cli-sessions/extension/session-manager-utils"
-import { DeviceAuthHandler } from "../kilocode/webview/deviceAuthHandler"
+import { nova_execIfExtension } from "../../shared/nova/cli-sessions/extension/session-manager-utils"
+import { DeviceAuthHandler } from "../nova/webview/deviceAuthHandler"
 
 export type ClineProviderState = Awaited<ReturnType<ClineProvider["getState"]>>
-// kilocode_change end
+// novacode_change end
 
 /**
  * https://github.com/microsoft/vscode-webview-ui-toolkit-samples/blob/main/default/weather-webview/src/providers/WeatherViewProvider.ts
@@ -168,8 +168,8 @@ export class ClineProvider
 	private taskCreationCallback: (task: Task) => void
 	private taskEventListeners: WeakMap<Task, Array<() => void>> = new WeakMap()
 	private currentWorkspacePath: string | undefined
-	private autoPurgeScheduler?: any // kilocode_change - (Any) Prevent circular import
-	private deviceAuthHandler?: DeviceAuthHandler // kilocode_change - Device auth handler
+	private autoPurgeScheduler?: any // novacode_change - (Any) Prevent circular import
+	private deviceAuthHandler?: DeviceAuthHandler // novacode_change - Device auth handler
 
 	private recentTasksCache?: string[]
 	private pendingOperations: Map<string, PendingEditOperation> = new Map()
@@ -241,11 +241,11 @@ export class ClineProvider
 			// Create named listener functions so we can remove them later.
 			const onTaskStarted = () => this.emit(RooCodeEventName.TaskStarted, instance.taskId)
 			const onTaskCompleted = (taskId: string, tokenUsage: TokenUsage, toolUsage: ToolUsage) => {
-				kilo_execIfExtension(() => {
+				nova_execIfExtension(() => {
 					SessionManager.init()?.doSync(true)
 				})
 
-				return this.emit(RooCodeEventName.TaskCompleted, taskId, tokenUsage, toolUsage) // kilocode_change: return
+				return this.emit(RooCodeEventName.TaskCompleted, taskId, tokenUsage, toolUsage) // novacode_change: return
 			}
 			const onTaskAborted = async () => {
 				this.emit(RooCodeEventName.TaskAborted, instance.taskId)
@@ -288,7 +288,7 @@ export class ClineProvider
 			const onTaskUserMessage = (taskId: string) => this.emit(RooCodeEventName.TaskUserMessage, taskId)
 			const onTaskTokenUsageUpdated = (taskId: string, tokenUsage: TokenUsage, toolUsage: ToolUsage) =>
 				this.emit(RooCodeEventName.TaskTokenUsageUpdated, taskId, tokenUsage, toolUsage)
-			const onModelChanged = () => this.postStateToWebview() // kilocode_change: Listen for model changes in virtual quota fallback
+			const onModelChanged = () => this.postStateToWebview() // novacode_change: Listen for model changes in virtual quota fallback
 
 			// Attach the listeners.
 			instance.on(RooCodeEventName.TaskStarted, onTaskStarted)
@@ -305,7 +305,7 @@ export class ClineProvider
 			instance.on(RooCodeEventName.TaskSpawned, onTaskSpawned)
 			instance.on(RooCodeEventName.TaskUserMessage, onTaskUserMessage)
 			instance.on(RooCodeEventName.TaskTokenUsageUpdated, onTaskTokenUsageUpdated)
-			instance.on("modelChanged", onModelChanged) // kilocode_change: Listen for model changes in virtual quota fallback
+			instance.on("modelChanged", onModelChanged) // novacode_change: Listen for model changes in virtual quota fallback
 
 			// Store the cleanup functions for later removal.
 			this.taskEventListeners.set(instance, [
@@ -323,7 +323,7 @@ export class ClineProvider
 				() => instance.off(RooCodeEventName.TaskUnpaused, onTaskUnpaused),
 				() => instance.off(RooCodeEventName.TaskSpawned, onTaskSpawned),
 				() => instance.off(RooCodeEventName.TaskTokenUsageUpdated, onTaskTokenUsageUpdated),
-				() => instance.off("modelChanged", onModelChanged), // kilocode_change: Clean up model change listener
+				() => instance.off("modelChanged", onModelChanged), // novacode_change: Clean up model change listener
 			])
 		}
 
@@ -336,12 +336,12 @@ export class ClineProvider
 			this.log("CloudService not ready, deferring cloud profile sync")
 		}
 
-		// kilocode_change start - Initialize auto-purge scheduler
+		// novacode_change start - Initialize auto-purge scheduler
 		this.initializeAutoPurgeScheduler()
-		// kilocode_change end
+		// novacode_change end
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	/**
 	 * Initialize the auto-purge scheduler
 	 */
@@ -380,7 +380,7 @@ export class ClineProvider
 			)
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	/**
 	 * Override EventEmitter's on method to match TaskProviderLike interface
@@ -695,12 +695,12 @@ export class ClineProvider
 		this.marketplaceManager?.cleanup()
 		this.customModesManager?.dispose()
 
-		// kilocode_change start - Stop auto-purge scheduler and device auth service
+		// novacode_change start - Stop auto-purge scheduler and device auth service
 		if (this.autoPurgeScheduler) {
 			this.autoPurgeScheduler.stop()
 			this.autoPurgeScheduler = undefined
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		this.log("Disposed all disposables")
 		ClineProvider.activeInstances.delete(this)
@@ -822,7 +822,7 @@ export class ClineProvider
 	async resolveWebviewView(webviewView: vscode.WebviewView | vscode.WebviewPanel) {
 		this.view = webviewView
 
-		// kilocode_change start: extract constant inTabMode
+		// novacode_change start: extract constant inTabMode
 		// Set panel reference according to webview type
 		const inTabMode = "onDidChangeViewState" in webviewView
 
@@ -831,14 +831,14 @@ export class ClineProvider
 		} else if ("onDidChangeVisibility" in webviewView) {
 			setPanel(webviewView, "sidebar")
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		// Initialize out-of-scope variables that need to receive persistent
 		// global state values.
 		this.getState().then(
 			({
 				terminalShellIntegrationTimeout = Terminal.defaultShellIntegrationTimeout,
-				terminalShellIntegrationDisabled = true, // kilocode_change: default
+				terminalShellIntegrationDisabled = true, // novacode_change: default
 				terminalCommandDelay = 0,
 				terminalZshClearEolMark = true,
 				terminalZshOhMy = false,
@@ -1065,7 +1065,7 @@ export class ClineProvider
 		} = await this.getState()
 
 		const task = new Task({
-			context: this.context, // kilocode_change
+			context: this.context, // novacode_change
 			provider: this,
 			apiConfiguration,
 			enableDiff,
@@ -1175,7 +1175,7 @@ export class ClineProvider
 
 	public async postMessageToWebview(message: ExtensionMessage) {
 		// NOTE: Changing this? Update effects.ts in the cli too.
-		kilo_execIfExtension(() => {
+		nova_execIfExtension(() => {
 			if (message.type === "apiMessagesSaved" && message.payload) {
 				const [taskId, filePath] = message.payload as [string, string]
 
@@ -1248,7 +1248,7 @@ export class ClineProvider
 			"icons",
 		])
 		const imagesUri = getUri(webview, this.contextProxy.extensionUri, ["assets", "images"])
-		const iconsUri = getUri(webview, this.contextProxy.extensionUri, ["assets", "icons"]) // kilocode_change
+		const iconsUri = getUri(webview, this.contextProxy.extensionUri, ["assets", "icons"]) // novacode_change
 		const audioUri = getUri(webview, this.contextProxy.extensionUri, ["webview-ui", "audio"])
 
 		const file = "src/index.tsx"
@@ -1268,10 +1268,10 @@ export class ClineProvider
 			"default-src 'none'",
 			`font-src ${webview.cspSource} data:`,
 			`style-src ${webview.cspSource} 'unsafe-inline' https://* http://${localServerUrl} http://0.0.0.0:${localPort}`,
-			`img-src ${webview.cspSource} https://storage.googleapis.com https://img.clerk.com data: https://*.googleusercontent.com https://*.googleapis.com https://*.githubusercontent.com`, // kilocode_change: add https://*.googleusercontent.com and https://*.googleapis.com and https://*.githubusercontent.com
+			`img-src ${webview.cspSource} https://storage.googleapis.com https://img.clerk.com data: https://*.googleusercontent.com https://*.googleapis.com https://*.githubusercontent.com`, // novacode_change: add https://*.googleusercontent.com and https://*.googleapis.com and https://*.githubusercontent.com
 			`media-src ${webview.cspSource}`,
 			`script-src 'unsafe-eval' ${webview.cspSource} https://* https://*.posthog.com http://${localServerUrl} http://0.0.0.0:${localPort} 'nonce-${nonce}'`,
-			`connect-src ${webview.cspSource} ${openRouterDomain} https://* http://localhost:3000 https://*.posthog.com ws://${localServerUrl} ws://0.0.0.0:${localPort} http://${localServerUrl} http://0.0.0.0:${localPort}`, // kilocode_change: add http://localhost:3000
+			`connect-src ${webview.cspSource} ${openRouterDomain} https://* http://localhost:3000 https://*.posthog.com ws://${localServerUrl} ws://0.0.0.0:${localPort} http://${localServerUrl} http://0.0.0.0:${localPort}`, // novacode_change: add http://localhost:3000
 		]
 
 		return /*html*/ `
@@ -1288,9 +1288,9 @@ export class ClineProvider
 						window.ICONS_BASE_URI = "${iconsUri}"
 						window.AUDIO_BASE_URI = "${audioUri}"
 						window.MATERIAL_ICONS_BASE_URI = "${materialIconsUri}"
-						window.KILOCODE_BACKEND_BASE_URL = "${process.env.KILOCODE_BACKEND_BASE_URL ?? ""}"
+						window.NOVACODE_BACKEND_BASE_URL = "${process.env.NOVACODE_BACKEND_BASE_URL ?? ""}"
 					</script>
-					<title>Kilo Code</title>
+					<title>Nova Code</title>
 				</head>
 				<body>
 					<div id="root"></div>
@@ -1332,7 +1332,7 @@ export class ClineProvider
 			"icons",
 		])
 		const imagesUri = getUri(webview, this.contextProxy.extensionUri, ["assets", "images"])
-		const iconsUri = getUri(webview, this.contextProxy.extensionUri, ["assets", "icons"]) // kilocode_changes
+		const iconsUri = getUri(webview, this.contextProxy.extensionUri, ["assets", "icons"]) // novacode_changes
 		const audioUri = getUri(webview, this.contextProxy.extensionUri, ["webview-ui", "audio"])
 
 		// Use a nonce to only allow a specific script to be run.
@@ -1362,7 +1362,7 @@ export class ClineProvider
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
             <meta name="theme-color" content="#000000">
-			<!-- kilocode_change: add https://*.googleusercontent.com https://*.googleapis.com https://*.githubusercontent.com to img-src, https://*, http://localhost:3000 to connect-src -->
+			<!-- novacode_change: add https://*.googleusercontent.com https://*.googleapis.com https://*.githubusercontent.com to img-src, https://*, http://localhost:3000 to connect-src -->
             <meta http-equiv="Content-Security-Policy" content="default-src 'none'; font-src ${webview.cspSource} data:; style-src ${webview.cspSource} 'unsafe-inline'; img-src ${webview.cspSource} https://*.googleusercontent.com https://storage.googleapis.com https://*.githubusercontent.com https://img.clerk.com data: https://*.googleapis.com; media-src ${webview.cspSource}; script-src ${webview.cspSource} 'wasm-unsafe-eval' 'nonce-${nonce}' ${openRouterDomain} https://us-assets.i.posthog.com 'strict-dynamic'; connect-src ${webview.cspSource} https://* http://localhost:3000 https://api.requesty.ai https://us.i.posthog.com https://us-assets.i.posthog.com;">
             <link rel="stylesheet" type="text/css" href="${stylesUri}">
 			<link href="${codiconsUri}" rel="stylesheet" />
@@ -1371,9 +1371,9 @@ export class ClineProvider
 				window.ICONS_BASE_URI = "${iconsUri}"
 				window.AUDIO_BASE_URI = "${audioUri}"
 				window.MATERIAL_ICONS_BASE_URI = "${materialIconsUri}"
-				window.KILOCODE_BACKEND_BASE_URL = "${process.env.KILOCODE_BACKEND_BASE_URL ?? ""}"
+				window.NOVACODE_BACKEND_BASE_URL = "${process.env.NOVACODE_BACKEND_BASE_URL ?? ""}"
 			</script>
-            <title>Kilo Code</title>
+            <title>Nova Code</title>
           </head>
           <body>
             <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -1398,7 +1398,7 @@ export class ClineProvider
 		this.webviewDisposables.push(messageDisposable)
 	}
 
-	/* kilocode_change start */
+	/* novacode_change start */
 	/**
 	 * Handle messages from CLI ExtensionHost
 	 * This method allows the CLI to send messages directly to the webviewMessageHandler
@@ -1411,7 +1411,7 @@ export class ClineProvider
 			throw error
 		}
 	}
-	/* kilocode_change end */
+	/* novacode_change end */
 
 	/**
 	 * Handle switching to a new mode, including updating the associated API configuration
@@ -1496,7 +1496,7 @@ export class ClineProvider
 
 		await this.postStateToWebview()
 
-		// kilocode_change start: Review mode scope selection
+		// novacode_change start: Review mode scope selection
 		if (newMode === "review") {
 			if (options?.reviewScope) {
 				// Skip the scope dialog and start review directly with the specified scope
@@ -1505,7 +1505,7 @@ export class ClineProvider
 				await this.triggerReviewScopeSelection()
 			}
 		}
-		// kilocode_change end
+		// novacode_change end
 	}
 
 	// Provider Profile Management
@@ -1609,7 +1609,7 @@ export class ClineProvider
 					task.api = buildApiHandler(providerSettings)
 				}
 
-				await TelemetryService.instance.updateIdentity(providerSettings.kilocodeToken ?? "") // kilocode_change
+				await TelemetryService.instance.updateIdentity(providerSettings.novacodeToken ?? "") // novacode_change
 
 				this.updateTaskApiHandlerIfNeeded(providerSettings, { forceRebuild: true })
 
@@ -1713,7 +1713,7 @@ export class ClineProvider
 		}
 
 		await this.postStateToWebview()
-		await TelemetryService.instance.updateIdentity(providerSettings.kilocodeToken ?? "") // kilocode_change
+		await TelemetryService.instance.updateIdentity(providerSettings.novacodeToken ?? "") // novacode_change
 
 		if (providerSettings.apiProvider) {
 			this.emit(RooCodeEventName.ProviderProfileChanged, { name, provider: providerSettings.apiProvider })
@@ -1732,21 +1732,21 @@ export class ClineProvider
 		// Get platform-specific application data directory
 		let mcpServersDir: string
 		if (process.platform === "win32") {
-			// Windows: %APPDATA%\Kilo-Code\MCP
-			mcpServersDir = path.join(os.homedir(), "AppData", "Roaming", "Kilo-Code", "MCP")
+			// Windows: %APPDATA%\Nova-Code\MCP
+			mcpServersDir = path.join(os.homedir(), "AppData", "Roaming", "Nova-Code", "MCP")
 		} else if (process.platform === "darwin") {
-			// macOS: ~/Documents/Kilo-Code/MCP
-			mcpServersDir = path.join(os.homedir(), "Documents", "Kilo-Code", "MCP")
+			// macOS: ~/Documents/Nova-Code/MCP
+			mcpServersDir = path.join(os.homedir(), "Documents", "Nova-Code", "MCP")
 		} else {
-			// Linux: ~/.local/share/Kilo-Code/MCP
-			mcpServersDir = path.join(os.homedir(), ".local", "share", "Kilo-Code", "MCP")
+			// Linux: ~/.local/share/Nova-Code/MCP
+			mcpServersDir = path.join(os.homedir(), ".local", "share", "Nova-Code", "MCP")
 		}
 
 		try {
 			await fs.mkdir(mcpServersDir, { recursive: true })
 		} catch (error) {
 			// Fallback to a relative path if directory creation fails
-			return path.join(os.homedir(), ".kilocode", "mcp")
+			return path.join(os.homedir(), ".novacode", "mcp")
 		}
 		return mcpServersDir
 	}
@@ -1793,7 +1793,7 @@ export class ClineProvider
 		await this.upsertProviderProfile(currentApiConfigName, newConfiguration)
 	}
 
-	// kilocode_change: Glama
+	// novacode_change: Glama
 
 	async handleGlamaCallback(code: string) {
 		let apiKey: string
@@ -1825,7 +1825,7 @@ export class ClineProvider
 
 		await this.upsertProviderProfile(currentApiConfigName, newConfiguration)
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	// Requesty
 
@@ -1851,29 +1851,29 @@ export class ClineProvider
 		await this.upsertProviderProfile(profileName, newConfiguration)
 	}
 
-	// kilocode_change start
-	async handleKiloCodeCallback(token: string) {
-		const kilocode: ProviderName = "kilocode"
+	// novacode_change start
+	async handleNovaCodeCallback(token: string) {
+		const novacode: ProviderName = "novacode"
 		let { apiConfiguration, currentApiConfigName = "default" } = await this.getState()
 
 		await this.upsertProviderProfile(currentApiConfigName, {
 			...apiConfiguration,
-			apiProvider: "kilocode",
-			kilocodeToken: token,
+			apiProvider: "novacode",
+			novacodeToken: token,
 		})
 
-		vscode.window.showInformationMessage("Kilo Code successfully configured!")
+		vscode.window.showInformationMessage("Nova Code successfully configured!")
 
 		if (this.getCurrentTask()) {
 			this.getCurrentTask()!.api = buildApiHandler({
-				apiProvider: kilocode,
-				kilocodeToken: token,
+				apiProvider: novacode,
+				novacodeToken: token,
 			})
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 
-	// kilocode_change start - Device Auth Flow
+	// novacode_change start - Device Auth Flow
 	async startDeviceAuth() {
 		if (!this.deviceAuthHandler) {
 			this.deviceAuthHandler = new DeviceAuthHandler({
@@ -1888,13 +1888,13 @@ export class ClineProvider
 	cancelDeviceAuth() {
 		this.deviceAuthHandler?.cancelDeviceAuth()
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	// Task history
 
 	async getTaskWithId(
 		id: string,
-		kilo_withMessage = true, // kilocode_change session manager uses this method in the background
+		nova_withMessage = true, // novacode_change session manager uses this method in the background
 	): Promise<{
 		historyItem: HistoryItem
 		taskDirPath: string
@@ -1924,27 +1924,27 @@ export class ClineProvider
 					apiConversationHistory,
 				}
 			} else {
-				if (kilo_withMessage) {
+				if (nova_withMessage) {
 					vscode.window.showErrorMessage(
 						`Task file not found for task ID: ${id} (file ${apiConversationHistoryFilePath})`,
-					) //kilocode_change show extra debugging information to debug task not found issues
+					) //novacode_change show extra debugging information to debug task not found issues
 				}
 			}
 		} else {
-			if (kilo_withMessage) {
-				vscode.window.showErrorMessage(`Task with ID: ${id} not found in history.`) // kilocode_change show extra debugging information to debug task not found issues
+			if (nova_withMessage) {
+				vscode.window.showErrorMessage(`Task with ID: ${id} not found in history.`) // novacode_change show extra debugging information to debug task not found issues
 			}
 		}
 
 		// if we tried to get a task that doesn't exist, remove it from state
 		// FIXME: this seems to happen sometimes when the json file doesnt save to disk for some reason
-		// kilocode_change start
+		// novacode_change start
 		// commented out deleting the task, because in the previous version we made this task red
 		// instead of deleting, and people were confused because the task was actually working fine
 		// which leads us to believe that this is triggered to often somehow, or that the task will turn up later
-		// via some sync ( context https://github.com/Kilo-Org/kilocode/pull/4880 )
+		// via some sync ( context https://github.com/Nova-Org/nova/pull/4880 )
 		// await this.deleteTaskFromState(id)
-		// kilocode_change end
+		// novacode_change end
 		throw new Error("Task not found")
 	}
 
@@ -2044,7 +2044,7 @@ export class ClineProvider
 		const taskHistory = this.getGlobalState("taskHistory") ?? []
 		const updatedTaskHistory = taskHistory.filter((task) => task.id !== id)
 		await this.updateGlobalState("taskHistory", updatedTaskHistory)
-		this.kiloCodeTaskHistoryVersion++
+		this.novaCodeTaskHistoryVersion++
 		this.recentTasksCache = undefined
 		await this.postStateToWebview()
 	}
@@ -2052,7 +2052,7 @@ export class ClineProvider
 	async refreshWorkspace() {
 		this.currentWorkspacePath = getWorkspacePath()
 
-		await kilo_execIfExtension(() => {
+		await nova_execIfExtension(() => {
 			if (this.currentWorkspacePath) {
 				SessionManager.init()?.setWorkspaceDirectory(this.currentWorkspacePath)
 			}
@@ -2072,7 +2072,7 @@ export class ClineProvider
 		}
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	async postRulesDataToWebview() {
 		const workspacePath = this.cwd
 		if (workspacePath) {
@@ -2088,7 +2088,7 @@ export class ClineProvider
 		const skills = this.skillsManager?.getAllSkills() ?? []
 		this.postMessageToWebview({ type: "skillsData", skills })
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	/**
 	 * Fetches marketplace dataon demand to avoid blocking main state updates
@@ -2208,7 +2208,7 @@ export class ClineProvider
 			alwaysAllowWrite,
 			alwaysAllowWriteOutsideWorkspace,
 			alwaysAllowWriteProtected,
-			alwaysAllowDelete, // kilocode_change
+			alwaysAllowDelete, // novacode_change
 			alwaysAllowExecute,
 			allowedCommands,
 			deniedCommands,
@@ -2226,7 +2226,7 @@ export class ClineProvider
 			diffEnabled,
 			enableCheckpoints,
 			checkpointTimeout,
-			// taskHistory, // kilocode_change
+			// taskHistory, // novacode_change
 			soundVolume,
 			browserViewportSize,
 			screenshotQuality,
@@ -2245,7 +2245,7 @@ export class ClineProvider
 			terminalZshP10k,
 			terminalZdotdir,
 			fuzzyMatchThreshold,
-			// mcpEnabled,  // kilocode_change: always true
+			// mcpEnabled,  // novacode_change: always true
 			enableMcpServerCreation,
 			requestDelaySeconds,
 			currentApiConfigName,
@@ -2255,8 +2255,8 @@ export class ClineProvider
 			customModePrompts,
 			customSupportPrompts,
 			enhancementApiConfigId,
-			commitMessageApiConfigId, // kilocode_change
-			terminalCommandApiConfigId, // kilocode_change
+			commitMessageApiConfigId, // novacode_change
+			terminalCommandApiConfigId, // novacode_change
 			autoApprovalEnabled,
 			customModes,
 			experiments,
@@ -2267,11 +2267,11 @@ export class ClineProvider
 			showRooIgnoredFiles,
 			enableSubfolderRules,
 			language,
-			showAutoApproveMenu, // kilocode_change
-			showTaskTimeline, // kilocode_change
-			sendMessageOnEnter, // kilocode_change
-			showTimestamps, // kilocode_change
-			hideCostBelowThreshold, // kilocode_change
+			showAutoApproveMenu, // novacode_change
+			showTaskTimeline, // novacode_change
+			sendMessageOnEnter, // novacode_change
+			showTimestamps, // novacode_change
+			hideCostBelowThreshold, // novacode_change
 			maxReadFileLine,
 			maxImageFileSize,
 			maxTotalImageSize,
@@ -2286,18 +2286,18 @@ export class ClineProvider
 			organizationAllowList,
 			organizationSettingsVersion,
 			maxConcurrentFileReads,
-			allowVeryLargeReads, // kilocode_change
-			ghostServiceSettings, // kilocode_changes
+			allowVeryLargeReads, // novacode_change
+			ghostServiceSettings, // novacode_changes
 			condensingApiConfigId,
 			customCondensingPrompt,
 			codebaseIndexConfig,
 			codebaseIndexModels,
 			profileThresholds,
-			systemNotificationsEnabled, // kilocode_change
-			dismissedNotificationIds, // kilocode_change
-			morphApiKey, // kilocode_change
-			fastApplyModel, // kilocode_change: Fast Apply model selection
-			fastApplyApiProvider, // kilocode_change: Fast Apply model api base url
+			systemNotificationsEnabled, // novacode_change
+			dismissedNotificationIds, // novacode_change
+			morphApiKey, // novacode_change
+			fastApplyModel, // novacode_change: Fast Apply model selection
+			fastApplyApiProvider, // novacode_change: Fast Apply model api base url
 			alwaysAllowFollowupQuestions,
 			followupAutoApproveTimeoutMs,
 			includeDiagnosticMessages,
@@ -2310,16 +2310,16 @@ export class ClineProvider
 			remoteControlEnabled,
 			imageGenerationProvider,
 			openRouterImageApiKey,
-			kiloCodeImageApiKey,
+			novaCodeImageApiKey,
 			openRouterImageGenerationSelectedModel,
 			featureRoomoteControlEnabled,
-			yoloMode, // kilocode_change
-			yoloGatekeeperApiConfigId, // kilocode_change: AI gatekeeper for YOLO mode
-			selectedMicrophoneDevice, // kilocode_change: Selected microphone device for STT
+			yoloMode, // novacode_change
+			yoloGatekeeperApiConfigId, // novacode_change: AI gatekeeper for YOLO mode
+			selectedMicrophoneDevice, // novacode_change: Selected microphone device for STT
 			isBrowserSessionActive,
 		} = await this.getState()
 
-		// kilocode_change start: Get active model for virtual quota fallback UI display
+		// novacode_change start: Get active model for virtual quota fallback UI display
 		const virtualQuotaActiveModel =
 			apiConfiguration?.apiProvider === "virtual-quota-fallback" && this.getCurrentTask()
 				? {
@@ -2330,7 +2330,7 @@ export class ClineProvider
 								: undefined,
 					}
 				: undefined
-		// kilocode_change end
+		// novacode_change end
 
 		let cloudOrganizations: CloudOrganizationMembership[] = []
 
@@ -2354,7 +2354,7 @@ export class ClineProvider
 			// Ignore this error.
 		}
 
-		const telemetryKey = process.env.KILOCODE_POSTHOG_API_KEY
+		const telemetryKey = process.env.NOVACODE_POSTHOG_API_KEY
 		const machineId = vscode.env.machineId
 
 		const mergedAllowedCommands = this.mergeAllowedCommands(allowedCommands)
@@ -2365,11 +2365,11 @@ export class ClineProvider
 		const currentMode = mode ?? defaultModeSlug
 		const hasSystemPromptOverride = await this.hasFileBasedSystemPromptOverride(currentMode)
 
-		// kilocode_change start wrapper information
-		const kiloCodeWrapperProperties = getKiloCodeWrapperProperties()
+		// novacode_change start wrapper information
+		const novaCodeWrapperProperties = getNovaCodeWrapperProperties()
 		const taskHistory = this.getTaskHistory()
-		this.kiloCodeTaskHistorySizeForTelemetryOnly = taskHistory.length
-		// kilocode_change end
+		this.novaCodeTaskHistorySizeForTelemetryOnly = taskHistory.length
+		// novacode_change end
 
 		return {
 			version: this.context.extension?.packageJSON?.version ?? "",
@@ -2380,40 +2380,40 @@ export class ClineProvider
 			alwaysAllowWrite: alwaysAllowWrite ?? true,
 			alwaysAllowWriteOutsideWorkspace: alwaysAllowWriteOutsideWorkspace ?? false,
 			alwaysAllowWriteProtected: alwaysAllowWriteProtected ?? false,
-			alwaysAllowDelete: alwaysAllowDelete ?? false, // kilocode_change
+			alwaysAllowDelete: alwaysAllowDelete ?? false, // novacode_change
 			alwaysAllowExecute: alwaysAllowExecute ?? false,
 			alwaysAllowBrowser: alwaysAllowBrowser ?? false,
 			alwaysAllowMcp: alwaysAllowMcp ?? false,
 			alwaysAllowModeSwitch: alwaysAllowModeSwitch ?? false,
 			alwaysAllowSubtasks: alwaysAllowSubtasks ?? false,
 			isBrowserSessionActive,
-			yoloMode: yoloMode ?? false, // kilocode_change
+			yoloMode: yoloMode ?? false, // novacode_change
 			allowedMaxRequests,
 			allowedMaxCost,
 			autoCondenseContext: autoCondenseContext ?? true,
 			autoCondenseContextPercent: autoCondenseContextPercent ?? 100,
 			uriScheme: vscode.env.uriScheme,
-			uiKind: vscode.UIKind[vscode.env.uiKind], // kilocode_change
-			kiloCodeWrapperProperties, // kilocode_change wrapper information
-			kilocodeDefaultModel: (
-				await getKilocodeDefaultModel(apiConfiguration.kilocodeToken, apiConfiguration.kilocodeOrganizationId)
+			uiKind: vscode.UIKind[vscode.env.uiKind], // novacode_change
+			novaCodeWrapperProperties, // novacode_change wrapper information
+			novacodeDefaultModel: (
+				await getNovacodeDefaultModel(apiConfiguration.novacodeToken, apiConfiguration.novacodeOrganizationId)
 			).defaultModel,
 			currentTaskItem: this.getCurrentTask()?.taskId
 				? (taskHistory || []).find((item: HistoryItem) => item.id === this.getCurrentTask()?.taskId)
 				: undefined,
 			clineMessages: this.getCurrentTask()?.clineMessages || [],
 			currentTaskTodos: this.getCurrentTask()?.todoList || [],
-			currentTaskCumulativeCost: this.getCurrentTask()?.getCumulativeTotalCost(), // kilocode_change
+			currentTaskCumulativeCost: this.getCurrentTask()?.getCumulativeTotalCost(), // novacode_change
 			messageQueue: this.getCurrentTask()?.messageQueueService?.messages,
-			taskHistoryFullLength: taskHistory.length, // kilocode_change
-			taskHistoryVersion: this.kiloCodeTaskHistoryVersion, // kilocode_change
+			taskHistoryFullLength: taskHistory.length, // novacode_change
+			taskHistoryVersion: this.novaCodeTaskHistoryVersion, // novacode_change
 			soundEnabled: soundEnabled ?? false,
 			ttsEnabled: ttsEnabled ?? false,
 			ttsSpeed: ttsSpeed ?? 1.0,
 			diffEnabled: diffEnabled ?? true,
 			enableCheckpoints: enableCheckpoints ?? true,
 			checkpointTimeout: checkpointTimeout ?? DEFAULT_CHECKPOINT_TIMEOUT_SECONDS,
-			shouldShowAnnouncement: false, // kilocode_change
+			shouldShowAnnouncement: false, // novacode_change
 			allowedCommands: mergedAllowedCommands,
 			deniedCommands: mergedDeniedCommands,
 			soundVolume: soundVolume ?? 0.5,
@@ -2434,7 +2434,7 @@ export class ClineProvider
 			terminalZshP10k: terminalZshP10k ?? false,
 			terminalZdotdir: terminalZdotdir ?? false,
 			fuzzyMatchThreshold: fuzzyMatchThreshold ?? 1.0,
-			mcpEnabled: true, // kilocode_change: always true
+			mcpEnabled: true, // novacode_change: always true
 			enableMcpServerCreation: enableMcpServerCreation ?? true,
 			currentApiConfigName: currentApiConfigName ?? "default",
 			listApiConfigMeta: listApiConfigMeta ?? [],
@@ -2443,8 +2443,8 @@ export class ClineProvider
 			customModePrompts: customModePrompts ?? {},
 			customSupportPrompts: customSupportPrompts ?? {},
 			enhancementApiConfigId,
-			commitMessageApiConfigId, // kilocode_change
-			terminalCommandApiConfigId, // kilocode_change
+			commitMessageApiConfigId, // novacode_change
+			terminalCommandApiConfigId, // novacode_change
 			autoApprovalEnabled: autoApprovalEnabled ?? true,
 			customModes,
 			experiments: experiments ?? experimentDefault,
@@ -2457,19 +2457,19 @@ export class ClineProvider
 			telemetryKey,
 			machineId,
 			showRooIgnoredFiles: showRooIgnoredFiles ?? false,
-			showAutoApproveMenu: showAutoApproveMenu ?? false, // kilocode_change
-			showTaskTimeline: showTaskTimeline ?? true, // kilocode_change
-			sendMessageOnEnter: sendMessageOnEnter ?? true, // kilocode_change
-			showTimestamps: showTimestamps ?? true, // kilocode_change
-			hideCostBelowThreshold, // kilocode_change
-			language, // kilocode_change
+			showAutoApproveMenu: showAutoApproveMenu ?? false, // novacode_change
+			showTaskTimeline: showTaskTimeline ?? true, // novacode_change
+			sendMessageOnEnter: sendMessageOnEnter ?? true, // novacode_change
+			showTimestamps: showTimestamps ?? true, // novacode_change
+			hideCostBelowThreshold, // novacode_change
+			language, // novacode_change
 			enableSubfolderRules: enableSubfolderRules ?? false,
 			renderContext: this.renderContext,
-			maxReadFileLine: maxReadFileLine ?? 500 /*kilocode_change*/,
+			maxReadFileLine: maxReadFileLine ?? 500 /*novacode_change*/,
 			maxImageFileSize: maxImageFileSize ?? 5,
 			maxTotalImageSize: maxTotalImageSize ?? 20,
 			maxConcurrentFileReads: maxConcurrentFileReads ?? 5,
-			allowVeryLargeReads: allowVeryLargeReads ?? false, // kilocode_change
+			allowVeryLargeReads: allowVeryLargeReads ?? false, // novacode_change
 			settingsImportedAt: this.settingsImportedAt,
 			terminalCompressProgressBar: terminalCompressProgressBar ?? true,
 			hasSystemPromptOverride,
@@ -2483,21 +2483,21 @@ export class ClineProvider
 			sharingEnabled: sharingEnabled ?? false,
 			publicSharingEnabled: publicSharingEnabled ?? false,
 			organizationAllowList,
-			// kilocode_change start
+			// novacode_change start
 			ghostServiceSettings: ghostServiceSettings,
-			// kilocode_change end
+			// novacode_change end
 			organizationSettingsVersion,
 			condensingApiConfigId,
 			customCondensingPrompt,
-			yoloGatekeeperApiConfigId, // kilocode_change: AI gatekeeper for YOLO mode
+			yoloGatekeeperApiConfigId, // novacode_change: AI gatekeeper for YOLO mode
 			codebaseIndexModels: codebaseIndexModels ?? EMBEDDING_MODEL_PROFILES,
 			codebaseIndexConfig: {
 				codebaseIndexEnabled: codebaseIndexConfig?.codebaseIndexEnabled ?? false,
 				codebaseIndexQdrantUrl: codebaseIndexConfig?.codebaseIndexQdrantUrl ?? "http://localhost:6333",
-				// kilocode_change start
+				// novacode_change start
 				codebaseIndexVectorStoreProvider: codebaseIndexConfig?.codebaseIndexVectorStoreProvider ?? "qdrant",
 				codebaseIndexLancedbVectorStoreDirectory: codebaseIndexConfig?.codebaseIndexLancedbVectorStoreDirectory,
-				// kilocode_change end
+				// novacode_change end
 				codebaseIndexEmbedderProvider: codebaseIndexConfig?.codebaseIndexEmbedderProvider ?? "openai",
 				codebaseIndexEmbedderBaseUrl: codebaseIndexConfig?.codebaseIndexEmbedderBaseUrl ?? "",
 				codebaseIndexEmbedderModelId: codebaseIndexConfig?.codebaseIndexEmbedderModelId ?? "",
@@ -2505,10 +2505,10 @@ export class ClineProvider
 				codebaseIndexOpenAiCompatibleBaseUrl: codebaseIndexConfig?.codebaseIndexOpenAiCompatibleBaseUrl,
 				codebaseIndexSearchMaxResults: codebaseIndexConfig?.codebaseIndexSearchMaxResults,
 				codebaseIndexSearchMinScore: codebaseIndexConfig?.codebaseIndexSearchMinScore,
-				// kilocode_change start
+				// novacode_change start
 				codebaseIndexEmbeddingBatchSize: codebaseIndexConfig?.codebaseIndexEmbeddingBatchSize,
 				codebaseIndexScannerMaxBatchRetries: codebaseIndexConfig?.codebaseIndexScannerMaxBatchRetries,
-				// kilocode_change end
+				// novacode_change end
 				codebaseIndexBedrockRegion: codebaseIndexConfig?.codebaseIndexBedrockRegion,
 				codebaseIndexBedrockProfile: codebaseIndexConfig?.codebaseIndexBedrockProfile,
 				codebaseIndexOpenRouterSpecificProvider: codebaseIndexConfig?.codebaseIndexOpenRouterSpecificProvider,
@@ -2519,12 +2519,12 @@ export class ClineProvider
 			profileThresholds: profileThresholds ?? {},
 			cloudApiUrl: getRooCodeApiUrl(),
 			hasOpenedModeSelector: this.getGlobalState("hasOpenedModeSelector") ?? false,
-			hasCompletedOnboarding: this.getGlobalState("hasCompletedOnboarding"), // kilocode_change: Track onboarding completion - undefined means new user
-			systemNotificationsEnabled: systemNotificationsEnabled ?? false, // kilocode_change
-			dismissedNotificationIds: dismissedNotificationIds ?? [], // kilocode_change
-			morphApiKey, // kilocode_change
-			fastApplyModel: fastApplyModel ?? "auto", // kilocode_change: Fast Apply model selection
-			fastApplyApiProvider: fastApplyApiProvider ?? "current", // kilocode_change: Fast Apply model api base url
+			hasCompletedOnboarding: this.getGlobalState("hasCompletedOnboarding"), // novacode_change: Track onboarding completion - undefined means new user
+			systemNotificationsEnabled: systemNotificationsEnabled ?? false, // novacode_change
+			dismissedNotificationIds: dismissedNotificationIds ?? [], // novacode_change
+			morphApiKey, // novacode_change
+			fastApplyModel: fastApplyModel ?? "auto", // novacode_change: Fast Apply model selection
+			fastApplyApiProvider: fastApplyApiProvider ?? "current", // novacode_change: Fast Apply model api base url
 			alwaysAllowFollowupQuestions: alwaysAllowFollowupQuestions ?? false,
 			followupAutoApproveTimeoutMs: followupAutoApproveTimeoutMs ?? 60000,
 			includeDiagnosticMessages: includeDiagnosticMessages ?? true,
@@ -2537,7 +2537,7 @@ export class ClineProvider
 			remoteControlEnabled,
 			imageGenerationProvider,
 			openRouterImageApiKey,
-			// kilocode_change start - Auto-purge settings
+			// novacode_change start - Auto-purge settings
 			autoPurgeEnabled: await this.getState().then((s) => s.autoPurgeEnabled),
 			autoPurgeDefaultRetentionDays: await this.getState().then((s) => s.autoPurgeDefaultRetentionDays),
 			autoPurgeFavoritedTaskRetentionDays: await this.getState().then(
@@ -2550,12 +2550,12 @@ export class ClineProvider
 				(s) => s.autoPurgeIncompleteTaskRetentionDays,
 			),
 			autoPurgeLastRunTimestamp: await this.getState().then((s) => s.autoPurgeLastRunTimestamp),
-			selectedMicrophoneDevice, // kilocode_change: Selected microphone device for STT
-			// kilocode_change end
-			kiloCodeImageApiKey,
+			selectedMicrophoneDevice, // novacode_change: Selected microphone device for STT
+			// novacode_change end
+			novaCodeImageApiKey,
 			openRouterImageGenerationSelectedModel,
 			featureRoomoteControlEnabled,
-			virtualQuotaActiveModel, // kilocode_change: Include virtual quota active model in state
+			virtualQuotaActiveModel, // novacode_change: Include virtual quota active model in state
 			claudeCodeIsAuthenticated: await (async () => {
 				try {
 					const { claudeCodeOAuthManager } = await import("../../integrations/claude-code/oauth")
@@ -2588,21 +2588,21 @@ export class ClineProvider
 			| "clineMessages"
 			| "renderContext"
 			| "hasOpenedModeSelector"
-			| "hasCompletedOnboarding" // kilocode_change
+			| "hasCompletedOnboarding" // novacode_change
 			| "version"
 			| "shouldShowAnnouncement"
 			| "hasSystemPromptOverride"
-			// kilocode_change start
+			// novacode_change start
 			| "taskHistoryFullLength"
 			| "taskHistoryVersion"
-			// kilocode_change end
+			// novacode_change end
 		>
 	> {
 		const stateValues = this.contextProxy.getValues()
 		const customModes = await this.customModesManager.getCustomModes()
 
 		// Determine apiProvider with the same logic as before.
-		const apiProvider: ProviderName = stateValues.apiProvider ? stateValues.apiProvider : "kilocode" // kilocode_change: fall back to kilocode
+		const apiProvider: ProviderName = stateValues.apiProvider ? stateValues.apiProvider : "novacode" // novacode_change: fall back to novacode
 
 		// Build the apiConfiguration object combining state values and secrets.
 		const providerSettings = this.contextProxy.getProviderSettings()
@@ -2691,9 +2691,9 @@ export class ClineProvider
 		// Return the same structure as before.
 		return {
 			apiConfiguration: providerSettings,
-			kilocodeDefaultModel: (
-				await getKilocodeDefaultModel(providerSettings.kilocodeToken, providerSettings.kilocodeOrganizationId)
-			).defaultModel, // kilocode_change
+			novacodeDefaultModel: (
+				await getNovacodeDefaultModel(providerSettings.novacodeToken, providerSettings.novacodeOrganizationId)
+			).defaultModel, // novacode_change
 			lastShownAnnouncementId: stateValues.lastShownAnnouncementId,
 			customInstructions: stateValues.customInstructions,
 			apiModelId: stateValues.apiModelId,
@@ -2702,7 +2702,7 @@ export class ClineProvider
 			alwaysAllowWrite: stateValues.alwaysAllowWrite ?? true,
 			alwaysAllowWriteOutsideWorkspace: stateValues.alwaysAllowWriteOutsideWorkspace ?? false,
 			alwaysAllowWriteProtected: stateValues.alwaysAllowWriteProtected ?? false,
-			alwaysAllowDelete: stateValues.alwaysAllowDelete ?? false, // kilocode_change
+			alwaysAllowDelete: stateValues.alwaysAllowDelete ?? false, // novacode_change
 			alwaysAllowExecute: stateValues.alwaysAllowExecute ?? true,
 			alwaysAllowBrowser: stateValues.alwaysAllowBrowser ?? true,
 			alwaysAllowMcp: stateValues.alwaysAllowMcp ?? true,
@@ -2710,14 +2710,14 @@ export class ClineProvider
 			alwaysAllowSubtasks: stateValues.alwaysAllowSubtasks ?? true,
 			alwaysAllowFollowupQuestions: stateValues.alwaysAllowFollowupQuestions ?? false,
 			isBrowserSessionActive,
-			yoloMode: stateValues.yoloMode ?? false, // kilocode_change
+			yoloMode: stateValues.yoloMode ?? false, // novacode_change
 			followupAutoApproveTimeoutMs: stateValues.followupAutoApproveTimeoutMs ?? 60000,
 			diagnosticsEnabled: stateValues.diagnosticsEnabled ?? true,
 			allowedMaxRequests: stateValues.allowedMaxRequests,
 			allowedMaxCost: stateValues.allowedMaxCost,
 			autoCondenseContext: stateValues.autoCondenseContext ?? true,
 			autoCondenseContextPercent: stateValues.autoCondenseContextPercent ?? 100,
-			// taskHistory: stateValues.taskHistory ?? [], // kilocode_change
+			// taskHistory: stateValues.taskHistory ?? [], // novacode_change
 			allowedCommands: stateValues.allowedCommands,
 			deniedCommands: stateValues.deniedCommands,
 			soundEnabled: stateValues.soundEnabled ?? false,
@@ -2749,7 +2749,7 @@ export class ClineProvider
 			terminalCompressProgressBar: stateValues.terminalCompressProgressBar ?? true,
 			mode: stateValues.mode ?? defaultModeSlug,
 			language: stateValues.language ?? formatLanguage(vscode.env.language),
-			mcpEnabled: true, // kilocode_change: always true
+			mcpEnabled: true, // novacode_change: always true
 			enableMcpServerCreation: stateValues.enableMcpServerCreation ?? true,
 			mcpServers: this.mcpHub?.getAllServers() ?? [],
 			currentApiConfigName: stateValues.currentApiConfigName ?? "default",
@@ -2759,44 +2759,44 @@ export class ClineProvider
 			customModePrompts: stateValues.customModePrompts ?? {},
 			customSupportPrompts: stateValues.customSupportPrompts ?? {},
 			enhancementApiConfigId: stateValues.enhancementApiConfigId,
-			commitMessageApiConfigId: stateValues.commitMessageApiConfigId, // kilocode_change
-			terminalCommandApiConfigId: stateValues.terminalCommandApiConfigId, // kilocode_change
-			// kilocode_change start
+			commitMessageApiConfigId: stateValues.commitMessageApiConfigId, // novacode_change
+			terminalCommandApiConfigId: stateValues.terminalCommandApiConfigId, // novacode_change
+			// novacode_change start
 			ghostServiceSettings: stateValues.ghostServiceSettings,
-			// kilocode_change end
-			// kilocode_change start - Auto-purge settings
+			// novacode_change end
+			// novacode_change start - Auto-purge settings
 			autoPurgeEnabled: stateValues.autoPurgeEnabled ?? false,
 			autoPurgeDefaultRetentionDays: stateValues.autoPurgeDefaultRetentionDays ?? 30,
 			autoPurgeFavoritedTaskRetentionDays: stateValues.autoPurgeFavoritedTaskRetentionDays ?? null,
 			autoPurgeCompletedTaskRetentionDays: stateValues.autoPurgeCompletedTaskRetentionDays ?? 30,
 			autoPurgeIncompleteTaskRetentionDays: stateValues.autoPurgeIncompleteTaskRetentionDays ?? 7,
 			autoPurgeLastRunTimestamp: stateValues.autoPurgeLastRunTimestamp,
-			selectedMicrophoneDevice: stateValues.selectedMicrophoneDevice, // kilocode_change: Selected microphone device for STT
-			// kilocode_change end
+			selectedMicrophoneDevice: stateValues.selectedMicrophoneDevice, // novacode_change: Selected microphone device for STT
+			// novacode_change end
 			experiments: stateValues.experiments ?? experimentDefault,
 			autoApprovalEnabled: stateValues.autoApprovalEnabled ?? true,
 			customModes,
 			maxOpenTabsContext: stateValues.maxOpenTabsContext ?? 20,
 			maxWorkspaceFiles: stateValues.maxWorkspaceFiles ?? 200,
 			browserToolEnabled: stateValues.browserToolEnabled ?? true,
-			telemetrySetting: getEffectiveTelemetrySetting(stateValues.telemetrySetting), // kilocode_change
+			telemetrySetting: getEffectiveTelemetrySetting(stateValues.telemetrySetting), // novacode_change
 			showRooIgnoredFiles: stateValues.showRooIgnoredFiles ?? false,
-			showAutoApproveMenu: stateValues.showAutoApproveMenu ?? false, // kilocode_change
-			showTaskTimeline: stateValues.showTaskTimeline ?? true, // kilocode_change
-			sendMessageOnEnter: stateValues.sendMessageOnEnter ?? true, // kilocode_change
-			showTimestamps: stateValues.showTimestamps ?? true, // kilocode_change
-			hideCostBelowThreshold: stateValues.hideCostBelowThreshold ?? 0, // kilocode_change
+			showAutoApproveMenu: stateValues.showAutoApproveMenu ?? false, // novacode_change
+			showTaskTimeline: stateValues.showTaskTimeline ?? true, // novacode_change
+			sendMessageOnEnter: stateValues.sendMessageOnEnter ?? true, // novacode_change
+			showTimestamps: stateValues.showTimestamps ?? true, // novacode_change
+			hideCostBelowThreshold: stateValues.hideCostBelowThreshold ?? 0, // novacode_change
 			enableSubfolderRules: stateValues.enableSubfolderRules ?? false,
-			maxReadFileLine: stateValues.maxReadFileLine ?? 500 /*kilocode_change*/,
+			maxReadFileLine: stateValues.maxReadFileLine ?? 500 /*novacode_change*/,
 			maxImageFileSize: stateValues.maxImageFileSize ?? 5,
 			maxTotalImageSize: stateValues.maxTotalImageSize ?? 20,
 			maxConcurrentFileReads: stateValues.maxConcurrentFileReads ?? 5,
-			allowVeryLargeReads: stateValues.allowVeryLargeReads ?? false, // kilocode_change
-			systemNotificationsEnabled: stateValues.systemNotificationsEnabled ?? true, // kilocode_change
-			dismissedNotificationIds: stateValues.dismissedNotificationIds ?? [], // kilocode_change
-			morphApiKey: stateValues.morphApiKey, // kilocode_change
-			fastApplyModel: stateValues.fastApplyModel ?? "auto", // kilocode_change: Fast Apply model selection
-			fastApplyApiProvider: stateValues.fastApplyApiProvider ?? "current", // kilocode_change: Fast Apply model api config id
+			allowVeryLargeReads: stateValues.allowVeryLargeReads ?? false, // novacode_change
+			systemNotificationsEnabled: stateValues.systemNotificationsEnabled ?? true, // novacode_change
+			dismissedNotificationIds: stateValues.dismissedNotificationIds ?? [], // novacode_change
+			morphApiKey: stateValues.morphApiKey, // novacode_change
+			fastApplyModel: stateValues.fastApplyModel ?? "auto", // novacode_change: Fast Apply model selection
+			fastApplyApiProvider: stateValues.fastApplyApiProvider ?? "current", // novacode_change: Fast Apply model api config id
 			historyPreviewCollapsed: stateValues.historyPreviewCollapsed ?? false,
 			reasoningBlockCollapsed: stateValues.reasoningBlockCollapsed ?? true,
 			enterBehavior: stateValues.enterBehavior ?? "send",
@@ -2808,7 +2808,7 @@ export class ClineProvider
 			organizationSettingsVersion,
 			condensingApiConfigId: stateValues.condensingApiConfigId,
 			customCondensingPrompt: stateValues.customCondensingPrompt,
-			yoloGatekeeperApiConfigId: stateValues.yoloGatekeeperApiConfigId, // kilocode_change: AI gatekeeper for YOLO mode
+			yoloGatekeeperApiConfigId: stateValues.yoloGatekeeperApiConfigId, // novacode_change: AI gatekeeper for YOLO mode
 			codebaseIndexModels: stateValues.codebaseIndexModels ?? EMBEDDING_MODEL_PROFILES,
 			codebaseIndexConfig: {
 				codebaseIndexEnabled: stateValues.codebaseIndexConfig?.codebaseIndexEnabled ?? false,
@@ -2816,12 +2816,12 @@ export class ClineProvider
 					stateValues.codebaseIndexConfig?.codebaseIndexQdrantUrl ?? "http://localhost:6333",
 				codebaseIndexEmbedderProvider:
 					stateValues.codebaseIndexConfig?.codebaseIndexEmbedderProvider ?? "openai",
-				// kilocode_change start
+				// novacode_change start
 				codebaseIndexVectorStoreProvider:
 					stateValues.codebaseIndexConfig?.codebaseIndexVectorStoreProvider ?? "qdrant",
 				codebaseIndexLancedbVectorStoreDirectory:
 					stateValues.codebaseIndexConfig?.codebaseIndexLancedbVectorStoreDirectory,
-				// kilocode_change end
+				// novacode_change end
 				codebaseIndexEmbedderBaseUrl: stateValues.codebaseIndexConfig?.codebaseIndexEmbedderBaseUrl ?? "",
 				codebaseIndexEmbedderModelId: stateValues.codebaseIndexConfig?.codebaseIndexEmbedderModelId ?? "",
 				codebaseIndexEmbedderModelDimension:
@@ -2830,11 +2830,11 @@ export class ClineProvider
 					stateValues.codebaseIndexConfig?.codebaseIndexOpenAiCompatibleBaseUrl,
 				codebaseIndexSearchMaxResults: stateValues.codebaseIndexConfig?.codebaseIndexSearchMaxResults,
 				codebaseIndexSearchMinScore: stateValues.codebaseIndexConfig?.codebaseIndexSearchMinScore,
-				// kilocode_change start
+				// novacode_change start
 				codebaseIndexEmbeddingBatchSize: stateValues.codebaseIndexConfig?.codebaseIndexEmbeddingBatchSize,
 				codebaseIndexScannerMaxBatchRetries:
 					stateValues.codebaseIndexConfig?.codebaseIndexScannerMaxBatchRetries,
-				// kilocode_change end
+				// novacode_change end
 				codebaseIndexBedrockRegion: stateValues.codebaseIndexConfig?.codebaseIndexBedrockRegion,
 				codebaseIndexBedrockProfile: stateValues.codebaseIndexConfig?.codebaseIndexBedrockProfile,
 				codebaseIndexOpenRouterSpecificProvider:
@@ -2861,7 +2861,7 @@ export class ClineProvider
 			})(),
 			imageGenerationProvider: stateValues.imageGenerationProvider,
 			openRouterImageApiKey: stateValues.openRouterImageApiKey,
-			kiloCodeImageApiKey: stateValues.kiloCodeImageApiKey,
+			novaCodeImageApiKey: stateValues.novaCodeImageApiKey,
 			openRouterImageGenerationSelectedModel: stateValues.openRouterImageGenerationSelectedModel,
 			featureRoomoteControlEnabled: (() => {
 				try {
@@ -2875,7 +2875,7 @@ export class ClineProvider
 					return false
 				}
 			})(),
-			appendSystemPrompt: stateValues.appendSystemPrompt, // kilocode_change: CLI append system prompt
+			appendSystemPrompt: stateValues.appendSystemPrompt, // novacode_change: CLI append system prompt
 		}
 	}
 
@@ -2896,7 +2896,7 @@ export class ClineProvider
 		}
 
 		await this.updateGlobalState("taskHistory", history)
-		this.kiloCodeTaskHistoryVersion++
+		this.novaCodeTaskHistoryVersion++
 		this.recentTasksCache = undefined
 
 		return history
@@ -2943,12 +2943,12 @@ export class ClineProvider
 			return
 		}
 
-		// Logout from Kilo Code provider before resetting (same approach as ProfileView logout)
+		// Logout from Nova Code provider before resetting (same approach as ProfileView logout)
 		const { apiConfiguration, currentApiConfigName = "default" } = await this.getState()
-		if (apiConfiguration.kilocodeToken) {
+		if (apiConfiguration.novacodeToken) {
 			await this.upsertProviderProfile(currentApiConfigName, {
 				...apiConfiguration,
-				kilocodeToken: "",
+				novacodeToken: "",
 			})
 		}
 
@@ -3248,7 +3248,7 @@ export class ClineProvider
 
 		const task = new Task({
 			provider: this,
-			context: this.context, // kilocode_change
+			context: this.context, // novacode_change
 			apiConfiguration,
 			enableDiff,
 			enableCheckpoints,
@@ -3385,7 +3385,7 @@ export class ClineProvider
 		await this.setValues({ mode })
 	}
 
-	// kilocode_change start: Review mode
+	// novacode_change start: Review mode
 	/**
 	 * Triggers the review scope selection UI
 	 * Called when user enters review mode
@@ -3448,7 +3448,7 @@ export class ClineProvider
 			this.log(`Error handling review scope selection: ${error instanceof Error ? error.message : String(error)}`)
 		}
 	}
-	// kilocode_change end: Review mode
+	// novacode_change end: Review mode
 
 	// Provider Profiles
 
@@ -3474,31 +3474,31 @@ export class ClineProvider
 	private getAppProperties(): StaticAppProperties {
 		if (!this._appProperties) {
 			const packageJSON = this.context.extension?.packageJSON
-			// kilocode_change start
+			// novacode_change start
 			const {
-				kiloCodeWrapped,
-				kiloCodeWrapper,
-				kiloCodeWrapperCode,
-				kiloCodeWrapperVersion,
-				kiloCodeWrapperTitle,
-			} = getKiloCodeWrapperProperties()
-			// kilocode_change end
+				novaCodeWrapped,
+				novaCodeWrapper,
+				novaCodeWrapperCode,
+				novaCodeWrapperVersion,
+				novaCodeWrapperTitle,
+			} = getNovaCodeWrapperProperties()
+			// novacode_change end
 
 			this._appProperties = {
 				appName: packageJSON?.name ?? Package.name,
 				appVersion: packageJSON?.version ?? Package.version,
 				vscodeVersion: vscode.version,
-				platform: isWsl ? "wsl" /* kilocode_change */ : process.platform,
-				// kilocode_change start
-				editorName: kiloCodeWrapperTitle ? kiloCodeWrapperTitle : vscode.env.appName,
-				wrapped: kiloCodeWrapped,
-				wrapper: kiloCodeWrapper,
-				wrapperCode: kiloCodeWrapperCode,
-				wrapperVersion: kiloCodeWrapperVersion,
-				wrapperTitle: kiloCodeWrapperTitle,
+				platform: isWsl ? "wsl" /* novacode_change */ : process.platform,
+				// novacode_change start
+				editorName: novaCodeWrapperTitle ? novaCodeWrapperTitle : vscode.env.appName,
+				wrapped: novaCodeWrapped,
+				wrapper: novaCodeWrapper,
+				wrapperCode: novaCodeWrapperCode,
+				wrapperVersion: novaCodeWrapperVersion,
+				wrapperTitle: novaCodeWrapperTitle,
 				machineId: vscode.env.machineId,
 				vscodeIsTelemetryEnabled: vscode.env.isTelemetryEnabled,
-				// kilocode_change end
+				// novacode_change end
 			}
 		}
 
@@ -3551,11 +3551,11 @@ export class ClineProvider
 			diffStrategy: task?.diffStrategy?.getName(),
 			isSubtask: task ? !!task.parentTaskId : undefined,
 			...(todos && { todos }),
-			// kilocode_change start
+			// novacode_change start
 			currentTaskSize: task?.clineMessages.length,
-			taskHistorySize: this.kiloCodeTaskHistorySizeForTelemetryOnly || undefined,
+			taskHistorySize: this.novaCodeTaskHistorySizeForTelemetryOnly || undefined,
 			toolStyle: resolveToolProtocol(apiConfiguration, task?.api?.getModel().info),
-			// kilocode_change end
+			// novacode_change end
 		}
 	}
 
@@ -3571,20 +3571,20 @@ export class ClineProvider
 		return this._gitProperties
 	}
 
-	// kilocode_change start
-	private _kiloConfig: KilocodeConfig | null = null
-	public async getKiloConfig(): Promise<KilocodeConfig | null> {
-		if (this._kiloConfig === null) {
+	// novacode_change start
+	private _novaConfig: NovacodeConfig | null = null
+	public async getNovaConfig(): Promise<NovacodeConfig | null> {
+		if (this._novaConfig === null) {
 			const { repositoryUrl } = await this.getGitProperties()
-			this._kiloConfig = await getKilocodeConfig(this.cwd, repositoryUrl)
-			console.log("getKiloConfig", this._kiloConfig)
+			this._novaConfig = await getNovacodeConfig(this.cwd, repositoryUrl)
+			console.log("getNovaConfig", this._novaConfig)
 		}
-		return this._kiloConfig
+		return this._novaConfig
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	public async getTelemetryProperties(): Promise<TelemetryProperties> {
-		// kilocode_change start
+		// novacode_change start
 		const state = await this.getState()
 		const { apiConfiguration, experiments } = state
 		const task = this.getCurrentTask()
@@ -3606,7 +3606,7 @@ export class ClineProvider
 		function getOpenRouter() {
 			if (
 				apiConfiguration &&
-				(apiConfiguration.apiProvider === "openrouter" || apiConfiguration.apiProvider === "kilocode")
+				(apiConfiguration.apiProvider === "openrouter" || apiConfiguration.apiProvider === "novacode")
 			) {
 				return {
 					openRouter: {
@@ -3663,7 +3663,7 @@ export class ClineProvider
 						alwaysAllowWrite: !!state.alwaysAllowWrite,
 						alwaysAllowWriteOutsideWorkspace: !!state.alwaysAllowWriteOutsideWorkspace,
 						alwaysAllowWriteProtected: !!state.alwaysAllowWriteProtected,
-						alwaysAllowDelete: !!state.alwaysAllowDelete, // kilocode_change
+						alwaysAllowDelete: !!state.alwaysAllowDelete, // novacode_change
 						yoloMode: !!state.yoloMode,
 					},
 				}
@@ -3673,28 +3673,28 @@ export class ClineProvider
 				}
 			}
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		return {
 			...this.getAppProperties(),
-			// ...this.getCloudProperties(), kilocode_change: disable
-			// kilocode_change start
+			// ...this.getCloudProperties(), novacode_change: disable
+			// novacode_change start
 			...(await getModelId()),
 			...getMemory(),
 			...getFastApply(),
 			...getOpenRouter(),
 			...getAutoApproveSettings(),
 			// Add organization ID if available
-			...(apiConfiguration.kilocodeOrganizationId && {
-				kilocodeOrganizationId: apiConfiguration.kilocodeOrganizationId,
+			...(apiConfiguration.novacodeOrganizationId && {
+				novacodeOrganizationId: apiConfiguration.novacodeOrganizationId,
 			}),
-			// kilocode_change end
+			// novacode_change end
 			...(await this.getTaskProperties()),
 			...(await this.getGitProperties()),
 		}
 	}
 
-	// kilocode_change:
+	// novacode_change:
 	// MCP Marketplace
 	private async fetchMcpMarketplaceFromApi(silent: boolean = false): Promise<McpMarketplaceCatalog | undefined> {
 		try {
@@ -3862,9 +3862,9 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			})
 		}
 	}
-	// end kilocode_change
+	// end novacode_change
 
-	// kilocode_change start
+	// novacode_change start
 	// Add new methods for favorite functionality
 	async toggleTaskFavorite(id: string) {
 		const history = this.getGlobalState("taskHistory") ?? []
@@ -3875,7 +3875,7 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			return item
 		})
 		await this.updateGlobalState("taskHistory", updatedHistory)
-		this.kiloCodeTaskHistoryVersion++
+		this.novaCodeTaskHistoryVersion++
 		await this.postStateToWebview()
 	}
 
@@ -3888,26 +3888,26 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 	async deleteMultipleTasks(taskIds: string[], excludeFavorites?: boolean) {
 		const history = this.getGlobalState("taskHistory") ?? []
 
-		// kilocode_change start
+		// novacode_change start
 		// Filter out favorited tasks if excludeFavorites is true
 		let idsToDelete = taskIds
 		if (excludeFavorites) {
 			idsToDelete = taskIds.filter((id) => !history.find((item) => item.id === id)?.isFavorited)
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		for (const id of idsToDelete) {
 			await this.deleteTaskWithId(id)
 		}
 	}
 
-	private kiloCodeTaskHistoryVersion = 0
-	private kiloCodeTaskHistorySizeForTelemetryOnly = 0
+	private novaCodeTaskHistoryVersion = 0
+	private novaCodeTaskHistorySizeForTelemetryOnly = 0
 
 	public getTaskHistory(): HistoryItem[] {
 		return this.getGlobalState("taskHistory") || []
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	public get cwd() {
 		return this.currentWorkspacePath || getWorkspacePath()

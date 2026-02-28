@@ -106,7 +106,7 @@ export enum ContextMenuOptionType {
 	Git = "git",
 	NoResults = "noResults",
 	Mode = "mode", // Add mode type
-	Image = "image", // kilocode_change
+	Image = "image", // novacode_change
 	Command = "command", // Add command type
 	SectionHeader = "sectionHeader", // Add section header type
 }
@@ -255,7 +255,7 @@ export function getContextMenuOptions(
 			{ type: ContextMenuOptionType.URL },
 			{ type: ContextMenuOptionType.Folder },
 			{ type: ContextMenuOptionType.File },
-			{ type: ContextMenuOptionType.Image }, // kilocode_change
+			{ type: ContextMenuOptionType.Image }, // novacode_change
 			{ type: ContextMenuOptionType.Git },
 		]
 	}

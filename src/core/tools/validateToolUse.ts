@@ -155,7 +155,7 @@ export function isToolAllowedForMode(
 
 		// For the edit group, check file regex if specified
 		if (groupName === "edit" && options.fileRegex) {
-			// kilocode_change: support multiple edit tool param names
+			// novacode_change: support multiple edit tool param names
 			const filePath = toolParams?.path ?? toolParams?.target_file ?? toolParams?.file_path
 			// Check if this is an actual edit operation (not just path-only for streaming)
 			const isEditOperation = EDIT_OPERATION_PARAMS.some((param) => toolParams?.[param])

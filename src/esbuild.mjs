@@ -6,10 +6,99 @@ import { createRequire } from "module"
 import process from "node:process"
 import * as console from "node:console"
 
-import { copyPaths, copyWasms, copyLocales, setupLocaleWatcher } from "@roo-code/build"
+import { copyPaths, copyWasms as copyWasmsFromBuild, copyLocales, setupLocaleWatcher } from "@roo-code/build"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+
+function resolveDependencyPath(srcDir, packageName, relativePath = "") {
+	const directCandidates = [
+		path.join(srcDir, "node_modules", packageName, relativePath),
+		path.join(srcDir, "..", "node_modules", packageName, relativePath),
+	]
+
+	for (const candidate of directCandidates) {
+		if (fs.existsSync(candidate)) {
+			return candidate
+		}
+	}
+
+	const pnpmDir = path.join(srcDir, "..", "node_modules", ".pnpm")
+	if (fs.existsSync(pnpmDir)) {
+		const packagePrefix = `${packageName.replaceAll("/", "+")}@`
+		const entries = fs
+			.readdirSync(pnpmDir, { withFileTypes: true })
+			.filter((entry) => entry.isDirectory() && entry.name.startsWith(packagePrefix))
+			.map((entry) => entry.name)
+			.sort()
+
+		for (const entry of entries) {
+			const candidate = path.join(pnpmDir, entry, "node_modules", packageName, relativePath)
+			if (fs.existsSync(candidate)) {
+				return candidate
+			}
+		}
+	}
+
+	throw new Error(`Unable to resolve ${packageName}/${relativePath}`)
+}
+
+function copyWasmsWithFallback(srcDir, distDir) {
+	// Prefer @roo-code/build implementation; fallback to resilient resolver when hoisted layout is incomplete.
+	try {
+		copyWasmsFromBuild(srcDir, distDir)
+		return
+	} catch (error) {
+		const message = error instanceof Error ? error.message : String(error)
+		console.warn(`[copyWasmsWithFallback] Falling back to resilient WASM copy: ${message}`)
+	}
+
+	fs.mkdirSync(distDir, { recursive: true })
+
+	const tiktokenWasmPath = resolveDependencyPath(srcDir, "tiktoken", path.join("lite", "tiktoken_bg.wasm"))
+	fs.copyFileSync(tiktokenWasmPath, path.join(distDir, "tiktoken_bg.wasm"))
+
+	const workersDir = path.join(distDir, "workers")
+	fs.mkdirSync(workersDir, { recursive: true })
+	fs.copyFileSync(tiktokenWasmPath, path.join(workersDir, "tiktoken_bg.wasm"))
+
+	fs.copyFileSync(
+		resolveDependencyPath(srcDir, "web-tree-sitter", "tree-sitter.wasm"),
+		path.join(distDir, "tree-sitter.wasm"),
+	)
+
+	const languageWasmDir = resolveDependencyPath(srcDir, "tree-sitter-wasms", "out")
+	const wasmFiles = fs.readdirSync(languageWasmDir).filter((file) => file.endsWith(".wasm"))
+	for (const wasmFile of wasmFiles) {
+		fs.copyFileSync(path.join(languageWasmDir, wasmFile), path.join(distDir, wasmFile))
+	}
+
+	const esbuildWasmDir = resolveDependencyPath(srcDir, "esbuild-wasm")
+	const binDir = path.join(distDir, "bin")
+	fs.mkdirSync(binDir, { recursive: true })
+
+	const esbuildWasmFiles = [
+		["bin/esbuild", path.join(binDir, "esbuild")],
+		["esbuild.wasm", path.join(distDir, "esbuild.wasm")],
+		["wasm_exec_node.js", path.join(distDir, "wasm_exec_node.js")],
+		["wasm_exec.js", path.join(distDir, "wasm_exec.js")],
+	]
+
+	for (const [sourceRelativePath, targetPath] of esbuildWasmFiles) {
+		const sourcePath = path.join(esbuildWasmDir, sourceRelativePath)
+		fs.copyFileSync(sourcePath, targetPath)
+
+		if (sourceRelativePath === "bin/esbuild") {
+			try {
+				fs.chmodSync(targetPath, 0o755)
+			} catch {
+				// Ignore chmod errors on Windows.
+			}
+		}
+	}
+
+	console.log(`[copyWasmsWithFallback] Copied WASM assets to ${distDir}`)
+}
 
 async function main() {
 	const name = "extension"
@@ -29,11 +118,11 @@ async function main() {
 		format: "cjs",
 		sourcesContent: false,
 		platform: "node",
-		// kilocode_change start: for ps-list
+		// novacode_change start: for ps-list
 		banner: {
 			js: "const __importMetaUrl = typeof __filename !== 'undefined' ? require('url').pathToFileURL(__filename).href : undefined;",
 		},
-		// kilocode_change end
+		// novacode_change end
 	}
 
 	const srcDir = __dirname
@@ -49,7 +138,15 @@ async function main() {
 	 * @type {import('esbuild').Plugin[]}
 	 */
 	const plugins = [
-		// kilocode_change start
+		{
+			name: "resolve-hoisted-deps",
+			setup(build) {
+				build.onResolve({ filter: /^pdf-parse\/lib\/pdf-parse$/ }, () => ({
+					path: resolveDependencyPath(srcDir, "pdf-parse", "lib/pdf-parse.js"),
+				}))
+			},
+		},
+		// novacode_change start
 		{
 			name: "import-meta-url-plugin",
 			setup(build) {
@@ -66,7 +163,7 @@ async function main() {
 				})
 			},
 		},
-		// kilocode_change end
+		// novacode_change end
 		{
 			name: "copyFiles",
 			setup(build) {
@@ -77,7 +174,7 @@ async function main() {
 							["../CHANGELOG.md", "CHANGELOG.md"],
 							["../LICENSE", "LICENSE"],
 							["../.env", ".env", { optional: true }],
-							["node_modules/vscode-material-icons/generated", "assets/vscode-material-icons"],
+							["../node_modules/vscode-material-icons/generated", "assets/vscode-material-icons"],
 							["../webview-ui/audio", "webview-ui/audio"],
 						],
 						srcDir,
@@ -112,7 +209,7 @@ async function main() {
 		{
 			name: "copyWasms",
 			setup(build) {
-				build.onEnd(() => copyWasms(srcDir, distDir))
+				build.onEnd(() => copyWasmsWithFallback(srcDir, distDir))
 			},
 		},
 		{
@@ -150,7 +247,7 @@ async function main() {
 		// global-agent must be external because it dynamically patches Node.js http/https modules
 		// which breaks when bundled. It needs access to the actual Node.js module instances.
 		// undici must be bundled because our VSIX is packaged with `--no-dependencies`.
-		external: ["vscode", "esbuild", "global-agent", "@lancedb/lancedb"], // kilocode_change: add @lancedb/lancedb
+		external: ["vscode", "esbuild", "global-agent", "@lancedb/lancedb"], // novacode_change: add @lancedb/lancedb
 	}
 
 	/**
@@ -162,7 +259,7 @@ async function main() {
 		outdir: "dist/workers",
 	}
 
-	// kilocode_change start - agent-runtime process bundle
+	// novacode_change start - agent-runtime process bundle
 	/**
 	 * Agent Runtime Process Bundle
 	 *
@@ -193,30 +290,30 @@ async function main() {
 						const packagePath = path.join(srcDir, "..", "packages", packageName.replace("@roo-code/", ""))
 						return { path: path.join(packagePath, "src/index.ts") }
 					})
-					build.onResolve({ filter: /^@kilocode\// }, (args) => {
+					build.onResolve({ filter: /^@novacode\// }, (args) => {
 						const packageName = args.path
-						const packagePath = path.join(srcDir, "..", "packages", packageName.replace("@kilocode/", ""))
+						const packagePath = path.join(srcDir, "..", "packages", packageName.replace("@novacode/", ""))
 						return { path: path.join(packagePath, "src/index.ts") }
 					})
 				},
 			},
 		],
 	}
-	// kilocode_change end
+	// novacode_change end
 
-	const [extensionCtx, workerCtx, agentRuntimeCtx] = await Promise.all([ // kilocode_change
+	const [extensionCtx, workerCtx, agentRuntimeCtx] = await Promise.all([ // novacode_change
 		esbuild.context(extensionConfig),
 		esbuild.context(workerConfig),
-		esbuild.context(agentRuntimeProcessConfig), // kilocode_change
+		esbuild.context(agentRuntimeProcessConfig), // novacode_change
 	])
 
 	if (watch) {
-		await Promise.all([extensionCtx.watch(), workerCtx.watch(), agentRuntimeCtx.watch()]) // kilocode_change
+		await Promise.all([extensionCtx.watch(), workerCtx.watch(), agentRuntimeCtx.watch()]) // novacode_change
 		copyLocales(srcDir, distDir)
 		setupLocaleWatcher(srcDir, distDir)
 	} else {
-		await Promise.all([extensionCtx.rebuild(), workerCtx.rebuild(), agentRuntimeCtx.rebuild()]) // kilocode_change
-		await Promise.all([extensionCtx.dispose(), workerCtx.dispose(), agentRuntimeCtx.dispose()]) // kilocode_change
+		await Promise.all([extensionCtx.rebuild(), workerCtx.rebuild(), agentRuntimeCtx.rebuild()]) // novacode_change
+		await Promise.all([extensionCtx.dispose(), workerCtx.dispose(), agentRuntimeCtx.dispose()]) // novacode_change
 	}
 }
 

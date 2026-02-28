@@ -1,28 +1,28 @@
 import * as React from "react"
 import { CaretUpIcon } from "@radix-ui/react-icons"
 import { Check, X } from "lucide-react"
-import { Fzf } from "@/lib/word-boundary-fzf" // kilocode_change: drop in fzf compatible lib, which respects word boundaries
+import { Fzf } from "@/lib/word-boundary-fzf" // novacode_change: drop in fzf compatible lib, which respects word boundaries
 import { useTranslation } from "react-i18next"
 
 import { cn } from "@/lib/utils"
 import { useRooPortal } from "./hooks/useRooPortal"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui"
 import { StandardTooltip } from "@/components/ui"
-import { IconProps } from "@radix-ui/react-icons/dist/types" // kilocode_change
+import { IconProps } from "@radix-ui/react-icons/dist/types" // novacode_change
 
 export enum DropdownOptionType {
 	ITEM = "item",
 	SEPARATOR = "separator",
 	SHORTCUT = "shortcut",
 	ACTION = "action",
-	LABEL = "label", // kilocode_change: Section header for grouped options
+	LABEL = "label", // novacode_change: Section header for grouped options
 }
 
 export interface DropdownOption {
 	value: string
 	label: string
-	codicon?: string // kilocode_change
-	description?: string // kilocode_change
+	codicon?: string // novacode_change
+	description?: string // novacode_change
 	disabled?: boolean
 	type?: DropdownOptionType
 	pinned?: boolean
@@ -33,7 +33,7 @@ export interface SelectDropdownProps {
 	options: DropdownOption[]
 	onChange: (value: string) => void
 	disabled?: boolean
-	initiallyOpen?: boolean // kilocode_change
+	initiallyOpen?: boolean // novacode_change
 	title?: string
 	triggerClassName?: string
 	contentClassName?: string
@@ -44,7 +44,7 @@ export interface SelectDropdownProps {
 	shortcutText?: string
 	renderItem?: (option: DropdownOption) => React.ReactNode
 	disableSearch?: boolean
-	triggerIcon?: React.ForwardRefExoticComponent<IconProps & React.RefAttributes<SVGSVGElement>> | boolean | undefined // kilocode_change
+	triggerIcon?: React.ForwardRefExoticComponent<IconProps & React.RefAttributes<SVGSVGElement>> | boolean | undefined // novacode_change
 }
 
 export const SelectDropdown = React.memo(
@@ -55,7 +55,7 @@ export const SelectDropdown = React.memo(
 				options,
 				onChange,
 				disabled = false,
-				initiallyOpen = false, // kilocode_change
+				initiallyOpen = false, // novacode_change
 				title = "",
 				triggerClassName = "",
 				contentClassName = "",
@@ -66,19 +66,19 @@ export const SelectDropdown = React.memo(
 				shortcutText = "",
 				renderItem,
 				disableSearch = false,
-				triggerIcon = CaretUpIcon, // kilocode_change
+				triggerIcon = CaretUpIcon, // novacode_change
 			},
 			ref,
 		) => {
 			const { t } = useTranslation()
-			const [open, setOpen] = React.useState(initiallyOpen) // kilocode_change
+			const [open, setOpen] = React.useState(initiallyOpen) // novacode_change
 			const [searchValue, setSearchValue] = React.useState("")
 			const searchInputRef = React.useRef<HTMLInputElement>(null)
 			const portalContainer = useRooPortal("roo-portal")
 
-			// kilocode_change start
+			// novacode_change start
 			const TriggerIcon = triggerIcon === false ? null : triggerIcon === true ? CaretUpIcon : triggerIcon
-			// kilocode_change end
+			// novacode_change end
 
 			// Memoize the selected option to prevent unnecessary calculations
 			const selectedOption = React.useMemo(
@@ -117,7 +117,7 @@ export const SelectDropdown = React.memo(
 						(option) =>
 							option.type !== DropdownOptionType.SEPARATOR &&
 							option.type !== DropdownOptionType.SHORTCUT &&
-							option.type !== DropdownOptionType.LABEL, // kilocode_change: exclude LABEL from search
+							option.type !== DropdownOptionType.LABEL, // novacode_change: exclude LABEL from search
 					)
 					.map((option) => ({
 						original: option,
@@ -145,7 +145,7 @@ export const SelectDropdown = React.memo(
 					if (
 						option.type === DropdownOptionType.SEPARATOR ||
 						option.type === DropdownOptionType.SHORTCUT ||
-						option.type === DropdownOptionType.LABEL // kilocode_change: include LABEL in filtered results
+						option.type === DropdownOptionType.LABEL // novacode_change: include LABEL in filtered results
 					) {
 						return true
 					}
@@ -156,7 +156,7 @@ export const SelectDropdown = React.memo(
 			}, [options, searchValue, fzfInstance, disableSearch])
 
 			// Group options by type and handle separators and labels
-			// kilocode_change start: improved handling for section labels
+			// novacode_change start: improved handling for section labels
 			const groupedOptions = React.useMemo(() => {
 				const result: DropdownOption[] = []
 				let lastWasSeparatorOrLabel = false
@@ -209,7 +209,7 @@ export const SelectDropdown = React.memo(
 
 				return finalResult
 			}, [filteredOptions])
-			// kilocode_change end
+			// novacode_change end
 
 			const handleSelect = React.useCallback(
 				(optionValue: string) => {
@@ -248,11 +248,11 @@ export const SelectDropdown = React.memo(
 							: "opacity-90 hover:opacity-100 hover:bg-[rgba(255,255,255,0.03)] hover:border-[rgba(255,255,255,0.15)] cursor-pointer",
 						triggerClassName,
 					)}>
-					{/* kilocode_change start */}
+					{/* novacode_change start */}
 					{TriggerIcon && <TriggerIcon className="pointer-events-none opacity-80 flex-shrink-0 size-3" />}
-					{/* kilocode_change end */}
+					{/* novacode_change end */}
 
-					{/* kilocode_change start */}
+					{/* novacode_change start */}
 					{selectedOption?.codicon && (
 						<span
 							slot="start"
@@ -260,7 +260,7 @@ export const SelectDropdown = React.memo(
 							className={cn("codicon opacity-80 mr", selectedOption?.codicon)}
 						/>
 					)}
-					{/* kilocode_change end */}
+					{/* novacode_change end */}
 					<span className="truncate">{displayText}</span>
 				</PopoverTrigger>
 			)
@@ -297,7 +297,7 @@ export const SelectDropdown = React.memo(
 							)}
 
 							{/* Dropdown items - Use windowing for large lists */}
-							{/* kilocode_change: different max height: max-h-82, overscroll-contain for scroll wheel support */}
+							{/* novacode_change: different max height: max-h-82, overscroll-contain for scroll wheel support */}
 							<div className="max-h-82 overflow-y-auto overscroll-contain">
 								{groupedOptions.length === 0 && searchValue ? (
 									<div className="py-2 px-3 text-sm text-vscode-foreground/70">No results found</div>
@@ -315,7 +315,7 @@ export const SelectDropdown = React.memo(
 												)
 											}
 
-											// kilocode_change start: render LABEL type as section header
+											// novacode_change start: render LABEL type as section header
 											if (option.type === DropdownOptionType.LABEL) {
 												return (
 													<div
@@ -326,7 +326,7 @@ export const SelectDropdown = React.memo(
 													</div>
 												)
 											}
-											// kilocode_change end
+											// novacode_change end
 
 											if (
 												option.type === DropdownOptionType.SHORTCUT ||
@@ -349,7 +349,7 @@ export const SelectDropdown = React.memo(
 													key={itemKey}
 													onClick={() => !option.disabled && handleSelect(option.value)}
 													className={cn(
-														"text-sm cursor-pointer flex items-center", // kilocode_change
+														"text-sm cursor-pointer flex items-center", // novacode_change
 														option.disabled
 															? "opacity-50 cursor-not-allowed"
 															: "hover:bg-vscode-list-hoverBackground",
@@ -363,7 +363,7 @@ export const SelectDropdown = React.memo(
 														renderItem(option)
 													) : (
 														<>
-															{/* kilocode_change start */}
+															{/* novacode_change start */}
 															<div className="flex items-center flex-1 py-1.5 px-3 hover:bg-vscode-list-hoverBackground">
 																<span
 																	slot="start"
@@ -381,7 +381,7 @@ export const SelectDropdown = React.memo(
 																		</div>
 																	)}
 																</div>
-																{/* kilocode_change end */}
+																{/* novacode_change end */}
 																{option.value === value && (
 																	<Check className="ml-auto size-4 p-0.5" />
 																)}

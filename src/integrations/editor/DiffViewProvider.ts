@@ -18,7 +18,7 @@ import { resolveToolProtocol } from "../../utils/resolveToolProtocol"
 import { DecorationController } from "./DecorationController"
 
 export const DIFF_VIEW_URI_SCHEME = "cline-diff"
-export const DIFF_VIEW_LABEL_CHANGES = "Original ↔ Kilo Code's Changes"
+export const DIFF_VIEW_LABEL_CHANGES = "Original ↔ Nova Code's Changes"
 
 // TODO: https://github.com/cline/cline/pull/3354
 export class DiffViewProvider {
@@ -161,7 +161,7 @@ export class DiffViewProvider {
 		if (isFinal) {
 			// In CLI mode, avoid multiple applyEdit calls that can duplicate content in the mock workspace
 			// (VS Code applies WorkspaceEdit in-memory; the CLI mock writes to disk, so multiple passes risk duplication)
-			if (process.env.KILO_CLI_MODE === "true") {
+			if (process.env.NOVA_CLI_MODE === "true") {
 				// Detect original EOL style to preserve it
 				const originalEOL = this.originalContent?.includes("\r\n") ? "\r\n" : "\n"
 
@@ -714,9 +714,9 @@ export class DiffViewProvider {
 	}> {
 		const absolutePath = path.resolve(this.cwd, relPath)
 
-		// kilocode_change start: In CLI mode, skip VSCode-specific operations (diagnostics are mocked)
-		const skipVscodeOps = process.env.KILO_CLI_MODE === "true"
-		// kilocode_change end
+		// novacode_change start: In CLI mode, skip VSCode-specific operations (diagnostics are mocked)
+		const skipVscodeOps = process.env.NOVA_CLI_MODE === "true"
+		// novacode_change end
 
 		// Get diagnostics before editing the file
 		this.preDiagnostics = vscode.languages.getDiagnostics()
@@ -727,9 +727,9 @@ export class DiffViewProvider {
 
 		// Open the document to ensure diagnostics are loaded
 		// When openFile is false (PREVENT_FOCUS_DISRUPTION enabled), we only open in memory
-		// kilocode_change start: Skip document opening in CLI mode
+		// novacode_change start: Skip document opening in CLI mode
 		if (!skipVscodeOps) {
-			// kilocode_change end
+			// novacode_change end
 			if (openFile) {
 				// Show the document in the editor
 				await vscode.window.showTextDocument(vscode.Uri.file(absolutePath), {
@@ -752,9 +752,9 @@ export class DiffViewProvider {
 
 		let newProblemsMessage = ""
 
-		// kilocode_change start: Skip diagnostic delay in CLI mode
+		// novacode_change start: Skip diagnostic delay in CLI mode
 		if (diagnosticsEnabled && !skipVscodeOps) {
-			// kilocode_change end
+			// novacode_change end
 			// Add configurable delay to allow linters time to process
 			const safeDelayMs = Math.max(0, writeDelayMs)
 

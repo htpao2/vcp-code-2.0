@@ -141,7 +141,7 @@ export const ThinkingBudget = ({ apiConfiguration, setApiConfigurationField, mod
 	])
 
 	const enableReasoningEffort = apiConfiguration.enableReasoningEffort
-	// kilocode_change
+	// novacode_change
 	const enableBinaryReasoningEffort = apiConfiguration.enableReasoningEffort ?? true
 	const customMaxOutputTokens = apiConfiguration.modelMaxTokens || DEFAULT_HYBRID_REASONING_MODEL_MAX_TOKENS
 	const customMaxThinkingTokens =
@@ -162,7 +162,7 @@ export const ThinkingBudget = ({ apiConfiguration, setApiConfigurationField, mod
 		}
 	}, [isReasoningBudgetSupported, customMaxThinkingTokens, modelMaxThinkingTokens, setApiConfigurationField])
 
-	// kilocode_change start
+	// novacode_change start
 	// If the custom max output tokens are going to exceed it's limit due
 	// to the model info max tokens then we need to shrink it appropriately.
 	useEffect(() => {
@@ -170,7 +170,7 @@ export const ThinkingBudget = ({ apiConfiguration, setApiConfigurationField, mod
 			setApiConfigurationField("modelMaxTokens", modelInfo.maxTokens || DEFAULT_HYBRID_REASONING_MODEL_MAX_TOKENS)
 		}
 	}, [isReasoningBudgetSupported, customMaxOutputTokens, modelInfo?.maxTokens, setApiConfigurationField])
-	// kilocode_change end
+	// novacode_change end
 
 	if (!modelInfo) {
 		return null
@@ -194,7 +194,7 @@ export const ThinkingBudget = ({ apiConfiguration, setApiConfigurationField, mod
 	return isReasoningBudgetSupported && !!modelInfo.maxTokens ? (
 		<>
 			{!isReasoningBudgetRequired &&
-				apiConfiguration.apiProvider !== "virtual-quota-fallback" /*kilocode_change*/ && (
+				apiConfiguration.apiProvider !== "virtual-quota-fallback" /*novacode_change*/ && (
 					<div className="flex flex-col gap-1">
 						<Checkbox
 							checked={enableReasoningEffort}

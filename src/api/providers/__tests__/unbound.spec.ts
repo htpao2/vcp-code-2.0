@@ -208,7 +208,7 @@ describe("UnboundHandler", () => {
 
 				expect.objectContaining({
 					headers: {
-						"X-Unbound-Metadata": expect.stringContaining("kilo-code"),
+						"X-Unbound-Metadata": expect.stringContaining("nova-code"),
 					},
 				}),
 			)
@@ -249,7 +249,7 @@ describe("UnboundHandler", () => {
 				}),
 				expect.objectContaining({
 					headers: expect.objectContaining({
-						"X-Unbound-Metadata": expect.stringContaining("kilo-code"),
+						"X-Unbound-Metadata": expect.stringContaining("nova-code"),
 					}),
 				}),
 			)
@@ -285,7 +285,7 @@ describe("UnboundHandler", () => {
 				}),
 				expect.objectContaining({
 					headers: expect.objectContaining({
-						"X-Unbound-Metadata": expect.stringContaining("kilo-code"),
+						"X-Unbound-Metadata": expect.stringContaining("nova-code"),
 					}),
 				}),
 			)
@@ -311,7 +311,7 @@ describe("UnboundHandler", () => {
 				}),
 				expect.objectContaining({
 					headers: expect.objectContaining({
-						"X-Unbound-Metadata": expect.stringContaining("kilo-code"),
+						"X-Unbound-Metadata": expect.stringContaining("nova-code"),
 					}),
 				}),
 			)
@@ -385,7 +385,7 @@ describe("UnboundHandler", () => {
 				}),
 				expect.objectContaining({
 					headers: {
-						"X-Unbound-Metadata": expect.stringContaining("kilo-code"),
+						"X-Unbound-Metadata": expect.stringContaining("nova-code"),
 					},
 				}),
 			)
@@ -416,7 +416,7 @@ describe("UnboundHandler", () => {
 				}),
 				expect.objectContaining({
 					headers: {
-						"X-Unbound-Metadata": expect.stringContaining("kilo-code"),
+						"X-Unbound-Metadata": expect.stringContaining("nova-code"),
 					},
 				}),
 			)
@@ -549,7 +549,7 @@ describe("UnboundHandler", () => {
 				}),
 				expect.objectContaining({
 					headers: {
-						"X-Unbound-Metadata": expect.stringContaining("kilo-code"),
+						"X-Unbound-Metadata": expect.stringContaining("nova-code"),
 					},
 				}),
 			)

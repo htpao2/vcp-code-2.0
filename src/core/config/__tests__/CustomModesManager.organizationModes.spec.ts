@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 // npx vitest core/config/__tests__/CustomModesManager.organizationModes.spec.ts
 
 import type { Mock } from "vitest"
@@ -78,7 +78,7 @@ describe("CustomModesManager - Organization Modes", () => {
 	const mockStoragePath = `${path.sep}mock${path.sep}settings`
 	const mockSettingsPath = path.join(mockStoragePath, "settings", GlobalFileNames.customModes)
 	const mockWorkspacePath = path.resolve("/mock/workspace")
-	const mockRoomodes = path.join(mockWorkspacePath, ".kilocodemodes")
+	const mockRoomodes = path.join(mockWorkspacePath, ".novacodemodes")
 
 	beforeEach(() => {
 		vi.clearAllMocks()
@@ -169,12 +169,12 @@ describe("CustomModesManager - Organization Modes", () => {
 			const modes = await manager.fetchOrganizationModes("test-token", "org-123")
 
 			expect(axios.get).toHaveBeenCalledWith(
-				"https://api.kilo.ai/api/organizations/org-123/modes",
+				"https://api.nova.ai/api/organizations/org-123/modes",
 				expect.objectContaining({
 					headers: expect.objectContaining({
 						Authorization: "Bearer test-token",
 						"Content-Type": "application/json",
-						"X-KiloCode-OrganizationId": "org-123",
+						"X-NovaCode-OrganizationId": "org-123",
 					}),
 				}),
 			)
@@ -207,7 +207,7 @@ describe("CustomModesManager - Organization Modes", () => {
 				expect.any(String),
 				expect.objectContaining({
 					headers: expect.objectContaining({
-						"X-KILOCODE-TESTER": "SUPPRESS",
+						"X-NOVACODE-TESTER": "SUPPRESS",
 					}),
 				}),
 			)
@@ -226,7 +226,7 @@ describe("CustomModesManager - Organization Modes", () => {
 				expect.any(String),
 				expect.objectContaining({
 					headers: expect.not.objectContaining({
-						"X-KILOCODE-TESTER": expect.any(String),
+						"X-NOVACODE-TESTER": expect.any(String),
 					}),
 				}),
 			)

@@ -65,7 +65,7 @@ describe("DisplaySettings", () => {
 			<DisplaySettings
 				showTaskTimeline={true}
 				showTimestamps={false}
-				reasoningBlockCollapsed={false} // kilocode_change
+				reasoningBlockCollapsed={false} // novacode_change
 				setCachedStateField={mockSetCachedStateField}
 			/>,
 		)
@@ -81,7 +81,7 @@ describe("DisplaySettings", () => {
 			<DisplaySettings
 				showTaskTimeline={true}
 				showTimestamps={false}
-				reasoningBlockCollapsed={false} // kilocode_change
+				reasoningBlockCollapsed={false} // novacode_change
 				setCachedStateField={mockSetCachedStateField}
 			/>,
 		)
@@ -97,7 +97,7 @@ describe("DisplaySettings", () => {
 			<DisplaySettings
 				showTaskTimeline={true}
 				showTimestamps={false}
-				reasoningBlockCollapsed={false} // kilocode_change
+				reasoningBlockCollapsed={false} // novacode_change
 				setCachedStateField={mockSetCachedStateField}
 			/>,
 		)
@@ -113,7 +113,7 @@ describe("DisplaySettings", () => {
 			<DisplaySettings
 				showTaskTimeline={true}
 				showTimestamps={false}
-				reasoningBlockCollapsed={false} // kilocode_change
+				reasoningBlockCollapsed={false} // novacode_change
 				setCachedStateField={mockSetCachedStateField}
 			/>,
 		)
@@ -131,7 +131,7 @@ describe("DisplaySettings", () => {
 			<DisplaySettings
 				showTaskTimeline={true}
 				showTimestamps={false}
-				reasoningBlockCollapsed={false} // kilocode_change
+				reasoningBlockCollapsed={false} // novacode_change
 				setCachedStateField={mockSetCachedStateField}
 			/>,
 		)
@@ -149,7 +149,7 @@ describe("DisplaySettings", () => {
 			<DisplaySettings
 				showTaskTimeline={true}
 				showTimestamps={false}
-				reasoningBlockCollapsed={false} // kilocode_change
+				reasoningBlockCollapsed={false} // novacode_change
 				setCachedStateField={mockSetCachedStateField}
 			/>,
 		)
@@ -163,7 +163,7 @@ describe("DisplaySettings", () => {
 			<DisplaySettings
 				showTaskTimeline={true}
 				showTimestamps={false}
-				reasoningBlockCollapsed={false} // kilocode_change
+				reasoningBlockCollapsed={false} // novacode_change
 				setCachedStateField={mockSetCachedStateField}
 			/>,
 		)
@@ -177,7 +177,7 @@ describe("DisplaySettings", () => {
 			<DisplaySettings
 				showTaskTimeline={true}
 				showTimestamps={true}
-				reasoningBlockCollapsed={false} // kilocode_change
+				reasoningBlockCollapsed={false} // novacode_change
 				setCachedStateField={mockSetCachedStateField}
 			/>,
 		)
@@ -197,7 +197,7 @@ describe("DisplaySettings", () => {
 			<DisplaySettings
 				showTaskTimeline={false}
 				showTimestamps={false}
-				reasoningBlockCollapsed={false} // kilocode_change
+				reasoningBlockCollapsed={false} // novacode_change
 				setCachedStateField={mockSetCachedStateField}
 			/>,
 		)

@@ -56,10 +56,10 @@ export const VirtualQuotaFallbackProviderPresentation = ({
 	return (
 		<>
 			<h3 className="text-lg font-medium mb-0">
-				<Trans i18nKey="kilocode:virtualProvider.title">Virtual Quota Fallback Settings</Trans>
+				<Trans i18nKey="novacode:virtualProvider.title">Virtual Quota Fallback Settings</Trans>
 			</h3>
 			<div className="text-sm text-vscode-descriptionForeground mb-4">
-				<Trans i18nKey="kilocode:virtualProvider.description">
+				<Trans i18nKey="novacode:virtualProvider.description">
 					Configure a list of profiles each with their own limits. When one profiles limits are reached, the
 					next profile in the list will be used until none remain.
 				</Trans>
@@ -77,8 +77,8 @@ export const VirtualQuotaFallbackProviderPresentation = ({
 							<div className="flex items-center justify-between mb-3">
 								<label className="block font-medium">
 									{index === 0
-										? t("kilocode:virtualProvider.primaryProfileLabel", { number: index + 1 })
-										: t("kilocode:virtualProvider.profileLabel", { number: index + 1 })}
+										? t("novacode:virtualProvider.primaryProfileLabel", { number: index + 1 })
+										: t("novacode:virtualProvider.profileLabel", { number: index + 1 })}
 								</label>
 								<div className="flex items-center gap-1">
 									{/* Move Up Button */}
@@ -86,7 +86,7 @@ export const VirtualQuotaFallbackProviderPresentation = ({
 										appearance="icon"
 										onClick={() => onMoveProfileUp(index)}
 										disabled={index === 0}
-										title={t("kilocode:virtualProvider.moveProfileUp")}>
+										title={t("novacode:virtualProvider.moveProfileUp")}>
 										<ChevronUp size={16} />
 									</VSCodeButton>
 									{/* Move Down Button */}
@@ -94,7 +94,7 @@ export const VirtualQuotaFallbackProviderPresentation = ({
 										appearance="icon"
 										onClick={() => onMoveProfileDown(index)}
 										disabled={index === profiles.length - 1}
-										title={t("kilocode:virtualProvider.moveProfileDown")}>
+										title={t("novacode:virtualProvider.moveProfileDown")}>
 										<ChevronDown size={16} />
 									</VSCodeButton>
 									{/* Remove Button */}
@@ -102,7 +102,7 @@ export const VirtualQuotaFallbackProviderPresentation = ({
 										<VSCodeButton
 											appearance="icon"
 											onClick={() => onRemoveProfile(index)}
-											title={t("kilocode:virtualProvider.removeProfile")}>
+											title={t("novacode:virtualProvider.removeProfile")}>
 											<TrashIcon />
 										</VSCodeButton>
 									)}
@@ -116,7 +116,7 @@ export const VirtualQuotaFallbackProviderPresentation = ({
 									value: p.id,
 									label: p.name,
 								}))}
-								placeholder={t("kilocode:virtualProvider.selectProfilePlaceholder")}
+								placeholder={t("novacode:virtualProvider.selectProfilePlaceholder")}
 								searchPlaceholder={t("settings:providers.searchPlaceholder")}
 								emptyMessage={t("settings:providers.noMatchFound")}
 								className="w-full"
@@ -137,13 +137,13 @@ export const VirtualQuotaFallbackProviderPresentation = ({
 						onClick={onAddProfile}
 						disabled={availableProfiles.length <= profiles.length}>
 						<PlusIcon className="mr-2" />
-						<Trans i18nKey="kilocode:virtualProvider.addProfile">Add Profile</Trans>
+						<Trans i18nKey="novacode:virtualProvider.addProfile">Add Profile</Trans>
 					</VSCodeButton>
 				</div>
 
 				{availableProfiles.length === 0 ? (
 					<div className="text-sm text-vscode-descriptionForeground text-center p-4 border border-vscode-settings-sashBorder rounded-md">
-						<Trans i18nKey="kilocode:virtualProvider.noProfilesAvailable">
+						<Trans i18nKey="novacode:virtualProvider.noProfilesAvailable">
 							No profile profiles available. Please configure at least one non-virtual profile profile
 							first.
 						</Trans>
@@ -153,15 +153,15 @@ export const VirtualQuotaFallbackProviderPresentation = ({
 
 			<div className="p-4 border border-vscode-editorWarning-foreground rounded-md">
 				<div className="text-md font-semibold text-vscode-editorWarning-foreground">
-					<Trans i18nKey="kilocode:virtualProvider.dangerZoneTitle">Danger Zone</Trans>
+					<Trans i18nKey="novacode:virtualProvider.dangerZoneTitle">Danger Zone</Trans>
 				</div>
 				<p className="text-sm text-vscode-descriptionForeground mt-1 mb-3">
-					<Trans i18nKey="kilocode:virtualProvider.dangerZoneDescription">
+					<Trans i18nKey="novacode:virtualProvider.dangerZoneDescription">
 						These actions are destructive and cannot be undone.
 					</Trans>
 				</p>
 				<VSCodeButton appearance="secondary" onClick={() => onSetIsAlertOpen(true)}>
-					<Trans i18nKey="kilocode:virtualProvider.clearUsageData">Clear Usage Data</Trans>
+					<Trans i18nKey="novacode:virtualProvider.clearUsageData">Clear Usage Data</Trans>
 				</VSCodeButton>
 			</div>
 
@@ -169,10 +169,10 @@ export const VirtualQuotaFallbackProviderPresentation = ({
 				<AlertDialogContent>
 					<AlertDialogHeader>
 						<AlertDialogTitle>
-							<Trans i18nKey="kilocode:virtualProvider.confirmClearTitle">Are you sure?</Trans>
+							<Trans i18nKey="novacode:virtualProvider.confirmClearTitle">Are you sure?</Trans>
 						</AlertDialogTitle>
 						<AlertDialogDescription>
-							<Trans i18nKey="kilocode:virtualProvider.confirmClearDescription">
+							<Trans i18nKey="novacode:virtualProvider.confirmClearDescription">
 								This will permanently delete all stored usage data for virtual profiles. This action
 								cannot be undone.
 							</Trans>
@@ -243,12 +243,12 @@ export const VirtualLimitInputsPresentation = ({ profile, index, onProfileChange
 		<div className="space-y-4 p-2 rounded-md mt-2">
 			<div>
 				<label className="block text-sm font-medium mb-2">
-					<Trans i18nKey="kilocode:virtualProvider.tokensLabel">Tokens</Trans>
+					<Trans i18nKey="novacode:virtualProvider.tokensLabel">Tokens</Trans>
 				</label>
 				<div className="grid grid-cols-3 gap-x-4">
 					<div>
 						<label className="block text-xs text-vscode-descriptionForeground mb-1">
-							<Trans i18nKey="kilocode:virtualProvider.perMinute">Per Minute</Trans>
+							<Trans i18nKey="novacode:virtualProvider.perMinute">Per Minute</Trans>
 						</label>
 						<VSCodeTextField
 							value={profile.profileLimits?.tokensPerMinute?.toString() ?? ""}
@@ -259,7 +259,7 @@ export const VirtualLimitInputsPresentation = ({ profile, index, onProfileChange
 					</div>
 					<div>
 						<label className="block text-xs text-vscode-descriptionForeground mb-1">
-							<Trans i18nKey="kilocode:virtualProvider.perHour">Per Hour</Trans>
+							<Trans i18nKey="novacode:virtualProvider.perHour">Per Hour</Trans>
 						</label>
 						<VSCodeTextField
 							value={profile.profileLimits?.tokensPerHour?.toString() ?? ""}
@@ -270,7 +270,7 @@ export const VirtualLimitInputsPresentation = ({ profile, index, onProfileChange
 					</div>
 					<div>
 						<label className="block text-xs text-vscode-descriptionForeground mb-1">
-							<Trans i18nKey="kilocode:virtualProvider.perDay">Per Day</Trans>
+							<Trans i18nKey="novacode:virtualProvider.perDay">Per Day</Trans>
 						</label>
 						<VSCodeTextField
 							value={profile.profileLimits?.tokensPerDay?.toString() ?? ""}
@@ -284,12 +284,12 @@ export const VirtualLimitInputsPresentation = ({ profile, index, onProfileChange
 
 			<div>
 				<label className="block text-sm font-medium mb-2">
-					<Trans i18nKey="kilocode:virtualProvider.requestsLabel">Requests</Trans>
+					<Trans i18nKey="novacode:virtualProvider.requestsLabel">Requests</Trans>
 				</label>
 				<div className="grid grid-cols-3 gap-x-4">
 					<div>
 						<label className="block text-xs text-vscode-descriptionForeground mb-1">
-							<Trans i18nKey="kilocode:virtualProvider.perMinute">Per Minute</Trans>
+							<Trans i18nKey="novacode:virtualProvider.perMinute">Per Minute</Trans>
 						</label>
 						<VSCodeTextField
 							value={profile.profileLimits?.requestsPerMinute?.toString() ?? ""}
@@ -300,7 +300,7 @@ export const VirtualLimitInputsPresentation = ({ profile, index, onProfileChange
 					</div>
 					<div>
 						<label className="block text-xs text-vscode-descriptionForeground mb-1">
-							<Trans i18nKey="kilocode:virtualProvider.perHour">Per Hour</Trans>
+							<Trans i18nKey="novacode:virtualProvider.perHour">Per Hour</Trans>
 						</label>
 						<VSCodeTextField
 							value={profile.profileLimits?.requestsPerHour?.toString() ?? ""}
@@ -311,7 +311,7 @@ export const VirtualLimitInputsPresentation = ({ profile, index, onProfileChange
 					</div>
 					<div>
 						<label className="block text-xs text-vscode-descriptionForeground mb-1">
-							<Trans i18nKey="kilocode:virtualProvider.perDay">Per Day</Trans>
+							<Trans i18nKey="novacode:virtualProvider.perDay">Per Day</Trans>
 						</label>
 						<VSCodeTextField
 							value={profile.profileLimits?.requestsPerDay?.toString() ?? ""}

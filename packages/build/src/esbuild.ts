@@ -111,16 +111,30 @@ export function copyPaths(copyPaths: [string, string, CopyPathOptions?][], srcDi
 	})
 }
 
-export function copyWasms(srcDir: string, distDir: string): void {
-	const nodeModulesDir = path.join(srcDir, "node_modules")
+function resolveFromNodeModules(srcDir: string, ...modulePathSegments: string[]): string {
+	const candidatePaths = [
+		path.join(srcDir, "node_modules", ...modulePathSegments),
+		path.join(srcDir, "..", "node_modules", ...modulePathSegments),
+	]
 
+	for (const candidatePath of candidatePaths) {
+		if (fs.existsSync(candidatePath)) {
+			return candidatePath
+		}
+	}
+
+	throw new Error(
+		`Unable to resolve ${modulePathSegments.join("/")} from node_modules (checked ${candidatePaths.join(", ")})`,
+	)
+}
+
+export function copyWasms(srcDir: string, distDir: string): void {
 	fs.mkdirSync(distDir, { recursive: true })
 
+	const tiktokenWasmPath = resolveFromNodeModules(srcDir, "tiktoken", "lite", "tiktoken_bg.wasm")
+
 	// Tiktoken WASM file.
-	fs.copyFileSync(
-		path.join(nodeModulesDir, "tiktoken", "lite", "tiktoken_bg.wasm"),
-		path.join(distDir, "tiktoken_bg.wasm"),
-	)
+	fs.copyFileSync(tiktokenWasmPath, path.join(distDir, "tiktoken_bg.wasm"))
 
 	console.log(`[copyWasms] Copied tiktoken WASMs to ${distDir}`)
 
@@ -128,23 +142,17 @@ export function copyWasms(srcDir: string, distDir: string): void {
 	const workersDir = path.join(distDir, "workers")
 	fs.mkdirSync(workersDir, { recursive: true })
 
-	fs.copyFileSync(
-		path.join(nodeModulesDir, "tiktoken", "lite", "tiktoken_bg.wasm"),
-		path.join(workersDir, "tiktoken_bg.wasm"),
-	)
+	fs.copyFileSync(tiktokenWasmPath, path.join(workersDir, "tiktoken_bg.wasm"))
 
 	console.log(`[copyWasms] Copied tiktoken WASMs to ${workersDir}`)
 
 	// Main tree-sitter WASM file.
-	fs.copyFileSync(
-		path.join(nodeModulesDir, "web-tree-sitter", "tree-sitter.wasm"),
-		path.join(distDir, "tree-sitter.wasm"),
-	)
+	fs.copyFileSync(resolveFromNodeModules(srcDir, "web-tree-sitter", "tree-sitter.wasm"), path.join(distDir, "tree-sitter.wasm"))
 
 	console.log(`[copyWasms] Copied tree-sitter.wasm to ${distDir}`)
 
 	// Copy language-specific WASM files.
-	const languageWasmDir = path.join(nodeModulesDir, "tree-sitter-wasms", "out")
+	const languageWasmDir = resolveFromNodeModules(srcDir, "tree-sitter-wasms", "out")
 
 	if (!fs.existsSync(languageWasmDir)) {
 		throw new Error(`Directory does not exist: ${languageWasmDir}`)
@@ -160,7 +168,7 @@ export function copyWasms(srcDir: string, distDir: string): void {
 	console.log(`[copyWasms] Copied ${wasmFiles.length} tree-sitter language wasms to ${distDir}`)
 
 	// Copy esbuild-wasm files for custom tool transpilation (cross-platform).
-	copyEsbuildWasmFiles(nodeModulesDir, distDir)
+	copyEsbuildWasmFiles(resolveFromNodeModules(srcDir, "esbuild-wasm"), distDir)
 }
 
 /**
@@ -175,9 +183,7 @@ export function copyWasms(srcDir: string, distDir: string): void {
  * - wasm_exec_node.js (Go WASM runtime for Node.js)
  * - wasm_exec.js (Go WASM runtime dependency)
  */
-function copyEsbuildWasmFiles(nodeModulesDir: string, distDir: string): void {
-	const esbuildWasmDir = path.join(nodeModulesDir, "esbuild-wasm")
-
+function copyEsbuildWasmFiles(esbuildWasmDir: string, distDir: string): void {
 	if (!fs.existsSync(esbuildWasmDir)) {
 		throw new Error(`Directory does not exist: ${esbuildWasmDir}`)
 	}

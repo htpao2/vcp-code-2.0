@@ -11,7 +11,7 @@ nockBack.setMode("lockdown")
 
 describe("OpenRouter API", () => {
 	describe("getOpenRouterModels", () => {
-		// kilocode_change: skip, this test uses "nock", which works with axios, but with fetch it truncates responses for unclear reasons
+		// novacode_change: skip, this test uses "nock", which works with axios, but with fetch it truncates responses for unclear reasons
 		it.skip("fetches models and validates schema", async () => {
 			const { nockDone } = await nockBack("openrouter-models.json")
 
@@ -27,7 +27,7 @@ describe("OpenRouter API", () => {
 				cacheWritesPrice: 3.75,
 				cacheReadsPrice: 0.3,
 				description: expect.any(String),
-				displayName: expect.any(String), // kilocode_change
+				displayName: expect.any(String), // novacode_change
 				supportsReasoningBudget: false,
 				supportsReasoningEffort: false,
 				supportsNativeTools: true,
@@ -45,7 +45,7 @@ describe("OpenRouter API", () => {
 				cacheWritesPrice: 3.75,
 				cacheReadsPrice: 0.3,
 				description: expect.any(String),
-				displayName: expect.any(String), // kilocode_change
+				displayName: expect.any(String), // novacode_change
 				supportsReasoningBudget: true,
 				requiredReasoningBudget: true,
 				supportsReasoningEffort: true,

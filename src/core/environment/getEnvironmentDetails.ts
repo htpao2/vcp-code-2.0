@@ -23,7 +23,7 @@ import { getGitStatus } from "../../utils/git"
 import { Task } from "../task/Task"
 import { formatReminderSection } from "./reminder"
 
-// kilocode_change start
+// novacode_change start
 import { OpenRouterHandler } from "../../api/providers/openrouter"
 import { TelemetryService } from "@roo-code/telemetry"
 import { t } from "../../i18n"
@@ -52,7 +52,7 @@ function trimFileList(fileListStr: string, maxFiles: number) {
 
 	return lines.join("\n") + "\n\n" + truncationMsg
 }
-// kilocode_change end
+// novacode_change end
 
 export async function getEnvironmentDetails(cline: Task, includeFileDetails: boolean = false) {
 	let details = ""
@@ -247,7 +247,7 @@ export async function getEnvironmentDetails(cline: Task, includeFileDetails: boo
 		details += `\n\n# Current Cost\n${totalCost !== null ? `$${totalCost.toFixed(2)}` : "(Not available)"}`
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	// Be sure to fetch the model information before we need it.
 	if (cline.api instanceof OpenRouterHandler || ("fetchModel" in cline.api && cline.api.fetchModel)) {
 		try {
@@ -256,12 +256,12 @@ export async function getEnvironmentDetails(cline: Task, includeFileDetails: boo
 			TelemetryService.instance.captureException(e, { context: "getEnvironmentDetails" })
 			await cline.say(
 				"error",
-				t("kilocode:task.notLoggedInError", { error: e instanceof Error ? e.message : String(e) }),
+				t("novacode:task.notLoggedInError", { error: e instanceof Error ? e.message : String(e) }),
 			)
 			return `<environment_details>\n${details.trim()}\n</environment_details>`
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	const { id: modelId } = cline.api.getModel()
 
@@ -281,7 +281,7 @@ export async function getEnvironmentDetails(cline: Task, includeFileDetails: boo
 		language: language ?? formatLanguage(vscode.env.language),
 	})
 
-	const currentMode = modeDetails.slug ?? mode // kilocode_change: don't try to use non-existent modes
+	const currentMode = modeDetails.slug ?? mode // novacode_change: don't try to use non-existent modes
 	// Use the task's locked tool protocol for consistent environment details.
 	// This ensures the model sees the same tool format it was started with,
 	// even if user settings have changed. Fall back to resolving fresh if
@@ -349,12 +349,12 @@ export async function getEnvironmentDetails(cline: Task, includeFileDetails: boo
 			} else {
 				const { showRooIgnoredFiles = false } = state ?? {}
 
-				// kilocode_change start
+				// novacode_change start
 				// Only apply multiplier when filtering will remove files (showRooIgnoredFiles = false)
 				// When showRooIgnoredFiles = true, ignored files are just marked with lock symbol, not removed
 				const fetchLimit = showRooIgnoredFiles ? maxFiles : maxFiles * FILE_LIST_OVER_FETCH_MULTIPLIER
 				const [files, didHitLimit] = await listFiles(cline.cwd, true, fetchLimit)
-				// kilocode_change end
+				// novacode_change end
 
 				const result = formatResponse.formatFilesList(
 					cline.cwd,
@@ -364,14 +364,14 @@ export async function getEnvironmentDetails(cline: Task, includeFileDetails: boo
 					showRooIgnoredFiles,
 				)
 
-				// kilocode_change start
+				// novacode_change start
 				if (!showRooIgnoredFiles) {
 					// Trim because we over-fetched
 					details += trimFileList(result, maxFiles)
 				} else {
 					details += result
 				}
-				// kilocode_change end
+				// novacode_change end
 			}
 		}
 	}

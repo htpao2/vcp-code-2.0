@@ -1,5 +1,5 @@
-import { z } from "zod"
-import { kiloLanguages } from "./kilocode/kiloLanguages.js"
+﻿import { z } from "zod"
+import { novaLanguages } from "./nova/novaLanguages.js"
 
 /**
  * CodeAction
@@ -40,8 +40,8 @@ export const commandIds = [
 	"settingsButtonClicked",
 
 	"openInNewTab",
-	"open", // kilocode_change
-	"agentManagerOpen", // kilocode_change
+	"open", // novacode_change
+	"agentManagerOpen", // novacode_change
 
 	"showHumanRelayDialog",
 	"registerHumanRelayCallback",
@@ -53,15 +53,15 @@ export const commandIds = [
 	"setCustomStoragePath",
 	"importSettings",
 
-	// "focusInput", // kilocode_change
+	// "focusInput", // novacode_change
 	"acceptInput",
-	"profileButtonClicked", // kilocode_change
-	"helpButtonClicked", // kilocode_change
-	"focusChatInput", // kilocode_change
-	"importSettings", // kilocode_change
-	"exportSettings", // kilocode_change
-	"generateTerminalCommand", // kilocode_change
-	"handleExternalUri", // kilocode_change - for JetBrains plugin URL forwarding
+	"profileButtonClicked", // novacode_change
+	"helpButtonClicked", // novacode_change
+	"focusChatInput", // novacode_change
+	"importSettings", // novacode_change
+	"exportSettings", // novacode_change
+	"generateTerminalCommand", // novacode_change
+	"handleExternalUri", // novacode_change - for JetBrains plugin URL forwarding
 	"focusPanel",
 	"toggleAutoApprove",
 ] as const
@@ -73,7 +73,7 @@ export type CommandId = (typeof commandIds)[number]
  */
 
 export const languages = [
-	...kiloLanguages,
+	...novaLanguages,
 	"ca",
 	"de",
 	"en",

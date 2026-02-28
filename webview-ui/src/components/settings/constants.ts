@@ -7,9 +7,9 @@ import {
 	claudeCodeModels,
 	deepSeekModels,
 	moonshotModels,
-	// kilocode_change start
+	// novacode_change start
 	// geminiModels,
-	// kilocode_change end
+	// novacode_change end
 	mistralModels,
 	openAiNativeModels,
 	openAiCodexModels,
@@ -36,9 +36,9 @@ export const MODELS_BY_PROVIDER: Partial<Record<ProviderName, Record<string, Mod
 	deepseek: deepSeekModels,
 	doubao: doubaoModels,
 	moonshot: moonshotModels,
-	// kilocode_change start
+	// novacode_change start
 	// gemini: geminiModels,
-	// kilocode_change end
+	// novacode_change end
 	mistral: mistralModels,
 	"openai-native": openAiNativeModels,
 	"openai-codex": openAiCodexModels,
@@ -46,7 +46,7 @@ export const MODELS_BY_PROVIDER: Partial<Record<ProviderName, Record<string, Mod
 	vertex: vertexModels,
 	xai: xaiModels,
 	groq: groqModels,
-	// chutes: chutesModels, // kilocode_change
+	// chutes: chutesModels, // novacode_change
 	sambanova: sambaNovaModels,
 	zai: internationalZAiModels,
 	fireworks: fireworksModels,
@@ -65,7 +65,7 @@ export const PROVIDERS = [
 	{ value: "cerebras", label: "Cerebras", proxy: false },
 	{ value: "gemini", label: "Google Gemini", proxy: false },
 	{ value: "doubao", label: "Doubao", proxy: false },
-	// kilocode_change start
+	// novacode_change start
 	{ value: "aihubmix", label: "AIhubmix", proxy: false },
 	{ value: "zenmux", label: "ZenMux" },
 	{ value: "inception", label: "Inception", proxy: false },
@@ -74,18 +74,18 @@ export const PROVIDERS = [
 	{ value: "ovhcloud", label: "OVHcloud AI Endpoints", proxy: false },
 	{ value: "sap-ai-core", label: "SAP AI Core", proxy: false },
 	{ value: "apertis", label: "Apertis" },
-	// kilocode_change end
+	// novacode_change end
 	{ value: "deepseek", label: "DeepSeek", proxy: false },
 	{ value: "moonshot", label: "Moonshot", proxy: false },
 	{ value: "openai-native", label: "OpenAI", proxy: false },
 	{ value: "openai-codex", label: "OpenAI - ChatGPT Plus/Pro", proxy: false },
 	{ value: "openai", label: "OpenAI Compatible", proxy: true },
-	{ value: "openai-responses", label: "OpenAI Compatible (Responses)", proxy: true }, // kilocode_change
+	{ value: "openai-responses", label: "OpenAI Compatible (Responses)", proxy: true }, // novacode_change
 	{ value: "qwen-code", label: "Qwen Code", proxy: false },
 	{ value: "vertex", label: "GCP Vertex AI", proxy: false },
 	{ value: "bedrock", label: "Amazon Bedrock", proxy: false },
-	{ value: "glama", label: "Glama", proxy: false }, // kilocode_change
-	{ value: "nano-gpt", label: "Nano-GPT", proxy: false }, //kilocode_change
+	{ value: "glama", label: "Glama", proxy: false }, // novacode_change
+	{ value: "nano-gpt", label: "Nano-GPT", proxy: false }, //novacode_change
 	{ value: "vscode-lm", label: "VS Code LM API", proxy: false },
 	{ value: "mistral", label: "Mistral", proxy: false },
 	{ value: "lmstudio", label: "LM Studio", proxy: true },
@@ -103,12 +103,12 @@ export const PROVIDERS = [
 	{ value: "fireworks", label: "Fireworks AI", proxy: false },
 	{ value: "featherless", label: "Featherless AI", proxy: false },
 	{ value: "io-intelligence", label: "IO Intelligence", proxy: false },
-	// { value: "roo", label: "Roo Code Router", proxy: false }, // kilocode_change
+	// { value: "roo", label: "Roo Code Router", proxy: false }, // novacode_change
 	{ value: "vercel-ai-gateway", label: "Vercel AI Gateway", proxy: false },
 	{ value: "minimax", label: "MiniMax", proxy: false },
 	{ value: "baseten", label: "Baseten", proxy: false },
-	{ value: "poe", label: "Poe", proxy: false }, // kilocode_change
+	{ value: "poe", label: "Poe", proxy: false }, // novacode_change
 	{ value: "corethink", label: "Corethink", proxy: false },
 ].sort((a, b) => a.label.localeCompare(b.label))
 
-PROVIDERS.unshift({ value: "kilocode", label: "Kilo Gateway", proxy: false }) // kilocode_change
+PROVIDERS.unshift({ value: "novacode", label: "Nova Gateway", proxy: false }) // novacode_change

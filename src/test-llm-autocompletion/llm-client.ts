@@ -19,19 +19,19 @@ export interface FimResponse {
 	tokensUsed?: number
 }
 
-export function getKiloBaseUriFromToken(kilocodeToken?: string): string {
-	if (kilocodeToken) {
+export function getNovaBaseUriFromToken(novacodeToken?: string): string {
+	if (novacodeToken) {
 		try {
-			const payload_string = kilocodeToken.split(".")[1]
+			const payload_string = novacodeToken.split(".")[1]
 			const payload_json = Buffer.from(payload_string, "base64").toString()
 			const payload = JSON.parse(payload_json)
 			// Note: this is UNTRUSTED, so we need to make sure we're OK with this being manipulated by an attacker
 			if (payload.env === "development") return "http://localhost:3000"
 		} catch (_error) {
-			console.warn("Failed to get base URL from Kilo Code token")
+			console.warn("Failed to get base URL from Nova Code token")
 		}
 	}
-	return "https://api.kilo.ai"
+	return "https://api.nova.ai"
 }
 
 export class LLMClient {
@@ -42,26 +42,26 @@ export class LLMClient {
 	private baseUrl: string
 
 	constructor(useFim: boolean = false) {
-		this.provider = process.env.LLM_PROVIDER || "kilocode"
+		this.provider = process.env.LLM_PROVIDER || "novacode"
 		this.model = process.env.LLM_MODEL || "mistralai/codestral-2508"
 		this.useFim = useFim
 
-		if (this.provider !== "kilocode") {
-			throw new Error(`Only kilocode provider is supported. Got: ${this.provider}`)
+		if (this.provider !== "novacode") {
+			throw new Error(`Only novacode provider is supported. Got: ${this.provider}`)
 		}
 
-		if (!process.env.KILOCODE_API_KEY) {
-			throw new Error("KILOCODE_API_KEY is required for Kilocode provider")
+		if (!process.env.NOVACODE_API_KEY) {
+			throw new Error("NOVACODE_API_KEY is required for Novacode provider")
 		}
 
-		this.baseUrl = getKiloBaseUriFromToken(process.env.KILOCODE_API_KEY)
+		this.baseUrl = getNovaBaseUriFromToken(process.env.NOVACODE_API_KEY)
 
 		this.openai = new OpenAI({
 			baseURL: `${this.baseUrl}/api/openrouter/`,
-			apiKey: process.env.KILOCODE_API_KEY,
+			apiKey: process.env.NOVACODE_API_KEY,
 			defaultHeaders: {
 				...DEFAULT_HEADERS,
-				"X-KILOCODE-TESTER": "SUPPRESS",
+				"X-NOVACODE-TESTER": "SUPPRESS",
 			},
 		})
 	}
@@ -95,14 +95,14 @@ export class LLMClient {
 
 	async sendFimCompletion(prefix: string, suffix: string): Promise<FimResponse> {
 		try {
-			const apiKey = process.env.KILOCODE_API_KEY!
-			const baseUrl = getKiloBaseUriFromToken(apiKey)
+			const apiKey = process.env.NOVACODE_API_KEY!
+			const baseUrl = getNovaBaseUriFromToken(apiKey)
 			const url = `${baseUrl}/api/fim/completions`
 
 			// Match the format from new autocomplete (continuedev)
 			// NewAutocompleteModel.ts sets completionOptions: { temperature: 0.2, maxTokens: 256 }
-			// These are now passed through KiloCode._streamFim() to KilocodeOpenrouterHandler.streamFim()
-			// See: KiloCode.ts line 119-123, kilocode-openrouter.ts line 169-177
+			// These are now passed through NovaCode._streamFim() to NovacodeOpenrouterHandler.streamFim()
+			// See: NovaCode.ts line 119-123, novacode-openrouter.ts line 169-177
 			const body = {
 				model: this.model,
 				prompt: prefix,
@@ -121,7 +121,7 @@ export class LLMClient {
 					Accept: "application/json",
 					"x-api-key": apiKey,
 					Authorization: `Bearer ${apiKey}`,
-					"X-KILOCODE-TESTER": "SUPPRESS",
+					"X-NOVACODE-TESTER": "SUPPRESS",
 				},
 				body: JSON.stringify(body),
 			})

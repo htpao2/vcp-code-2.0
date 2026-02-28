@@ -7,8 +7,8 @@
 		"importMode": "استيراد نمط",
 		"editModesConfig": "تعديل إعدادات الأنماط",
 		"editGlobalModes": "تعديل الأنماط العامة",
-		"editProjectModes": "تعديل أنماط المشروع (.kilocodemodes)",
-		"createModeHelpText": "الأنماط تعرّف شخصيات مخصصة تضبط سلوك Kilo Code. <0>تعرف على طريقة استخدام الأنماط</0> أو <1>تخصيصها حسب شغلك</1>.",
+		"editProjectModes": "تعديل أنماط المشروع (.novacodemodes)",
+		"createModeHelpText": "الأنماط تعرّف شخصيات مخصصة تضبط سلوك Nova Code. <0>تعرف على طريقة استخدام الأنماط</0> أو <1>تخصيصها حسب شغلك</1>.",
 		"selectMode": "بحث في الأنماط",
 		"noMatchFound": "لم يتم العثور على أنماط"
 	},
@@ -18,7 +18,7 @@
 	},
 	"organizationMode": {
 		"title": "نمط المنظمة",
-		"description": "هذا النمط مقدم من منظمتك ولا يمكن تعديله هنا. لتعديل هذا النمط، تفضل بزيارة <dashboardLink>لوحة تحكم Kilo Code</dashboardLink>.",
+		"description": "هذا النمط مقدم من منظمتك ولا يمكن تعديله هنا. لتعديل هذا النمط، تفضل بزيارة <dashboardLink>لوحة تحكم Nova Code</dashboardLink>.",
 		"cannotEdit": "لا يمكن تعديل أنماط المنظمة"
 	},
 	"tools": {
@@ -39,7 +39,7 @@
 	"roleDefinition": {
 		"title": "تعريف الدور",
 		"resetToDefault": "رجّع للوضع الافتراضي",
-		"description": "حدد خبرة Kilo Code وطريقته في التعامل داخل هالنمط. هذا النص يحدد كيف يشتغل ويقدم نفسه."
+		"description": "حدد خبرة Nova Code وطريقته في التعامل داخل هالنمط. هذا النص يحدد كيف يشتغل ويقدم نفسه."
 	},
 	"description": {
 		"title": "وصف مختصر (للبشر)",
@@ -55,11 +55,11 @@
 		"title": "تعليمات مخصصة لهذا النمط (اختياري)",
 		"resetToDefault": "رجّع للوضع الافتراضي",
 		"description": "اكتب تعليمات خاصة لسلوك نمط {{modeName}}.",
-		"loadFromFile": "تقدر تحمل التعليمات من المجلد <span>.kilocode/rules/</span> داخل المشروع (.kilocoderules-{{slug}} بيتوقف قريب)."
+		"loadFromFile": "تقدر تحمل التعليمات من المجلد <span>.novacode/rules/</span> داخل المشروع (.novacoderules-{{slug}} بيتوقف قريب)."
 	},
 	"exportMode": {
 		"title": "تصدير النمط",
-		"description": "صدّر هذا النمط مع القواعد من مجلد .kilocode/rules-{{slug}}/ في ملف YAML قابل للمشاركة. الملفات الأصلية تبقى كما هي.",
+		"description": "صدّر هذا النمط مع القواعد من مجلد .novacode/rules-{{slug}}/ في ملف YAML قابل للمشاركة. الملفات الأصلية تبقى كما هي.",
 		"exporting": "جاري التصدير..."
 	},
 	"importMode": {
@@ -68,11 +68,11 @@
 		"importing": "جاري الاستيراد...",
 		"global": {
 			"label": "المستوى العام",
-			"description": "متوفر في كل المشاريع. إذا كان النمط المصدّر يحتوي على ملفات قواعد، سيتم إنشاؤها في مجلد .kilocode/rules-{slug}/ العام."
+			"description": "متوفر في كل المشاريع. إذا كان النمط المصدّر يحتوي على ملفات قواعد، سيتم إنشاؤها في مجلد .novacode/rules-{slug}/ العام."
 		},
 		"project": {
 			"label": "مستوى المشروع",
-			"description": "متوفر فقط في هذا المشروع. إذا كان النمط المصدّر يحتوي على ملفات قواعد، سيتم إنشاؤها في مجلد .kilocode/rules-{slug}/."
+			"description": "متوفر فقط في هذا المشروع. إذا كان النمط المصدّر يحتوي على ملفات قواعد، سيتم إنشاؤها في مجلد .novacode/rules-{slug}/."
 		}
 	},
 	"advanced": {
@@ -81,7 +81,7 @@
 	"globalCustomInstructions": {
 		"title": "تعليمات عامة لكل الأنماط",
 		"description": "هذي التعليمات تنطبق على كل الأنماط، وتعتبر قاعدة ينضاف لها تعليمات مخصصة بالنمط. <0>اعرف أكثر</0>",
-		"loadFromFile": "تقدر تحمل التعليمات من المجلد <span>.kilocode/rules/</span> داخل المشروع (.kilocoderules بيتوقف قريب)."
+		"loadFromFile": "تقدر تحمل التعليمات من المجلد <span>.novacode/rules/</span> داخل المشروع (.novacoderules بيتوقف قريب)."
 	},
 	"systemPrompt": {
 		"preview": "عرض تمهيدي للنظام",
@@ -110,7 +110,7 @@
 		"types": {
 			"ENHANCE": {
 				"label": "تحسين الموجه",
-				"description": "يحسن الموجهات ويخلي Kilo Code يفهم المطلوب بدقة. متوفر في المحادثة (أيقونة ✨)."
+				"description": "يحسن الموجهات ويخلي Nova Code يفهم المطلوب بدقة. متوفر في المحادثة (أيقونة ✨)."
 			},
 			"CONDENSE": {
 				"label": "ضغط السياق",
@@ -160,7 +160,7 @@
 	},
 	"advancedSystemPrompt": {
 		"title": "خيارات متقدمة: تجاوز موجه النظام",
-		"description": "<2>⚠️ تحذير:</2> هذا خيار متقدم يتجاوز الحمايات. <1>اقرأ قبل الاستخدام!</1> تقدر تتجاوز الموجه بإنشاء ملف في <span>.kilocode/system-prompt-{{slug}}</span>."
+		"description": "<2>⚠️ تحذير:</2> هذا خيار متقدم يتجاوز الحمايات. <1>اقرأ قبل الاستخدام!</1> تقدر تتجاوز الموجه بإنشاء ملف في <span>.novacode/system-prompt-{{slug}}</span>."
 	},
 	"createModeDialog": {
 		"title": "إنشاء نمط جديد",
@@ -181,13 +181,13 @@
 				"description": "متوفر بكل المشاريع"
 			},
 			"project": {
-				"label": "خاص بالمشروع (.kilocodemodes)",
+				"label": "خاص بالمشروع (.novacodemodes)",
 				"description": "متوفر فقط بهالمشروع وله أولوية"
 			}
 		},
 		"roleDefinition": {
 			"label": "تعريف الدور",
-			"description": "حدد خبرة Kilo Code وطريقته في النمط هذا."
+			"description": "حدد خبرة Nova Code وطريقته في النمط هذا."
 		},
 		"description": {
 			"label": "وصف مختصر (للبشر)",

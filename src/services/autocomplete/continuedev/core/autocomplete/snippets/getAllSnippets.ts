@@ -96,7 +96,11 @@ const getSnippetsFromRecentlyOpenedFiles = async (helper: HelperVars, ide: IDE):
 		const currentFileUri = `${helper.filepath}`
 
 		// Get all file URIs excluding the current file
-		const fileUrisToRead = [...openedFilesLruCache.entriesDescending()]
+		const lruEntries =
+			typeof (openedFilesLruCache as any).entriesDescending === "function"
+				? [...(openedFilesLruCache as any).entriesDescending()]
+				: [...openedFilesLruCache.entries()].reverse()
+		const fileUrisToRead = lruEntries
 			.filter(([fileUri, _]) => fileUri !== currentFileUri)
 			.map(([fileUri, _]) => fileUri)
 

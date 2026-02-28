@@ -333,7 +333,7 @@ describe("ContextProxy", () => {
 			expect(proxy.getGlobalState("modelTemperature")).toBeUndefined()
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("should clear falsy provider settings when switching profiles", async () => {
 			// Regression: falsy values (0, false, "") must be recognized as "set"
 			// and cleared when switching. The old code used !!value (truthy check),
@@ -354,7 +354,7 @@ describe("ContextProxy", () => {
 				}),
 			)
 		})
-		// kilocode_change end
+		// novacode_change end
 
 		it("should handle empty API configuration", async () => {
 			// Set up initial API configuration values
@@ -378,6 +378,45 @@ describe("ContextProxy", () => {
 			// Verify the state cache has been cleared
 			expect(proxy.getGlobalState("apiModelId")).toBeUndefined()
 			expect(proxy.getGlobalState("openAiBaseUrl")).toBeUndefined()
+		})
+
+		it("should emit managed indexer config changed event when managed indexer fields change", async () => {
+			const listener = vi.fn()
+			const disposable = proxy.onManagedIndexerConfigChange(listener)
+
+			await proxy.setProviderSettings({
+				novacodeToken: "token-1",
+				novacodeOrganizationId: "org-1",
+				novacodeTesterWarningsDisabledUntil: 1234567890,
+			})
+
+			expect(listener).toHaveBeenCalledTimes(1)
+			expect(listener).toHaveBeenCalledWith({
+				novacodeToken: "token-1",
+				novacodeOrganizationId: "org-1",
+				novacodeTesterWarningsDisabledUntil: 1234567890,
+			})
+
+			disposable.dispose()
+		})
+
+		it("should not emit managed indexer config changed event when managed indexer fields remain unchanged", async () => {
+			const listener = vi.fn()
+			const disposable = proxy.onManagedIndexerConfigChange(listener)
+
+			const managedIndexerConfig = {
+				novacodeToken: "token-1",
+				novacodeOrganizationId: "org-1",
+				novacodeTesterWarningsDisabledUntil: 1234567890,
+			}
+
+			await proxy.setProviderSettings(managedIndexerConfig)
+			listener.mockClear()
+
+			await proxy.setProviderSettings(managedIndexerConfig)
+			expect(listener).not.toHaveBeenCalled()
+
+			disposable.dispose()
 		})
 	})
 

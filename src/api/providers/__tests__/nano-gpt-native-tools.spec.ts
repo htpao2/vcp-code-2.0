@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import OpenAI from "openai"
 
 import { NanoGptHandler } from "../nano-gpt"

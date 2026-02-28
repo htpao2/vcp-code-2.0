@@ -5,12 +5,12 @@ export function checkExistKey(config: ProviderSettings | undefined) {
 		return false
 	}
 
-	// Special case for human-relay, fake-ai, claude-code, openai-codex, qwen-code, roo and kilocode providers which don't need any configuration.
+	// Special case for human-relay, fake-ai, claude-code, openai-codex, qwen-code, roo and novacode providers which don't need any configuration.
 	if (
 		config.apiProvider &&
-		["human-relay", "fake-ai", "claude-code", "openai-codex", "qwen-code", "roo", "kilocode"].includes(
+		["human-relay", "fake-ai", "claude-code", "openai-codex", "qwen-code", "roo", "novacode"].includes(
 			config.apiProvider,
-		) // kilocode_change: add kilocode for anonymous access
+		) // novacode_change: add novacode for anonymous access
 	) {
 		return true
 	}
@@ -27,7 +27,7 @@ export function checkExistKey(config: ProviderSettings | undefined) {
 		config.ollamaModelId,
 		config.lmStudioModelId,
 		config.vsCodeLmModelSelector,
-		config.kilocodeModel, // kilocode_change
+		config.novacodeModel, // novacode_change
 	].some((value) => value !== undefined)
 
 	return hasSecretKey || hasOtherConfig

@@ -9,11 +9,11 @@ vi.mock("@/i18n/TranslationContext", () => ({
 	}),
 }))
 
-// kilocode_change: other settings menu for now, to be made similar later
+// novacode_change: other settings menu for now, to be made similar later
 describe.skip("ImageGenerationSettings", () => {
 	const mockSetImageGenerationProvider = vi.fn()
 	const mockSetOpenRouterImageApiKey = vi.fn()
-	const mockSetKiloCodeImageApiKey = vi.fn()
+	const mockSetNovaCodeImageApiKey = vi.fn()
 	const mockSetImageGenerationSelectedModel = vi.fn()
 	const mockOnChange = vi.fn()
 
@@ -22,11 +22,11 @@ describe.skip("ImageGenerationSettings", () => {
 		onChange: mockOnChange,
 		imageGenerationProvider: undefined,
 		openRouterImageApiKey: undefined,
-		kiloCodeImageApiKey: undefined,
+		novaCodeImageApiKey: undefined,
 		openRouterImageGenerationSelectedModel: undefined,
 		setImageGenerationProvider: mockSetImageGenerationProvider,
 		setOpenRouterImageApiKey: mockSetOpenRouterImageApiKey,
-		setKiloCodeImageApiKey: mockSetKiloCodeImageApiKey,
+		setNovaCodeImageApiKey: mockSetNovaCodeImageApiKey,
 		setImageGenerationSelectedModel: mockSetImageGenerationSelectedModel,
 	}
 
@@ -94,10 +94,10 @@ describe.skip("ImageGenerationSettings", () => {
 			).toBeInTheDocument()
 		})
 
-		// kilocode_change: no roo provider
+		// novacode_change: no roo provider
 		it.skip("should not render API key field when provider is roo", () => {
 			const { queryByPlaceholderText } = render(
-				<ImageGenerationSettings {...defaultProps} enabled={true} imageGenerationProvider="kilocode" />,
+				<ImageGenerationSettings {...defaultProps} enabled={true} imageGenerationProvider="novacode" />,
 			)
 
 			expect(

@@ -32,11 +32,12 @@ docs/_site/
 # Logging
 logs
 *.log
+.codex-logs/
 
 # Vite development
 .vite-port
 
-# kilocode_change
+# novacode_change
 .history/
 .aider*
 .docker-cache/

@@ -676,7 +676,7 @@ describe.skip("ChatView - Version Indicator Tests", () => {
 	})
 })
 
-// kilocode_change skip
+// novacode_change skip
 it.skip("ChatView - RooCloudCTA Display Tests", () => {
 	beforeEach(() => vi.clearAllMocks())
 
@@ -717,7 +717,7 @@ it.skip("ChatView - RooCloudCTA Display Tests", () => {
 		expect(queryByTestId("dismissible-upsell")).not.toBeInTheDocument()
 	})
 
-	// kilocode_change skip
+	// novacode_change skip
 	it.skip("shows DismissibleUpsell when user is not authenticated and has run 6 or more tasks", async () => {
 		const { getByTestId } = renderChatView()
 
@@ -775,7 +775,7 @@ it.skip("ChatView - RooCloudCTA Display Tests", () => {
 		})
 	})
 
-	// kilocode_change skip
+	// novacode_change skip
 	it.skip("shows RooTips when user is authenticated (instead of RooCloudCTA)", () => {
 		const { queryByTestId, getByTestId } = renderChatView()
 
@@ -796,7 +796,7 @@ it.skip("ChatView - RooCloudCTA Display Tests", () => {
 		expect(getByTestId("roo-tips")).toBeInTheDocument()
 	})
 
-	// kilocode_change skip
+	// novacode_change skip
 	it.skip("shows RooTips when user has fewer than 6 tasks (instead of DismissibleUpsell)", () => {
 		const { queryByTestId, getByTestId } = renderChatView()
 
@@ -817,7 +817,7 @@ it.skip("ChatView - RooCloudCTA Display Tests", () => {
 	})
 })
 
-// kilocode_change skip: these tests are flaky and only reliably pass when run individually, not as a set
+// novacode_change skip: these tests are flaky and only reliably pass when run individually, not as a set
 describe.skip("ChatView - Message Queueing Tests", () => {
 	beforeEach(() => {
 		vi.clearAllMocks()

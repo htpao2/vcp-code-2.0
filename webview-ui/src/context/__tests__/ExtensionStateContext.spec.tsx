@@ -4,7 +4,7 @@ import {
 	type ProviderSettings,
 	type ExperimentId,
 	type ExtensionState,
-	openRouterDefaultModelId, // kilocode_change
+	openRouterDefaultModelId, // novacode_change
 	DEFAULT_CHECKPOINT_TIMEOUT_SECONDS,
 } from "@roo-code/types"
 
@@ -230,8 +230,8 @@ describe("mergeExtensionState", () => {
 			mcpEnabled: false,
 			enableMcpServerCreation: false,
 			clineMessages: [],
-			taskHistoryFullLength: 0, // kilocode_change
-			taskHistoryVersion: 0, // kilocode_change
+			taskHistoryFullLength: 0, // novacode_change
+			taskHistoryVersion: 0, // novacode_change
 			shouldShowAnnouncement: false,
 			enableCheckpoints: true,
 			writeDelayMs: 1000,
@@ -258,7 +258,7 @@ describe("mergeExtensionState", () => {
 			hasOpenedModeSelector: false, // Add the new required property
 			maxImageFileSize: 5,
 			maxTotalImageSize: 20,
-			kilocodeDefaultModel: openRouterDefaultModelId,
+			novacodeDefaultModel: openRouterDefaultModelId,
 			remoteControlEnabled: false,
 			taskSyncEnabled: false,
 			featureRoomoteControlEnabled: false,
@@ -280,8 +280,8 @@ describe("mergeExtensionState", () => {
 				powerSteering: true,
 				multiFileApplyDiff: true,
 				preventFocusDisruption: false,
-				morphFastApply: false, // kilocode_change
-				speechToText: false, // kilocode_change
+				morphFastApply: false, // novacode_change
+				speechToText: false, // novacode_change
 				newTaskRequireTodos: false,
 				imageGeneration: false,
 				runSlashCommand: false,
@@ -303,8 +303,8 @@ describe("mergeExtensionState", () => {
 			powerSteering: true,
 			multiFileApplyDiff: true,
 			preventFocusDisruption: false,
-			morphFastApply: false, // kilocode_change
-			speechToText: false, // kilocode_change
+			morphFastApply: false, // novacode_change
+			speechToText: false, // novacode_change
 			newTaskRequireTodos: false,
 			imageGeneration: false,
 			runSlashCommand: false,

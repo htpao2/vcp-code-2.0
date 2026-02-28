@@ -39,12 +39,12 @@ type OllamaModelInfoResponse = z.infer<typeof OllamaModelInfoResponseSchema>
 
 export const parseOllamaModel = (
 	rawModel: OllamaModelInfoResponse,
-	// kilocode_change start
+	// novacode_change start
 	baseUrl?: string,
 	numCtx?: number,
-	// kilocode_change end
+	// novacode_change end
 ): ModelInfo | null => {
-	// kilocode_change start
+	// novacode_change start
 	const contextKey = rawModel.model_info && Object.keys(rawModel.model_info).find((k) => k.includes("context_length"))
 	const contextLengthFromModelInfo =
 		contextKey && typeof rawModel.model_info[contextKey] === "number" ? rawModel.model_info[contextKey] : undefined
@@ -62,7 +62,7 @@ export const parseOllamaModel = (
 		contextLengthFromEnvironment ??
 		(contextLengthFromModelParameters !== 40960 ? contextLengthFromModelParameters : undefined) ?? // Alledgedly Ollama sometimes returns an undefind context as 40960
 		4096 // This is usually the default: https://github.com/ollama/ollama/blob/4383a3ab7a075eff78b31f7dc84c747e2fcd22b8/docs/faq.md#how-can-i-specify-the-context-window-size
-	// kilocode_change end
+	// novacode_change end
 	// Determine native tool support from capabilities array
 	// The capabilities array is populated by Ollama based on model metadata
 	const supportsNativeTools = rawModel.capabilities?.includes("tools") ?? false
@@ -73,7 +73,7 @@ export const parseOllamaModel = (
 		supportsPromptCache: true,
 		supportsImages: rawModel.capabilities?.includes("vision"),
 		maxTokens: contextWindow || ollamaDefaultModelInfo.contextWindow,
-		supportsNativeTools, // kilocode_change: Set based on actual capability (allows non-tool models for autocomplete)
+		supportsNativeTools, // novacode_change: Set based on actual capability (allows non-tool models for autocomplete)
 	})
 
 	return modelInfo
@@ -82,7 +82,7 @@ export const parseOllamaModel = (
 export async function getOllamaModels(
 	baseUrl = "http://localhost:11434",
 	apiKey?: string,
-	numCtx?: number, // kilocode_change
+	numCtx?: number, // novacode_change
 ): Promise<Record<string, ModelInfo>> {
 	const models: Record<string, ModelInfo> = {}
 
@@ -118,10 +118,10 @@ export async function getOllamaModels(
 						.then((ollamaModelInfo) => {
 							const modelInfo = parseOllamaModel(
 								ollamaModelInfo.data,
-								// kilocode_change start
+								// novacode_change start
 								baseUrl,
 								numCtx,
-								// kilocode_change end
+								// novacode_change end
 							)
 							// Only include models that support native tools
 							if (modelInfo) {

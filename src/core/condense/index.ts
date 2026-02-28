@@ -273,9 +273,9 @@ export async function summarizeConversation(
 	const messagesBeforeKeep = summarySliceEnd > 0 ? messages.slice(0, summarySliceEnd) : []
 
 	// Get messages to summarize, including the first message and excluding the last N messages
-	let messagesToSummarize = getMessagesSinceLastSummary(messagesBeforeKeep) // kilocode_change: const=>let
+	let messagesToSummarize = getMessagesSinceLastSummary(messagesBeforeKeep) // novacode_change: const=>let
 
-	// kilocode_change start
+	// novacode_change start
 	// discard tool_use, because it won't have a result
 	const lastMessageToSummarizeContent = messagesToSummarize.at(-1)?.content
 	if (
@@ -285,10 +285,10 @@ export async function summarizeConversation(
 		console.debug("[summarizeConversation] discarding tool_use", lastMessageToSummarizeContent)
 		messagesToSummarize = messagesToSummarize.slice(0, -1)
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	if (messagesToSummarize.length <= 1) {
-		// kilocode_change start
+		// novacode_change start
 		const error =
 			messages.length <= N_MESSAGES_TO_KEEP + 1
 				? t("common:errors.condense_not_enough_messages", {
@@ -297,7 +297,7 @@ export async function summarizeConversation(
 						minimumMessageCount: N_MESSAGES_TO_KEEP + 2,
 					})
 				: t("common:errors.condensed_recently")
-		// kilocode_change end
+		// novacode_change end
 		return { ...response, error }
 	}
 
@@ -350,7 +350,7 @@ export async function summarizeConversation(
 	let cost = 0
 	let outputTokens = 0
 
-	// kilocode_change start: Capture thinking blocks from condensing response
+	// novacode_change start: Capture thinking blocks from condensing response
 	// When condensing with Anthropic extended thinking enabled, the response will include
 	// thinking/redacted_thinking blocks with valid signatures. We need to capture these
 	// and include them in the summary message so the next API request is valid.
@@ -358,7 +358,7 @@ export async function summarizeConversation(
 	const summaryThinkingBlocks: Anthropic.Messages.ContentBlockParam[] = []
 	// Track the last ant_thinking chunk (multiple may be emitted during streaming, we want the final one)
 	let lastAntThinking: { thinking: string; signature: string } | null = null
-	// kilocode_change end
+	// novacode_change end
 
 	for await (const chunk of stream) {
 		if (chunk.type === "text") {
@@ -368,7 +368,7 @@ export async function summarizeConversation(
 			cost = chunk.totalCost ?? 0
 			outputTokens = chunk.outputTokens ?? 0
 		}
-		// kilocode_change start: Capture Anthropic thinking blocks from condensing response
+		// novacode_change start: Capture Anthropic thinking blocks from condensing response
 		else if (chunk.type === "ant_thinking") {
 			// Multiple ant_thinking chunks may be emitted during streaming:
 			// 1. From content_block_start (may have partial data)
@@ -384,10 +384,10 @@ export async function summarizeConversation(
 				data: chunk.data,
 			} as Anthropic.Messages.RedactedThinkingBlock)
 		}
-		// kilocode_change end
+		// novacode_change end
 	}
 
-	// kilocode_change start: Finalize captured thinking blocks
+	// novacode_change start: Finalize captured thinking blocks
 	// Add the final ant_thinking chunk as a proper thinking block
 	if (lastAntThinking) {
 		summaryThinkingBlocks.push({
@@ -396,7 +396,7 @@ export async function summarizeConversation(
 			signature: lastAntThinking.signature,
 		} as Anthropic.Messages.ThinkingBlock)
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	summary = summary.trim()
 
@@ -428,7 +428,7 @@ export async function summarizeConversation(
 
 	const textBlock: Anthropic.Messages.TextBlockParam = { type: "text", text: summary }
 
-	// kilocode_change start: Check for thinking blocks from BOTH sources
+	// novacode_change start: Check for thinking blocks from BOTH sources
 	// Priority: thinking blocks captured from condensing response > preserved from history
 	const hasSummaryThinkingBlocks = summaryThinkingBlocks.length > 0
 	const hasPreservedAnthropicThinkingBlocks = reasoningBlocksToPreserve.some((block) => {
@@ -452,15 +452,15 @@ export async function summarizeConversation(
 			"Cannot condense context: Anthropic extended thinking requires thinking blocks in assistant messages, but the condensing model did not produce valid thinking blocks. Use the same model for condensing or disable extended thinking."
 		return { ...response, cost, error }
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	let summaryContent: Anthropic.Messages.ContentBlockParam[]
 	if (hasAnthropicThinkingBlocks) {
 		// Anthropic extended thinking: Place thinking blocks first, skip synthetic reasoning
 		// The thinking blocks have valid signatures and will pass API validation
-		// kilocode_change start: Use thinking blocks from stream if available, otherwise use preserved
+		// novacode_change start: Use thinking blocks from stream if available, otherwise use preserved
 		const thinkingBlocksToUse = hasSummaryThinkingBlocks ? summaryThinkingBlocks : reasoningBlocksToPreserve
-		// kilocode_change end
+		// novacode_change end
 		if (toolUseBlocksToPreserve.length > 0) {
 			summaryContent = [...thinkingBlocksToUse, textBlock, ...toolUseBlocksToPreserve]
 		} else {
@@ -548,7 +548,7 @@ export async function summarizeConversation(
 
 	const newContextTokens = outputTokens + (await apiHandler.countTokens(contextBlocks))
 	if (newContextTokens >= prevContextTokens) {
-		// kilocode_change add numbers
+		// novacode_change add numbers
 		const error = t("common:errors.condense_context_grew", { prevContextTokens, newContextTokens })
 		return { ...response, cost, error }
 	}

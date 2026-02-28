@@ -178,10 +178,10 @@ describe("getEnvironmentDetails", () => {
 		expect(result).toContain("# Current Workspace Directory")
 		expect(result).toContain("Files")
 
-		// kilocode_change start
+		// novacode_change start
 		// Expecting 3x multiplier: 50 * 3 = 150
 		expect(listFiles).toHaveBeenCalledWith(mockCwd, true, 150)
-		// kilocode_change end
+		// novacode_change end
 
 		expect(formatResponse.formatFilesList).toHaveBeenCalledWith(
 			mockCwd,
@@ -192,7 +192,7 @@ describe("getEnvironmentDetails", () => {
 		)
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	it("should NOT apply multiplier when showRooIgnoredFiles is true", async () => {
 		mockProvider.getState.mockResolvedValue({
 			...mockState,
@@ -215,7 +215,7 @@ describe("getEnvironmentDetails", () => {
 			true, // showRooIgnoredFiles = true
 		)
 	})
-	// kilocode_change end
+	// novacode_change end
 
 	it("should not include file details when includeFileDetails is false", async () => {
 		await getEnvironmentDetails(mockCline as Task, false)

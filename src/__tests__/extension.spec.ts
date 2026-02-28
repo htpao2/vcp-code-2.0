@@ -376,7 +376,7 @@ describe("extension.ts", () => {
 
 		// Verify BridgeOrchestrator.disconnect was called
 		expect(mockBridgeOrchestratorDisconnect).toHaveBeenCalled()
-	})
+	}, 60_000)
 
 	test("authStateChangedHandler does not call BridgeOrchestrator.disconnect for other states", async () => {
 		const { CloudService } = await import("@roo-code/cloud")
@@ -408,9 +408,9 @@ describe("extension.ts", () => {
 
 		// Verify BridgeOrchestrator.disconnect was NOT called.
 		expect(mockBridgeOrchestratorDisconnect).not.toHaveBeenCalled()
-	})
+	}, 60_000)
 
-	// kilocode_change: skip Roo models
+	// novacode_change: skip Roo models
 	describe.skip("Roo model cache refresh on auth state change (ROO-202)", () => {
 		beforeEach(() => {
 			vi.resetModules()

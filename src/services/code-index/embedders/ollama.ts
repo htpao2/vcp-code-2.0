@@ -14,7 +14,7 @@ import { getApiRequestTimeout } from "../../../api/providers/utils/timeout-confi
 export class CodeIndexOllamaEmbedder implements IEmbedder {
 	private readonly baseUrl: string
 	private readonly defaultModelId: string
-	private readonly dimensions?: number // kilocode_change
+	private readonly dimensions?: number // novacode_change
 
 	constructor(options: ApiHandlerOptions) {
 		// Ensure ollamaBaseUrl and ollamaModelId exist on ApiHandlerOptions or add defaults
@@ -25,7 +25,7 @@ export class CodeIndexOllamaEmbedder implements IEmbedder {
 
 		this.baseUrl = baseUrl
 		this.defaultModelId = options.ollamaModelId || "nomic-embed-text:latest"
-		this.dimensions = options.ollamaNumCtx // kilocode_change
+		this.dimensions = options.ollamaNumCtx // novacode_change
 	}
 
 	/**
@@ -36,7 +36,7 @@ export class CodeIndexOllamaEmbedder implements IEmbedder {
 	 */
 	async createEmbeddings(texts: string[], model?: string): Promise<EmbeddingResponse> {
 		const modelToUse = model || this.defaultModelId
-		const dimensions = this.dimensions // kilocode_change
+		const dimensions = this.dimensions // novacode_change
 		const url = `${this.baseUrl}/api/embed` // Endpoint as specified
 
 		// Apply model-specific query prefix if required
@@ -70,10 +70,10 @@ export class CodeIndexOllamaEmbedder implements IEmbedder {
 
 			// Add timeout to prevent indefinite hanging
 			const controller = new AbortController()
-			// kilocode_change start
+			// novacode_change start
 			const timeoutMs = getApiRequestTimeout() ?? 0
 			const timeoutId = setTimeout(() => controller.abort(), timeoutMs)
-			// kilocode_change end
+			// novacode_change end
 
 			const response = await fetch(url, {
 				method: "POST",
@@ -83,7 +83,7 @@ export class CodeIndexOllamaEmbedder implements IEmbedder {
 				body: JSON.stringify({
 					model: modelToUse,
 					input: processedTexts, // Using 'input' as requested
-					dimensions, // kilocode_change
+					dimensions, // novacode_change
 				}),
 				signal: controller.signal,
 			})
@@ -154,10 +154,10 @@ export class CodeIndexOllamaEmbedder implements IEmbedder {
 
 				// Add timeout to prevent indefinite hanging
 				const controller = new AbortController()
-				// kilocode_change start
+				// novacode_change start
 				const timeoutMs = getApiRequestTimeout() ?? 0
 				const timeoutId = setTimeout(() => controller.abort(), timeoutMs)
-				// kilocode_change end
+				// novacode_change end
 
 				const modelsResponse = await fetch(modelsUrl, {
 					method: "GET",
@@ -213,10 +213,10 @@ export class CodeIndexOllamaEmbedder implements IEmbedder {
 				const testUrl = `${this.baseUrl}/api/embed`
 
 				// Add timeout for test request too
-				// kilocode_change start
+				// novacode_change start
 				const testController = new AbortController()
 				const testTimeoutId = setTimeout(() => testController.abort(), timeoutMs)
-				// kilocode_change end
+				// novacode_change end
 
 				const testResponse = await fetch(testUrl, {
 					method: "POST",

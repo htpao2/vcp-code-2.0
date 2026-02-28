@@ -1,4 +1,4 @@
-import React from "react"
+﻿import React from "react"
 import { Trans } from "react-i18next"
 import { VSCodeLink } from "@vscode/webview-ui-toolkit/react"
 
@@ -7,7 +7,7 @@ export const IssueFooter: React.FC = () => {
 		<div className="text-xs text-vscode-descriptionForeground p-3">
 			<Trans i18nKey="marketplace:footer.issueText">
 				<VSCodeLink
-					href="https://github.com/Kilo-Org/kilocode/issues/new?template=marketplace.yml"
+					href="https://github.com/Nova-Org/nova/issues/new?template=marketplace.yml"
 					style={{ display: "inline", fontSize: "inherit" }}>
 					Open a GitHub issue
 				</VSCodeLink>

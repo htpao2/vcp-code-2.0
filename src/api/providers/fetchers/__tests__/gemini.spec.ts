@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 const listModelsMock = vi.hoisted(() => vi.fn())
@@ -29,7 +29,7 @@ describe("getGeminiModels", () => {
 		vi.clearAllMocks()
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	it("adds customtools alias when gemini-3.1-pro-preview is available", async () => {
 		listModelsMock.mockResolvedValueOnce(
 			createPager([
@@ -97,5 +97,5 @@ describe("getGeminiModels", () => {
 		expect(alias.maxTokens).toBe(12_345)
 		expect(alias.contextWindow).toBe(333_333)
 	})
-	// kilocode_change end
+	// novacode_change end
 })

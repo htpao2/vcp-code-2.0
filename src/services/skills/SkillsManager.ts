@@ -8,7 +8,7 @@ import { getGlobalRooDirectory } from "../roo-config"
 import { directoryExists, fileExists } from "../roo-config"
 import { SkillMetadata, SkillContent } from "../../shared/skills"
 import { modes, getAllModes } from "../../shared/modes"
-import { ConfigChangeNotifier } from "../config/ConfigChangeNotifier" // kilocode_change
+import { ConfigChangeNotifier } from "../config/ConfigChangeNotifier" // novacode_change
 
 // Re-export for convenience
 export type { SkillMetadata, SkillContent }
@@ -18,11 +18,11 @@ export class SkillsManager {
 	private providerRef: WeakRef<ClineProvider>
 	private disposables: vscode.Disposable[] = []
 	private isDisposed = false
-	private configChangeNotifier: ConfigChangeNotifier // kilocode_change
+	private configChangeNotifier: ConfigChangeNotifier // novacode_change
 
 	constructor(provider: ClineProvider) {
 		this.providerRef = new WeakRef(provider)
-		this.configChangeNotifier = new ConfigChangeNotifier(provider) // kilocode_change
+		this.configChangeNotifier = new ConfigChangeNotifier(provider) // novacode_change
 	}
 
 	async initialize(): Promise<void> {
@@ -34,8 +34,8 @@ export class SkillsManager {
 	 * Discover all skills from global and project directories.
 	 * Supports both generic skills (skills/) and mode-specific skills (skills-{mode}/).
 	 * Also supports symlinks:
-	 * - .kilocode/skills can be a symlink to a directory containing skill subdirectories
-	 * - .kilocode/skills/[dirname] can be a symlink to a skill directory
+	 * - .novacode/skills can be a symlink to a directory containing skill subdirectories
+	 * - .novacode/skills/[dirname] can be a symlink to a skill directory
 	 */
 	async discoverSkills(): Promise<void> {
 		this.skills.clear()
@@ -45,8 +45,8 @@ export class SkillsManager {
 			await this.scanSkillsDirectory(dir, source, mode)
 		}
 
-		const currentSkills = Array.from(this.skills.values()) // kilocode_change
-		await this.configChangeNotifier.notifyIfChanged("skill", currentSkills) // kilocode_change
+		const currentSkills = Array.from(this.skills.values()) // novacode_change
+		await this.configChangeNotifier.notifyIfChanged("skill", currentSkills) // novacode_change
 	}
 
 	/**
@@ -62,7 +62,7 @@ export class SkillsManager {
 
 		try {
 			// Get the real path (resolves if dirPath is a symlink)
-			// If the symlink is broken, this will throw ENOENT // kilocode_change
+			// If the symlink is broken, this will throw ENOENT // novacode_change
 			const realDirPath = await fs.realpath(dirPath)
 
 			// Read directory entries
@@ -78,7 +78,7 @@ export class SkillsManager {
 				// Load skill metadata - the skill name comes from the entry name (symlink name if symlinked)
 				await this.loadSkillMetadata(entryPath, source, mode, entryName)
 			}
-			// kilocode_change start: Handle symlink-related errors gracefully
+			// novacode_change start: Handle symlink-related errors gracefully
 		} catch (error: any) {
 			// Handle symlink-related errors gracefully:
 			// - ENOENT: Directory/symlink target doesn't exist
@@ -91,7 +91,7 @@ export class SkillsManager {
 			// Log other unexpected errors for debugging
 			console.error(`Error scanning skills directory ${dirPath}:`, error)
 		}
-		// kilocode_change end
+		// novacode_change end
 	}
 
 	/**
@@ -270,7 +270,7 @@ export class SkillsManager {
 		const dirs: Array<{ dir: string; source: "global" | "project"; mode?: string }> = []
 		const globalRooDir = getGlobalRooDirectory()
 		const provider = this.providerRef.deref()
-		const projectRooDir = provider?.cwd ? path.join(provider.cwd, ".kilocode") : null
+		const projectRooDir = provider?.cwd ? path.join(provider.cwd, ".novacode") : null
 
 		// Get list of modes to check for mode-specific skills
 		const modesList = await this.getAvailableModes()
@@ -327,7 +327,7 @@ export class SkillsManager {
 
 		// Watch for changes in skills directories
 		const globalSkillsDir = path.join(getGlobalRooDirectory(), "skills")
-		const projectSkillsDir = path.join(provider.cwd, ".kilocode", "skills")
+		const projectSkillsDir = path.join(provider.cwd, ".novacode", "skills")
 
 		// Watch global skills directory
 		this.watchDirectory(globalSkillsDir)
@@ -339,7 +339,7 @@ export class SkillsManager {
 		const modesList = await this.getAvailableModes()
 		for (const mode of modesList) {
 			this.watchDirectory(path.join(getGlobalRooDirectory(), `skills-${mode}`))
-			this.watchDirectory(path.join(provider.cwd, ".kilocode", `skills-${mode}`))
+			this.watchDirectory(path.join(provider.cwd, ".novacode", `skills-${mode}`))
 		}
 	}
 
@@ -348,11 +348,11 @@ export class SkillsManager {
 			return
 		}
 
-		// kilocode_change start
+		// novacode_change start
 		// Watch for direct children (skill directories) being added/changed/deleted
 		// When anything changes, we'll rescan and look for SKILL.md files
 		const pattern = new vscode.RelativePattern(dirPath, "*")
-		// kilocode_change end
+		// novacode_change end
 		const watcher = vscode.workspace.createFileSystemWatcher(pattern)
 
 		watcher.onDidChange(async (uri) => {

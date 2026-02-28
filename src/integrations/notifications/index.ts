@@ -1,11 +1,21 @@
-import { execa } from "execa"
 import * as os from "os"
 import * as vscode from "vscode"
+import { getCurrentOrLegacyExtension } from "../../utils/extensionIdentity"
 
 interface NotificationOptions {
 	title?: string
 	subtitle?: string
 	message: string
+}
+
+let execaRunner: ((file: string, args?: readonly string[]) => Promise<unknown>) | undefined
+
+async function runExeca(file: string, args?: readonly string[]): Promise<unknown> {
+	if (!execaRunner) {
+		const { execa } = await import("execa")
+		execaRunner = execa as (file: string, args?: readonly string[]) => Promise<unknown>
+	}
+	return execaRunner(file, args)
 }
 
 async function showMacOSNotification(options: NotificationOptions): Promise<void> {
@@ -22,12 +32,15 @@ async function showMacOSNotification(options: NotificationOptions): Promise<void
 		}
 		args.push("-sound", "Tink")
 
-		// Add Kilo Code logo
-		const extensionUri = vscode.extensions.getExtension(`kilocode.kilo-code`)!.extensionUri
-		const iconPath = vscode.Uri.joinPath(extensionUri, "assets", "icons", "kilo.png").fsPath
+		// Add Nova Code logo
+		const extensionUri = getCurrentOrLegacyExtension()?.extensionUri
+		if (!extensionUri) {
+			throw new Error("Extension URI not found")
+		}
+		const iconPath = vscode.Uri.joinPath(extensionUri, "assets", "icons", "nova.png").fsPath
 		args.push("-appIcon", iconPath)
 
-		await execa("terminal-notifier", args)
+		await runExeca("terminal-notifier", args)
 		return
 	} catch (error) {
 		// If terminal-notifier fails, fall back to osascript
@@ -38,7 +51,7 @@ async function showMacOSNotification(options: NotificationOptions): Promise<void
 	const script = `display notification "${message}" with title "${title}" subtitle "${subtitle}" sound name "Tink"`
 
 	try {
-		await execa("osascript", ["-e", script])
+		await runExeca("osascript", ["-e", script])
 	} catch (error) {
 		throw new Error(`Failed to show macOS notification: ${error}`)
 	}
@@ -65,11 +78,11 @@ async function showWindowsNotification(options: NotificationOptions): Promise<vo
     $xml = New-Object Windows.Data.Xml.Dom.XmlDocument
     $xml.LoadXml($template)
     $toast = [Windows.UI.Notifications.ToastNotification]::new($xml)
-    [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Kilo Code").Show($toast)
+    [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Nova Code").Show($toast)
     `
 
 	try {
-		await execa("powershell", ["-Command", script])
+		await runExeca("powershell", ["-Command", script])
 	} catch (error) {
 		throw new Error(`Failed to show Windows notification: ${error}`)
 	}
@@ -82,7 +95,7 @@ async function showLinuxNotification(options: NotificationOptions): Promise<void
 	const fullMessage = subtitle ? `${subtitle}\n${message}` : message
 
 	try {
-		await execa("notify-send", [title, fullMessage])
+		await runExeca("notify-send", [title, fullMessage])
 	} catch (error) {
 		throw new Error(`Failed to show Linux notification: ${error}`)
 	}
@@ -90,7 +103,7 @@ async function showLinuxNotification(options: NotificationOptions): Promise<void
 
 export async function showSystemNotification(options: NotificationOptions): Promise<void> {
 	try {
-		const { title = "Kilo Code", message } = options
+		const { title = "Nova Code", message } = options
 
 		if (!message) {
 			throw new Error("Message is required")

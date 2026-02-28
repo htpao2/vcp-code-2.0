@@ -27,7 +27,9 @@ async function main() {
 		const packageJson = JSON.parse(fs.readFileSync("./src/package.json", "utf-8"))
 		const name = packageJson.name
 		const version = packageJson.version
-		const vsixFileName = `./bin/${name}-${version}.vsix`
+		const preferredVsixFileName = `./bin/vcp-code-${version}.vsix`
+		const legacyVsixFileName = `./bin/${name}-${version}.vsix`
+		const vsixFileName = fs.existsSync(preferredVsixFileName) ? preferredVsixFileName : legacyVsixFileName
 		const publisher = packageJson.publisher
 		const extensionId = `${publisher}.${name}`
 

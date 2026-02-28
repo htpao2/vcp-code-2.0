@@ -69,7 +69,7 @@ export class AskFollowupQuestionTool extends BaseTool<"ask_followup_question"> {
 		const { handleError, pushToolResult, toolProtocol } = callbacks
 
 		try {
-			// kilocode_change start
+			// novacode_change start
 			// Check if yolo mode is enabled - if so, don't ask questions
 			const state = await task.providerRef.deref()?.getState()
 			if (state?.yoloMode) {
@@ -80,7 +80,7 @@ export class AskFollowupQuestionTool extends BaseTool<"ask_followup_question"> {
 				)
 				return
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			if (!question) {
 				task.consecutiveMistakeCount++
@@ -106,13 +106,13 @@ export class AskFollowupQuestionTool extends BaseTool<"ask_followup_question"> {
 	}
 
 	override async handlePartial(task: Task, block: ToolUse<"ask_followup_question">): Promise<void> {
-		// kilocode_change start
+		// novacode_change start
 		// Don't show the question in yolo mode - the tool will be rejected in execute()
 		const state = await task.providerRef.deref()?.getState()
 		if (state?.yoloMode) {
 			return
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		// Get question from params (for XML protocol) or nativeArgs (for native protocol)
 		const question: string | undefined = block.params.question ?? block.nativeArgs?.question

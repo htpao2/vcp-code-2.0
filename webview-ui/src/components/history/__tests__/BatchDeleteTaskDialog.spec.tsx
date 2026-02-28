@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@/utils/test-utils"
+﻿import { render, screen, fireEvent } from "@/utils/test-utils"
 
 import { vscode } from "@/utils/vscode"
 
@@ -25,8 +25,8 @@ vi.mock("@/i18n/TranslationContext", () => ({
 	}),
 }))
 
-// kilocode_change start: add mocks
-vi.mock("@/kilocode/hooks/useTaskHistory", () => ({
+// novacode_change start: add mocks
+vi.mock("@/nova/hooks/useTaskHistory", () => ({
 	useTaskWithId: () => ({
 		data: [
 			{ id: "task-1", isFavorited: false },
@@ -36,7 +36,7 @@ vi.mock("@/kilocode/hooks/useTaskHistory", () => ({
 		],
 	}),
 }))
-// kilocode_change end
+// novacode_change end
 
 describe("BatchDeleteTaskDialog", () => {
 	const mockTaskIds = ["task-1", "task-2", "task-3"]

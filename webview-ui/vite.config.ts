@@ -1,4 +1,4 @@
-import path, { resolve } from "path"
+﻿import path, { resolve } from "path"
 import fs from "fs"
 import { execSync } from "child_process"
 
@@ -7,7 +7,7 @@ import react from "@vitejs/plugin-react"
 import tailwindcss from "@tailwindcss/vite"
 
 import { sourcemapPlugin } from "./src/vite-plugins/sourcemapPlugin"
-import { cssPerEntryPlugin } from "./src/kilocode/vite-plugins/cssPerEntryPlugin" // kilocode_change
+import { cssPerEntryPlugin } from "./src/nova/vite-plugins/cssPerEntryPlugin" // novacode_change
 
 function getGitSha() {
 	let gitSha: string | undefined = undefined
@@ -56,7 +56,7 @@ const persistPortPlugin = (): Plugin => ({
 export default defineConfig(({ mode }) => {
 	let outDir = "../src/webview-ui/build"
 
-	// kilocode_change start - read package.json fresh every time to avoid caching issues
+	// novacode_change start - read package.json fresh every time to avoid caching issues
 	const getPkg = () => {
 		try {
 			return JSON.parse(fs.readFileSync(path.join(__dirname, "..", "src", "package.json"), "utf8"))
@@ -66,7 +66,7 @@ export default defineConfig(({ mode }) => {
 	}
 
 	const pkg = getPkg()
-	// kilocode_change end
+	// novacode_change end
 	const gitSha = getGitSha()
 
 	const define: Record<string, any> = {
@@ -74,7 +74,7 @@ export default defineConfig(({ mode }) => {
 		"process.env.VSCODE_TEXTMATE_DEBUG": JSON.stringify(process.env.VSCODE_TEXTMATE_DEBUG),
 		"process.env.PKG_NAME": JSON.stringify(pkg.name),
 		"process.env.PKG_VERSION": JSON.stringify(pkg.version),
-		"process.env.PKG_OUTPUT_CHANNEL": JSON.stringify("Kilo-Code"),
+		"process.env.PKG_OUTPUT_CHANNEL": JSON.stringify("Nova-Code"),
 		...(gitSha ? { "process.env.PKG_SHA": JSON.stringify(gitSha) } : {}),
 	}
 
@@ -89,7 +89,7 @@ export default defineConfig(({ mode }) => {
 
 		define["process.env.PKG_NAME"] = JSON.stringify(nightlyPkg.name)
 		define["process.env.PKG_VERSION"] = JSON.stringify(nightlyPkg.version)
-		define["process.env.PKG_OUTPUT_CHANNEL"] = JSON.stringify("Kilo-Code-Nightly")
+		define["process.env.PKG_OUTPUT_CHANNEL"] = JSON.stringify("Nova-Code-Nightly")
 	}
 
 	const plugins: PluginOption[] = [
@@ -102,7 +102,7 @@ export default defineConfig(({ mode }) => {
 		persistPortPlugin(),
 		wasmPlugin(),
 		sourcemapPlugin(),
-		cssPerEntryPlugin(), // kilocode_change: enable per-entry CSS files
+		cssPerEntryPlugin(), // novacode_change: enable per-entry CSS files
 	]
 
 	return {
@@ -112,6 +112,7 @@ export default defineConfig(({ mode }) => {
 				"@": resolve(__dirname, "./src"),
 				"@src": resolve(__dirname, "./src"),
 				"@roo": resolve(__dirname, "../src/shared"),
+				"@use-gesture/core/types": resolve(__dirname, "./src/shims/use-gesture-core-types.ts"),
 			},
 		},
 		build: {
@@ -123,15 +124,15 @@ export default defineConfig(({ mode }) => {
 			// Ensure source maps are properly included in the build
 			minify: mode === "production" ? "esbuild" : false,
 			// Use a single combined CSS bundle so both webviews share styles
-			cssCodeSplit: true, // kilocode_change: changed to true to enable cssPerEntryPlugin
+			cssCodeSplit: true, // novacode_change: changed to true to enable cssPerEntryPlugin
 			rollupOptions: {
 				// Externalize vscode module - it's imported by file-search.ts which is
 				// dynamically imported by roo-config/index.ts, but should never be bundled
 				// in the webview since it's not available in the browser context
 				external: ["vscode"],
 				input: {
-					index: resolve(__dirname, "index.html"), // kilocode_change - DO NOT CHANGE
-					"agent-manager": resolve(__dirname, "agent-manager.html"), // kilocode_change
+					index: resolve(__dirname, "index.html"), // novacode_change - DO NOT CHANGE
+					"agent-manager": resolve(__dirname, "agent-manager.html"), // novacode_change
 					"browser-panel": resolve(__dirname, "browser-panel.html"),
 				},
 				output: {
@@ -146,12 +147,12 @@ export default defineConfig(({ mode }) => {
 					assetFileNames: (assetInfo) => {
 						const name = assetInfo.name || ""
 
-						// kilocode_change start -  cssPerEntryPlugin
+						// novacode_change start -  cssPerEntryPlugin
 						// Force all CSS into a single predictable file used by both webviews
 						// if (name.endsWith(".css")) {
 						// 	return "assets/index.css"
 						//}
-						// kilocode_change end
+						// novacode_change end
 
 						if (name.endsWith(".woff2") || name.endsWith(".woff") || name.endsWith(".ttf")) {
 							return "assets/fonts/[name][extname]"
@@ -190,9 +191,9 @@ export default defineConfig(({ mode }) => {
 			},
 		},
 		server: {
-			host: "0.0.0.0", // kilocode_change
+			host: "0.0.0.0", // novacode_change
 			hmr: {
-				// host: "localhost", kilocode_change
+				// host: "localhost", novacode_change
 				protocol: "ws",
 			},
 			cors: {
@@ -208,7 +209,7 @@ export default defineConfig(({ mode }) => {
 				"dagre", // Explicitly include dagre for pre-bundling
 				// Add other known large mermaid dependencies if identified
 			],
-			exclude: ["@vscode/codicons", "vscode-oniguruma", "shiki", "vscode" /*kilocode_change*/],
+			exclude: ["@vscode/codicons", "vscode-oniguruma", "shiki", "vscode" /*novacode_change*/],
 		},
 		assetsInclude: ["**/*.wasm", "**/*.wav"],
 	}

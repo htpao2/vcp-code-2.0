@@ -8,7 +8,7 @@ import {
 	type TodoItem,
 	getEffectiveProtocol,
 	isNativeProtocol,
-	Experiments, // kilocode_change
+	Experiments, // novacode_change
 } from "@roo-code/types"
 
 import { customToolRegistry, formatXml } from "@roo-code/core"
@@ -38,7 +38,7 @@ import {
 	markdownFormattingSection,
 	getSkillsSection,
 } from "./sections"
-import { type ClineProviderState } from "../webview/ClineProvider" // kilocode_change
+import { type ClineProviderState } from "../webview/ClineProvider" // novacode_change
 
 // Helper function to get prompt component, filtering out empty objects
 export function getPromptComponent(
@@ -74,7 +74,7 @@ async function generatePrompt(
 	todoList?: TodoItem[],
 	modelId?: string,
 	skillsManager?: SkillsManager,
-	clineProviderState?: ClineProviderState, // kilocode_change
+	clineProviderState?: ClineProviderState, // novacode_change
 ): Promise<string> {
 	if (!context) {
 		throw new Error("Extension context is required for generating system prompt")
@@ -127,7 +127,7 @@ async function generatePrompt(
 				settings,
 				enableMcpServerCreation,
 				modelId,
-				clineProviderState, // kilocode_change
+				clineProviderState, // novacode_change
 			)}`
 
 	let customToolsSection = ""
@@ -156,7 +156,7 @@ ${getCapabilitiesSection(cwd, shouldIncludeMcp ? mcpHub : undefined)}
 
 ${modesSection}
 ${skillsSection ? `\n${skillsSection}` : ""}
-${getRulesSection(cwd, settings, clineProviderState /* kilocode_change */)}
+${getRulesSection(cwd, settings, clineProviderState /* novacode_change */)}
 
 ${getSystemInfoSection(cwd)}
 
@@ -165,17 +165,17 @@ ${getObjectiveSection()}
 ${await addCustomInstructions(baseInstructions, globalCustomInstructions || "", cwd, mode, {
 	language: language ?? formatLanguage(vscode.env.language),
 	rooIgnoreInstructions,
-	localRulesToggleState: context.workspaceState.get("localRulesToggles"), // kilocode_change
-	globalRulesToggleState: context.globalState.get("globalRulesToggles"), // kilocode_change
+	localRulesToggleState: context.workspaceState.get("localRulesToggles"), // novacode_change
+	globalRulesToggleState: context.globalState.get("globalRulesToggles"), // novacode_change
 	settings,
 })}`
 
-	// kilocode_change start: Append custom system prompt from CLI if provided
+	// novacode_change start: Append custom system prompt from CLI if provided
 	const appendSystemPrompt = clineProviderState?.appendSystemPrompt
 	if (appendSystemPrompt) {
 		return `${basePrompt}\n\n${appendSystemPrompt}`
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	return basePrompt
 }
@@ -187,12 +187,12 @@ export const SYSTEM_PROMPT = async (
 	mcpHub?: McpHub,
 	diffStrategy?: DiffStrategy,
 	browserViewportSize?: string,
-	inputMode: Mode = defaultModeSlug, // kilocode_change: name changed to inputMode
+	inputMode: Mode = defaultModeSlug, // novacode_change: name changed to inputMode
 	customModePrompts?: CustomModePrompts,
 	customModes?: ModeConfig[],
 	globalCustomInstructions?: string,
 	diffEnabled?: boolean,
-	experiments?: Experiments, // kilocode_change: type
+	experiments?: Experiments, // novacode_change: type
 	enableMcpServerCreation?: boolean,
 	language?: string,
 	rooIgnoreInstructions?: string,
@@ -201,14 +201,14 @@ export const SYSTEM_PROMPT = async (
 	todoList?: TodoItem[],
 	modelId?: string,
 	skillsManager?: SkillsManager,
-	clineProviderState?: ClineProviderState, // kilocode_change
+	clineProviderState?: ClineProviderState, // novacode_change
 ): Promise<string> => {
 	if (!context) {
 		throw new Error("Extension context is required for generating system prompt")
 	}
 
 	const mode =
-		getModeBySlug(inputMode, customModes)?.slug || modes.find((m) => m.slug === inputMode)?.slug || defaultModeSlug // kilocode_change: don't try to use non-existent modes
+		getModeBySlug(inputMode, customModes)?.slug || modes.find((m) => m.slug === inputMode)?.slug || defaultModeSlug // novacode_change: don't try to use non-existent modes
 
 	// Try to load custom system prompt from file
 	const variablesForPrompt: PromptVariables = {
@@ -278,6 +278,6 @@ ${customInstructions}`
 		todoList,
 		modelId,
 		skillsManager,
-		clineProviderState, // kilocode_change
+		clineProviderState, // novacode_change
 	)
 }

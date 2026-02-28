@@ -26,13 +26,13 @@ export const TerminalCommandGeneratorSettings = ({
 			<div className="flex flex-col gap-1">
 				<div className="flex items-center gap-2 font-bold">
 					<Webhook className="w-4" />
-					<div>{t("kilocode:settings.terminal.commandGenerator.provider")}</div>
+					<div>{t("novacode:settings.terminal.commandGenerator.provider")}</div>
 				</div>
 			</div>
 			<div className="flex flex-col gap-3 pl-3 border-l-2 border-vscode-button-background">
 				<div>
 					<label className="block font-medium mb-1">
-						{t("kilocode:settings.terminal.commandGenerator.apiConfigId.label")}
+						{t("novacode:settings.terminal.commandGenerator.apiConfigId.label")}
 					</label>
 					<div className="flex items-center gap-2">
 						<div>
@@ -44,13 +44,13 @@ export const TerminalCommandGeneratorSettings = ({
 								<SelectTrigger data-testid="terminal-command-api-config-select" className="w-full">
 									<SelectValue
 										placeholder={t(
-											"kilocode:settings.terminal.commandGenerator.apiConfigId.current",
+											"novacode:settings.terminal.commandGenerator.apiConfigId.current",
 										)}
 									/>
 								</SelectTrigger>
 								<SelectContent>
 									<SelectItem value="-">
-										{t("kilocode:settings.terminal.commandGenerator.apiConfigId.current")}
+										{t("novacode:settings.terminal.commandGenerator.apiConfigId.current")}
 									</SelectItem>
 									{(listApiConfigMeta || []).map((config) => (
 										<SelectItem
@@ -63,7 +63,7 @@ export const TerminalCommandGeneratorSettings = ({
 								</SelectContent>
 							</Select>
 							<div className="text-sm text-vscode-descriptionForeground mt-1">
-								{t("kilocode:settings.terminal.commandGenerator.apiConfigId.description")}
+								{t("novacode:settings.terminal.commandGenerator.apiConfigId.description")}
 							</div>
 						</div>
 					</div>

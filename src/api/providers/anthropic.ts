@@ -61,12 +61,12 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 			maxTokens,
 			temperature,
 			reasoning: thinking,
-			verbosity, // kilocode_change
+			verbosity, // novacode_change
 		} = this.getModel()
 
 		// Filter out non-Anthropic blocks (reasoning, thoughtSignature, etc.) before sending to the API
 		const sanitizedMessages = filterNonAnthropicBlocks(messages)
-		const apiModelId = this.options.anthropicDeploymentName?.trim() || modelId // kilocode_change
+		const apiModelId = this.options.anthropicDeploymentName?.trim() || modelId // novacode_change
 
 		// Add 1M context beta flag if enabled for supported models (Claude Sonnet 4/4.5/4.6, Opus 4.6)
 		if (
@@ -79,7 +79,7 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 			betas.push("context-1m-2025-08-07")
 		}
 
-		// kilocode_change start
+		// novacode_change start
 		if (thinking?.type === "adaptive") {
 			betas.push(
 				"adaptive-thinking-2026-01-28",
@@ -90,7 +90,7 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 		} else if (verbosity) {
 			betas.push("effort-2025-11-24")
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		// Enable native tools by default using resolveToolProtocol (which checks model's defaultToolProtocol)
 		// This matches OpenRouter's approach of always including tools when provided
@@ -104,23 +104,23 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 			toolProtocol === TOOL_PROTOCOL.NATIVE &&
 			metadata?.tool_choice !== "none"
 
-		const isHaikuInstruct = modelId.toLowerCase().includes("haiku") && thinking?.type !== "enabled" // kilocode_change
+		const isHaikuInstruct = modelId.toLowerCase().includes("haiku") && thinking?.type !== "enabled" // novacode_change
 
 		const nativeToolParams = shouldIncludeNativeTools
 			? {
 					tools: convertOpenAIToolsToAnthropic(metadata.tools!),
 					tool_choice:
-						// kilocode_change start
+						// novacode_change start
 						// Haiku will often forget to call tools and output random XML when tool_choice is not any
 						isHaikuInstruct
 							? { type: "any" as const, disable_parallel_tool_use: !metadata.parallelToolCalls }
-							: // kilocode_change end
+							: // novacode_change end
 								convertOpenAIToolChoiceToAnthropic(metadata.tool_choice, metadata.parallelToolCalls),
 				}
 			: {}
 
 		switch (modelId) {
-			case "claude-opus-4-6": // kilocode_change
+			case "claude-opus-4-6": // novacode_change
 			case "claude-sonnet-4-6":
 			case "claude-sonnet-4-5":
 			case "claude-sonnet-4-20250514":
@@ -154,10 +154,10 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 				try {
 					stream = await this.client.messages.create(
 						{
-							model: apiModelId, // kilocode_change
+							model: apiModelId, // novacode_change
 							max_tokens: maxTokens ?? ANTHROPIC_DEFAULT_MAX_TOKENS,
 							temperature,
-							thinking: thinking as Anthropic.Messages.ThinkingConfigParam | undefined, // kilocode_change
+							thinking: thinking as Anthropic.Messages.ThinkingConfigParam | undefined, // novacode_change
 							// Setting cache breakpoint for system prompt so new tasks can reuse it.
 							system: [{ text: systemPrompt, type: "text", cache_control: cacheControl }],
 							messages: sanitizedMessages.map((message, index) => {
@@ -177,7 +177,7 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 								return message
 							}),
 							stream: true,
-							// kilocode_change start
+							// novacode_change start
 							...(verbosity
 								? {
 										output_config: {
@@ -185,7 +185,7 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 										},
 									}
 								: {}),
-							// kilocode_change end
+							// novacode_change end
 							...nativeToolParams,
 						},
 						(() => {
@@ -195,7 +195,7 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 
 							// Then check for models that support prompt caching
 							switch (modelId) {
-								case "claude-opus-4-6": // kilocode_change
+								case "claude-opus-4-6": // novacode_change
 								case "claude-sonnet-4-6":
 								case "claude-sonnet-4-5":
 								case "claude-sonnet-4-20250514":
@@ -231,14 +231,14 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 			default: {
 				try {
 					stream = await this.client.messages.create({
-						model: apiModelId, // kilocode_change
+						model: apiModelId, // novacode_change
 						max_tokens: maxTokens ?? ANTHROPIC_DEFAULT_MAX_TOKENS,
 						temperature,
 						system: [{ text: systemPrompt, type: "text" }],
 						messages: sanitizedMessages,
 						stream: true,
 						...nativeToolParams,
-					}) // kilocode_change removed: as any
+					}) // novacode_change removed: as any
 				} catch (error) {
 					TelemetryService.instance.captureException(
 						new ApiProviderError(
@@ -259,11 +259,11 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 		let cacheWriteTokens = 0
 		let cacheReadTokens = 0
 
-		// kilocode_change start
+		// novacode_change start
 		let thinkingDeltaAccumulator = ""
 		let thinkText = ""
 		let thinkSignature = ""
-		// kilocode_change end
+		// novacode_change end
 
 		for await (const chunk of stream) {
 			switch (chunk.type) {
@@ -315,7 +315,7 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 
 							yield { type: "reasoning", text: chunk.content_block.thinking }
 
-							// kilocode_change start
+							// novacode_change start
 							thinkText = chunk.content_block.thinking
 							thinkSignature = chunk.content_block.signature
 							if (thinkText && thinkSignature) {
@@ -325,11 +325,11 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 									signature: thinkSignature,
 								}
 							}
-							// kilocode_change end
+							// novacode_change end
 
 							break
 
-						// kilocode_change start
+						// novacode_change start
 						case "redacted_thinking":
 							yield {
 								type: "reasoning",
@@ -340,7 +340,7 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 								data: chunk.content_block.data,
 							}
 							break
-						// kilocode_change end
+						// novacode_change end
 
 						case "text":
 							// We may receive multiple text blocks, in which
@@ -368,10 +368,10 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 					switch (chunk.delta.type) {
 						case "thinking_delta":
 							yield { type: "reasoning", text: chunk.delta.thinking }
-							thinkingDeltaAccumulator += chunk.delta.thinking // kilocode_change
+							thinkingDeltaAccumulator += chunk.delta.thinking // novacode_change
 							break
 
-						// kilocode_change start
+						// novacode_change start
 						case "signature_delta":
 							if (thinkingDeltaAccumulator && chunk.delta.signature) {
 								yield {
@@ -383,7 +383,7 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 								thinkingDeltaAccumulator = ""
 							}
 							break
-						// kilocode_change end
+						// novacode_change end
 
 						case "text_delta":
 							yield { type: "text", text: chunk.delta.text }
@@ -477,12 +477,12 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 
 	async completePrompt(prompt: string) {
 		let { id: model, temperature } = this.getModel()
-		const apiModelId = this.options.anthropicDeploymentName?.trim() || model // kilocode_change
+		const apiModelId = this.options.anthropicDeploymentName?.trim() || model // novacode_change
 
 		let message
 		try {
 			message = await this.client.messages.create({
-				model: apiModelId, // kilocode_change
+				model: apiModelId, // novacode_change
 				max_tokens: ANTHROPIC_DEFAULT_MAX_TOKENS,
 				thinking: undefined,
 				temperature,
@@ -505,7 +505,7 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 		return content?.type === "text" ? content.text : ""
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	/**
 	 * Counts tokens for the given content using Anthropic's API
 	 *
@@ -516,10 +516,10 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 		try {
 			// Use the current model
 			const { id: model } = this.getModel()
-			const apiModelId = this.options.anthropicDeploymentName?.trim() || model // kilocode_change
+			const apiModelId = this.options.anthropicDeploymentName?.trim() || model // novacode_change
 
 			const response = await this.client.messages.countTokens({
-				model: apiModelId, // kilocode_change
+				model: apiModelId, // novacode_change
 				messages: [{ role: "user", content: content }],
 			})
 
@@ -532,5 +532,5 @@ export class AnthropicHandler extends BaseProvider implements SingleCompletionHa
 			return super.countTokens(content)
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 }

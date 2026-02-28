@@ -90,7 +90,7 @@ describe("TaskActions", () => {
 	})
 
 	describe.skip("Share Button Visibility", () => {
-		// kilocode_change skip
+		// novacode_change skip
 		it("renders share button when item has id", () => {
 			render(<TaskActions item={mockItem} buttonsDisabled={false} />)
 
@@ -121,7 +121,7 @@ describe("TaskActions", () => {
 		})
 	})
 
-	// kilocode_change skip
+	// novacode_change skip
 	describe.skip("Authenticated User Share Flow", () => {
 		it("shows organization and public share options when authenticated and sharing enabled", () => {
 			render(<TaskActions item={mockItem} buttonsDisabled={false} />)
@@ -187,7 +187,7 @@ describe("TaskActions", () => {
 		})
 	})
 
-	// kilocode_change skip
+	// novacode_change skip
 	describe.skip("Unauthenticated User Login Flow", () => {
 		beforeEach(() => {
 			mockUseExtensionState.mockReturnValue({
@@ -234,7 +234,7 @@ describe("TaskActions", () => {
 		})
 	})
 
-	// kilocode_change skip
+	// novacode_change skip
 	describe.skip("Mixed Authentication States", () => {
 		it("shows disabled share button when authenticated but sharing not enabled", () => {
 			mockUseExtensionState.mockReturnValue({
@@ -359,7 +359,7 @@ describe("TaskActions", () => {
 		})
 	})
 
-	// kilocode_change: skip
+	// novacode_change: skip
 	describe.skip("Button States", () => {
 		it("share, export, and copy buttons are always enabled while delete button respects buttonsDisabled state", () => {
 			// Test with buttonsDisabled = false

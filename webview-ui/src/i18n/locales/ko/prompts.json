@@ -8,8 +8,8 @@
 		"noMatchFound": "모드를 찾을 수 없습니다",
 		"editModesConfig": "모드 구성 편집",
 		"editGlobalModes": "전역 모드 편집",
-		"editProjectModes": "프로젝트 모드 편집 (.kilocodemodes)",
-		"createModeHelpText": "모드는 Kilo Code의 행동을 맞춤화하는 특화된 페르소나입니다. <0>모드 사용에 대해 알아보기</0> 또는 <1>모드 사용자 정의하기.</1>",
+		"editProjectModes": "프로젝트 모드 편집 (.novacodemodes)",
+		"createModeHelpText": "모드는 Nova Code의 행동을 맞춤화하는 특화된 페르소나입니다. <0>모드 사용에 대해 알아보기</0> 또는 <1>모드 사용자 정의하기.</1>",
 		"selectMode": "모드 검색"
 	},
 	"apiConfiguration": {
@@ -18,7 +18,7 @@
 	},
 	"organizationMode": {
 		"title": "조직 모드",
-		"description": "이 모드는 조직에서 제공하며 여기서 편집할 수 없습니다. 이 모드를 수정하려면 <dashboardLink>Kilo Code Dashboard</dashboardLink>를 방문하세요.",
+		"description": "이 모드는 조직에서 제공하며 여기서 편집할 수 없습니다. 이 모드를 수정하려면 <dashboardLink>Nova Code Dashboard</dashboardLink>를 방문하세요.",
 		"cannotEdit": "조직 모드는 편집할 수 없습니다"
 	},
 	"tools": {
@@ -39,7 +39,7 @@
 	"roleDefinition": {
 		"title": "역할 정의",
 		"resetToDefault": "기본값으로 재설정",
-		"description": "이 모드에 대한 Kilo Code의 전문성과 성격을 정의하세요. 이 설명은 Kilo Code가 자신을 어떻게 표현하고 작업에 접근하는지 형성합니다."
+		"description": "이 모드에 대한 Nova Code의 전문성과 성격을 정의하세요. 이 설명은 Nova Code가 자신을 어떻게 표현하고 작업에 접근하는지 형성합니다."
 	},
 	"description": {
 		"title": "짧은 설명 (사람용)",
@@ -55,11 +55,11 @@
 		"title": "모드별 사용자 지정 지침 (선택 사항)",
 		"resetToDefault": "기본값으로 재설정",
 		"description": "{{modeName}} 모드에 대한 특정 행동 지침을 추가하세요.",
-		"loadFromFile": "{{mode}} 모드에 특정한 사용자 지정 지침은 작업 공간의 <span>.kilocode/rules-{{slug}}/</span> 폴더 또는 전역 <0>.kilocode/rules-{{slug}}/</0>에서도 로드할 수 있습니다 (.kilocoderules-{{slug}} 및 .clinerules-{{slug}}는 더 이상 사용되지 않으며 곧 작동을 중지합니다)."
+		"loadFromFile": "{{mode}} 모드에 특정한 사용자 지정 지침은 작업 공간의 <span>.novacode/rules-{{slug}}/</span> 폴더 또는 전역 <0>.novacode/rules-{{slug}}/</0>에서도 로드할 수 있습니다 (.novacoderules-{{slug}} 및 .clinerules-{{slug}}는 더 이상 사용되지 않으며 곧 작동을 중지합니다)."
 	},
 	"exportMode": {
 		"title": "모드 내보내기",
-		"description": ".kilocode/rules-{{slug}}/ 폴더의 규칙과 함께 이 모드를 공유 가능한 YAML 파일로 내보냅니다. 원본 파일은 변경되지 않습니다.",
+		"description": ".novacode/rules-{{slug}}/ 폴더의 규칙과 함께 이 모드를 공유 가능한 YAML 파일로 내보냅니다. 원본 파일은 변경되지 않습니다.",
 		"exporting": "내보내는 중..."
 	},
 	"importMode": {
@@ -68,11 +68,11 @@
 		"importing": "가져오는 중...",
 		"global": {
 			"label": "전역 수준",
-			"description": "모든 프로젝트에서 사용 가능합니다. 내보낸 모드에 규칙 파일이 포함되어 있었다면 전역 .kilocode/rules-{slug}/ 폴더에 다시 생성됩니다."
+			"description": "모든 프로젝트에서 사용 가능합니다. 내보낸 모드에 규칙 파일이 포함되어 있었다면 전역 .novacode/rules-{slug}/ 폴더에 다시 생성됩니다."
 		},
 		"project": {
 			"label": "프로젝트 수준",
-			"description": "이 작업 공간에서만 사용할 수 있습니다. 내보낸 모드에 규칙 파일이 포함된 경우 .kilocode/rules-{slug}/ 폴더에 다시 생성됩니다."
+			"description": "이 작업 공간에서만 사용할 수 있습니다. 내보낸 모드에 규칙 파일이 포함된 경우 .novacode/rules-{slug}/ 폴더에 다시 생성됩니다."
 		}
 	},
 	"advanced": {
@@ -81,7 +81,7 @@
 	"globalCustomInstructions": {
 		"title": "모든 모드에 대한 사용자 지정 지침",
 		"description": "이 지침은 모든 모드에 적용됩니다. 아래의 모드별 지침으로 향상될 수 있는 기본 동작 세트를 제공합니다. <0>더 알아보기</0>",
-		"loadFromFile": "지침은 작업 공간의 <span>.kilocode/rules/</span> 폴더 또는 전역 <0>.kilocode/rules/</0>에서도 로드할 수 있습니다 (.kilocoderules 및 .clinerules는 더 이상 사용되지 않으며 곧 작동을 중지합니다)."
+		"loadFromFile": "지침은 작업 공간의 <span>.novacode/rules/</span> 폴더 또는 전역 <0>.novacode/rules/</0>에서도 로드할 수 있습니다 (.novacoderules 및 .clinerules는 더 이상 사용되지 않으며 곧 작동을 중지합니다)."
 	},
 	"systemPrompt": {
 		"preview": "시스템 프롬프트 미리보기",
@@ -110,7 +110,7 @@
 		"types": {
 			"ENHANCE": {
 				"label": "프롬프트 향상",
-				"description": "입력에 맞춤화된 제안이나 개선을 얻기 위해 프롬프트 향상을 사용하세요. 이를 통해 Kilo Code가 의도를 이해하고 최상의 응답을 제공할 수 있습니다. 채팅에서 ✨ 아이콘을 통해 이용 가능합니다."
+				"description": "입력에 맞춤화된 제안이나 개선을 얻기 위해 프롬프트 향상을 사용하세요. 이를 통해 Nova Code가 의도를 이해하고 최상의 응답을 제공할 수 있습니다. 채팅에서 ✨ 아이콘을 통해 이용 가능합니다."
 			},
 			"CONDENSE": {
 				"label": "컨텍스트 압축",
@@ -160,7 +160,7 @@
 	},
 	"advancedSystemPrompt": {
 		"title": "고급: 시스템 프롬프트 재정의",
-		"description": "<2>⚠️ 경고:</2> 이 고급 기능은 안전 장치를 우회합니다. <1>사용하기 전에 이것을 읽으십시오!</1>작업 공간의 <span>.kilocode/system-prompt-{{slug}}</span>에 파일을 생성하여 기본 시스템 프롬프트를 재정의합니다."
+		"description": "<2>⚠️ 경고:</2> 이 고급 기능은 안전 장치를 우회합니다. <1>사용하기 전에 이것을 읽으십시오!</1>작업 공간의 <span>.novacode/system-prompt-{{slug}}</span>에 파일을 생성하여 기본 시스템 프롬프트를 재정의합니다."
 	},
 	"createModeDialog": {
 		"title": "새 모드 만들기",
@@ -181,13 +181,13 @@
 				"description": "모든 작업 공간에서 사용 가능"
 			},
 			"project": {
-				"label": "프로젝트별 (.kilocodemodes)",
+				"label": "프로젝트별 (.novacodemodes)",
 				"description": "이 작업 공간에서만 사용 가능, 전역보다 우선"
 			}
 		},
 		"roleDefinition": {
 			"label": "역할 정의",
-			"description": "이 모드에 대한 Kilo Code의 전문성과 성격을 정의하세요."
+			"description": "이 모드에 대한 Nova Code의 전문성과 성격을 정의하세요."
 		},
 		"whenToUse": {
 			"label": "사용 시기 (선택 사항)",

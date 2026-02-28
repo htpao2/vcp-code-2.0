@@ -8,7 +8,7 @@ export class CorethinkHandler extends BaseOpenAiCompatibleProvider<CorethinkMode
 		super({
 			...options,
 			providerName: "Corethink",
-			baseURL: "https://api.corethink.ai/v1/kilo",
+			baseURL: "https://api.corethink.ai/v1/nova",
 			apiKey: options.corethinkApiKey || "API_KEY_NOT_NEEDED_FOR_NOW",
 			defaultProviderModelId: corethinkDefaultModelId,
 			providerModels: corethinkModels,

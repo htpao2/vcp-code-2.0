@@ -1,4 +1,4 @@
-// kilocode_change - provider added
+﻿// novacode_change - provider added
 import { Anthropic } from "@anthropic-ai/sdk"
 import OpenAI from "openai"
 
@@ -21,7 +21,7 @@ import { getModelParams } from "../transform/model-params"
 import type { SingleCompletionHandler, ApiHandlerCreateMessageMetadata } from "../index"
 import { RouterProvider } from "./router-provider"
 import { getModels } from "./fetchers/modelCache"
-import { verifyFinishReason } from "./kilocode/verifyFinishReason"
+import { verifyFinishReason } from "./nova/verifyFinishReason"
 import { handleOpenAIError } from "./utils/openai-error-handler"
 
 // Extended params type for Poe-specific fields

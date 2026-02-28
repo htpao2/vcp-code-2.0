@@ -1,6 +1,6 @@
 /**
  * Types for the agent runtime.
- * Re-exports from @roo-code/types and @kilocode/core-schemas plus runtime-specific types.
+ * Re-exports from @roo-code/types and @novacode/core-schemas plus runtime-specific types.
  */
 
 // Re-export from @roo-code/types
@@ -15,13 +15,13 @@ export type {
 	ModelInfo,
 } from "@roo-code/types"
 
-// Re-export from @kilocode/core-schemas
+// Re-export from @novacode/core-schemas
 export {
 	type OrganizationAllowList,
 	type Mode,
 	extensionMessageSchema,
 	extensionStateSchema,
-} from "@kilocode/core-schemas"
+} from "@novacode/core-schemas"
 
 // Identity information for VSCode environment
 export interface IdentityInfo {
@@ -145,7 +145,7 @@ export interface ExtensionState {
 	telemetrySetting: string
 	renderContext: "sidebar" | "editor" | "cli"
 	cwd?: string
-	organizationAllowList?: import("@kilocode/core-schemas").OrganizationAllowList
+	organizationAllowList?: import("@novacode/core-schemas").OrganizationAllowList
 	routerModels?: RouterModels
 	appendSystemPrompt?: string
 	experiments?: Record<string, boolean>

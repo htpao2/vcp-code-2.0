@@ -1,4 +1,4 @@
-// kilocode_change new file
+// novacode_change new file
 
 import React, { useMemo, useState } from "react"
 import { SkillMarketplaceItem } from "@roo-code/types"

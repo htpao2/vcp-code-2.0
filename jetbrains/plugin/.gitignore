@@ -44,7 +44,7 @@ bin/
 
 ### Mac OS ###
 .DS_Store
-src/main/resources/ai/kilocode/jetbrains/plugin/config/plugin.properties
+src/main/resources/ai/novacode/jetbrains/plugin/config/plugin.properties
 
 ### Deps ###
 prodDep.txt

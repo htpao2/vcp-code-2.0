@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback, useRef } from "react"
+﻿import React, { useState, useEffect, useMemo, useCallback, useRef } from "react"
 import { Trans } from "react-i18next"
 import { z } from "zod"
 import {
@@ -42,10 +42,10 @@ import {
 } from "@src/components/ui"
 import { useRooPortal } from "@src/components/ui/hooks/useRooPortal"
 import { useEscapeKey } from "@src/hooks/useEscapeKey"
-// kilocode_change start
-import { EmbeddingBatchSizeSlider } from "./kilocode/EmbeddingBatchSizeSlider"
-import { MaxBatchRetriesSlider } from "./kilocode/MaxBatchRetriesSlider"
-// kilocode_change end
+// novacode_change start
+import { EmbeddingBatchSizeSlider } from "./nova/EmbeddingBatchSizeSlider"
+import { MaxBatchRetriesSlider } from "./nova/MaxBatchRetriesSlider"
+// novacode_change end
 import {
 	useOpenRouterModelProviders,
 	OPENROUTER_DEFAULT_PROVIDER_NAME,
@@ -57,12 +57,12 @@ const DEFAULT_OLLAMA_URL = "http://localhost:11434"
 
 interface CodeIndexPopoverProps {
 	children: React.ReactNode
-	// kilocode_change start - Support showing contentOnly and allow external open state control
+	// novacode_change start - Support showing contentOnly and allow external open state control
 	contentOnly?: boolean
 	open?: boolean
 	onOpenChange?: (open: boolean) => void
 	onRegisterCloseHandler?: (handler: () => void) => void
-	// kilocode_change end - Support showing contentOnly and allow external open state control
+	// novacode_change end - Support showing contentOnly and allow external open state control
 	indexingStatus: IndexingStatus
 }
 
@@ -71,10 +71,10 @@ interface LocalCodeIndexSettings {
 	codebaseIndexEnabled: boolean
 	codebaseIndexQdrantUrl: string
 	codebaseIndexEmbedderProvider: EmbedderProvider
-	// kilocode_change - start
+	// novacode_change - start
 	codebaseIndexVectorStoreProvider: "lancedb" | "qdrant"
 	codebaseIndexLancedbVectorStoreDirectory?: string
-	// kilocode_change - end
+	// novacode_change - end
 	codebaseIndexEmbedderBaseUrl?: string
 	codebaseIndexEmbedderModelId: string
 	codebaseIndexEmbedderModelDimension?: number // Generic dimension for all providers
@@ -97,7 +97,7 @@ interface LocalCodeIndexSettings {
 	codebaseIndexVercelAiGatewayApiKey?: string
 	codebaseIndexOpenRouterApiKey?: string
 	codebaseIndexOpenRouterSpecificProvider?: string
-	codebaseIndexVoyageApiKey?: string // kilocode_change
+	codebaseIndexVoyageApiKey?: string // novacode_change
 }
 
 // Validation schema for codebase index settings
@@ -193,7 +193,7 @@ const createValidationSchema = (provider: EmbedderProvider, t: any) => {
 					.min(1, t("settings:codeIndex.validation.modelSelectionRequired")),
 			})
 
-		// kilocode_change start
+		// novacode_change start
 		case "voyage":
 			return baseSchema.extend({
 				codebaseIndexVoyageApiKey: z.string().min(1, t("settings:codeIndex.validation.voyageApiKeyRequired")),
@@ -201,7 +201,7 @@ const createValidationSchema = (provider: EmbedderProvider, t: any) => {
 					.string()
 					.min(1, t("settings:codeIndex.validation.modelSelectionRequired")),
 			})
-		// kilocode_change end
+		// novacode_change end
 
 		default:
 			return baseSchema
@@ -214,23 +214,23 @@ const NoOpWrapper: React.FC<Record<string, any> & { children?: React.ReactNode }
 
 export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 	children,
-	// kilocode_change start - Support contentOnly and external state control
+	// novacode_change start - Support contentOnly and external state control
 	contentOnly,
 	open: externalOpen,
 	onOpenChange: externalOnOpenChange,
 	onRegisterCloseHandler,
-	// kilocode_change end - Support contentOnly and external state control
+	// novacode_change end - Support contentOnly and external state control
 	indexingStatus: externalIndexingStatus,
 }) => {
 	const SECRET_PLACEHOLDER = "••••••••••••••••"
 	const { t } = useAppTranslation()
 	const { codebaseIndexConfig, codebaseIndexModels, cwd, apiConfiguration } = useExtensionState()
 
-	// kilocode_change start - Controlled/uncontrolled pattern for open state
-	// const [open, setOpen] = useState(false) // kilocode_change
+	// novacode_change start - Controlled/uncontrolled pattern for open state
+	// const [open, setOpen] = useState(false) // novacode_change
 	const [internalOpen, setInternalOpen] = useState(false)
 	const open = externalOpen ?? internalOpen
-	// kilocode_change end - Controlled/uncontrolled pattern for open state
+	// novacode_change end - Controlled/uncontrolled pattern for open state
 	const [isAdvancedSettingsOpen, setIsAdvancedSettingsOpen] = useState(false)
 	const [isSetupSettingsOpen, setIsSetupSettingsOpen] = useState(false)
 
@@ -251,10 +251,10 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 		codebaseIndexEnabled: true,
 		codebaseIndexQdrantUrl: "",
 		codebaseIndexEmbedderProvider: "openai",
-		// kilocode_change - start
+		// novacode_change - start
 		codebaseIndexVectorStoreProvider: "qdrant",
 		codebaseIndexLancedbVectorStoreDirectory: undefined,
-		// kilocode_change - end
+		// novacode_change - end
 		codebaseIndexEmbedderBaseUrl: "",
 		codebaseIndexEmbedderModelId: "",
 		codebaseIndexEmbedderModelDimension: undefined,
@@ -273,7 +273,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 		codebaseIndexVercelAiGatewayApiKey: "",
 		codebaseIndexOpenRouterApiKey: "",
 		codebaseIndexOpenRouterSpecificProvider: "",
-		codebaseIndexVoyageApiKey: "", // kilocode_change
+		codebaseIndexVoyageApiKey: "", // novacode_change
 	})
 
 	// Initial settings state - stores the settings when popover opens
@@ -289,23 +289,23 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 
 	// Initialize settings from global state
 	useEffect(() => {
-		// kilocode_change start
+		// novacode_change start
 		// Don't update settings if we just saved (prevents race condition with state updates)
 		// Skip update if we're currently saving or just saved
 		if (saveStatus === "saving" || saveStatus === "saved") {
 			return
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		if (codebaseIndexConfig) {
 			const settings = {
 				codebaseIndexEnabled: codebaseIndexConfig.codebaseIndexEnabled ?? true,
 				codebaseIndexQdrantUrl: codebaseIndexConfig.codebaseIndexQdrantUrl || "",
 				codebaseIndexEmbedderProvider: codebaseIndexConfig.codebaseIndexEmbedderProvider || "openai",
-				// kilocode_change - start
+				// novacode_change - start
 				codebaseIndexVectorStoreProvider: codebaseIndexConfig.codebaseIndexVectorStoreProvider || "qdrant",
 				codebaseIndexLancedbVectorStoreDirectory: codebaseIndexConfig.codebaseIndexLancedbVectorStoreDirectory,
-				// kilocode_change - end
+				// novacode_change - end
 				codebaseIndexEmbedderBaseUrl: codebaseIndexConfig.codebaseIndexEmbedderBaseUrl || "",
 				codebaseIndexEmbedderModelId: codebaseIndexConfig.codebaseIndexEmbedderModelId || "",
 				codebaseIndexEmbedderModelDimension:
@@ -332,7 +332,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 				codebaseIndexOpenRouterApiKey: "",
 				codebaseIndexOpenRouterSpecificProvider:
 					codebaseIndexConfig.codebaseIndexOpenRouterSpecificProvider || "",
-				codebaseIndexVoyageApiKey: "", // kilocode_change
+				codebaseIndexVoyageApiKey: "", // novacode_change
 			}
 			setInitialSettings(settings)
 			setCurrentSettings(settings)
@@ -340,7 +340,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 			// Request secret status to check if secrets exist
 			vscode.postMessage({ type: "requestCodeIndexSecretStatus" })
 		}
-	}, [codebaseIndexConfig, saveStatus]) // kilocode_change - Added saveStatus to dependency array
+	}, [codebaseIndexConfig, saveStatus]) // novacode_change - Added saveStatus to dependency array
 
 	// Request initial indexing status
 	useEffect(() => {
@@ -457,11 +457,11 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 							? SECRET_PLACEHOLDER
 							: ""
 					}
-					// kilocode_change start
+					// novacode_change start
 					if (!prev.codebaseIndexVoyageApiKey || prev.codebaseIndexVoyageApiKey === SECRET_PLACEHOLDER) {
 						updated.codebaseIndexVoyageApiKey = secretStatus.hasVoyageApiKey ? SECRET_PLACEHOLDER : ""
 					}
-					// kilocode_change end
+					// novacode_change end
 
 					return updated
 				}
@@ -522,14 +522,14 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 
 	// Validation function
 	const validateSettings = (): boolean => {
-		// kilocode_change start
+		// novacode_change start
 		// If codebase indexing is disabled, skip validation of configuration fields
 		// User should be able to disable the feature without having all fields filled in
 		if (!currentSettings.codebaseIndexEnabled) {
 			setFormErrors({})
 			return true
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		const schema = createValidationSchema(currentSettings.codebaseIndexEmbedderProvider, t)
 
@@ -546,7 +546,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 					key === "codebaseIndexMistralApiKey" ||
 					key === "codebaseIndexVercelAiGatewayApiKey" ||
 					key === "codebaseIndexOpenRouterApiKey" ||
-					key === "codebaseIndexVoyageApiKey" // kilocode_change
+					key === "codebaseIndexVoyageApiKey" // novacode_change
 				) {
 					dataToValidate[key] = "placeholder-valid"
 				}
@@ -570,13 +570,13 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 				})
 				setFormErrors(errors)
 
-				// kilocode_change start
+				// novacode_change start
 				// Auto-expand Setup section if there are validation errors
 				// (so users can see what needs to be configured)
 				if (Object.keys(errors).length > 0) {
 					setIsSetupSettingsOpen(true)
 				}
-				// kilocode_change end
+				// novacode_change end
 			}
 			return false
 		}
@@ -608,7 +608,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 		[initialSettings],
 	)
 
-	// kilocode_change start - Register close handler for parent popover control
+	// novacode_change start - Register close handler for parent popover control
 	const handleRequestClose = useCallback(() => {
 		// Handler that checks unsaved changes before allowing close
 		checkUnsavedChanges(() => {
@@ -637,19 +637,19 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 		[handleRequestClose, externalOnOpenChange],
 	)
 	const setOpen = externalOnOpenChange ? wrappedOnOpenChange : setInternalOpen
-	// kilocode_change end - Register close handler for parent popover control
+	// novacode_change end - Register close handler for parent popover control
 
 	// Handle popover close with unsaved changes check
 	const handlePopoverClose = useCallback(() => {
 		checkUnsavedChanges(() => {
 			setOpen(false)
 		})
-	}, [checkUnsavedChanges, setOpen]) // kilocode_change
+	}, [checkUnsavedChanges, setOpen]) // novacode_change
 
 	// Use the shared ESC key handler hook - respects unsaved changes logic
 	useEscapeKey(open, handlePopoverClose)
 
-	// kilocode_change start
+	// novacode_change start
 	const handleCancelIndexing = useCallback(() => {
 		// Optimistically update UI while backend cancels
 		setIndexingStatus((prev) => ({
@@ -658,7 +658,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 		}))
 		vscode.postMessage({ type: "cancelIndexing" })
 	}, [t])
-	// kilocode_change end
+	// novacode_change end
 
 	const handleSaveSettings = () => {
 		// Validate settings before saving
@@ -719,11 +719,11 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 		currentSettings.codebaseIndexEmbedderProvider === "openrouter"
 			? currentSettings.codebaseIndexEmbedderModelId
 			: undefined,
-		// kilocode_change start
+		// novacode_change start
 		apiConfiguration?.apiProvider === "openrouter" ? apiConfiguration?.openRouterBaseUrl : undefined,
 		apiConfiguration?.apiKey,
-		apiConfiguration?.kilocodeOrganizationId ?? "personal",
-		// kilocode_change end
+		apiConfiguration?.novacodeOrganizationId ?? "personal",
+		// novacode_change end
 		{
 			enabled:
 				currentSettings.codebaseIndexEmbedderProvider === "openrouter" &&
@@ -740,7 +740,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 
 	return (
 		<>
-			{/* kilocode_change - Popover -> MaybePopover */}
+			{/* novacode_change - Popover -> MaybePopover */}
 			<MaybePopover
 				open={open}
 				onOpenChange={(newOpen) => {
@@ -752,7 +752,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 					}
 				}}>
 				{children}
-				{/* kilocode_change - PopoverContent -> MaybePopoverContent */}
+				{/* novacode_change - PopoverContent -> MaybePopoverContent */}
 				<MaybePopoverContent
 					className="w-[calc(100vw-32px)] max-w-[450px] max-h-[80vh] overflow-y-auto p-0"
 					align="end"
@@ -905,11 +905,11 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 												<SelectItem value="openrouter">
 													{t("settings:codeIndex.openRouterProvider")}
 												</SelectItem>
-												{/* kilocode_change start */}
+												{/* novacode_change start */}
 												<SelectItem value="voyage">
 													{t("settings:codeIndex.voyageProvider")}
 												</SelectItem>
-												{/* kilocode_change end */}
+												{/* novacode_change end */}
 											</SelectContent>
 										</Select>
 									</div>
@@ -1303,7 +1303,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 									)}
 
 									{/* vectorStoreProviderLabel */}
-									{/* kilocode_change start */}
+									{/* novacode_change start */}
 									<div className="space-y-2">
 										<label className="text-sm font-medium">
 											{t("settings:codeIndex.vectorStoreProviderLabel")}
@@ -1322,7 +1322,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 											</SelectContent>
 										</Select>
 									</div>
-									{/* kilocode_change end */}
+									{/* novacode_change end */}
 
 									{currentSettings.codebaseIndexEmbedderProvider === "vercel-ai-gateway" && (
 										<>
@@ -1601,7 +1601,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 										</>
 									)}
 
-									{/* kilocode_change start */}
+									{/* novacode_change start */}
 									{/* Voyage AI Settings */}
 									{currentSettings.codebaseIndexEmbedderProvider === "voyage" && (
 										<>
@@ -1667,7 +1667,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 											</div>
 										</>
 									)}
-									{/* kilocode_change end */}
+									{/* novacode_change end */}
 
 									{/* Qdrant Settings */}
 									{currentSettings.codebaseIndexVectorStoreProvider === "qdrant" && (
@@ -1724,7 +1724,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 										</>
 									)}
 
-									{/* kilocode_change start */}
+									{/* novacode_change start */}
 									{/* LanceDB Vector Store Settings */}
 									{currentSettings.codebaseIndexVectorStoreProvider === "lancedb" && (
 										<div className="space-y-2">
@@ -1749,7 +1749,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 											</p>
 										</div>
 									)}
-									{/* kilocode_change end */}
+									{/* novacode_change end */}
 								</div>
 							)}
 						</div>
@@ -1859,7 +1859,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 										</div>
 									</div>
 
-									{/* kilocode_change start */}
+									{/* novacode_change start */}
 									<EmbeddingBatchSizeSlider
 										value={currentSettings.codebaseIndexEmbeddingBatchSize}
 										onChange={(value) => updateSetting("codebaseIndexEmbeddingBatchSize", value)}
@@ -1871,7 +1871,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 											updateSetting("codebaseIndexScannerMaxBatchRetries", value)
 										}
 									/>
-									{/* kilocode_change end */}
+									{/* novacode_change end */}
 								</div>
 							)}
 						</div>
@@ -1879,7 +1879,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 						{/* Action Buttons */}
 						<div className="flex items-center justify-between gap-2 pt-6">
 							<div className="flex gap-2">
-								{/* kilocode_change start */}
+								{/* novacode_change start */}
 								{currentSettings.codebaseIndexEnabled && indexingStatus.systemStatus === "Indexing" && (
 									<VSCodeButton
 										appearance="secondary"
@@ -1888,7 +1888,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 										{t("settings:codeIndex.cancelIndexingButton")}
 									</VSCodeButton>
 								)}
-								{/* kilocode_change end */}
+								{/* novacode_change end */}
 								{currentSettings.codebaseIndexEnabled &&
 									(indexingStatus.systemStatus === "Error" ||
 										indexingStatus.systemStatus === "Standby") && (
@@ -1949,9 +1949,9 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 							</div>
 						)}
 					</div>
-					{/* kilocode_change - PopoverContent -> MaybePopoverContent */}
+					{/* novacode_change - PopoverContent -> MaybePopoverContent */}
 				</MaybePopoverContent>
-				{/* kilocode_change - Popover -> MaybePopover */}
+				{/* novacode_change - Popover -> MaybePopover */}
 			</MaybePopover>
 
 			{/* Discard Changes Dialog */}

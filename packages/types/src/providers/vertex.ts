@@ -6,7 +6,7 @@ export type VertexModelId = keyof typeof vertexModels
 export const vertexDefaultModelId: VertexModelId = "claude-sonnet-4-5@20250929"
 
 export const vertexModels = {
-	// kilocode_change start
+	// novacode_change start
 	"claude-opus-4-6": {
 		maxTokens: 128_000,
 		contextWindow: 200_000,
@@ -21,13 +21,13 @@ export const vertexModels = {
 		supportsAdaptiveThinking: true,
 		supportsVerbosity: ["low", "medium", "high", "max"],
 	},
-	// kilocode_change end
+	// novacode_change end
 	"gemini-3.1-pro-preview": {
 		maxTokens: 65_536,
 		contextWindow: 1_048_576,
 		supportsImages: true,
-		supportsNativeTools: true, // kilocode_change
-		defaultToolProtocol: "native", // kilocode_change
+		supportsNativeTools: true, // novacode_change
+		defaultToolProtocol: "native", // novacode_change
 		supportsPromptCache: true,
 		supportsReasoningEffort: ["low", "medium", "high"],
 		reasoningEffort: "low",
@@ -595,7 +595,7 @@ export const vertexModels = {
 	},
 } as const satisfies Record<string, ModelInfo>
 
-// kilocode_change start
+// novacode_change start
 /**
  * Normalize legacy Vertex model IDs to canonical IDs.
  *
@@ -618,7 +618,7 @@ export function normalizeVertexModelId(modelId: string): VertexModelId {
 			return vertexDefaultModelId
 	}
 }
-// kilocode_change end
+// novacode_change end
 
 // Vertex AI models that support 1M context window beta
 // Uses the same beta header 'context-1m-2025-08-07' as Anthropic and Bedrock

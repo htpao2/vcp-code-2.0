@@ -111,7 +111,7 @@ describe("ThinkingBudget", () => {
 		expect(screen.queryByTestId("reasoning-effort")).not.toBeInTheDocument()
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	it("should default binary reasoning toggle to enabled when setting is unset", () => {
 		render(
 			<ThinkingBudget
@@ -145,7 +145,7 @@ describe("ThinkingBudget", () => {
 
 		expect(screen.getByRole("checkbox")).not.toBeChecked()
 	})
-	// kilocode_change end
+	// novacode_change end
 
 	it("should render sliders when model supports thinking", () => {
 		render(<ThinkingBudget {...defaultProps} />)

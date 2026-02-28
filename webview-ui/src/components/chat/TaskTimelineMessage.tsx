@@ -22,7 +22,7 @@ interface TaskTimelineMessageProps {
 export const TaskTimelineMessage = memo(({ data, activeIndex, onClick }: TaskTimelineMessageProps) => {
 	const { t } = useTranslation()
 	const messageDescription = getMessageTypeDescription(data.message, t)
-	const tooltip = t("kilocode:taskTimeline.tooltip.clickToScroll", {
+	const tooltip = t("novacode:taskTimeline.tooltip.clickToScroll", {
 		messageType: messageDescription,
 		messageNumber: data.index + 1,
 	})

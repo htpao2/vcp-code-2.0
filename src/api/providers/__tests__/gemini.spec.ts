@@ -19,19 +19,19 @@ import { GeminiHandler } from "../gemini"
 
 const GEMINI_MODEL_NAME = geminiDefaultModelId
 
-// kilocode_change start
+// novacode_change start
 const getGeminiModelsMock = vi.hoisted(() => vi.fn())
 
 vi.mock("../fetchers/gemini", () => ({
 	getGeminiModels: getGeminiModelsMock,
 }))
-// kilocode_change end
+// novacode_change end
 
 describe("GeminiHandler", () => {
 	let handler: GeminiHandler
 
 	beforeEach(() => {
-		// kilocode_change start
+		// novacode_change start
 		getGeminiModelsMock.mockReset()
 		getGeminiModelsMock.mockResolvedValue({
 			[geminiDefaultModelId]: {
@@ -40,7 +40,7 @@ describe("GeminiHandler", () => {
 				supportsPromptCache: false,
 			},
 		})
-		// kilocode_change end
+		// novacode_change end
 		// Reset mocks
 		mockCaptureException.mockClear()
 
@@ -181,8 +181,8 @@ describe("GeminiHandler", () => {
 			const modelInfo = handler.getModel()
 			expect(modelInfo.id).toBe(GEMINI_MODEL_NAME)
 			expect(modelInfo.info).toBeDefined()
-			expect(modelInfo.info.supportsNativeTools).toBe(true) // kilocode_change
-			expect(modelInfo.info.defaultToolProtocol).toBe("native") // kilocode_change
+			expect(modelInfo.info.supportsNativeTools).toBe(true) // novacode_change
+			expect(modelInfo.info.defaultToolProtocol).toBe("native") // novacode_change
 		})
 
 		it("should return default model if invalid model specified", () => {
@@ -194,7 +194,7 @@ describe("GeminiHandler", () => {
 			expect(modelInfo.id).toBe(geminiDefaultModelId) // Default model
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("should preserve customtools model alias after dynamic model loading", async () => {
 			const customToolsModelId = "gemini-3.1-pro-preview-customtools"
 			getGeminiModelsMock.mockResolvedValueOnce({
@@ -245,7 +245,7 @@ describe("GeminiHandler", () => {
 				}),
 			)
 		})
-		// kilocode_change end
+		// novacode_change end
 	})
 
 	describe("calculateCost", () => {

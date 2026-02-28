@@ -59,10 +59,10 @@ export async function getZenmuxModels(
 				contextWindow,
 				supportsImages: input_modalities?.includes("image") ?? false,
 				supportsPromptCache: false,
-				// kilocode_change start
+				// novacode_change start
 				supportsNativeTools: true,
 				defaultToolProtocol: "native",
-				// kilocode_change end
+				// novacode_change end
 				inputPrice: 0,
 				outputPrice: 0,
 				description: `${owned_by || "ZenMux"} model`,

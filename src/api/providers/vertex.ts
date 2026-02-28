@@ -14,10 +14,10 @@ export class VertexHandler extends GeminiHandler implements SingleCompletionHand
 
 	override getModel() {
 		const modelId = this.options.apiModelId
-		// kilocode_change start
+		// novacode_change start
 		let id: VertexModelId = modelId ? normalizeVertexModelId(modelId) : normalizeVertexModelId("")
 		const info: ModelInfo = vertexModels[id]
-		// kilocode_change end
+		// novacode_change end
 		const params = getModelParams({ format: "gemini", modelId: id, model: info, settings: this.options })
 
 		// The `:thinking` suffix indicates that the model is a "Hybrid"

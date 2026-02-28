@@ -10,7 +10,7 @@ import {
 import { getToolDescriptionsForMode } from "../index"
 import * as toolsModule from "../../../../shared/tools"
 
-// kilocode_change start
+// novacode_change start
 vi.mock("../../../../services/code-index/managed/ManagedIndexer", () => ({
 	ManagedIndexer: {
 		getInstance: () => ({
@@ -18,7 +18,7 @@ vi.mock("../../../../services/code-index/managed/ManagedIndexer", () => ({
 		}),
 	},
 }))
-// kilocode_change end
+// novacode_change end
 
 describe("filterNativeToolsForMode", () => {
 	const mockNativeTools: OpenAI.Chat.ChatCompletionTool[] = [
@@ -283,7 +283,7 @@ describe("filterNativeToolsForMode", () => {
 			{},
 			undefined,
 			{},
-			undefined, // kilocode_change
+			undefined, // novacode_change
 			mockMcpHub,
 		)
 		const toolNames = filtered.map((t) => ("function" in t ? t.function.name : ""))
@@ -326,7 +326,7 @@ describe("filterNativeToolsForMode", () => {
 			{},
 			undefined,
 			{},
-			undefined, // kilocode_change
+			undefined, // novacode_change
 			mockMcpHub,
 		)
 		const toolNames = filtered.map((t) => ("function" in t ? t.function.name : ""))
@@ -431,7 +431,7 @@ describe("filterNativeToolsForMode", () => {
 		expect(toolNames).not.toContain("run_slash_command")
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	it("should exclude ask_followup_question when yoloMode is enabled", () => {
 		const codeMode: ModeConfig = {
 			slug: "code",
@@ -475,7 +475,7 @@ describe("filterNativeToolsForMode", () => {
 		const toolNames = filtered.map((t) => ("function" in t ? t.function.name : ""))
 		expect(toolNames).toContain("ask_followup_question")
 	})
-	// kilocode_change end
+	// novacode_change end
 })
 
 describe("filterMcpToolsForMode", () => {
@@ -924,7 +924,7 @@ describe("filterMcpToolsForMode", () => {
 	})
 })
 
-// kilocode_change start
+// novacode_change start
 describe("getToolDescriptionsForMode", () => {
 	it("should exclude ask_followup_question when yoloMode is enabled", () => {
 		const result = getToolDescriptionsForMode(
@@ -966,7 +966,7 @@ describe("getToolDescriptionsForMode", () => {
 		expect(result).toContain("ask_followup_question")
 	})
 })
-// kilocode_change end
+// novacode_change end
 describe("resolveToolAlias", () => {
 	it("should resolve known alias to canonical name", () => {
 		// write_file is an alias for write_to_file (defined in TOOL_ALIASES)

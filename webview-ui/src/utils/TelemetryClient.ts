@@ -13,7 +13,7 @@ class TelemetryClient {
 			TelemetryClient.telemetryEnabled = true
 
 			posthog.init(apiKey, {
-				api_host: "https://us.i.posthog.com", // kilocode_change
+				api_host: "https://us.i.posthog.com", // novacode_change
 				ui_host: "https://us.posthog.com",
 				persistence: "localStorage",
 				loaded: () => posthog.identify(distinctId),
@@ -22,7 +22,7 @@ class TelemetryClient {
 				autocapture: false,
 			})
 
-			posthog.identify(distinctId) // kilocode_change: loaded above only works the first time
+			posthog.identify(distinctId) // novacode_change: loaded above only works the first time
 		} else {
 			TelemetryClient.telemetryEnabled = false
 		}
@@ -36,7 +36,7 @@ class TelemetryClient {
 		return TelemetryClient.instance
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	public captureException(error: Error, properties?: Record<string, any>) {
 		if (TelemetryClient.telemetryEnabled) {
 			try {
@@ -46,7 +46,7 @@ class TelemetryClient {
 			}
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	public capture(eventName: string, properties?: Record<string, any>) {
 		if (TelemetryClient.telemetryEnabled) {

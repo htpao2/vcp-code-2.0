@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 // npx vitest run src/api/providers/__tests__/mistral-fim.spec.ts
 
 // Mock vscode first to avoid import errors

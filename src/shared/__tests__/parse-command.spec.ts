@@ -1,4 +1,4 @@
-// kilocode_change new file
+// novacode_change new file
 
 import { parseCommand } from "../parse-command"
 
@@ -37,7 +37,7 @@ describe("parseCommand", () => {
 		})
 	})
 
-	// kilocode_change start - tests for multi-line quoted strings
+	// novacode_change start - tests for multi-line quoted strings
 	describe("multi-line quoted strings", () => {
 		it("preserves newlines within double quotes", () => {
 			const command = `echo "Hello\nWorld"`
@@ -91,5 +91,5 @@ describe("parseCommand", () => {
 			expect(result[0]).toContain("\r\n")
 		})
 	})
-	// kilocode_change end
+	// novacode_change end
 })

@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { normalizeVertexModelId } from "../vertex.js"
 
 describe("normalizeVertexModelId", () => {

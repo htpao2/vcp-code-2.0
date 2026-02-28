@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 /**
  * Unit tests for MCP OAuth utilities
  */

@@ -14,14 +14,14 @@ import { getOllamaModels } from "./fetchers/ollama"
 import { XmlMatcher } from "../../utils/xml-matcher"
 import type { SingleCompletionHandler, ApiHandlerCreateMessageMetadata } from "../index"
 
-// kilocode_change start
+// novacode_change start
 const TOKEN_ESTIMATION_FACTOR = 4 //Industry standard technique for estimating token counts without actually implementing a parser/tokenizer
 
 function estimateOllamaTokenCount(messages: Message[]): number {
 	const totalChars = messages.reduce((acc, msg) => acc + (msg.content?.length || 0), 0)
 	return Math.ceil(totalChars / TOKEN_ESTIMATION_FACTOR)
 }
-// kilocode_change end
+// novacode_change end
 
 interface OllamaChatOptions {
 	temperature: number
@@ -163,17 +163,17 @@ export class NativeOllamaHandler extends BaseProvider implements SingleCompletio
 	protected options: ApiHandlerOptions
 	private client: Ollama | undefined
 	protected models: Record<string, ModelInfo> = {}
-	private isInitialized = false // kilocode_change
-	private modelFetchError: string | null = null // kilocode_change - track fetch errors for better diagnostics
-	private initializationPromise: Promise<void> | null = null // kilocode_change - prevent race condition
+	private isInitialized = false // novacode_change
+	private modelFetchError: string | null = null // novacode_change - track fetch errors for better diagnostics
+	private initializationPromise: Promise<void> | null = null // novacode_change - prevent race condition
 
 	constructor(options: ApiHandlerOptions) {
 		super()
 		this.options = options
-		this.initializationPromise = this.initialize() // kilocode_change - store the promise
+		this.initializationPromise = this.initialize() // novacode_change - store the promise
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	private async initialize(): Promise<void> {
 		if (this.isInitialized) {
 			return
@@ -187,7 +187,7 @@ export class NativeOllamaHandler extends BaseProvider implements SingleCompletio
 			await this.initializationPromise
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	private ensureClient(): Ollama {
 		if (!this.client) {
@@ -239,12 +239,12 @@ export class NativeOllamaHandler extends BaseProvider implements SingleCompletio
 		messages: Anthropic.Messages.MessageParam[],
 		metadata?: ApiHandlerCreateMessageMetadata,
 	): ApiStream {
-		// kilocode_change start
+		// novacode_change start
 		await this.ensureInitialized()
-		// kilocode_change end
+		// novacode_change end
 
 		const client = this.ensureClient()
-		const { id: modelId, info: modelInfo } = this.getModel() // kilocode_change: fetchModel => getModel
+		const { id: modelId, info: modelInfo } = this.getModel() // novacode_change: fetchModel => getModel
 		const useR1Format = modelId.toLowerCase().includes("deepseek-r1")
 
 		const ollamaMessages: Message[] = [
@@ -252,7 +252,7 @@ export class NativeOllamaHandler extends BaseProvider implements SingleCompletio
 			...convertToOllamaMessages(messages),
 		]
 
-		// kilocode_change start
+		// novacode_change start
 		// it is tedious we have to check this, but Ollama's quiet prompt-truncating behavior is a support nightmare otherwise
 		const estimatedTokenCount = estimateOllamaTokenCount(ollamaMessages)
 		const maxTokens = this.options.ollamaNumCtx ?? modelInfo.contextWindow
@@ -261,7 +261,7 @@ export class NativeOllamaHandler extends BaseProvider implements SingleCompletio
 				`Prompt is too long (estimated tokens: ${estimatedTokenCount}, max tokens: ${maxTokens}). Increase the Context Window Size in Settings.`,
 			)
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		const matcher = new XmlMatcher(
 			"think",
@@ -387,7 +387,7 @@ export class NativeOllamaHandler extends BaseProvider implements SingleCompletio
 	}
 
 	async fetchModel() {
-		// kilocode_change start
+		// novacode_change start
 		try {
 			this.modelFetchError = null
 			this.models = await getOllamaModels(
@@ -403,14 +403,14 @@ export class NativeOllamaHandler extends BaseProvider implements SingleCompletio
 			this.models = {}
 		}
 		return this.models
-		// kilocode_change end
+		// novacode_change end
 	}
 
 	override getModel(): { id: string; info: ModelInfo } {
 		const modelId = this.options.ollamaModelId || ""
 		const userContextWindow = this.options.ollamaNumCtx
 
-		// kilocode_change start
+		// novacode_change start
 		// If not yet initialized, return default model info to allow getEnvironmentDetails to work
 		// The actual model validation will happen in createMessage() after ensureInitialized()
 		if (!this.isInitialized) {
@@ -446,22 +446,22 @@ export class NativeOllamaHandler extends BaseProvider implements SingleCompletio
 
 		// Override contextWindow with user's setting if provided
 		const finalModelInfo = userContextWindow ? { ...modelInfo, contextWindow: userContextWindow } : modelInfo
-		// kilocode_change end
+		// novacode_change end
 
 		return {
 			id: modelId,
-			info: finalModelInfo, // kilocode_change
+			info: finalModelInfo, // novacode_change
 		}
 	}
 
 	async completePrompt(prompt: string): Promise<string> {
 		try {
-			// kilocode_change start
+			// novacode_change start
 			await this.ensureInitialized()
-			// kilocode_change end
+			// novacode_change end
 
 			const client = this.ensureClient()
-			const { id: modelId } = this.getModel() // kilocode_change: fetchModel => getModel
+			const { id: modelId } = this.getModel() // novacode_change: fetchModel => getModel
 			const useR1Format = modelId.toLowerCase().includes("deepseek-r1")
 
 			// Build options object conditionally

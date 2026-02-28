@@ -1,4 +1,4 @@
-// kilocode_change - new file
+﻿// novacode_change - new file
 import { Anthropic } from "@anthropic-ai/sdk"
 import OpenAI, { AzureOpenAI } from "openai"
 
@@ -18,7 +18,7 @@ import { calculateApiCostOpenAI } from "../../shared/cost"
 import { BaseProvider } from "./base-provider"
 import type { SingleCompletionHandler, ApiHandlerCreateMessageMetadata } from "../index"
 import { getApiRequestTimeout } from "./utils/timeout-config"
-import { normalizeObjectAdditionalPropertiesFalse } from "./kilocode/openai-strict-schema" // kilocode_change
+import { normalizeObjectAdditionalPropertiesFalse } from "./nova/openai-strict-schema" // novacode_change
 import { isMcpTool } from "../../utils/mcp-name"
 
 export type OpenAiResponsesModel = ReturnType<OpenAiCompatibleResponsesHandler["getModel"]>
@@ -71,9 +71,9 @@ export class OpenAiCompatibleResponsesHandler extends BaseProvider implements Si
 		messages: Anthropic.Messages.MessageParam[],
 		metadata?: ApiHandlerCreateMessageMetadata,
 	): ApiStream {
-		// kilocode_change start
+		// novacode_change start
 		this.assertSupportedResponsesEndpoint()
-		// kilocode_change end
+		// novacode_change end
 		const model = this.getModel()
 		yield* this.handleResponsesApiMessage(model, systemPrompt, messages, metadata)
 	}
@@ -277,9 +277,9 @@ export class OpenAiCompatibleResponsesHandler extends BaseProvider implements Si
 	}
 
 	private async *makeResponsesApiRequest(requestBody: any): ApiStream {
-		// kilocode_change start
+		// novacode_change start
 		this.assertSupportedResponsesEndpoint()
-		// kilocode_change end
+		// novacode_change end
 		const apiKey = this.options.openAiApiKey ?? "not-provided"
 		const { url, headers } = this.getResponsesFallbackTarget(apiKey)
 
@@ -311,14 +311,14 @@ export class OpenAiCompatibleResponsesHandler extends BaseProvider implements Si
 						errorMessage = "Access denied. Your API key doesn't have access to this resource."
 						break
 					case 404:
-						// kilocode_change start
+						// novacode_change start
 						errorMessage = this.isAzureOpenAiEndpoint
 							? "Responses API endpoint not found. For Azure OpenAI, use a base URL like https://<resource>.openai.azure.com/openai/v1 and set model to your deployment name."
 							: "Responses API endpoint not found. The endpoint may not be available yet or requires a different configuration."
 						if ((this.options.openAiBaseUrl || "").includes("/deployments/")) {
 							errorMessage += " Do not use a /deployments/.../chat/completions URL as the base URL."
 						}
-						// kilocode_change end
+						// novacode_change end
 						break
 					case 429:
 						errorMessage = "Rate limit exceeded. Please try again later."
@@ -498,9 +498,9 @@ export class OpenAiCompatibleResponsesHandler extends BaseProvider implements Si
 	}
 
 	async completePrompt(prompt: string): Promise<string> {
-		// kilocode_change start
+		// novacode_change start
 		this.assertSupportedResponsesEndpoint()
-		// kilocode_change end
+		// novacode_change end
 		this.abortController = new AbortController()
 
 		try {
@@ -545,7 +545,7 @@ export class OpenAiCompatibleResponsesHandler extends BaseProvider implements Si
 		}
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	private assertSupportedResponsesEndpoint(): void {
 		if (this.isAzureAiInferenceEndpoint) {
 			throw new Error(
@@ -623,7 +623,7 @@ export class OpenAiCompatibleResponsesHandler extends BaseProvider implements Si
 		const pathname = url.pathname.replace(/\/+$/, "")
 		return !pathname.includes("/openai/v1")
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	protected _getUrlHost(baseUrl?: string): string {
 		try {

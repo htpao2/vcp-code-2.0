@@ -6,7 +6,7 @@ import { Package } from "@roo/package"
 import { useAppTranslation } from "@/i18n/TranslationContext"
 import { VSCodeCheckbox } from "@vscode/webview-ui-toolkit/react"
 import { vscode } from "@/utils/vscode"
-import { Button, Input, Slider, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui" // kilocode_change
+import { Button, Input, Slider, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui" // novacode_change
 
 import { SetCachedStateField } from "./types"
 import { SectionHeader } from "./SectionHeader"
@@ -24,7 +24,7 @@ type AutoApproveSettingsProps = HTMLAttributes<HTMLDivElement> & {
 	alwaysAllowWrite?: boolean
 	alwaysAllowWriteOutsideWorkspace?: boolean
 	alwaysAllowWriteProtected?: boolean
-	alwaysAllowDelete?: boolean // kilocode_change
+	alwaysAllowDelete?: boolean // novacode_change
 	alwaysAllowBrowser?: boolean
 	alwaysAllowMcp?: boolean
 	alwaysAllowModeSwitch?: boolean
@@ -35,9 +35,9 @@ type AutoApproveSettingsProps = HTMLAttributes<HTMLDivElement> & {
 	allowedCommands?: string[]
 	allowedMaxRequests?: number | undefined
 	allowedMaxCost?: number | undefined
-	showAutoApproveMenu?: boolean // kilocode_change
-	yoloMode?: boolean // kilocode_change
-	yoloGatekeeperApiConfigId?: string // kilocode_change: AI gatekeeper for YOLO mode
+	showAutoApproveMenu?: boolean // novacode_change
+	yoloMode?: boolean // novacode_change
+	yoloGatekeeperApiConfigId?: string // novacode_change: AI gatekeeper for YOLO mode
 	deniedCommands?: string[]
 	setCachedStateField: SetCachedStateField<
 		| "alwaysAllowReadOnly"
@@ -45,7 +45,7 @@ type AutoApproveSettingsProps = HTMLAttributes<HTMLDivElement> & {
 		| "alwaysAllowWrite"
 		| "alwaysAllowWriteOutsideWorkspace"
 		| "alwaysAllowWriteProtected"
-		| "alwaysAllowDelete" // kilocode_change
+		| "alwaysAllowDelete" // novacode_change
 		| "alwaysAllowBrowser"
 		| "alwaysAllowMcp"
 		| "alwaysAllowModeSwitch"
@@ -56,9 +56,9 @@ type AutoApproveSettingsProps = HTMLAttributes<HTMLDivElement> & {
 		| "allowedCommands"
 		| "allowedMaxRequests"
 		| "allowedMaxCost"
-		| "showAutoApproveMenu" // kilocode_change
-		| "yoloMode" // kilocode_change
-		| "yoloGatekeeperApiConfigId" // kilocode_change: AI gatekeeper for YOLO mode
+		| "showAutoApproveMenu" // novacode_change
+		| "yoloMode" // novacode_change
+		| "yoloGatekeeperApiConfigId" // novacode_change: AI gatekeeper for YOLO mode
 		| "deniedCommands"
 	>
 }
@@ -69,7 +69,7 @@ export const AutoApproveSettings = ({
 	alwaysAllowWrite,
 	alwaysAllowWriteOutsideWorkspace,
 	alwaysAllowWriteProtected,
-	alwaysAllowDelete, // kilocode_change
+	alwaysAllowDelete, // novacode_change
 	alwaysAllowBrowser,
 	alwaysAllowMcp,
 	alwaysAllowModeSwitch,
@@ -80,9 +80,9 @@ export const AutoApproveSettings = ({
 	allowedCommands,
 	allowedMaxRequests,
 	allowedMaxCost,
-	showAutoApproveMenu, // kilocode_change
-	yoloMode, // kilocode_change
-	yoloGatekeeperApiConfigId, // kilocode_change: AI gatekeeper for YOLO mode
+	showAutoApproveMenu, // novacode_change
+	yoloMode, // novacode_change
+	yoloGatekeeperApiConfigId, // novacode_change: AI gatekeeper for YOLO mode
 	deniedCommands,
 	setCachedStateField,
 	...props
@@ -90,7 +90,7 @@ export const AutoApproveSettings = ({
 	const { t } = useAppTranslation()
 	const [commandInput, setCommandInput] = useState("")
 	const [deniedCommandInput, setDeniedCommandInput] = useState("")
-	const { autoApprovalEnabled, setAutoApprovalEnabled, listApiConfigMeta } = useExtensionState() // kilocode_change: Add listApiConfigMeta for gatekeeper
+	const { autoApprovalEnabled, setAutoApprovalEnabled, listApiConfigMeta } = useExtensionState() // novacode_change: Add listApiConfigMeta for gatekeeper
 
 	const toggles = useAutoApprovalToggles()
 
@@ -122,7 +122,7 @@ export const AutoApproveSettings = ({
 		<div {...props}>
 			<SectionHeader>{t("settings:sections.autoApprove")}</SectionHeader>
 
-			{/* kilocode_change start */}
+			{/* novacode_change start */}
 			{yoloMode && (
 				<Section>
 					<div className="bg-yellow-500/10 border border-yellow-500/30 rounded p-3 flex items-center gap-2">
@@ -133,7 +133,7 @@ export const AutoApproveSettings = ({
 					</div>
 				</Section>
 			)}
-			{/* kilocode_change end */}
+			{/* novacode_change end */}
 
 			<Section>
 				<div>
@@ -194,7 +194,7 @@ export const AutoApproveSettings = ({
 					<AutoApproveToggle
 						alwaysAllowReadOnly={alwaysAllowReadOnly}
 						alwaysAllowWrite={alwaysAllowWrite}
-						alwaysAllowDelete={alwaysAllowDelete} // kilocode_change
+						alwaysAllowDelete={alwaysAllowDelete} // novacode_change
 						alwaysAllowBrowser={alwaysAllowBrowser}
 						alwaysAllowMcp={alwaysAllowMcp}
 						alwaysAllowModeSwitch={alwaysAllowModeSwitch}
@@ -437,7 +437,7 @@ export const AutoApproveSettings = ({
 				)}
 			</Section>
 
-			{/* kilocode_change start */}
+			{/* novacode_change start */}
 			<Section>
 				<div className="border-2 border-yellow-500 rounded-md p-4 bg-yellow-500/10">
 					<div className="flex items-center gap-2 mb-3">
@@ -461,7 +461,7 @@ export const AutoApproveSettings = ({
 						</p>
 					</div>
 
-					{/* kilocode_change start: AI gatekeeper for YOLO mode */}
+					{/* novacode_change start: AI gatekeeper for YOLO mode */}
 					{yoloMode && (
 						<div className="mt-4 pl-6 border-l-2 border-yellow-500/50">
 							<label className="block font-medium mb-1">AI Safety Gatekeeper (Optional)</label>
@@ -497,10 +497,10 @@ export const AutoApproveSettings = ({
 							</div>
 						</div>
 					)}
-					{/* kilocode_change end */}
+					{/* novacode_change end */}
 				</div>
 			</Section>
-			{/* kilocode_change end */}
+			{/* novacode_change end */}
 		</div>
 	)
 }

@@ -22,13 +22,13 @@ import { TelemetryService } from "@roo-code/telemetry"
 
 import { logger } from "../../utils/logging"
 
-// kilocode_change start: Configuration change event types
+// novacode_change start: Configuration change event types
 export interface ManagedIndexerConfig {
-	kilocodeToken: string | null
-	kilocodeOrganizationId: string | null
-	kilocodeTesterWarningsDisabledUntil: number | null
+	novacodeToken: string | null
+	novacodeOrganizationId: string | null
+	novacodeTesterWarningsDisabledUntil: number | null
 }
-// kilocode_change end
+// novacode_change end
 
 type GlobalStateKey = keyof GlobalState
 type SecretStateKey = keyof SecretState
@@ -50,9 +50,9 @@ export class ContextProxy {
 	private stateCache: GlobalState
 	private secretCache: SecretState
 	private _isInitialized = false
-	// kilocode_change start: Event emitter for configuration changes
+	// novacode_change start: Event emitter for configuration changes
 	private readonly configEmitter = new EventEmitter()
-	// kilocode_change end
+	// novacode_change end
 
 	constructor(context: vscode.ExtensionContext) {
 		this.originalContext = context
@@ -282,7 +282,7 @@ export class ContextProxy {
 		])
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	/**
 	 * WorkspaceState
 	 */
@@ -293,7 +293,7 @@ export class ContextProxy {
 	async getWorkspaceState(context: vscode.ExtensionContext, key: string) {
 		return await context.workspaceState.get(key)
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	/**
 	 * GlobalSettings
@@ -368,11 +368,11 @@ export class ContextProxy {
 	}
 
 	public async setProviderSettings(values: ProviderSettings) {
-		// kilocode_change start: Capture old values for change detection
-		const oldToken = this.secretCache.kilocodeToken
-		const oldOrgId = this.stateCache.kilocodeOrganizationId
-		const oldTesterWarnings = this.stateCache.kilocodeTesterWarningsDisabledUntil
-		// kilocode_change end
+		// novacode_change start: Capture old values for change detection
+		const oldNovaToken = this.secretCache.novacodeToken
+		const oldNovaOrgId = this.stateCache.novacodeOrganizationId
+		const oldNovaTesterWarnings = this.stateCache.novacodeTesterWarningsDisabledUntil
+		// novacode_change end
 
 		// Explicitly clear out any old API configuration values before that
 		// might not be present in the new configuration.
@@ -391,24 +391,28 @@ export class ContextProxy {
 
 		await this.setValues({
 			...PROVIDER_SETTINGS_KEYS.filter((key) => !isSecretStateKey(key))
-				.filter((key) => this.stateCache[key] !== undefined) // kilocode_change
+				.filter((key) => this.stateCache[key] !== undefined) // novacode_change
 				.reduce((acc, key) => ({ ...acc, [key]: undefined }), {} as ProviderSettings),
 			...values,
 		})
 
-		// kilocode_change start: Emit event if managed indexer config changed
-		const newToken = this.secretCache.kilocodeToken
-		const newOrgId = this.stateCache.kilocodeOrganizationId
-		const newTesterWarnings = this.stateCache.kilocodeTesterWarningsDisabledUntil
+		// novacode_change start: Emit event if managed indexer config changed
+		const newNovaToken = this.secretCache.novacodeToken
+		const newNovaOrgId = this.stateCache.novacodeOrganizationId
+		const newNovaTesterWarnings = this.stateCache.novacodeTesterWarningsDisabledUntil
 
-		if (oldToken !== newToken || oldOrgId !== newOrgId || oldTesterWarnings !== newTesterWarnings) {
+		if (
+			oldNovaToken !== newNovaToken ||
+			oldNovaOrgId !== newNovaOrgId ||
+			oldNovaTesterWarnings !== newNovaTesterWarnings
+		) {
 			this.configEmitter.emit("managed-indexer-config-changed", {
-				kilocodeToken: newToken ?? null,
-				kilocodeOrganizationId: newOrgId ?? null,
-				kilocodeTesterWarningsDisabledUntil: newTesterWarnings ?? null,
+				novacodeToken: newNovaToken ?? null,
+				novacodeOrganizationId: newNovaOrgId ?? null,
+				novacodeTesterWarningsDisabledUntil: newNovaTesterWarnings ?? null,
 			} as ManagedIndexerConfig)
 		}
-		// kilocode_change end
+		// novacode_change end
 	}
 
 	/**
@@ -480,7 +484,7 @@ export class ContextProxy {
 		await this.initialize()
 	}
 
-	// kilocode_change start: Public API for managed indexer configuration changes
+	// novacode_change start: Public API for managed indexer configuration changes
 	/**
 	 * Subscribe to managed indexer configuration changes
 	 * @param listener Callback function that receives the new configuration
@@ -492,7 +496,7 @@ export class ContextProxy {
 			dispose: () => this.configEmitter.off("managed-indexer-config-changed", listener),
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	private static _instance: ContextProxy | null = null
 

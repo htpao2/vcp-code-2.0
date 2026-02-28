@@ -684,7 +684,7 @@ describe("getModelParams", () => {
 		})
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	describe("Adaptive thinking models", () => {
 		it("should default to thinking temperature when adaptive thinking is enabled and unset", () => {
 			const model: ModelInfo = {
@@ -718,7 +718,7 @@ describe("getModelParams", () => {
 			expect(result.temperature).toBe(0.6)
 		})
 	})
-	// kilocode_change end
+	// novacode_change end
 
 	describe("Hybrid reasoning models (supportsReasoningEffort)", () => {
 		const model: ModelInfo = {
@@ -736,7 +736,7 @@ describe("getModelParams", () => {
 
 			// For hybrid models (supportsReasoningBudget) in Anthropic contexts,
 			// should discard model's maxTokens and use ANTHROPIC_DEFAULT_MAX_TOKENS
-			expect(result.maxTokens).toBe(3200 /*kilocode_change*/)
+			expect(result.maxTokens).toBe(3200 /*novacode_change*/)
 			expect(result.reasoningBudget).toBeUndefined()
 		})
 
@@ -930,7 +930,7 @@ describe("getModelParams", () => {
 		it("should include verbosity when specified in settings", () => {
 			const model: ModelInfo = {
 				...baseModel,
-				supportsVerbosity: true, // kilocode_change
+				supportsVerbosity: true, // novacode_change
 			}
 
 			const result = getModelParams({
@@ -945,7 +945,7 @@ describe("getModelParams", () => {
 		it("should handle medium verbosity", () => {
 			const model: ModelInfo = {
 				...baseModel,
-				supportsVerbosity: true, // kilocode_change
+				supportsVerbosity: true, // novacode_change
 			}
 
 			const result = getModelParams({
@@ -960,7 +960,7 @@ describe("getModelParams", () => {
 		it("should handle high verbosity", () => {
 			const model: ModelInfo = {
 				...baseModel,
-				supportsVerbosity: true, // kilocode_change
+				supportsVerbosity: true, // novacode_change
 			}
 
 			const result = getModelParams({
@@ -975,7 +975,7 @@ describe("getModelParams", () => {
 		it("should return undefined verbosity when not specified", () => {
 			const model: ModelInfo = {
 				...baseModel,
-				supportsVerbosity: true, // kilocode_change
+				supportsVerbosity: true, // novacode_change
 			}
 
 			const result = getModelParams({
@@ -991,7 +991,7 @@ describe("getModelParams", () => {
 			const model: ModelInfo = {
 				...baseModel,
 				supportsReasoningEffort: true,
-				supportsVerbosity: true, // kilocode_change
+				supportsVerbosity: true, // novacode_change
 			}
 
 			const result = getModelParams({
@@ -1012,7 +1012,7 @@ describe("getModelParams", () => {
 			const model: ModelInfo = {
 				...baseModel,
 				supportsReasoningBudget: true,
-				supportsVerbosity: true, // kilocode_change
+				supportsVerbosity: true, // novacode_change
 			}
 
 			const result = getModelParams({

@@ -17,7 +17,7 @@ export const createExtensionStateMock = (
 ): ExtensionStateContextType => {
 	// Only define properties that Storybook stories actually use
 	const knownProperties: Partial<ExtensionStateContextType> = {
-		kilocodeDefaultModel: "claude-sonnet-4",
+		novacodeDefaultModel: "claude-sonnet-4",
 	}
 
 	// Merge with overrides

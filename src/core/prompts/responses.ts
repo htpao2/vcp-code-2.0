@@ -1,7 +1,7 @@
 import { Anthropic } from "@anthropic-ai/sdk"
 import * as path from "path"
 import * as diff from "diff"
-import * as fs from "fs" // kilocode_change
+import * as fs from "fs" // novacode_change
 import { RooIgnoreController, LOCK_TEXT_SYMBOL } from "../ignore/RooIgnoreController"
 import { RooProtectedController } from "../protect/RooProtectedController"
 import * as vscode from "vscode"
@@ -9,7 +9,7 @@ import { ToolProtocol, isNativeProtocol, TOOL_PROTOCOL } from "@roo-code/types"
 import { Package } from "../../shared/package"
 
 export const formatResponse = {
-	// kilocode_change start
+	// novacode_change start
 	duplicateFileReadNotice: () =>
 		`[[NOTE] This file read has been removed to save space in the context window. Refer to the latest file read for the most up to date version of this file.]`,
 
@@ -18,7 +18,7 @@ export const formatResponse = {
 
 	condense: () =>
 		`The user has accepted the condensed conversation summary you generated. This summary covers important details of the historical conversation with the user which has been truncated.\n<explicit_instructions type="condense_response">It's crucial that you respond by ONLY asking the user what you should work on next. You should NOT take any initiative or make any assumptions about continuing with work. For example you should NOT suggest file changes or attempt to read any files.\nWhen asking the user what you should work on next, you can reference information in the summary which was just generated. However, you should NOT reference information outside of what's contained in the summary for this response. Keep this response CONCISE.</explicit_instructions>`,
-	// kilocode_change end
+	// novacode_change end
 	toolDenied: (protocol?: ToolProtocol) => {
 		if (isNativeProtocol(protocol ?? TOOL_PROTOCOL.XML)) {
 			return JSON.stringify({
@@ -67,12 +67,12 @@ export const formatResponse = {
 			return JSON.stringify({
 				status: "error",
 				type: "access_denied",
-				message: "Access blocked by .kilocodeignore",
+				message: "Access blocked by .novacodeignore",
 				path: path,
-				suggestion: "Try to continue without this file, or ask the user to update the .kilocodeignore file",
+				suggestion: "Try to continue without this file, or ask the user to update the .novacodeignore file",
 			})
 		}
-		return `Access to ${path} is blocked by the .kilocodeignore file settings. You must try to continue in the task without using this file, or ask the user to update the .kilocodeignore file.`
+		return `Access to ${path} is blocked by the .novacodeignore file settings. You must try to continue in the task without using this file, or ask the user to update the .novacodeignore file.`
 	},
 
 	noToolsUsed: (protocol?: ToolProtocol) => {
@@ -235,7 +235,7 @@ Otherwise, if you have not completed the task and do not need additional informa
 			}
 		}
 
-		// kilocode_change start: Append character count to each file in the list
+		// novacode_change start: Append character count to each file in the list
 		rooIgnoreParsed = rooIgnoreParsed.map((entry) => {
 			// Extract actual path by removing prefix symbols
 			let actualPath = entry
@@ -260,7 +260,7 @@ Otherwise, if you have not completed the task and do not need additional informa
 				return entry
 			}
 		})
-		// kilocode_change end
+		// novacode_change end
 
 		if (didHitLimit) {
 			return `${rooIgnoreParsed.join(

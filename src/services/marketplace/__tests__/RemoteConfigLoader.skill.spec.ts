@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 // npx vitest services/marketplace/__tests__/RemoteConfigLoader.skill.spec.ts
 //
 // This file contains tests specific to the skills marketplace functionality.
@@ -22,7 +22,7 @@ vi.mock("@roo-code/types", async (importOriginal) => {
 	const actual = await importOriginal<typeof import("@roo-code/types")>()
 	return {
 		...actual,
-		getKiloBaseUriFromToken: () => "https://test.api.com",
+		getNovaBaseUriFromToken: () => "https://test.api.com",
 	}
 })
 
@@ -33,11 +33,11 @@ describe("RemoteConfigLoader - Skills", () => {
 		loader = new RemoteConfigLoader()
 		vi.clearAllMocks()
 		loader.clearCache()
-		process.env.KILOCODE_BACKEND_BASE_URL = "https://test.api.com"
+		process.env.NOVACODE_BACKEND_BASE_URL = "https://test.api.com"
 	})
 
 	afterEach(() => {
-		delete process.env.KILOCODE_BACKEND_BASE_URL
+		delete process.env.NOVACODE_BACKEND_BASE_URL
 	})
 
 	// Helper to create mock implementation

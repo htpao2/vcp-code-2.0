@@ -20,8 +20,8 @@ vi.mock("react-i18next", () => ({
 				return key
 			},
 			changeLanguage: vi.fn(),
-			language: "en", // kilocode_change
-			dir: () => "ltr", // kilocode_change
+			language: "en", // novacode_change
+			dir: () => "ltr", // novacode_change
 		},
 	}),
 }))
@@ -37,8 +37,8 @@ vi.mock("../setup", () => ({
 			return key
 		},
 		changeLanguage: vi.fn(),
-		language: "en", // kilocode_change
-		dir: () => "ltr", // kilocode_change
+		language: "en", // novacode_change
+		dir: () => "ltr", // novacode_change
 	},
 	loadTranslations: vi.fn(),
 }))

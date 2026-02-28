@@ -12,7 +12,7 @@ import { resolveToolProtocol } from "../../utils/resolveToolProtocol"
 import { ClineProvider } from "./ClineProvider"
 
 export const generateSystemPrompt = async (provider: ClineProvider, message: WebviewMessage) => {
-	const state = await provider.getState() // kilocode_change
+	const state = await provider.getState() // novacode_change
 
 	const {
 		apiConfiguration,
@@ -105,7 +105,7 @@ export const generateSystemPrompt = async (provider: ClineProvider, message: Web
 		undefined, // todoList
 		undefined, // modelId
 		provider.getSkillsManager(),
-		state, // kilocode_change
+		state, // novacode_change
 	)
 
 	return systemPrompt

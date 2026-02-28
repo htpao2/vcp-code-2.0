@@ -26,7 +26,7 @@ export const VALID_ANTHROPIC_BLOCK_TYPES = new Set([
 export function filterNonAnthropicBlocks(
 	messages: Anthropic.Messages.MessageParam[],
 ): Anthropic.Messages.MessageParam[] {
-	// kilocode_change start - strip non-Anthropic top-level fields (e.g. reasoning_details)
+	// novacode_change start - strip non-Anthropic top-level fields (e.g. reasoning_details)
 	const filteredMessages: Array<Anthropic.Messages.MessageParam | undefined> = messages.map((message) => {
 		const baseMessage = { role: message.role }
 
@@ -55,5 +55,5 @@ export function filterNonAnthropicBlocks(
 	})
 
 	return filteredMessages.filter((message): message is Anthropic.Messages.MessageParam => message !== undefined)
-	// kilocode_change end
+	// novacode_change end
 }

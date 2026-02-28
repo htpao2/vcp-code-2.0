@@ -41,7 +41,7 @@
 		"ui": "واجهة المستخدم",
 		"experimental": "تجريبي",
 		"language": "اللغة",
-		"about": "عن Kilo Code",
+		"about": "عن Nova Code",
 		"autoPurge": "التنظيف التلقائي",
 		"agentBehaviour": "سلوك الوكيل",
 		"autocomplete": "الإكمال التلقائي"
@@ -62,7 +62,7 @@
 		"contact": {
 			"label": "تحتاج تتواصل معنا؟ راسلنا"
 		},
-		"community": "تبي نصائح أو تتسولف مع مستخدمين آخرين؟ انضم لـ <redditLink>reddit.com/r/kilocode</redditLink> أو <discordLink>kilo.ai/discord</discordLink>",
+		"community": "تبي نصائح أو تتسولف مع مستخدمين آخرين؟ انضم لـ <redditLink>reddit.com/r/novacode</redditLink> أو <discordLink>nova.ai/discord</discordLink>",
 		"contactSupport": "تواصل مع الدعم",
 		"contactSupportDesc": "احصل على مساعدة من فريق دعم العملاء",
 		"joinCommunity": "انضم للمجتمع",
@@ -88,7 +88,7 @@
 		}
 	},
 	"prompts": {
-		"description": "اضبط الموجهات المساعدة لعمليات مثل تحسين الموجه وشرح الكود وإصلاح المشاكل. هذي الموجهات تساعد Kilo Code يقدّم دعم أفضل للمهام المتكررة."
+		"description": "اضبط الموجهات المساعدة لعمليات مثل تحسين الموجه وشرح الكود وإصلاح المشاكل. هذي الموجهات تساعد Nova Code يقدّم دعم أفضل للمهام المتكررة."
 	},
 	"codeIndex": {
 		"title": "فهرسة قاعدة الكود",
@@ -225,18 +225,18 @@
 	},
 	"autoApproval": {
 		"title": "الموافقة التلقائية",
-		"description": "السماح لـ Kilo Code بتنفيذ العمليات تلقائيًا بدون طلب الموافقة. فعّل هذه الإعدادات فقط إذا كنت تثق بالذكاء الاصطناعي تمامًا وتفهم المخاطر الأمنية المرتبطة."
+		"description": "السماح لـ Nova Code بتنفيذ العمليات تلقائيًا بدون طلب الموافقة. فعّل هذه الإعدادات فقط إذا كنت تثق بالذكاء الاصطناعي تمامًا وتفهم المخاطر الأمنية المرتبطة."
 	},
 	"autoApprove": {
-		"description": "خلّ Kilo Code ينفذ العمليات تلقائيًا بدون موافقة. فعّلها فقط إذا كنت واثق من الأمان.",
+		"description": "خلّ Nova Code ينفذ العمليات تلقائيًا بدون موافقة. فعّلها فقط إذا كنت واثق من الأمان.",
 		"toggleShortcut": "تقدر تضبط اختصار لوحة مفاتيح لهذا الإعداد <SettingsLink>في تفضيلات IDE</SettingsLink>.",
 		"enabled": "الموافقة التلقائية مفعلة",
 		"readOnly": {
 			"label": "قراءة",
-			"description": "يسمح لـ Kilo Code يعرض المجلدات ويقرأ الملفات تلقائي.",
+			"description": "يسمح لـ Nova Code يعرض المجلدات ويقرأ الملفات تلقائي.",
 			"outsideWorkspace": {
 				"label": "تشمل الملفات خارج المشروع",
-				"description": "اسمح لـ Kilo Code يقرأ ملفات برّا مساحة العمل بدون موافقة."
+				"description": "اسمح لـ Nova Code يقرأ ملفات برّا مساحة العمل بدون موافقة."
 			}
 		},
 		"write": {
@@ -245,11 +245,11 @@
 			"delayLabel": "تأخير بعد الكتابة لفحص المشاكل",
 			"outsideWorkspace": {
 				"label": "تشمل الملفات خارج المشروع",
-				"description": "اسمح لـ Kilo Code يعدل ملفات خارج مساحة العمل بدون موافقة."
+				"description": "اسمح لـ Nova Code يعدل ملفات خارج مساحة العمل بدون موافقة."
 			},
 			"protected": {
 				"label": "تشمل الملفات المحمية",
-				"description": "اسمح لـ Kilo Code يعدل ملفات إعدادات مصغرة بدون موافقة."
+				"description": "اسمح لـ Nova Code يعدل ملفات إعدادات مصغرة بدون موافقة."
 			}
 		},
 		"browser": {
@@ -603,7 +603,7 @@
 			"apiKeyPlaceholder": "أدخل مفتاح API",
 			"apiKeyInfo": "سيتم إرسال مفتاح API في ترويسة Authorization",
 			"description": "Ollama يشغّل نماذج محليًا. راجع دليلهم.",
-			"warning": "ملاحظة: Kilo Code يعمل أفضل مع Claude. النماذج الضعيفة قد لا تؤدي المطلوب."
+			"warning": "ملاحظة: Nova Code يعمل أفضل مع Claude. النماذج الضعيفة قد لا تؤدي المطلوب."
 		},
 		"unboundApiKey": "مفتاح Unbound",
 		"getUnboundApiKey": "احصل على مفتاح Unbound",
@@ -672,7 +672,7 @@
 		},
 		"consecutiveMistakeLimit": {
 			"label": "حد الأخطاء والتكرار",
-			"description": "عدد الأخطاء المتتالية أو الإجراءات المتكررة قبل إظهار حوار 'Kilo Code يواجه مشكلة'",
+			"description": "عدد الأخطاء المتتالية أو الإجراءات المتكررة قبل إظهار حوار 'Nova Code يواجه مشكلة'",
 			"unlimitedDescription": "إعادة المحاولة غير المحدودة مفعلة (المتابعة التلقائية). لن يظهر الحوار أبداً.",
 			"warning": "⚠️ تعيين القيمة إلى 0 يسمح بإعادة المحاولة غير المحدودة مما قد يستهلك استخدام API كبير"
 		},
@@ -709,7 +709,7 @@
 			"name": "Requesty",
 			"description": "مساعد ذكي سريع وموثوق"
 		},
-		"kilo_code_openrouter": {
+		"nova_code_openrouter": {
 			"description": "الوصول لأكثر من 200 نموذج عبر OpenRouter بنافذة سياق 1 مليون"
 		},
 		"qwenCode": {
@@ -743,13 +743,13 @@
 	"topP": {
 		"description": "تحكم في تنوع الإجابات"
 	},
-	"kiloRemoteControl": {
+	"novaRemoteControl": {
 		"description": "تفعيل التحكم عن بُعد للمهام"
 	},
 	"browser": {
 		"enable": {
 			"label": "تفعيل أداة المتصفح",
-			"description": "إذا تم التفعيل، Kilo Code يقدر يستخدم المتصفح مع النماذج الداعمة. <0>تعرف أكثر</0>"
+			"description": "إذا تم التفعيل، Nova Code يقدر يستخدم المتصفح مع النماذج الداعمة. <0>تعرف أكثر</0>"
 		},
 		"viewport": {
 			"label": "حجم العرض",
@@ -854,7 +854,7 @@
 		},
 		"tts": {
 			"label": "تفعيل النص إلى كلام",
-			"description": "يقرأ ردود Kilo Code بصوت عالٍ.",
+			"description": "يقرأ ردود Nova Code بصوت عالٍ.",
 			"speedLabel": "السرعة"
 		}
 	},
@@ -862,7 +862,7 @@
 		"description": "تحكّم بالمعلومات المُدرجة في سياق الذكاء.",
 		"autoCondenseContextPercent": {
 			"label": "نسبة تشغيل التلخيص الذكي",
-			"description": "عند الوصول لهذه النسبة، يختصر Kilo Code السياق."
+			"description": "عند الوصول لهذه النسبة، يختصر Nova Code السياق."
 		},
 		"condensingApiConfiguration": {
 			"label": "إعداد API للتلخيص",
@@ -893,7 +893,7 @@
 			"description": "اكتشاف وتحميل ملفات .roo/rules و AGENTS.md من المجلدات الفرعية بشكل تكراري. مفيد للمشاريع الضخمة ذات القواعد الخاصة بكل حزمة."
 		},
 		"rooignore": {
-			"label": "إظهار ملفات .kilocodeignore",
+			"label": "إظهار ملفات .novacodeignore",
 			"description": "عند التفعيل تُعرض مع رمز قفل؛ عند التعطيل تُخفى."
 		},
 		"maxConcurrentFileReads": {
@@ -1021,7 +1021,7 @@
 	},
 	"toolProtocol": {
 		"label": "بروتوكول استدعاء الأدوات",
-		"description": "اختر كيف يتواصل Kilo Codeo مع API. Native يستخدم API لاستدعاء الدوال الخاص بالمزود، بينما XML يستخدم تعريفات الأدوات بـ XML.",
+		"description": "اختر كيف يتواصل Nova Codeo مع API. Native يستخدم API لاستدعاء الدوال الخاص بالمزود، بينما XML يستخدم تعريفات الأدوات بـ XML.",
 		"default": "افتراضي",
 		"xml": "XML",
 		"native": "Native",
@@ -1057,7 +1057,7 @@
 		},
 		"todoList": {
 			"label": "تفعيل أداة قائمة المهام",
-			"description": "عند التفعيل، يمكن لـ Kilo Code إنشاء وإدارة قوائم المهام لتتبع تقدم المهام. هذا يساعد في تنظيم المهام المعقدة إلى خطوات قابلة للإدارة."
+			"description": "عند التفعيل، يمكن لـ Nova Code إنشاء وإدارة قوائم المهام لتتبع تقدم المهام. هذا يساعد في تنظيم المهام المعقدة إلى خطوات قابلة للإدارة."
 		}
 	},
 	"experimental": {
@@ -1091,7 +1091,7 @@
 		},
 		"MORPH_FAST_APPLY": {
 			"name": "تفعيل Fast Apply",
-			"description": "عند التفعيل، يستطيع Kilo Code تعديل الملفات باستخدام Fast Apply مع نماذج متخصصة محسّنة لتعديلات الكود. يتطلب Kilo Gateway Provider أو OpenRouter أو مفتاح Morph API.",
+			"description": "عند التفعيل، يستطيع Nova Code تعديل الملفات باستخدام Fast Apply مع نماذج متخصصة محسّنة لتعديلات الكود. يتطلب Nova Gateway Provider أو OpenRouter أو مفتاح Morph API.",
 			"apiProvider": "مزود API",
 			"apiProviderList": {
 				"current": "الحالي"
@@ -1109,7 +1109,7 @@
 		},
 		"PREVENT_FOCUS_DISRUPTION": {
 			"name": "التحرير في الخلفية",
-			"description": "منع تعطيل تركيز المحرر عند التفعيل. تحدث تعديلات الملفات في الخلفية دون فتح عروض diff أو سرقة التركيز. يمكنك الاستمرار في العمل دون انقطاع بينما يقوم Kilo Code بإجراء التغييرات. يمكن فتح الملفات دون تركيز لالتقاط التشخيصات أو إبقاؤها مغلقة تماماً."
+			"description": "منع تعطيل تركيز المحرر عند التفعيل. تحدث تعديلات الملفات في الخلفية دون فتح عروض diff أو سرقة التركيز. يمكنك الاستمرار في العمل دون انقطاع بينما يقوم Nova Code بإجراء التغييرات. يمكن فتح الملفات دون تركيز لالتقاط التشخيصات أو إبقاؤها مغلقة تماماً."
 		},
 		"ASSISTANT_MESSAGE_PARSER": {
 			"name": "استخدام محلل الرسائل الجديد",
@@ -1121,15 +1121,15 @@
 		},
 		"IMAGE_GENERATION": {
 			"name": "تمكين إنشاء صور بالذكاء الاصطناعي",
-			"description": "عند التفعيل، يمكن لـ Kilo Code إنشاء صور من النصوص. يتطلب مفتاح Kilo Code أو OpenRouter API.",
+			"description": "عند التفعيل، يمكن لـ Nova Code إنشاء صور من النصوص. يتطلب مفتاح Nova Code أو OpenRouter API.",
 			"apiProvider": "مزود API",
 			"providerLabel": "المزوّد",
 			"providerDescription": "اختر المزوّد المراد استخدامه لإنشاء الصور.",
 			"openRouterApiKeyLabel": "مفتاح OpenRouter API",
 			"openRouterApiKeyPlaceholder": "أدخل مفتاح OpenRouter API",
-			"kiloCodeApiKeyLabel": "مفتاح Kilo Code API",
-			"kiloCodeApiKeyPlaceholder": "أدخل مفتاح Kilo Code API",
-			"kiloCodeApiKeyPaste": "لصق مفتاح Kilo Code API الحالي",
+			"novaCodeApiKeyLabel": "مفتاح Nova Code API",
+			"novaCodeApiKeyPlaceholder": "أدخل مفتاح Nova Code API",
+			"novaCodeApiKeyPaste": "لصق مفتاح Nova Code API الحالي",
 			"getApiKeyText": "احصل على مفتاحك من",
 			"modelSelectionLabel": "نموذج إنشاء الصور",
 			"modelSelectionDescription": "اختر النموذج المراد استخدامه لإنشاء الصور",
@@ -1138,7 +1138,7 @@
 		},
 		"RUN_SLASH_COMMAND": {
 			"name": "تمكين أوامر الشرطة المدفوعة بالنموذج",
-			"description": "عند التمكين، يمكن لـ Kilo Code تشغيل أوامر الشرطة الخاصة بك لتنفيذ سير العمل."
+			"description": "عند التمكين، يمكن لـ Nova Code تشغيل أوامر الشرطة الخاصة بك لتنفيذ سير العمل."
 		},
 		"MULTIPLE_NATIVE_TOOL_CALLS": {
 			"name": "استدعاءات أدوات متوازية",
@@ -1154,13 +1154,13 @@
 		},
 		"SPEECH_TO_TEXT": {
 			"name": "التحويل من الكلام إلى النص (STT)",
-			"description": "عند التفعيل، يمكن لـ Kilo Code تحويل صوتك إلى نص باستخدام نموذج Whisper من OpenAI. انقر على زر الميكروفون في المحادثة لبدء التسجيل. يتطلب تثبيت FFmpeg ومزود API OpenAI مُكوَّن."
+			"description": "عند التفعيل، يمكن لـ Nova Code تحويل صوتك إلى نص باستخدام نموذج Whisper من OpenAI. انقر على زر الميكروفون في المحادثة لبدء التسجيل. يتطلب تثبيت FFmpeg ومزود API OpenAI مُكوَّن."
 		},
 		"CUSTOM_TOOLS": {
 			"name": "تفعيل الأدوات المخصصة",
-			"description": "عند التفعيل، يمكن لـ Kilo تحميل واستخدام أدوات TypeScript/JavaScript مخصصة من مجلد .kilocode/tools في مشروعك أو ~/.kilocode/tools للأدوات العامة. ملاحظة: سيتم الموافقة على هذه الأدوات تلقائياً.",
+			"description": "عند التفعيل، يمكن لـ Nova تحميل واستخدام أدوات TypeScript/JavaScript مخصصة من مجلد .novacode/tools في مشروعك أو ~/.novacode/tools للأدوات العامة. ملاحظة: سيتم الموافقة على هذه الأدوات تلقائياً.",
 			"toolsHeader": "الأدوات المخصصة المتاحة",
-			"noTools": "لم يتم تحميل أدوات مخصصة. أضف ملفات .ts أو .js إلى مجلد .kilocode/tools في مشروعك أو ~/.kilocode/tools للأدوات العامة.",
+			"noTools": "لم يتم تحميل أدوات مخصصة. أضف ملفات .ts أو .js إلى مجلد .novacode/tools في مشروعك أو ~/.novacode/tools للأدوات العامة.",
 			"refreshButton": "تحديث",
 			"refreshing": "جاري التحديث...",
 			"refreshSuccess": "تم تحديث الأدوات بنجاح",
@@ -1170,7 +1170,7 @@
 	},
 	"promptCaching": {
 		"label": "تعطيل تخزين الموجهات",
-		"description": "عند التفعيل، ما يستخدم Kilo Code الكاش لهذا النموذج."
+		"description": "عند التفعيل، ما يستخدم Nova Code الكاش لهذا النموذج."
 	},
 	"temperature": {
 		"useCustom": "استخدام درجة حرارة مخصصة",
@@ -1202,7 +1202,7 @@
 		}
 	},
 	"modelPicker": {
-		"automaticFetch": "الإضافة تجلب تلقائياً أحدث قائمة بالنماذج المتاحة على <serviceLink>{{serviceName}}</serviceLink>. إذا كنت غير متأكد من النموذج الذي تختاره، فإن Kilo Code يعمل بشكل أفضل مع <defaultModelLink>{{defaultModelId}}</defaultModelLink>.",
+		"automaticFetch": "الإضافة تجلب تلقائياً أحدث قائمة بالنماذج المتاحة على <serviceLink>{{serviceName}}</serviceLink>. إذا كنت غير متأكد من النموذج الذي تختاره، فإن Nova Code يعمل بشكل أفضل مع <defaultModelLink>{{defaultModelId}}</defaultModelLink>.",
 		"label": "النموذج",
 		"searchPlaceholder": "بحث",
 		"noMatchFound": "ما فيه تطابق",
@@ -1212,11 +1212,11 @@
 		"allModels": "جميع النماذج"
 	},
 	"footer": {
-		"feedback": "عندك سؤال أو ملاحظة؟ افتح تذكرة في <githubLink>github.com/Kilo-Org/kilocode</githubLink> أو انضم لـ <redditLink>r/kilocode</redditLink> أو <discordLink>kilo.ai/discord</discordLink>.",
-		"support": "للاستفسارات المالية: <supportLink>https://kilo.ai/support</supportLink>",
+		"feedback": "عندك سؤال أو ملاحظة؟ افتح تذكرة في <githubLink>github.com/Nova-Org/novacode</githubLink> أو انضم لـ <redditLink>r/novacode</redditLink> أو <discordLink>nova.ai/discord</discordLink>.",
+		"support": "للاستفسارات المالية: <supportLink>https://nova.ai/support</supportLink>",
 		"telemetry": {
 			"label": "السماح بتقارير الأخطاء والاستخدام",
-			"description": "ساعد في تحسين Kilo Code بإرسال بيانات الاستخدام وتقارير الأخطاء. لا يتم إرسال أي كود أو مطالبات أو معلومات شخصية أبداً. راجع سياسة الخصوصية لمزيد من التفاصيل."
+			"description": "ساعد في تحسين Nova Code بإرسال بيانات الاستخدام وتقارير الأخطاء. لا يتم إرسال أي كود أو مطالبات أو معلومات شخصية أبداً. راجع سياسة الخصوصية لمزيد من التفاصيل."
 		},
 		"settings": {
 			"import": "استيراد",

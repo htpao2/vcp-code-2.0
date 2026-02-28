@@ -1,4 +1,4 @@
-import { z } from "zod"
+﻿import { z } from "zod"
 
 import { type Keys } from "./type-fu.js"
 import {
@@ -14,11 +14,7 @@ import { telemetrySettingsSchema } from "./telemetry.js"
 import { modeConfigSchema } from "./mode.js"
 import { customModePromptsSchema, customSupportPromptsSchema } from "./mode.js"
 import { languagesSchema } from "./vscode.js"
-import {
-	fastApplyModelSchema,
-	autocompleteServiceSettingsSchema,
-	fastApplyApiProviderSchema,
-} from "./kilocode/kilocode.js"
+import { fastApplyModelSchema, autocompleteServiceSettingsSchema, fastApplyApiProviderSchema } from "./nova/novacode.js"
 
 /**
  * Default delay in milliseconds after writes to allow diagnostics to detect potential problems.
@@ -64,23 +60,23 @@ export const globalSettingsSchema = z.object({
 	dismissedUpsells: z.array(z.string()).optional(),
 
 	// Image generation settings (experimental) - flattened for simplicity
-	imageGenerationProvider: z.enum(["openrouter", "kilocode"]).optional(), // kilocode_change: Updated from "roo" to "kilocode"
+	imageGenerationProvider: z.enum(["openrouter", "novacode"]).optional(), // novacode_change: Updated from "roo" to "novacode"
 	openRouterImageApiKey: z.string().optional(),
 	openRouterImageGenerationSelectedModel: z.string().optional(),
-	kiloCodeImageApiKey: z.string().optional(),
+	novaCodeImageApiKey: z.string().optional(),
 
 	condensingApiConfigId: z.string().optional(),
 	customCondensingPrompt: z.string().optional(),
 
 	autoApprovalEnabled: z.boolean().optional(),
-	yoloMode: z.boolean().optional(), // kilocode_change
-	yoloGatekeeperApiConfigId: z.string().optional(), // kilocode_change: AI gatekeeper for YOLO mode
+	yoloMode: z.boolean().optional(), // novacode_change
+	yoloGatekeeperApiConfigId: z.string().optional(), // novacode_change: AI gatekeeper for YOLO mode
 	alwaysAllowReadOnly: z.boolean().optional(),
 	alwaysAllowReadOnlyOutsideWorkspace: z.boolean().optional(),
 	alwaysAllowWrite: z.boolean().optional(),
 	alwaysAllowWriteOutsideWorkspace: z.boolean().optional(),
 	alwaysAllowWriteProtected: z.boolean().optional(),
-	alwaysAllowDelete: z.boolean().optional(), // kilocode_change
+	alwaysAllowDelete: z.boolean().optional(), // novacode_change
 	writeDelayMs: z.number().min(0).optional(),
 	alwaysAllowBrowser: z.boolean().optional(),
 	requestDelaySeconds: z.number().optional(),
@@ -100,7 +96,7 @@ export const globalSettingsSchema = z.object({
 	autoCondenseContext: z.boolean().optional(),
 	autoCondenseContextPercent: z.number().optional(),
 	maxConcurrentFileReads: z.number().optional(),
-	allowVeryLargeReads: z.boolean().optional(), // kilocode_change
+	allowVeryLargeReads: z.boolean().optional(), // novacode_change
 
 	/**
 	 * Whether to include current time in the environment details
@@ -132,16 +128,16 @@ export const globalSettingsSchema = z.object({
 
 	browserToolEnabled: z.boolean().optional(),
 	browserViewportSize: z.string().optional(),
-	showAutoApproveMenu: z.boolean().optional(), // kilocode_change
-	showTaskTimeline: z.boolean().optional(), // kilocode_change
-	sendMessageOnEnter: z.boolean().optional(), // kilocode_change: Enter key behavior
-	showTimestamps: z.boolean().optional(), // kilocode_change
-	showDiffStats: z.boolean().optional(), // kilocode_change
-	hideCostBelowThreshold: z.number().min(0).optional(), // kilocode_change
-	localWorkflowToggles: z.record(z.string(), z.boolean()).optional(), // kilocode_change
-	globalWorkflowToggles: z.record(z.string(), z.boolean()).optional(), // kilocode_change
-	localRulesToggles: z.record(z.string(), z.boolean()).optional(), // kilocode_change
-	globalRulesToggles: z.record(z.string(), z.boolean()).optional(), // kilocode_change
+	showAutoApproveMenu: z.boolean().optional(), // novacode_change
+	showTaskTimeline: z.boolean().optional(), // novacode_change
+	sendMessageOnEnter: z.boolean().optional(), // novacode_change: Enter key behavior
+	showTimestamps: z.boolean().optional(), // novacode_change
+	showDiffStats: z.boolean().optional(), // novacode_change
+	hideCostBelowThreshold: z.number().min(0).optional(), // novacode_change
+	localWorkflowToggles: z.record(z.string(), z.boolean()).optional(), // novacode_change
+	globalWorkflowToggles: z.record(z.string(), z.boolean()).optional(), // novacode_change
+	localRulesToggles: z.record(z.string(), z.boolean()).optional(), // novacode_change
+	globalRulesToggles: z.record(z.string(), z.boolean()).optional(), // novacode_change
 	screenshotQuality: z.number().optional(),
 	remoteBrowserEnabled: z.boolean().optional(),
 	remoteBrowserHost: z.string().optional(),
@@ -155,20 +151,20 @@ export const globalSettingsSchema = z.object({
 		.max(MAX_CHECKPOINT_TIMEOUT_SECONDS)
 		.optional(),
 
-	// kilocode_change start - Auto-purge settings
+	// novacode_change start - Auto-purge settings
 	autoPurgeEnabled: z.boolean().optional(),
 	autoPurgeDefaultRetentionDays: z.number().min(1).optional(),
 	autoPurgeFavoritedTaskRetentionDays: z.number().min(1).nullable().optional(),
 	autoPurgeCompletedTaskRetentionDays: z.number().min(1).optional(),
 	autoPurgeIncompleteTaskRetentionDays: z.number().min(1).optional(),
 	autoPurgeLastRunTimestamp: z.number().optional(),
-	// kilocode_change end
+	// novacode_change end
 
 	ttsEnabled: z.boolean().optional(),
 	ttsSpeed: z.number().optional(),
 	soundEnabled: z.boolean().optional(),
 	soundVolume: z.number().optional(),
-	systemNotificationsEnabled: z.boolean().optional(), // kilocode_change
+	systemNotificationsEnabled: z.boolean().optional(), // novacode_change
 	selectedMicrophoneDevice: z
 		.object({
 			id: z.string(),
@@ -176,7 +172,7 @@ export const globalSettingsSchema = z.object({
 			platform: z.string(),
 		})
 		.nullable()
-		.optional(), // kilocode_change: Selected microphone device for STT (matches MicrophoneDevice from sttContract.ts)
+		.optional(), // novacode_change: Selected microphone device for STT (matches MicrophoneDevice from sttContract.ts)
 
 	maxOpenTabsContext: z.number().optional(),
 	maxWorkspaceFiles: z.number().optional(),
@@ -205,11 +201,11 @@ export const globalSettingsSchema = z.object({
 	fuzzyMatchThreshold: z.number().optional(),
 	experiments: experimentsSchema.optional(),
 
-	// kilocode_change start: Morph fast apply
+	// novacode_change start: Morph fast apply
 	morphApiKey: z.string().optional(),
 	fastApplyModel: fastApplyModelSchema.optional(),
 	fastApplyApiProvider: fastApplyApiProviderSchema.optional(),
-	// kilocode_change end
+	// novacode_change end
 
 	codebaseIndexModels: codebaseIndexModelsSchema.optional(),
 	codebaseIndexConfig: codebaseIndexConfigSchema.optional(),
@@ -220,7 +216,7 @@ export const globalSettingsSchema = z.object({
 
 	mcpEnabled: z.boolean().optional(),
 	enableMcpServerCreation: z.boolean().optional(),
-	mcpMarketplaceCatalog: z.any().optional(), // kilocode_change: MCP marketplace catalog
+	mcpMarketplaceCatalog: z.any().optional(), // novacode_change: MCP marketplace catalog
 
 	mode: z.string().optional(),
 	modeApiConfigs: z.record(z.string(), z.string()).optional(),
@@ -228,11 +224,11 @@ export const globalSettingsSchema = z.object({
 	customModePrompts: customModePromptsSchema.optional(),
 	customSupportPrompts: customSupportPromptsSchema.optional(),
 	enhancementApiConfigId: z.string().optional(),
-	dismissedNotificationIds: z.string().array().optional(), // kilocode_change
-	commitMessageApiConfigId: z.string().optional(), // kilocode_change
-	terminalCommandApiConfigId: z.string().optional(), // kilocode_change
-	ghostServiceSettings: autocompleteServiceSettingsSchema, // kilocode_change
-	hasPerformedOrganizationAutoSwitch: z.boolean().optional(), // kilocode_change
+	dismissedNotificationIds: z.string().array().optional(), // novacode_change
+	commitMessageApiConfigId: z.string().optional(), // novacode_change
+	terminalCommandApiConfigId: z.string().optional(), // novacode_change
+	ghostServiceSettings: autocompleteServiceSettingsSchema, // novacode_change
+	hasPerformedOrganizationAutoSwitch: z.boolean().optional(), // novacode_change
 	includeTaskHistoryInEnhance: z.boolean().optional(),
 	historyPreviewCollapsed: z.boolean().optional(),
 	reasoningBlockCollapsed: z.boolean().optional(),
@@ -245,10 +241,10 @@ export const globalSettingsSchema = z.object({
 	enterBehavior: z.enum(["send", "newline"]).optional(),
 	profileThresholds: z.record(z.string(), z.number()).optional(),
 	hasOpenedModeSelector: z.boolean().optional(),
-	hasCompletedOnboarding: z.boolean().optional(), // kilocode_change: Track if user has completed onboarding flow
+	hasCompletedOnboarding: z.boolean().optional(), // novacode_change: Track if user has completed onboarding flow
 	lastModeExportPath: z.string().optional(),
 	lastModeImportPath: z.string().optional(),
-	appendSystemPrompt: z.string().optional(), // kilocode_change: Custom text to append to system prompt (CLI only)
+	appendSystemPrompt: z.string().optional(), // novacode_change: Custom text to append to system prompt (CLI only)
 })
 
 export type GlobalSettings = z.infer<typeof globalSettingsSchema>
@@ -268,7 +264,7 @@ export type RooCodeSettings = GlobalSettings & ProviderSettings
  */
 export const SECRET_STATE_KEYS = [
 	"apiKey",
-	"glamaApiKey", // kilocode_change
+	"glamaApiKey", // novacode_change
 	"openRouterApiKey",
 	"awsAccessKey",
 	"awsApiKey",
@@ -293,13 +289,13 @@ export const SECRET_STATE_KEYS = [
 	"deepInfraApiKey",
 	"codeIndexOpenAiKey",
 	"codeIndexQdrantApiKey",
-	// kilocode_change start
+	// novacode_change start
 	"minimaxApiKey",
-	"kilocodeToken",
+	"novacodeToken",
 	"syntheticApiKey",
 	"ovhCloudAiEndpointsApiKey",
 	"inceptionLabsApiKey",
-	// kilocode_change end
+	// novacode_change end
 	"codebaseIndexOpenAiCompatibleApiKey",
 	"codebaseIndexGeminiApiKey",
 	"codebaseIndexMistralApiKey",
@@ -312,16 +308,16 @@ export const SECRET_STATE_KEYS = [
 	"featherlessApiKey",
 	"ioIntelligenceApiKey",
 	"vercelAiGatewayApiKey",
-	"sapAiCoreServiceKey", // kilocode_change
+	"sapAiCoreServiceKey", // novacode_change
 	"basetenApiKey",
-	"codebaseIndexVoyageApiKey", // kilocode_change
+	"codebaseIndexVoyageApiKey", // novacode_change
 	"corethinkApiKey",
 ] as const
 
 // Global secrets that are part of GlobalSettings (not ProviderSettings)
 export const GLOBAL_SECRET_KEYS = [
 	"openRouterImageApiKey", // For image generation
-	"kiloCodeImageApiKey",
+	"novaCodeImageApiKey",
 ] as const
 
 // Type for the actual secret storage keys
@@ -367,7 +363,7 @@ export const EVALS_SETTINGS: RooCodeSettings = {
 	alwaysAllowWrite: true,
 	alwaysAllowWriteOutsideWorkspace: false,
 	alwaysAllowWriteProtected: false,
-	alwaysAllowDelete: true, // kilocode_change
+	alwaysAllowDelete: true, // novacode_change
 	writeDelayMs: 1000,
 	alwaysAllowBrowser: true,
 	requestDelaySeconds: 10,
@@ -391,9 +387,9 @@ export const EVALS_SETTINGS: RooCodeSettings = {
 	ttsSpeed: 1,
 	soundEnabled: false,
 	soundVolume: 0.5,
-	dismissedNotificationIds: [], // kilocode_change
-	systemNotificationsEnabled: true, // kilocode_change
-	ghostServiceSettings: {}, // kilocode_change
+	dismissedNotificationIds: [], // novacode_change
+	systemNotificationsEnabled: true, // novacode_change
+	ghostServiceSettings: {}, // novacode_change
 
 	terminalOutputLineLimit: 500,
 	terminalOutputCharacterLimit: DEFAULT_TERMINAL_OUTPUT_CHARACTER_LIMIT,
@@ -414,20 +410,20 @@ export const EVALS_SETTINGS: RooCodeSettings = {
 
 	enableCheckpoints: false,
 
-	// kilocode_change start - Auto-purge defaults
+	// novacode_change start - Auto-purge defaults
 	autoPurgeEnabled: false,
 	autoPurgeDefaultRetentionDays: 30,
 	autoPurgeFavoritedTaskRetentionDays: null, // null = never purge
 	autoPurgeCompletedTaskRetentionDays: 30,
 	autoPurgeIncompleteTaskRetentionDays: 7,
-	// kilocode_change end
+	// novacode_change end
 
 	rateLimitSeconds: 0,
 	maxOpenTabsContext: 20,
 	maxWorkspaceFiles: 200,
 	maxGitStatusFiles: 20,
 	showRooIgnoredFiles: true,
-	maxReadFileLine: 500 /*kilocode_change*/, // -1 to enable full file reading.
+	maxReadFileLine: 500 /*novacode_change*/, // -1 to enable full file reading.
 
 	includeDiagnosticMessages: true,
 	maxDiagnosticMessages: 50,

@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useRef, useState } from "react"
+﻿import React, { memo, useEffect, useMemo, useRef, useState } from "react"
 import deepEqual from "fast-deep-equal"
 import { useTranslation } from "react-i18next"
 import type { TFunction } from "i18next"
@@ -8,7 +8,7 @@ import type { ClineMessage, BrowserAction, BrowserActionResult, ClineSayBrowserA
 import { vscode } from "@src/utils/vscode"
 import { useExtensionState } from "@src/context/ExtensionStateContext"
 
-import CodeBlock from "../kilocode/common/CodeBlock" // kilocode_change
+import CodeBlock from "../nova/common/CodeBlock" // novacode_change
 import { ProgressIndicator } from "./ProgressIndicator"
 import { Button, StandardTooltip } from "@src/components/ui"
 import { getViewportCoordinate as getViewportCoordinateShared, prettyKey } from "@roo/browserUtils"
@@ -69,7 +69,7 @@ const getBrowserActionText = (
 			})
 		case "resize":
 			return t("chat:browser.actions.resized", {
-				size: typeof size === "string" ? size.split(/[x,]/).join(" x ") : String(size || ""), // kilocode_change
+				size: typeof size === "string" ? size.split(/[x,]/).join(" x ") : String(size || ""), // novacode_change
 			})
 		case "screenshot":
 			return t("chat:browser.actions.screenshotSaved")

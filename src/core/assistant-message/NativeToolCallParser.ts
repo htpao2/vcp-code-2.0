@@ -10,7 +10,7 @@ import {
 	type NativeToolArgs,
 	toolParamNames,
 } from "../../shared/tools"
-import { resolveToolAlias } from "../../shared/tool-aliases" // kilocode_change: prevent circular dependency
+import { resolveToolAlias } from "../../shared/tool-aliases" // novacode_change: prevent circular dependency
 import type {
 	ApiStreamToolCallStartChunk,
 	ApiStreamToolCallDeltaChunk,
@@ -59,7 +59,7 @@ export class NativeToolCallParser {
 			id: string
 			name: string
 			argumentsAccumulator: string
-			extra_content?: Record<string, unknown> // kilocode_change
+			extra_content?: Record<string, unknown> // novacode_change
 		}
 	>()
 
@@ -71,7 +71,7 @@ export class NativeToolCallParser {
 			name: string
 			hasStarted: boolean
 			deltaBuffer: string[]
-			extra_content?: Record<string, unknown> // kilocode_change
+			extra_content?: Record<string, unknown> // novacode_change
 		}
 	>()
 
@@ -87,14 +87,14 @@ export class NativeToolCallParser {
 		id?: string
 		name?: string
 		arguments?: string
-		extra_content?: Record<string, unknown> // kilocode_change
+		extra_content?: Record<string, unknown> // novacode_change
 	}): ToolCallStreamEvent[] {
 		const events: ToolCallStreamEvent[] = []
-		// kilocode_change start: Some providers (e.g. MiniMax) return tool call id as a number; coerce to string.
+		// novacode_change start: Some providers (e.g. MiniMax) return tool call id as a number; coerce to string.
 		const { index, id: rawId, name, arguments: args, extra_content } = chunk
 
 		const id = rawId != null ? String(rawId) : undefined
-		// kilocode_change end
+		// novacode_change end
 
 		let tracked = this.rawChunkTracker.get(index)
 
@@ -105,7 +105,7 @@ export class NativeToolCallParser {
 				name: name || "",
 				hasStarted: false,
 				deltaBuffer: [],
-				extra_content, // kilocode_change
+				extra_content, // novacode_change
 			}
 			this.rawChunkTracker.set(index, tracked)
 		}
@@ -119,11 +119,11 @@ export class NativeToolCallParser {
 			tracked.name = name
 		}
 
-		// kilocode_change start: Update extra_content if present (Gemini 3 sends it once in the first chunk)
+		// novacode_change start: Update extra_content if present (Gemini 3 sends it once in the first chunk)
 		if (extra_content) {
 			tracked.extra_content = extra_content
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		// Emit start event when we have the name
 		if (!tracked.hasStarted && tracked.name) {
@@ -131,7 +131,7 @@ export class NativeToolCallParser {
 				type: "tool_call_start",
 				id: tracked.id,
 				name: tracked.name,
-				extra_content: tracked.extra_content, // kilocode_change
+				extra_content: tracked.extra_content, // novacode_change
 			})
 			tracked.hasStarted = true
 
@@ -216,7 +216,7 @@ export class NativeToolCallParser {
 	 * Initializes tracking for incremental argument parsing.
 	 * Accepts string to support both ToolName and dynamic MCP tools (mcp--serverName--toolName).
 	 */
-	// kilocode_change start: extra_content parameter for Gemini 3 thought_signature support
+	// novacode_change start: extra_content parameter for Gemini 3 thought_signature support
 	public static startStreamingToolCall(id: string, name: string, extra_content?: Record<string, unknown>): void {
 		this.streamingToolCalls.set(id, {
 			id,
@@ -224,7 +224,7 @@ export class NativeToolCallParser {
 			argumentsAccumulator: "",
 			extra_content,
 		})
-		// kilocode_change end
+		// novacode_change end
 	}
 
 	/**
@@ -307,7 +307,7 @@ export class NativeToolCallParser {
 			id: toolCall.id,
 			name: toolCall.name as ToolName,
 			arguments: toolCall.argumentsAccumulator,
-			extra_content: toolCall.extra_content, // kilocode_change
+			extra_content: toolCall.extra_content, // novacode_change
 		})
 
 		// Clean up streaming state
@@ -329,11 +329,11 @@ export class NativeToolCallParser {
 	private static convertFileEntries(files: any[]): FileEntry[] {
 		return files.map((file: any) => {
 			const entry: FileEntry = { path: file.path }
-			// kilocode_change: support lineRanges spelling, often preferred by Claude
+			// novacode_change: support lineRanges spelling, often preferred by Claude
 			const lineRanges = file.line_ranges ?? file.lineRanges
 			if (lineRanges && Array.isArray(lineRanges)) {
 				entry.lineRanges = lineRanges
-					// kilocode_change end
+					// novacode_change end
 					.map((range: any) => {
 						// Handle tuple format: [start, end]
 						if (Array.isArray(range) && range.length >= 2) {
@@ -352,7 +352,7 @@ export class NativeToolCallParser {
 						}
 						return null
 					})
-					.filter((range) => range !== null) // kilocode_change
+					.filter((range) => range !== null) // novacode_change
 			}
 			return entry
 		})
@@ -565,7 +565,7 @@ export class NativeToolCallParser {
 				}
 				break
 
-			// kilocode_change start: Fast Apply
+			// novacode_change start: Fast Apply
 			case "fast_edit_file":
 				if (
 					partialArgs.target_file !== undefined ||
@@ -579,7 +579,7 @@ export class NativeToolCallParser {
 					}
 				}
 				break
-			// kilocode_change end
+			// novacode_change end
 
 			default:
 				break
@@ -611,7 +611,7 @@ export class NativeToolCallParser {
 		id: string
 		name: TName
 		arguments: string
-		extra_content?: Record<string, unknown> // kilocode_change
+		extra_content?: Record<string, unknown> // novacode_change
 	}): ToolUse<TName> | McpToolUse | null {
 		// Check if this is a dynamic MCP tool (mcp--serverName--toolName)
 		// Also handle models that output underscores instead of hyphens (mcp__serverName__toolName)
@@ -696,14 +696,14 @@ export class NativeToolCallParser {
 					}
 					break
 
-				// kilocode_change start
+				// novacode_change start
 				// case "edit_file":
 				case "condense":
 				case "delete_file":
 				case "new_rule":
 				case "report_bug":
 					break
-				// kilocode_change end
+				// novacode_change end
 
 				case "apply_diff":
 					if (args.path !== undefined && args.diff !== undefined) {
@@ -873,7 +873,7 @@ export class NativeToolCallParser {
 					}
 					break
 
-				// kilocode_change start: Fast Apply
+				// novacode_change start: Fast Apply
 				case "fast_edit_file":
 					if (
 						args.target_file !== undefined &&
@@ -887,7 +887,7 @@ export class NativeToolCallParser {
 						} as NativeArgsFor<TName>
 					}
 					break
-				// kilocode_change end
+				// novacode_change end
 
 				default:
 					if (customToolRegistry.has(resolvedName)) {
@@ -910,11 +910,11 @@ export class NativeToolCallParser {
 				result.originalName = toolCall.name
 			}
 
-			// kilocode_change start: Preserve extra_content for Gemini 3 thought_signature support
+			// novacode_change start: Preserve extra_content for Gemini 3 thought_signature support
 			if (toolCall.extra_content) {
 				result.extra_content = toolCall.extra_content
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			return result
 		} catch (error) {
@@ -940,7 +940,7 @@ export class NativeToolCallParser {
 		id: string
 		name: string
 		arguments: string
-		extra_content?: Record<string, unknown> // kilocode_change
+		extra_content?: Record<string, unknown> // novacode_change
 	}): McpToolUse | null {
 		try {
 			// Parse the arguments - these are the actual tool arguments passed directly
@@ -971,11 +971,11 @@ export class NativeToolCallParser {
 				partial: false,
 			}
 
-			// kilocode_change start: Preserve extra_content for Gemini 3 thought_signature support
+			// novacode_change start: Preserve extra_content for Gemini 3 thought_signature support
 			if (toolCall.extra_content) {
 				result.extra_content = toolCall.extra_content
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			return result
 		} catch (error) {

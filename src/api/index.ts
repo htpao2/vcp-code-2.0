@@ -1,4 +1,4 @@
-import { Anthropic } from "@anthropic-ai/sdk"
+﻿import { Anthropic } from "@anthropic-ai/sdk"
 import OpenAI from "openai"
 
 import type { ProviderSettings, ModelInfo, ToolProtocol } from "@roo-code/types"
@@ -6,13 +6,13 @@ import type { ProviderSettings, ModelInfo, ToolProtocol } from "@roo-code/types"
 import { ApiStream } from "./transform/stream"
 
 import {
-	GlamaHandler, // kilocode_change
+	GlamaHandler, // novacode_change
 	AnthropicHandler,
 	AwsBedrockHandler,
 	CerebrasHandler,
 	OpenRouterHandler,
-	PoeHandler, // kilocode_change
-	ZenMuxHandler, // kilocode_change
+	PoeHandler, // novacode_change
+	ZenMuxHandler, // novacode_change
 	VertexHandler,
 	AnthropicVertexHandler,
 	OpenAiHandler,
@@ -22,7 +22,7 @@ import {
 	OpenAiNativeHandler,
 	DeepSeekHandler,
 	MoonshotHandler,
-	NanoGptHandler, // kilocode_change
+	NanoGptHandler, // novacode_change
 	MistralHandler,
 	VsCodeLmHandler,
 	UnboundHandler,
@@ -34,14 +34,14 @@ import {
 	HuggingFaceHandler,
 	ChutesHandler,
 	LiteLLMHandler,
-	// kilocode_change start
+	// novacode_change start
 	VirtualQuotaFallbackHandler,
 	SyntheticHandler,
 	OVHcloudAIEndpointsHandler,
 	SapAiCoreHandler,
 	AihubmixHandler,
 	ApertisHandler,
-	// kilocode_change end
+	// novacode_change end
 	ClaudeCodeHandler,
 	QwenCodeHandler,
 	SambaNovaHandler,
@@ -56,14 +56,14 @@ import {
 	MiniMaxHandler,
 	BasetenHandler,
 	CorethinkHandler,
-	OpenAiCompatibleResponsesHandler, // kilocode_change
+	OpenAiCompatibleResponsesHandler, // novacode_change
 } from "./providers"
-// kilocode_change start
-import { KilocodeOpenrouterHandler } from "./providers/kilocode-openrouter"
+// novacode_change start
+import { NovacodeOpenrouterHandler } from "./providers/novacode-openrouter"
 import { InceptionLabsHandler } from "./providers/inception"
-import type { FimHandler } from "./providers/kilocode/FimHandler" // kilocode_change
-export type { FimHandler } from "./providers/kilocode/FimHandler"
-// kilocode_change end
+import type { FimHandler } from "./providers/nova/FimHandler" // novacode_change
+export type { FimHandler } from "./providers/nova/FimHandler"
+// novacode_change end
 import { NativeOllamaHandler } from "./providers/native-ollama"
 
 export interface SingleCompletionHandler {
@@ -94,21 +94,21 @@ export interface ApiHandlerCreateMessageMetadata {
 	 * @default true
 	 */
 	store?: boolean
-	// kilocode_change start
+	// novacode_change start
 	/**
-	 * KiloCode-specific: The project ID for the current workspace (derived from git origin remote).
-	 * Used by KiloCodeOpenrouterHandler for backend tracking. Ignored by other providers.
-	 * @kilocode-only
+	 * NovaCode-specific: The project ID for the current workspace (derived from git origin remote).
+	 * Used by NovaCodeOpenrouterHandler for backend tracking. Ignored by other providers.
+	 * @novacode-only
 	 */
 	projectId?: string
 	/**
-	 * KiloCode-specific: Feature attribution for microdollar usage tracking.
+	 * NovaCode-specific: Feature attribution for microdollar usage tracking.
 	 * When set, overrides the default feature detection in customRequestOptions().
 	 * Examples: 'parallel-agent', 'autocomplete'
-	 * @kilocode-only
+	 * @novacode-only
 	 */
 	feature?: string
-	// kilocode_change end
+	// novacode_change end
 	/**
 	 * Optional array of tool definitions to pass to the model.
 	 * For OpenAI-compatible providers, these are ChatCompletionTool definitions.
@@ -161,43 +161,43 @@ export interface ApiHandler {
 	 */
 	countTokens(content: Array<Anthropic.Messages.ContentBlockParam>): Promise<number>
 
-	// kilocode_change start
+	// novacode_change start
 	/**
 	 * Returns a FimHandler if the provider supports FIM (Fill-In-the-Middle) completions,
 	 * or undefined if FIM is not supported.
 	 */
 	fimSupport?: () => FimHandler | undefined
-	// kilocode_change end
+	// novacode_change end
 
-	contextWindow?: number // kilocode_change: Add contextWindow property for virtual quota fallback
+	contextWindow?: number // novacode_change: Add contextWindow property for virtual quota fallback
 }
 
 export function buildApiHandler(configuration: ProviderSettings): ApiHandler {
 	const { apiProvider, ...options } = configuration
 
 	switch (apiProvider) {
-		// kilocode_change start
-		case "kilocode":
-			return new KilocodeOpenrouterHandler(options)
+		// novacode_change start
+		case "novacode":
+			return new NovacodeOpenrouterHandler(options)
 		case "virtual-quota-fallback":
 			return new VirtualQuotaFallbackHandler(options)
-		// kilocode_change end
+		// novacode_change end
 		case "anthropic":
 			return new AnthropicHandler(options)
 		case "claude-code":
 			return new ClaudeCodeHandler(options)
-		// kilocode_change start
+		// novacode_change start
 		case "glama":
 			return new GlamaHandler(options)
-		// kilocode_change end
+		// novacode_change end
 		case "openrouter":
 			return new OpenRouterHandler(options)
-		// kilocode_change start
+		// novacode_change start
 		case "poe":
 			return new PoeHandler(options)
-		// kilocode_change end
-		case "zenmux": // kilocode_change
-			return new ZenMuxHandler(options) // kilocode_change
+		// novacode_change end
+		case "zenmux": // novacode_change
+			return new ZenMuxHandler(options) // novacode_change
 		case "bedrock":
 			return new AwsBedrockHandler(options)
 		case "vertex":
@@ -216,8 +216,8 @@ export function buildApiHandler(configuration: ProviderSettings): ApiHandler {
 			return new OpenAiCodexHandler(options)
 		case "openai-native":
 			return new OpenAiNativeHandler(options)
-		case "openai-responses": // kilocode_change
-			return new OpenAiCompatibleResponsesHandler(options) // kilocode_change
+		case "openai-responses": // novacode_change
+			return new OpenAiCompatibleResponsesHandler(options) // novacode_change
 		case "deepseek":
 			return new DeepSeekHandler(options)
 		case "doubao":
@@ -226,10 +226,10 @@ export function buildApiHandler(configuration: ProviderSettings): ApiHandler {
 			return new QwenCodeHandler(options)
 		case "moonshot":
 			return new MoonshotHandler(options)
-		// kilocode_change start
+		// novacode_change start
 		case "nano-gpt":
 			return new NanoGptHandler(options)
-		// kilocode_change end
+		// novacode_change end
 		case "vscode-lm":
 			return new VsCodeLmHandler(options)
 		case "mistral":
@@ -262,7 +262,7 @@ export function buildApiHandler(configuration: ProviderSettings): ApiHandler {
 			return new ZAiHandler(options)
 		case "fireworks":
 			return new FireworksHandler(options)
-		// kilocode_change start
+		// novacode_change start
 		case "synthetic":
 			return new SyntheticHandler(options)
 		case "inception":
@@ -275,7 +275,7 @@ export function buildApiHandler(configuration: ProviderSettings): ApiHandler {
 			return new AihubmixHandler(options)
 		case "apertis":
 			return new ApertisHandler(options)
-		// kilocode_change end
+		// novacode_change end
 		case "io-intelligence":
 			return new IOIntelligenceHandler(options)
 		case "roo":

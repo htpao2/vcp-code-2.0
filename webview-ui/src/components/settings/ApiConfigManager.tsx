@@ -2,7 +2,7 @@ import { memo, useEffect, useRef, useState } from "react"
 import { VSCodeTextField } from "@vscode/webview-ui-toolkit/react"
 import { AlertTriangle } from "lucide-react"
 
-import type { ProviderSettingsEntry, OrganizationAllowList, ProfileType } from "@roo-code/types" // kilocode_change - autocomplete profile type system
+import type { ProviderSettingsEntry, OrganizationAllowList, ProfileType } from "@roo-code/types" // novacode_change - autocomplete profile type system
 import { MODEL_SELECTION_ENABLED } from "@roo-code/types"
 
 import { useAppTranslation } from "@/i18n/TranslationContext"
@@ -15,34 +15,34 @@ import {
 	DialogTitle,
 	StandardTooltip,
 	SearchableSelect,
-	// kilocode_change start - autocomplete profile type system
+	// novacode_change start - autocomplete profile type system
 	Select,
 	SelectTrigger,
 	SelectValue,
 	SelectContent,
 	SelectItem,
-	// kilocode_change end
+	// novacode_change end
 } from "@/components/ui"
 
 interface ApiConfigManagerProps {
 	currentApiConfigName?: string
-	activeApiConfigName?: string // kilocode_change: Track which profile is actually active
+	activeApiConfigName?: string // novacode_change: Track which profile is actually active
 	listApiConfigMeta?: ProviderSettingsEntry[]
 	organizationAllowList?: OrganizationAllowList
 	onSelectConfig: (configName: string) => void
-	onActivateConfig?: (configName: string) => void // kilocode_change: Explicit activation handler
+	onActivateConfig?: (configName: string) => void // novacode_change: Explicit activation handler
 	onDeleteConfig: (configName: string) => void
 	onRenameConfig: (oldName: string, newName: string) => void
-	onUpsertConfig: (configName: string, profileType?: ProfileType) => void // kilocode_change - autocomplete profile type system
+	onUpsertConfig: (configName: string, profileType?: ProfileType) => void // novacode_change - autocomplete profile type system
 }
 
 const ApiConfigManager = ({
 	currentApiConfigName = "",
-	activeApiConfigName, // kilocode_change: Track which profile is actually active
+	activeApiConfigName, // novacode_change: Track which profile is actually active
 	listApiConfigMeta = [],
 	organizationAllowList,
 	onSelectConfig,
-	onActivateConfig, // kilocode_change: Explicit activation handler
+	onActivateConfig, // novacode_change: Explicit activation handler
 	onDeleteConfig,
 	onRenameConfig,
 	onUpsertConfig,
@@ -53,7 +53,7 @@ const ApiConfigManager = ({
 	const [isCreating, setIsCreating] = useState(false)
 	const [inputValue, setInputValue] = useState("")
 	const [newProfileName, setNewProfileName] = useState("")
-	const [newProfileType, setNewProfileType] = useState<ProfileType>("chat") // kilocode_change - autocomplete profile type system
+	const [newProfileType, setNewProfileType] = useState<ProfileType>("chat") // novacode_change - autocomplete profile type system
 	const [error, setError] = useState<string | null>(null)
 	const inputRef = useRef<any>(null)
 	const newProfileInputRef = useRef<any>(null)
@@ -100,7 +100,7 @@ const ApiConfigManager = ({
 	const resetCreateState = () => {
 		setIsCreating(false)
 		setNewProfileName("")
-		setNewProfileType("chat") // kilocode_change - autocomplete profile type system
+		setNewProfileType("chat") // novacode_change - autocomplete profile type system
 		setError(null)
 	}
 
@@ -181,7 +181,7 @@ const ApiConfigManager = ({
 			return
 		}
 
-		onUpsertConfig(trimmedValue, newProfileType) // kilocode_change - autocomplete profile type system
+		onUpsertConfig(trimmedValue, newProfileType) // novacode_change - autocomplete profile type system
 		resetCreateState()
 	}
 
@@ -194,7 +194,7 @@ const ApiConfigManager = ({
 
 	const isOnlyProfile = listApiConfigMeta?.length === 1
 
-	const isEditingDifferentProfile = activeApiConfigName && currentApiConfigName !== activeApiConfigName // kilocode_change: Check if we're editing a different profile than the active one
+	const isEditingDifferentProfile = activeApiConfigName && currentApiConfigName !== activeApiConfigName // novacode_change: Check if we're editing a different profile than the active one
 
 	return (
 		<div className="flex flex-col gap-1">
@@ -255,18 +255,18 @@ const ApiConfigManager = ({
 							onValueChange={handleSelectConfig}
 							options={listApiConfigMeta.map((config) => {
 								const valid = isProfileValid(config)
-								// kilocode_change start - autocomplete profile type system
+								// novacode_change start - autocomplete profile type system
 								const profileType = config.profileType || "chat"
 								const label =
 									profileType === "autocomplete"
 										? `${config.name} ${t("settings:providers.autocompleteLabel")}`
 										: config.name
 
-								const isActive = config.name === activeApiConfigName // kilocode_change - added isActive
+								const isActive = config.name === activeApiConfigName // novacode_change - added isActive
 								return {
 									value: config.name,
-									label: isActive ? `${label} (Active)` : label, // kilocode_change - added active
-									// kilocode_change end
+									label: isActive ? `${label} (Active)` : label, // novacode_change - added active
+									// novacode_change end
 									disabled: !valid,
 									icon: !valid ? (
 										<StandardTooltip content={t("settings:validation.profileInvalid")}>
@@ -320,7 +320,7 @@ const ApiConfigManager = ({
 					<div className="text-vscode-descriptionForeground text-sm mt-1">
 						{t("settings:providers.description")}
 					</div>
-					{/* kilocode_change start Show "Make Active Profile" button when editing != active */}
+					{/* novacode_change start Show "Make Active Profile" button when editing != active */}
 					{isEditingDifferentProfile && onActivateConfig && (
 						<StandardTooltip content={t("settings:providers.makeActiveTooltip")}>
 							<Button
@@ -331,7 +331,7 @@ const ApiConfigManager = ({
 							</Button>
 						</StandardTooltip>
 					)}
-					{/* kilocode_change end Show "Make Active Profile" button when editing != active */}
+					{/* novacode_change end Show "Make Active Profile" button when editing != active */}
 				</>
 			)}
 
@@ -349,7 +349,7 @@ const ApiConfigManager = ({
 				aria-labelledby="new-profile-title">
 				<DialogContent className="p-4 max-w-sm bg-card">
 					<DialogTitle>{t("settings:providers.newProfile")}</DialogTitle>
-					{/* kilocode_change start - autocomplete profile type system */}
+					{/* novacode_change start - autocomplete profile type system */}
 					<div className="flex flex-col gap-3">
 						<div>
 							<label className="block text-sm font-medium mb-1">
@@ -400,7 +400,7 @@ const ApiConfigManager = ({
 							</div>
 						)}
 					</div>
-					{/* kilocode_change end */}
+					{/* novacode_change end */}
 					{error && (
 						<p className="text-vscode-errorForeground text-sm mt-2" data-testid="error-message">
 							{error}

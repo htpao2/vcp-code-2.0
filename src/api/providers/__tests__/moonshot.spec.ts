@@ -118,7 +118,7 @@ describe("MoonshotHandler", () => {
 			expect(model).toHaveProperty("maxTokens")
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("should expose native tools for kimi-k2.5", () => {
 			const strictHandler = new MoonshotHandler({
 				...mockOptions,
@@ -141,7 +141,7 @@ describe("MoonshotHandler", () => {
 
 			expect(model.info.supportsImages).toBe(true)
 		})
-		// kilocode_change end
+		// novacode_change end
 	})
 
 	describe("createMessage", () => {
@@ -247,7 +247,7 @@ describe("MoonshotHandler", () => {
 			expect(usageChunks[0].cacheReadTokens).toBe(2)
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("should include prompt_cache_key for moonshot requests when taskId is provided", async () => {
 			async function* mockFullStream() {
 				yield { type: "text-delta", text: "Test response" }
@@ -428,7 +428,7 @@ describe("MoonshotHandler", () => {
 				}),
 			)
 		})
-		// kilocode_change end
+		// novacode_change end
 	})
 
 	describe("completePrompt", () => {
@@ -447,7 +447,7 @@ describe("MoonshotHandler", () => {
 			)
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("should enforce strict thinking controls for completePrompt on strict Kimi models", async () => {
 			const strictHandler = new MoonshotHandler({
 				...mockOptions,
@@ -473,7 +473,7 @@ describe("MoonshotHandler", () => {
 				}),
 			)
 		})
-		// kilocode_change end
+		// novacode_change end
 	})
 
 	describe("processUsageMetrics", () => {
@@ -640,13 +640,13 @@ describe("MoonshotHandler", () => {
 				chunks.push(chunk)
 			}
 
-			// kilocode_change start
+			// novacode_change start
 			const toolCallChunks = chunks.filter((c) => c.type === "tool_call")
 			expect(toolCallChunks.length).toBe(1)
 			expect(toolCallChunks[0].id).toBe("tool-call-1")
 			expect(toolCallChunks[0].name).toBe("read_file")
 			expect(toolCallChunks[0].arguments).toBe('{"path":"test.ts"}')
-			// kilocode_change end
+			// novacode_change end
 		})
 
 		it("should handle complete tool calls", async () => {
@@ -701,7 +701,7 @@ describe("MoonshotHandler", () => {
 			expect(toolCallChunks[0].arguments).toBe('{"path":"test.ts"}')
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("should flush pending tool-input stream as tool_call when tool-input-end is missing", async () => {
 			async function* mockFullStream() {
 				yield {
@@ -757,6 +757,6 @@ describe("MoonshotHandler", () => {
 				arguments: '{"path":"missing-end.ts"}',
 			})
 		})
-		// kilocode_change end
+		// novacode_change end
 	})
 })

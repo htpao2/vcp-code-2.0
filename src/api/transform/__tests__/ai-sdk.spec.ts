@@ -284,7 +284,7 @@ describe("AI SDK conversion utilities", () => {
 			})
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("preserves assistant text/tool-call/text ordering", () => {
 			const messages: Anthropic.Messages.MessageParam[] = [
 				{
@@ -415,7 +415,7 @@ describe("AI SDK conversion utilities", () => {
 				},
 			})
 		})
-		// kilocode_change end
+		// novacode_change end
 
 		it("handles empty assistant content", () => {
 			const messages: Anthropic.Messages.MessageParam[] = [

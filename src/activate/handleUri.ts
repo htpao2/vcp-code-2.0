@@ -1,4 +1,4 @@
-import * as vscode from "vscode"
+﻿import * as vscode from "vscode"
 
 import { CloudService } from "@roo-code/cloud"
 
@@ -9,10 +9,10 @@ export const handleUri = async (uri: vscode.Uri) => {
 	const path = uri.path
 	const query = new URLSearchParams(uri.query.replace(/\+/g, "%2B"))
 
-	// kilocode_change start: Handle /kilocode/chat path specially - it needs to open the extension first
+	// novacode_change start: Handle /nova/chat path specially - it needs to open the extension first
 	// before we can get a provider instance
-	if (path === "/kilocode/chat") {
-		// Focus the sidebar first to open the Kilo Code extension
+	if (path === "/nova/chat") {
+		// Focus the sidebar first to open the Nova Code extension
 		await vscode.commands.executeCommand(`${Package.name}.SidebarProvider.focus`)
 		// Use getInstance() which waits for the provider to become visible after focusing
 		const provider = await ClineProvider.getInstance()
@@ -26,7 +26,7 @@ export const handleUri = async (uri: vscode.Uri) => {
 		await provider.postMessageToWebview({ type: "action", action: "focusInput" })
 		return
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	const visibleProvider = ClineProvider.getVisibleInstance()
 
@@ -35,7 +35,7 @@ export const handleUri = async (uri: vscode.Uri) => {
 	}
 
 	switch (path) {
-		// kilocode_change start
+		// novacode_change start
 		case "/glama": {
 			const code = query.get("code")
 			if (code) {
@@ -43,7 +43,7 @@ export const handleUri = async (uri: vscode.Uri) => {
 			}
 			break
 		}
-		// kilocode_change end
+		// novacode_change end
 		case "/openrouter": {
 			const code = query.get("code")
 			if (code) {
@@ -51,15 +51,15 @@ export const handleUri = async (uri: vscode.Uri) => {
 			}
 			break
 		}
-		case "/kilocode": {
+		case "/novacode": {
 			const token = query.get("token")
 			if (token) {
-				await visibleProvider.handleKiloCodeCallback(token)
+				await visibleProvider.handleNovaCodeCallback(token)
 			}
 			break
 		}
-		// kilocode_change start
-		case "/kilocode/profile": {
+		// novacode_change start
+		case "/nova/profile": {
 			// Focus the sidebar first so users can see the profile
 			await vscode.commands.executeCommand(`${Package.name}.SidebarProvider.focus`)
 			await visibleProvider.postMessageToWebview({
@@ -71,7 +71,7 @@ export const handleUri = async (uri: vscode.Uri) => {
 			})
 			break
 		}
-		case "/kilocode/fork": {
+		case "/nova/fork": {
 			const id = query.get("id")
 			if (id) {
 				// Focus the sidebar first so users can see the fork
@@ -88,7 +88,7 @@ export const handleUri = async (uri: vscode.Uri) => {
 			}
 			break
 		}
-		// kilocode_change end
+		// novacode_change end
 		case "/requesty": {
 			const code = query.get("code")
 			const baseUrl = query.get("baseUrl")

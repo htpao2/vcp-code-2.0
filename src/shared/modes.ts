@@ -46,7 +46,7 @@ export function getToolsForMode(groups: readonly GroupEntry[]): string[] {
 export const modes = DEFAULT_MODES
 
 // Export the default mode slug
-export const defaultModeSlug = DEFAULT_MODE_SLUG // kilocode_change: use shared constant
+export const defaultModeSlug = DEFAULT_MODE_SLUG // novacode_change: use shared constant
 
 // Helper functions
 export function getModeBySlug(slug: string, customModes?: ModeConfig[]): ModeConfig | undefined {
@@ -123,9 +123,9 @@ export function getModeSelection(mode: string, promptComponent?: PromptComponent
 	}
 
 	// Otherwise, use built-in mode as base and merge with promptComponent
-	// kilocode_change start - ensure baseMode is never undefined with explicit assertion
+	// novacode_change start - ensure baseMode is never undefined with explicit assertion
 	const baseMode = (builtInMode || modes[0])!
-	// kilocode_change end
+	// novacode_change end
 
 	return {
 		roleDefinition: promptComponent?.roleDefinition || baseMode.roleDefinition || "",
@@ -187,9 +187,9 @@ export async function getFullModeDetails(
 	},
 ): Promise<ModeConfig> {
 	// First get the base mode config from custom modes or built-in modes
-	// kilocode_change start - ensure baseMode is never undefined with explicit assertion
+	// novacode_change start - ensure baseMode is never undefined with explicit assertion
 	const baseMode = (getModeBySlug(modeSlug, customModes) || modes.find((m) => m.slug === modeSlug) || modes[0])!
-	// kilocode_change end
+	// novacode_change end
 
 	// Check for any prompt component overrides
 	const promptComponent = customModePrompts?.[modeSlug]
@@ -202,18 +202,18 @@ export async function getFullModeDetails(
 	// If we have cwd, load and combine all custom instructions
 	let fullCustomInstructions = baseCustomInstructions
 	if (options?.cwd) {
-		// kilocode_change start - only pass language if defined to satisfy exactOptionalPropertyTypes
+		// novacode_change start - only pass language if defined to satisfy exactOptionalPropertyTypes
 		const customInstructionsOptions: Parameters<typeof addCustomInstructions>[4] = {}
 		if (options.language !== undefined) {
 			customInstructionsOptions.language = options.language
 		}
-		// kilocode_change end
+		// novacode_change end
 		fullCustomInstructions = await addCustomInstructions(
 			baseCustomInstructions,
 			options.globalCustomInstructions || "",
 			options.cwd,
 			modeSlug,
-			customInstructionsOptions, // kilocode_change
+			customInstructionsOptions, // novacode_change
 		)
 	}
 

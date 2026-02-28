@@ -423,7 +423,7 @@ export async function getCurrentBranch(cwd: string): Promise<string | undefined>
 	}
 }
 
-// kilocode_change start - Review mode git utilities
+// novacode_change start - Review mode git utilities
 
 /**
  * File change info from git status or diff
@@ -781,4 +781,4 @@ export async function getCommitCountFromBase(cwd: string, baseBranch: string): P
 	}
 }
 
-// kilocode_change end
+// novacode_change end

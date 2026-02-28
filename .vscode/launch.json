@@ -17,7 +17,7 @@
 			"env": {
 				"NODE_ENV": "development",
 				"VSCODE_DEBUG_MODE": "true",
-				"KILOCODE_DEV_AGENT_RUNTIME_PATH": "${workspaceFolder}/dist/agent-runtime-process.js"
+				"NOVACODE_DEV_AGENT_RUNTIME_PATH": "${workspaceFolder}/dist/agent-runtime-process.js"
 			},
 			"resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
 			"presentation": {
@@ -42,7 +42,7 @@
 			"env": {
 				"NODE_ENV": "development",
 				"VSCODE_DEBUG_MODE": "true",
-				"KILOCODE_DEV_AGENT_RUNTIME_PATH": "${workspaceFolder}/dist/agent-runtime-process.js"
+				"NOVACODE_DEV_AGENT_RUNTIME_PATH": "${workspaceFolder}/dist/agent-runtime-process.js"
 			},
 			"resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
 			"presentation": { "hidden": false, "group": "tasks", "order": 1 }
@@ -59,8 +59,8 @@
 			"env": {
 				"NODE_ENV": "development",
 				"VSCODE_DEBUG_MODE": "true",
-				"KILOCODE_BACKEND_BASE_URL": "${input:kilocodeBackendBaseUrl}",
-				"KILOCODE_DEV_AGENT_RUNTIME_PATH": "${workspaceFolder}/dist/agent-runtime-process.js"
+				"NOVACODE_BACKEND_BASE_URL": "${input:novacodeBackendBaseUrl}",
+				"NOVACODE_DEV_AGENT_RUNTIME_PATH": "${workspaceFolder}/dist/agent-runtime-process.js"
 			},
 			"resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
 			"presentation": { "hidden": false, "group": "tasks", "order": 2 }
@@ -74,8 +74,8 @@
 			"type": "promptString"
 		},
 		{
-			"id": "kilocodeBackendBaseUrl",
-			"description": "Override the kilocode backend base URL",
+			"id": "novacodeBackendBaseUrl",
+			"description": "Override the novacode backend base URL",
 			"default": "http://localhost:3000",
 			"type": "promptString"
 		}

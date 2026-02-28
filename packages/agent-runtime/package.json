@@ -1,7 +1,7 @@
 {
-	"name": "@kilocode/agent-runtime",
+	"name": "@novacode/agent-runtime",
 	"version": "0.0.1",
-	"description": "Core agent runtime for Kilo Code - enables running agents without CLI",
+	"description": "Core agent runtime for Nova Code - enables running agents without CLI",
 	"type": "module",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -22,11 +22,11 @@
 		"build:watch": "tsc --watch",
 		"check-types": "tsc --noEmit",
 		"clean": "rimraf dist .turbo",
-		"test": "vitest run",
+		"test": "vitest run --passWithNoTests",
 		"test:watch": "vitest"
 	},
 	"dependencies": {
-		"@kilocode/core-schemas": "workspace:^",
+		"@novacode/core-schemas": "workspace:^",
 		"@roo-code/types": "workspace:^",
 		"node-machine-id": "^1.1.12"
 	},
@@ -36,7 +36,7 @@
 		"@types/node": "~25.0.3",
 		"rimraf": "^6.1.2",
 		"typescript": "^5.9.3",
-		"vitest": "^4.0.16"
+		"vitest": "^3.2.4"
 	},
 	"peerDependencies": {
 		"@roo-code/cloud": "workspace:^",
@@ -56,7 +56,7 @@
 	"keywords": [
 		"agent",
 		"runtime",
-		"kilo-code",
+		"nova-code",
 		"vscode",
 		"extension"
 	]

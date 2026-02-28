@@ -1,4 +1,4 @@
-import * as fs from "fs"
+﻿import * as fs from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 import os from "os"
@@ -63,7 +63,7 @@ import { resolveToolProtocol, detectToolProtocolFromHistory } from "../../utils/
 import { ApiHandler, ApiHandlerCreateMessageMetadata, buildApiHandler } from "../../api"
 import { ApiStream, GroundingSource } from "../../api/transform/stream"
 import { maybeRemoveImageBlocks } from "../../api/transform/image-cleaning"
-import { VirtualQuotaFallbackHandler } from "../../api/providers/virtual-quota-fallback" // kilocode_change: Import VirtualQuotaFallbackHandler for model change notifications
+import { VirtualQuotaFallbackHandler } from "../../api/providers/virtual-quota-fallback" // novacode_change: Import VirtualQuotaFallbackHandler for model change notifications
 
 // shared
 import { findLastIndex } from "../../shared/array"
@@ -132,12 +132,12 @@ import {
 	checkpointRestore,
 	checkpointDiff,
 } from "../checkpoints"
-import { processKiloUserContentMentions } from "../mentions/processKiloUserContentMentions" // kilocode_change
-import { refreshWorkflowToggles } from "../context/instructions/workflows" // kilocode_change
-import { parseMentions } from "../mentions" // kilocode_change
-import { parseKiloSlashCommands } from "../slash-commands/kilo" // kilocode_change
-import { GlobalFileNames } from "../../shared/globalFileNames" // kilocode_change
-import { ensureLocalKilorulesDirExists } from "../context/instructions/kilo-rules" // kilocode_change
+import { processNovaUserContentMentions } from "../mentions/processNovaUserContentMentions" // novacode_change
+import { refreshWorkflowToggles } from "../context/instructions/workflows" // novacode_change
+import { parseMentions } from "../mentions" // novacode_change
+import { parseNovaSlashCommands } from "../slash-commands/nova" // novacode_change
+import { GlobalFileNames } from "../../shared/globalFileNames" // novacode_change
+import { ensureLocalNovarulesDirExists } from "../context/instructions/nova-rules" // novacode_change
 import { processUserContentMentions } from "../mentions/processUserContentMentions"
 import {
 	getMessagesSinceLastSummary,
@@ -148,15 +148,15 @@ import {
 import { MessageQueueService } from "../message-queue/MessageQueueService"
 
 import {
-	isAnyRecognizedKiloCodeError,
+	isAnyRecognizedNovaCodeError,
 	isPaymentRequiredError,
 	isUnauthorizedGenericError,
 	isUnauthorizedPaidModelError,
 	isUnauthorizedPromotionLimitError,
-} from "../../shared/kilocode/errorUtils"
+} from "../../shared/nova/errorUtils"
 import { getAppUrl } from "@roo-code/types"
-import { getKilocodeDefaultModel } from "../../api/providers/kilocode/getKilocodeDefaultModel" // kilocode_change
-import { addOrMergeUserContent } from "./kilocode"
+import { getNovacodeDefaultModel } from "../../api/providers/nova/getNovacodeDefaultModel" // novacode_change
+import { addOrMergeUserContent } from "./novacode"
 import { AutoApprovalHandler, checkAutoApproval } from "../auto-approval"
 import { MessageManager } from "../message-manager"
 import { validateAndFixToolResultIds } from "./validateToolResultIds"
@@ -166,12 +166,12 @@ const MAX_EXPONENTIAL_BACKOFF_SECONDS = 600 // 10 minutes
 const DEFAULT_USAGE_COLLECTION_TIMEOUT_MS = 5000 // 5 seconds
 const FORCED_CONTEXT_REDUCTION_PERCENT = 75 // Keep 75% of context (remove 25%) on context window errors
 const MAX_CONTEXT_WINDOW_RETRIES = 3 // Maximum retries for context window errors
-// kilocode_change start
+// novacode_change start
 const MAX_CHUTES_TERMINATED_RETRY_ATTEMPTS = 2 // Allow up to 2 retries (3 total attempts) before failing fast
-// kilocode_change end
+// novacode_change end
 
 export interface TaskOptions extends CreateTaskOptions {
-	context: vscode.ExtensionContext // kilocode_change
+	context: vscode.ExtensionContext // novacode_change
 	provider: ClineProvider
 	apiConfiguration: ProviderSettings
 	enableDiff?: boolean
@@ -195,13 +195,13 @@ export interface TaskOptions extends CreateTaskOptions {
 	initialStatus?: "active" | "delegated" | "completed"
 }
 
-type UserContent = Array<Anthropic.ContentBlockParam> // kilocode_change
+type UserContent = Array<Anthropic.ContentBlockParam> // novacode_change
 
 export class Task extends EventEmitter<TaskEvents> implements TaskLike {
-	private context: vscode.ExtensionContext // kilocode_change
+	private context: vscode.ExtensionContext // novacode_change
 
 	readonly taskId: string
-	private taskIsFavorited?: boolean // kilocode_change
+	private taskIsFavorited?: boolean // novacode_change
 	readonly rootTaskId?: string
 	readonly parentTaskId?: string
 	childTaskId?: string
@@ -385,7 +385,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 	 * this ensures the total cost displayed to the user reflects all API usage,
 	 * even if messages are removed from the conversation history.
 	 */
-	private _deletedApiCost: number = 0 // kilocode_change
+	private _deletedApiCost: number = 0 // novacode_change
 
 	// Ask
 	private askResponse?: ClineAskResponse
@@ -427,7 +427,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 	userMessageContent: (
 		| Anthropic.TextBlockParam
 		| Anthropic.ImageBlockParam
-		| Anthropic.ToolResultBlockParam // kilocode_change
+		| Anthropic.ToolResultBlockParam // novacode_change
 	)[] = []
 	userMessageContentReady = false
 
@@ -487,7 +487,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 	private _messageManager?: MessageManager
 
 	constructor({
-		context, // kilocode_change
+		context, // novacode_change
 		provider,
 		apiConfiguration,
 		enableDiff = false,
@@ -510,7 +510,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		initialStatus,
 	}: TaskOptions) {
 		super()
-		this.context = context // kilocode_change
+		this.context = context // novacode_change
 
 		if (startTask && !task && !images && !historyItem) {
 			throw new Error("Either historyItem or task/images must be provided")
@@ -531,7 +531,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		}
 
 		this.taskId = historyItem ? historyItem.id : uuidv7()
-		this.taskIsFavorited = historyItem?.isFavorited // kilocode_change
+		this.taskIsFavorited = historyItem?.isFavorited // novacode_change
 		this.rootTaskId = historyItem ? historyItem.rootTaskId : rootTask?.taskId
 		this.parentTaskId = historyItem ? historyItem.parentTaskId : parentTask?.taskId
 		this.childTaskId = undefined
@@ -544,7 +544,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		// Normal use-case is usually retry similar history task with new workspace.
 		this.workspacePath = parentTask
 			? parentTask.workspacePath
-			: (workspacePath ?? getWorkspacePath(path.join(os.homedir(), "Documents"))) // kilocode_change: use Documents instead of Desktop as default
+			: (workspacePath ?? getWorkspacePath(path.join(os.homedir(), "Documents"))) // novacode_change: use Documents instead of Desktop as default
 
 		this.instanceId = crypto.randomUUID().slice(0, 8)
 		this.taskNumber = -1
@@ -559,13 +559,13 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 
 		this.apiConfiguration = apiConfiguration
 		this.api = buildApiHandler(this.apiConfiguration)
-		// kilocode_change start: Listen for model changes in virtual quota fallback
+		// novacode_change start: Listen for model changes in virtual quota fallback
 		if (this.api instanceof VirtualQuotaFallbackHandler) {
 			this.api.on("handlerChanged", () => {
 				this.emit("modelChanged")
 			})
 		}
-		// kilocode_change end
+		// novacode_change end
 		this.autoApprovalHandler = new AutoApprovalHandler()
 
 		this.urlContentFetcher = new UrlContentFetcher(provider.context)
@@ -595,9 +595,9 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		this.fuzzyMatchThreshold = fuzzyMatchThreshold
 		this.consecutiveMistakeLimit = consecutiveMistakeLimit ?? DEFAULT_CONSECUTIVE_MISTAKE_LIMIT
 		this.providerRef = new WeakRef(provider)
-		// kilocode_change start: Handle CLI mode where globalStorageUri might not be properly set
+		// novacode_change start: Handle CLI mode where globalStorageUri might not be properly set
 		this.globalStoragePath = provider.context?.globalStorageUri?.fsPath ?? this.getCliGlobalStoragePath()
-		// kilocode_change end
+		// novacode_change end
 		this.diffViewProvider = new DiffViewProvider(this.cwd, this)
 		this.enableCheckpoints = enableCheckpoints
 		this.checkpointTimeout = checkpointTimeout
@@ -647,7 +647,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		this.messageQueueStateChangedHandler = () => {
 			this.emit(RooCodeEventName.TaskUserMessage, this.taskId)
 			this.providerRef.deref()?.postStateToWebview()
-			this.emit("modelChanged") // kilocode_change: Emit modelChanged for virtual quota fallback UI updates
+			this.emit("modelChanged") // novacode_change: Emit modelChanged for virtual quota fallback UI updates
 		}
 
 		this.messageQueueService.on("stateChanged", this.messageQueueStateChangedHandler)
@@ -715,7 +715,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		}
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	private getContext(): vscode.ExtensionContext {
 		const context = this.context
 		if (!context) {
@@ -726,12 +726,12 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 
 	/**
 	 * Get global storage path for CLI mode when vscode context is not available.
-	 * Uses KiloCodePaths utility if available, otherwise falls back to home directory.
+	 * Uses NovaCodePaths utility if available, otherwise falls back to home directory.
 	 */
 	private getCliGlobalStoragePath(): string {
 		// Try to use home directory based path for CLI mode
 		const homeDir = process.env.HOME || process.env.USERPROFILE || "/tmp"
-		const cliStoragePath = path.join(homeDir, ".kilocode", "cli", "global")
+		const cliStoragePath = path.join(homeDir, ".novacode", "cli", "global")
 
 		// Ensure directory exists
 		try {
@@ -744,7 +744,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 
 		return cliStoragePath
 	}
-	// kilocode_change end
+	// novacode_change end
 	/**
 	 * Initialize the task mode from the provider state.
 	 * This method handles async initialization with proper error handling.
@@ -1210,7 +1210,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				globalStoragePath: this.globalStoragePath,
 			})
 
-			// kilocode_change start
+			// novacode_change start
 			// Post directly to webview for CLI to react to file save.
 			// This must not prevent saving history or emitting usage events if
 			// storage is unavailable (e.g., during unit tests).
@@ -1227,7 +1227,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			} catch (error) {
 				console.warn("Failed to notify webview about saved API messages:", error)
 			}
-			// kilocode_change end
+			// novacode_change end
 		} catch (error) {
 			// In the off chance this fails, we don't want to stop the task.
 			console.error("Failed to save API conversation history:", error)
@@ -1247,7 +1247,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		this.emit(RooCodeEventName.Message, { action: "created", message })
 		await this.saveClineMessages()
 
-		// kilocode_change start: no cloud service
+		// novacode_change start: no cloud service
 		// const shouldCaptureMessage = message.partial !== true && CloudService.isEnabled()
 
 		// if (shouldCaptureMessage) {
@@ -1256,7 +1256,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		// 		properties: { taskId: this.taskId, message },
 		// 	})
 		// }
-		// kilocode_change end
+		// novacode_change end
 	}
 
 	public async overwriteClineMessages(newMessages: ClineMessage[]) {
@@ -1283,7 +1283,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		const shouldCaptureMessage = message.partial !== true && CloudService.isEnabled()
 		const hasNotBeenSynced = !this.cloudSyncedMessageTimestamps.has(message.ts)
 
-		// kilocode_change start: no cloud service
+		// novacode_change start: no cloud service
 		// if (shouldCaptureMessage && hasNotBeenSynced) {
 		// 	CloudService.instance.captureEvent({
 		// 		event: TelemetryEventName.TASK_MESSAGE,
@@ -1292,7 +1292,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		// 	// Track that this message has been synced to cloud
 		// 	this.cloudSyncedMessageTimestamps.add(message.ts)
 		// }
-		// kilocode_change end
+		// novacode_change end
 	}
 
 	private async saveClineMessages() {
@@ -1307,7 +1307,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				await this.taskApiConfigReady
 			}
 
-			// kilocode_change start
+			// novacode_change start
 			// Post directly to webview for CLI to react to file save.
 			// Keep this isolated so filesystem issues don't prevent token usage
 			// updates (important for unit tests and degraded environments).
@@ -1324,7 +1324,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			} catch (error) {
 				console.warn("Failed to notify webview about saved task messages:", error)
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			const { historyItem, tokenUsage } = await taskMetadata({
 				taskId: this.taskId,
@@ -1338,7 +1338,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				apiConfigName: this._taskApiConfigName, // Use the task's own provider profile, not the current provider profile.
 				initialStatus: this.initialStatus,
 				toolProtocol: this._taskToolProtocol, // Persist the locked tool protocol.
-				cumulativeTotalCost: this.getCumulativeTotalCost(), // kilocode_change: include deleted message costs.
+				cumulativeTotalCost: this.getCumulativeTotalCost(), // novacode_change: include deleted message costs.
 			})
 
 			// Emit token/tool usage updates using debounced function
@@ -1364,7 +1364,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		return undefined
 	}
 
-	async nextClineMessageTimestamp_kilocode() {
+	async nextClineMessageTimestamp_novacode() {
 		let ts = Date.now()
 		while (ts <= (this.clineMessages?.at(-1)?.ts ?? 0)) {
 			console.warn("nextClineMessageTimeStamp: timestamp already taken", ts)
@@ -1393,7 +1393,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		// simply removes the reference to this instance, but the instance is
 		// still alive until this promise resolves or rejects.)
 		if (this.abort) {
-			throw new Error(`[KiloCode#ask] task ${this.taskId}.${this.instanceId} aborted`)
+			throw new Error(`[NovaCode#ask] task ${this.taskId}.${this.instanceId} aborted`)
 		}
 
 		let askTs: number
@@ -1421,7 +1421,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				} else {
 					// This is a new partial message, so add it with partial
 					// state.
-					askTs = await this.nextClineMessageTimestamp_kilocode()
+					askTs = await this.nextClineMessageTimestamp_novacode()
 					this.lastMessageTs = askTs
 					await this.addToClineMessages({ ts: askTs, type: "ask", ask: type, text, partial, isProtected })
 					// console.log("Task#ask: current ask promise was ignored (#2)")
@@ -1459,7 +1459,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 					this.askResponse = undefined
 					this.askResponseText = undefined
 					this.askResponseImages = undefined
-					askTs = await this.nextClineMessageTimestamp_kilocode() // kilocode_change
+					askTs = await this.nextClineMessageTimestamp_novacode() // novacode_change
 					this.lastMessageTs = askTs
 					await this.addToClineMessages({ ts: askTs, type: "ask", ask: type, text, isProtected })
 				}
@@ -1469,12 +1469,12 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			this.askResponse = undefined
 			this.askResponseText = undefined
 			this.askResponseImages = undefined
-			askTs = await this.nextClineMessageTimestamp_kilocode() // kilocode_change
+			askTs = await this.nextClineMessageTimestamp_novacode() // novacode_change
 			this.lastMessageTs = askTs
 			await this.addToClineMessages({ ts: askTs, type: "ask", ask: type, text, isProtected })
 		}
 
-		// kilocode_change start: YOLO mode auto-answer for follow-up questions
+		// novacode_change start: YOLO mode auto-answer for follow-up questions
 		// Check if this is a follow-up question with suggestions in YOLO mode
 		if (type === "followup" && text && !partial) {
 			try {
@@ -1507,7 +1507,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				console.warn("Failed to auto-answer follow-up question in YOLO mode:", error)
 			}
 		}
-		// kilocode_change end
+		// novacode_change end
 		let timeouts: NodeJS.Timeout[] = []
 
 		// Automatically approve if the ask according to the user's settings.
@@ -1659,15 +1659,15 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		// Clear any pending auto-approval timeout when user responds
 		this.cancelAutoApprovalTimeout()
 
-		// this.askResponse = askResponse kilocode_change
+		// this.askResponse = askResponse novacode_change
 		this.askResponseText = text
 		this.askResponseImages = images
 
-		// kilocode_change start
+		// novacode_change start
 		// the askResponse assignment needs to happen last to avoid the async
 		// callbacks triggering before we assign the data above
 		this.askResponse = askResponse // this triggers async callbacks
-		// kilocode_change end
+		// novacode_change end
 
 		// Create a checkpoint whenever the user sends a message.
 		// Use allowEmpty=true to ensure a checkpoint is recorded even if there are no file changes.
@@ -1886,13 +1886,13 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		progressStatus?: ToolProgressStatus,
 		options: {
 			isNonInteractive?: boolean
-			metadata?: Record<string, unknown> // kilocode_change
+			metadata?: Record<string, unknown> // novacode_change
 		} = {},
 		contextCondense?: ContextCondense,
 		contextTruncation?: ContextTruncation,
 	): Promise<undefined> {
 		if (this.abort) {
-			throw new Error(`[Kilo Code#say] task ${this.taskId}.${this.instanceId} aborted`)
+			throw new Error(`[Nova Code#say] task ${this.taskId}.${this.instanceId} aborted`)
 		}
 
 		if (partial !== undefined) {
@@ -1911,7 +1911,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 					this.updateClineMessage(lastMessage)
 				} else {
 					// This is a new partial message, so add it with partial state.
-					const sayTs = await this.nextClineMessageTimestamp_kilocode()
+					const sayTs = await this.nextClineMessageTimestamp_novacode()
 
 					if (!options.isNonInteractive) {
 						this.lastMessageTs = sayTs
@@ -1941,11 +1941,11 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 					lastMessage.images = images
 					lastMessage.partial = false
 					lastMessage.progressStatus = progressStatus
-					// kilocode_change start
+					// novacode_change start
 					if (options.metadata) {
 						lastMessage.metadata = Object.assign(lastMessage.metadata ?? {}, options.metadata)
 					}
-					// kilocode_change end
+					// novacode_change end
 
 					// Instead of streaming partialMessage events, we do a save
 					// and post like normal to persist to disk.
@@ -1955,7 +1955,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 					this.updateClineMessage(lastMessage)
 				} else {
 					// This is a new and complete message, so add it like normal.
-					const sayTs = await this.nextClineMessageTimestamp_kilocode()
+					const sayTs = await this.nextClineMessageTimestamp_novacode()
 
 					if (!options.isNonInteractive) {
 						this.lastMessageTs = sayTs
@@ -1968,14 +1968,14 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 						text,
 						images,
 						contextCondense,
-						metadata: options.metadata, // kilocode_csouhange
+						metadata: options.metadata, // novacode_csouhange
 						contextTruncation,
 					})
 				}
 			}
 		} else {
 			// This is a new non-partial message, so add it like normal.
-			const sayTs = await this.nextClineMessageTimestamp_kilocode()
+			const sayTs = await this.nextClineMessageTimestamp_novacode()
 
 			// A "non-interactive" message is a message is one that the user
 			// does not need to respond to. We don't want these message types
@@ -1993,7 +1993,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				images,
 				checkpoint,
 				contextCondense,
-				metadata: options.metadata, // kilocode_change
+				metadata: options.metadata, // novacode_change
 				contextTruncation,
 			})
 		}
@@ -2005,21 +2005,21 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 	}
 
 	async sayAndCreateMissingParamError(toolName: ToolName, paramName: string, relPath?: string) {
-		const kilocodeExtraText = (() => {
+		const novacodeExtraText = (() => {
 			switch (toolName) {
 				case "apply_diff":
-					return t("kilocode:task.disableApplyDiff") + " "
+					return t("novacode:task.disableApplyDiff") + " "
 				case "fast_edit_file":
-					return t("kilocode:task.disableEditFile") + " "
+					return t("novacode:task.disableEditFile") + " "
 				default:
 					return ""
 			}
 		})()
 		await this.say(
 			"error",
-			`Kilo Code tried to use ${toolName}${
+			`Nova Code tried to use ${toolName}${
 				relPath ? ` for '${relPath.toPosix()}'` : ""
-			} without value for required parameter '${paramName}'. ${kilocodeExtraText}Retrying...`,
+			} without value for required parameter '${paramName}'. ${novacodeExtraText}Retrying...`,
 		)
 		// Use the task's locked protocol, NOT the current settings (fallback to xml if not set)
 		return formatResponse.toolError(
@@ -2204,7 +2204,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		// Only convert tool blocks to text for XML protocol
 		// For native protocol, the API expects proper tool_use/tool_result structure
 		if (!useNative) {
-			// kilocode_change start
+			// novacode_change start
 			// const conversationWithoutToolBlocks = existingApiConversationHistory.map((message) => {
 			// 	if (Array.isArray(message.content)) {
 			// 		const newContent = message.content.map((block) => {
@@ -2235,7 +2235,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			// 	return message
 			// })
 			// existingApiConversationHistory = conversationWithoutToolBlocks
-			// kilocode_change end
+			// novacode_change end
 		}
 
 		// FIXME: remove tool use blocks altogether
@@ -2316,14 +2316,14 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			} else {
 				throw new Error("Unexpected: Last message is not a user or assistant message")
 			}
-			// kilocode_change start: Handle empty API conversation history for CLI session restoration
+			// novacode_change start: Handle empty API conversation history for CLI session restoration
 		} else {
 			// Empty API conversation history - this can happen when restoring an empty session
 			// (e.g., a session created but not yet used). Treat it like a fresh start.
 			modifiedApiConversationHistory = []
 			modifiedOldUserContent = []
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		let newUserContent: Anthropic.Messages.ContentBlockParam[] = [...modifiedOldUserContent]
 
@@ -2348,18 +2348,18 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		})()
 
 		if (responseText) {
-			// kilocode_change start
+			// novacode_change start
 			newUserContent = addOrMergeUserContent(newUserContent, [
 				{
 					type: "text",
 					text: `\n\nNew instructions for task continuation:\n<user_message>\n${responseText}\n</user_message>`,
 				},
 			])
-			// kilocode_change end
+			// novacode_change end
 		}
 
 		if (responseImages && responseImages.length > 0) {
-			newUserContent = addOrMergeUserContent(newUserContent, formatResponse.imageBlocks(responseImages)) // kilocode_change
+			newUserContent = addOrMergeUserContent(newUserContent, formatResponse.imageBlocks(responseImages)) // novacode_change
 		}
 
 		// Ensure we have at least some content to send to the API.
@@ -2692,7 +2692,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 
 			if (this.abort) {
 				throw new Error(
-					`[KiloCode#recursivelyMakeClineRequests] task ${this.taskId}.${this.instanceId} aborted`,
+					`[NovaCode#recursivelyMakeClineRequests] task ${this.taskId}.${this.instanceId} aborted`,
 				)
 			}
 
@@ -2763,11 +2763,11 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				showRooIgnoredFiles = false,
 				includeDiagnosticMessages = true,
 				maxDiagnosticMessages = 50,
-				maxReadFileLine = 500 /*kilocode_change*/,
+				maxReadFileLine = 500 /*novacode_change*/,
 			} = (await this.providerRef.deref()?.getState()) ?? {}
 
-			// kilocode_change start
-			const [parsedUserContent, needsRulesFileCheck] = await processKiloUserContentMentions({
+			// novacode_change start
+			const [parsedUserContent, needsRulesFileCheck] = await processNovaUserContentMentions({
 				context: this.getContext(),
 				userContent: currentUserContent,
 				cwd: this.cwd,
@@ -2783,10 +2783,10 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			if (needsRulesFileCheck) {
 				await this.say(
 					"error",
-					"Issue with processing the /newrule command. Double check that, if '.kilocode/rules' already exists, it's a directory and not a file. Otherwise there was an issue referencing this file/directory",
+					"Issue with processing the /newrule command. Double check that, if '.novacode/rules' already exists, it's a directory and not a file. Otherwise there was an issue referencing this file/directory",
 				)
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			const environmentDetails = await getEnvironmentDetails(this, currentIncludeFileDetails)
 
@@ -2809,11 +2809,11 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 
 			// Add environment details as its own text block, separate from tool
 			// results.
-			// kilocode_change start: support interleaved thinking for environment details
+			// novacode_change start: support interleaved thinking for environment details
 			const finalUserContent = addOrMergeUserContent(contentWithoutEnvDetails, [
 				{ type: "text" as const, text: environmentDetails },
 			])
-			// kilocode_change end
+			// novacode_change end
 
 			// Only add user message to conversation history if:
 			// 1. This is the first attempt (retryAttempt === 0), AND
@@ -2849,11 +2849,11 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				let outputTokens = 0
 				let totalCost: number | undefined
 
-				// kilocode_change start
+				// novacode_change start
 				let inferenceProvider: string | undefined
 				let usageMissing = false
 				const apiRequestStartTime = performance.now()
-				// kilocode_change end
+				// novacode_change end
 
 				// We can't use `api_req_finished` anymore since it's a unique case
 				// where it could come after a streaming message (i.e. in the middle
@@ -2897,10 +2897,10 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 						cacheWrites: cacheWriteTokens,
 						cacheReads: cacheReadTokens,
 						cost: totalCost ?? costResult.totalCost,
-						// kilocode_change start
+						// novacode_change start
 						usageMissing,
 						inferenceProvider,
-						// kilocode_change end
+						// novacode_change end
 						cancelReason,
 						streamingFailedMessage,
 					} satisfies ClineApiReqInfo)
@@ -2977,11 +2977,11 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				let pendingGroundingSources: GroundingSource[] = []
 				this.isStreaming = true
 
-				// kilocode_change start
+				// novacode_change start
 				const antThinkingContent = new Array<
 					Anthropic.Messages.RedactedThinkingBlock | Anthropic.Messages.ThinkingBlock
 				>()
-				// kilocode_change end
+				// novacode_change end
 
 				let streamAbortSignal: AbortSignal | undefined
 				let streamAbortListener: (() => void) | undefined
@@ -3054,7 +3054,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 								cacheWriteTokens += chunk.cacheWriteTokens ?? 0
 								cacheReadTokens += chunk.cacheReadTokens ?? 0
 								totalCost = chunk.totalCost
-								inferenceProvider = chunk.inferenceProvider // kilocode_change
+								inferenceProvider = chunk.inferenceProvider // novacode_change
 								break
 							case "grounding":
 								// Handle grounding sources separately from regular content
@@ -3063,7 +3063,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 									pendingGroundingSources.push(...chunk.sources)
 								}
 								break
-							// kilocode_change start
+							// novacode_change start
 							case "ant_thinking":
 								antThinkingContent.push({
 									type: "thinking",
@@ -3077,7 +3077,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 									data: chunk.data,
 								})
 								break
-							// kilocode_change end
+							// novacode_change end
 							case "tool_call_partial": {
 								// Process raw tool call chunk through NativeToolCallParser
 								// which handles tracking, buffering, and emits events
@@ -3408,7 +3408,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 						let bgCacheReadTokens = currentTokens.cacheRead
 						let bgTotalCost = currentTokens.total
 
-						// kilocode_change start
+						// novacode_change start
 						const refreshApiReqMsg = async (messageIndex: number) => {
 							// Update the API request message with the latest usage data
 							updateApiReqMsg()
@@ -3420,7 +3420,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 								await this.updateClineMessage(apiReqMessage)
 							}
 						}
-						// kilocode_change end
+						// novacode_change end
 
 						// Helper function to capture telemetry and update messages
 						const captureUsageData = async (
@@ -3484,10 +3484,10 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 									cacheWriteTokens: tokens.cacheWrite,
 									cacheReadTokens: tokens.cacheRead,
 									cost: tokens.total ?? costResult.totalCost,
-									// kilocode_change start
+									// novacode_change start
 									completionTime: performance.now() - apiRequestStartTime,
 									inferenceProvider,
-									// kilocode_change end
+									// novacode_change end
 								})
 							}
 						}
@@ -3522,7 +3522,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 									bgCacheWriteTokens += chunk.cacheWriteTokens ?? 0
 									bgCacheReadTokens += chunk.cacheReadTokens ?? 0
 									bgTotalCost = chunk.totalCost
-									inferenceProvider = chunk.inferenceProvider // kilocode_change
+									inferenceProvider = chunk.inferenceProvider // novacode_change
 								}
 							}
 
@@ -3548,10 +3548,10 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 								console.warn(
 									`[Background Usage Collection] Suspicious: request ${apiReqIndex} is complete, but no usage info was found. Model: ${modelId}`,
 								)
-								// kilocode_change start
+								// novacode_change start
 								usageMissing = true
 								await refreshApiReqMsg(apiReqIndex)
-								// kilocode_change end
+								// novacode_change end
 							}
 						} catch (error) {
 							console.error("Error draining stream for usage data:", error)
@@ -3572,11 +3572,11 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 									},
 									lastApiReqIndex,
 								)
-								// kilocode_change start
+								// novacode_change start
 							} else {
 								usageMissing = true
 								await refreshApiReqMsg(apiReqIndex)
-								// kilocode_change end
+								// novacode_change end
 							}
 						}
 					}
@@ -3600,7 +3600,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 
 						// Clean up partial state
 						await abortStream(cancelReason, streamingFailedMessage)
-						// kilocode_change start
+						// novacode_change start
 						// Bound retries for repeated Chutes "terminated" stream failures
 						// to prevent indefinite thinking/retry loops.
 						const retryAttempt = currentItem.retryAttempt ?? 0
@@ -3610,7 +3610,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 							)
 							throw error
 						}
-						// kilocode_change end
+						// novacode_change end
 
 						if (this.abort) {
 							// User cancelled - abort the entire task
@@ -3663,7 +3663,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				// Need to call here in case the stream was aborted.
 				if (this.abort || this.abandoned) {
 					throw new Error(
-						`[KiloCode#recursivelyMakeClineRequests] task ${this.taskId}.${this.instanceId} aborted`,
+						`[NovaCode#recursivelyMakeClineRequests] task ${this.taskId}.${this.instanceId} aborted`,
 					)
 				}
 
@@ -3753,10 +3753,10 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 					}
 
 					// Build the assistant message content array
-					// kilocode_change start: preserve Anthropic reasoning
+					// novacode_change start: preserve Anthropic reasoning
 					const assistantContent: Array<Anthropic.ContentBlockParam> = []
 					assistantContent.push(...antThinkingContent)
-					// kilocode_change end
+					// novacode_change end
 
 					// Add text content if present
 					if (assistantMessage) {
@@ -3935,9 +3935,9 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 					// or tool_use content blocks from API which we should assume is
 					// an error.
 
-					// kilocode_change start
+					// novacode_change start
 					TelemetryService.instance.captureEvent(TelemetryEventName.NO_ASSISTANT_MESSAGES)
-					// kilocode_change end
+					// novacode_change end
 					// Increment consecutive no-assistant-messages counter
 					this.consecutiveNoAssistantMessagesCount++
 
@@ -4051,7 +4051,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		return false
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	async loadContext(
 		userContent: UserContent,
 		includeFileDetails: boolean = false,
@@ -4087,7 +4087,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 							)
 
 							// when parsing slash commands, we still want to allow the user to provide their desired context
-							const { processedText, needsRulesFileCheck: needsCheck } = await parseKiloSlashCommands(
+							const { processedText, needsRulesFileCheck: needsCheck } = await parseNovaSlashCommands(
 								parsedText.text,
 								localWorkflowToggles,
 								globalWorkflowToggles,
@@ -4121,15 +4121,15 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		// After processing content, check clinerulesData if needed
 		let clinerulesError = false
 		if (needsClinerulesFileCheck) {
-			clinerulesError = await ensureLocalKilorulesDirExists(this.cwd, GlobalFileNames.kiloRules)
+			clinerulesError = await ensureLocalNovarulesDirExists(this.cwd, GlobalFileNames.novaRules)
 		}
 
 		// Return all results
 		return [processedUserContent, environmentDetails, clinerulesError]
 	}
-	// kilocode_change end
+	// novacode_change end
 
-	/*private kilocode_change*/ async getSystemPrompt(): Promise<string> {
+	/*private novacode_change*/ async getSystemPrompt(): Promise<string> {
 		const { mcpEnabled } = (await this.providerRef.deref()?.getState()) ?? {}
 		let mcpHub: McpHub | undefined
 		if (mcpEnabled ?? true) {
@@ -4231,7 +4231,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				undefined, // todoList
 				this.api.getModel().id,
 				provider.getSkillsManager(),
-				state, // kilocode_change
+				state, // novacode_change
 			)
 		})()
 	}
@@ -4248,11 +4248,11 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		const { profileThresholds = {} } = state ?? {}
 
 		const { contextTokens } = this.getTokenUsage()
-		// kilocode_change start: Initialize virtual quota fallback handler
+		// novacode_change start: Initialize virtual quota fallback handler
 		if (this.api instanceof VirtualQuotaFallbackHandler) {
 			await this.api.initialize()
 		}
-		// kilocode_change end
+		// novacode_change end
 		const modelInfo = this.api.getModel().info
 
 		const maxTokens = getModelMaxOutputTokens({
@@ -4261,7 +4261,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			settings: this.apiConfiguration,
 		})
 
-		const contextWindow = this.api.contextWindow ?? modelInfo.contextWindow // kilocode_change: Use contextWindow from API handler if available
+		const contextWindow = this.api.contextWindow ?? modelInfo.contextWindow // novacode_change: Use contextWindow from API handler if available
 
 		// Get the current profile ID using the helper method
 		const currentProfileId = this.getCurrentProfileId(state)
@@ -4372,7 +4372,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		}
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	private isChutesTerminatedError(error: unknown): boolean {
 		if (this.apiConfiguration?.apiProvider !== "chutes") {
 			return false
@@ -4386,7 +4386,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 	private hasExceededChutesTerminatedRetryLimit(error: unknown, retryAttempt: number): boolean {
 		return this.isChutesTerminatedError(error) && retryAttempt >= MAX_CHUTES_TERMINATED_RETRY_ATTEMPTS
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	public async *attemptApiRequest(
 		retryAttempt: number = 0,
@@ -4445,12 +4445,12 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		const { contextTokens } = this.getTokenUsage()
 
 		if (contextTokens) {
-			// kilocode_change start: Initialize and adjust virtual quota fallback handler
+			// novacode_change start: Initialize and adjust virtual quota fallback handler
 			if (this.api instanceof VirtualQuotaFallbackHandler) {
 				await this.api.initialize()
 				await this.api.adjustActiveHandler("Pre-Request Adjustment")
 			}
-			// kilocode_change end
+			// novacode_change end
 			const modelInfo = this.api.getModel().info
 
 			const maxTokens = getModelMaxOutputTokens({
@@ -4459,7 +4459,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				settings: this.apiConfiguration,
 			})
 
-			const contextWindow = this.api.contextWindow ?? modelInfo.contextWindow // kilocode_change
+			const contextWindow = this.api.contextWindow ?? modelInfo.contextWindow // novacode_change
 
 			// Get the current profile ID using the helper method
 			const currentProfileId = this.getCurrentProfileId(state)
@@ -4570,7 +4570,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			}
 		}
 
-		// kilocode_change start
+		// novacode_change start
 		// Check if history has summary messages that are incompatible with extended thinking.
 		// This can happen when a conversation was condensed with a different model and is now
 		// being used with an Anthropic extended thinking model. If so, uncondense by removing
@@ -4618,7 +4618,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				await this.saveApiConversationHistory()
 			}
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		// Get the effective API history by filtering out condensed messages
 		// This allows non-destructive condensing where messages are tagged but not deleted,
@@ -4628,10 +4628,10 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		const messagesWithoutImages = maybeRemoveImageBlocks(messagesSinceLastSummary, this.api)
 		const cleanConversationHistory = this.buildCleanConversationHistory(messagesWithoutImages as ApiMessage[])
 
-		// kilocode_change start
-		// Fetch project properties for KiloCode provider tracking
-		const kiloConfig = this.providerRef.deref()?.getKiloConfig()
-		// kilocode_change end
+		// novacode_change start
+		// Fetch project properties for NovaCode provider tracking
+		const novaConfig = this.providerRef.deref()?.getNovaConfig()
+		// novacode_change end
 
 		// Check auto-approval limits
 		const approvalResult = await this.autoApprovalHandler.checkAutoApprovalLimits(
@@ -4681,12 +4681,12 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				customModes: state?.customModes,
 				experiments: state?.experiments,
 				apiConfiguration,
-				maxReadFileLine: state?.maxReadFileLine ?? 500 /*kilocode_change*/,
+				maxReadFileLine: state?.maxReadFileLine ?? 500 /*novacode_change*/,
 				maxConcurrentFileReads: state?.maxConcurrentFileReads ?? 5,
 				browserToolEnabled: state?.browserToolEnabled ?? true,
-				// kilocode_change start
+				// novacode_change start
 				state,
-				// kilocode_change end
+				// novacode_change end
 				modelInfo,
 				diffEnabled: this.diffEnabled,
 				includeAllToolsWithRestrictions: supportsAllowedFunctionNames,
@@ -4715,8 +4715,8 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 						...(allowedFunctionNames ? { allowedFunctionNames } : {}),
 					}
 				: {}),
-			projectId: (await kiloConfig)?.project?.id, // kilocode_change: pass projectId for backend tracking (ignored by other providers)
-			// kilocode_change: child tasks (spawned via new_task tool) are parallel agents
+			projectId: (await novaConfig)?.project?.id, // novacode_change: pass projectId for backend tracking (ignored by other providers)
+			// novacode_change: child tasks (spawned via new_task tool) are parallel agents
 			...(this.parentTaskId ? { feature: "parallel-agent" } : {}),
 		}
 
@@ -4766,12 +4766,12 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			this.isWaitingForFirstChunk = false
 		} catch (error) {
 			this.isWaitingForFirstChunk = false
-			// kilocode_change start
-			if (apiConfiguration?.apiProvider === "kilocode" && isAnyRecognizedKiloCodeError(error)) {
+			// novacode_change start
+			if (apiConfiguration?.apiProvider === "novacode" && isAnyRecognizedNovaCodeError(error)) {
 				const defaultFreeModel = (
-					await getKilocodeDefaultModel(
-						apiConfiguration.kilocodeToken,
-						apiConfiguration.kilocodeOrganizationId,
+					await getNovacodeDefaultModel(
+						apiConfiguration.novacodeToken,
+						apiConfiguration.novacodeOrganizationId,
 					)
 				).defaultFreeModel
 
@@ -4781,8 +4781,8 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 					askResponse = await this.ask(
 						"payment_required_prompt",
 						JSON.stringify({
-							title: error.error?.title ?? t("kilocode:lowCreditWarning.title"),
-							message: error.error?.message ?? t("kilocode:lowCreditWarning.message"),
+							title: error.error?.title ?? t("novacode:lowCreditWarning.title"),
+							message: error.error?.message ?? t("novacode:lowCreditWarning.message"),
 							balance: error.error?.balance ?? "0.00",
 							buyCreditsUrl: error.error?.buyCreditsUrl ?? getAppUrl("/profile"),
 							defaultFreeModel,
@@ -4792,21 +4792,21 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 					askResponse = await this.ask(
 						"promotion_model_sign_up_required_prompt",
 						JSON.stringify({
-							modelId: apiConfiguration.kilocodeModel,
+							modelId: apiConfiguration.novacodeModel,
 						}),
 					)
 				} else if (isUnauthorizedPaidModelError(error) || isUnauthorizedGenericError(error)) {
 					askResponse = await this.ask(
 						"unauthorized_prompt",
 						JSON.stringify({
-							modelId: apiConfiguration.kilocodeModel,
+							modelId: apiConfiguration.novacodeModel,
 						}),
 					)
 				} else {
 					askResponse = await this.ask(
 						"invalid_model",
 						JSON.stringify({
-							modelId: apiConfiguration.kilocodeModel,
+							modelId: apiConfiguration.novacodeModel,
 							error: {
 								status: error.status,
 								message: error.message,
@@ -4829,15 +4829,15 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				}
 				return
 			}
-			// kilocode_change end
-			// kilocode_change start
+			// novacode_change end
+			// novacode_change start
 			// Chutes can occasionally terminate streams abruptly; avoid recursive
 			// first-chunk auto-retries here and delegate retry policy to the
 			// outer request loop, which applies a bounded retry cap.
 			if (this.isChutesTerminatedError(error)) {
 				throw error
 			}
-			// kilocode_change end
+			// novacode_change end
 			// note that this api_req_failed ask is unique in that we only present this option if the api hasn't streamed any content yet (ie it fails on the first chunk due), as it would allow them to hit a retry button. However if the api failed mid-stream, it could be in any arbitrary state where some tools may have executed, so that error is handled differently and requires cancelling the task entirely.
 			if (autoApprovalEnabled) {
 				// Apply shared exponential backoff and countdown UX
@@ -4875,7 +4875,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				yield* this.attemptApiRequest()
 				return
 			}
-			// kilocode_change start
+			// novacode_change start
 		} finally {
 			// Clean up abort listeners to prevent memory leaks.
 			// Both listeners are only needed during the first-chunk phase,
@@ -4885,7 +4885,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				abortSignal.removeEventListener("abort", firstChunkAbortListener)
 			}
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		// No error, so we can continue to yield all remaining chunks.
 		// (Needs to be placed outside of try/catch since it we want caller to
@@ -4897,11 +4897,11 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		// stream.
 		yield* iterator
 
-		// kilocode_change start
+		// novacode_change start
 		if (apiConfiguration?.rateLimitAfter) {
 			Task.lastGlobalApiRequestTime = performance.now()
 		}
-		// kilocode_change end
+		// novacode_change end
 	}
 
 	// Shared exponential backoff for retries (first-chunk and mid-stream)
@@ -5133,7 +5133,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		return combineApiRequests(combineCommandSequences(messages))
 	}
 
-	// kilocod_change start
+	// novacod_change start
 	public getTokenUsage(): TokenUsage {
 		const metrics = getApiMetrics(this.combineMessages(this.clineMessages.slice(1)))
 		// add deleted API costs to the total cost
@@ -5161,7 +5161,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			this._deletedApiCost += cost
 		}
 	}
-	// kilocod_change end
+	// novacod_change end
 
 	public recordToolUsage(toolName: ToolName) {
 		if (!this.toolUsage[toolName]) {
@@ -5181,7 +5181,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		if (error) {
 			this.emit(RooCodeEventName.TaskToolFailed, this.taskId, toolName, error)
 		}
-		TelemetryService.instance.captureEvent(TelemetryEventName.TOOL_ERROR, { toolName, error }) // kilocode_change
+		TelemetryService.instance.captureEvent(TelemetryEventName.TOOL_ERROR, { toolName, error }) // novacode_change
 	}
 
 	// Getters

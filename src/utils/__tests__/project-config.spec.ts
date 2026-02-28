@@ -1,18 +1,18 @@
-// kilocode_change - new file
+// novacode_change - new file
 // npx vitest run src/utils/__tests__/project-config.spec.ts
 
 import { describe, it, expect, beforeEach, afterEach } from "vitest"
 import * as path from "path"
 import { promises as fs } from "fs"
 import * as os from "os"
-import { getKilocodeConfigFile, getProjectId, normalizeProjectId } from "../kilo-config-file"
+import { getNovacodeConfigFile, getProjectId, normalizeProjectId } from "../nova-config-file"
 
 describe("project-config", () => {
 	let tempDir: string
 
 	beforeEach(async () => {
 		// Create a temporary directory for testing
-		tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "kilocode-test-"))
+		tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "novacode-test-"))
 	})
 
 	afterEach(async () => {
@@ -26,11 +26,11 @@ describe("project-config", () => {
 
 	describe("normalizeProjectId", () => {
 		it("extracts repository name from HTTPS git URL", () => {
-			expect(normalizeProjectId("https://github.com/Kilo-Org/handbook.git")).toBe("handbook")
+			expect(normalizeProjectId("https://github.com/Nova-Org/handbook.git")).toBe("handbook")
 		})
 
 		it("extracts repository name from SSH git URL", () => {
-			expect(normalizeProjectId("git@github.com:Kilo-Org/handbook.git")).toBe("handbook")
+			expect(normalizeProjectId("git@github.com:Nova-Org/handbook.git")).toBe("handbook")
 		})
 
 		it("extracts repository name from SSH git URL without .git extension", () => {
@@ -51,11 +51,11 @@ describe("project-config", () => {
 	})
 
 	describe("getProjectConfig", () => {
-		it("returns config from .kilocode/config.json", async () => {
-			const kilocodeDir = path.join(tempDir, ".kilocode")
-			await fs.mkdir(kilocodeDir, { recursive: true })
+		it("returns config from .novacode/config.json", async () => {
+			const novacodeDir = path.join(tempDir, ".novacode")
+			await fs.mkdir(novacodeDir, { recursive: true })
 			await fs.writeFile(
-				path.join(kilocodeDir, "config.json"),
+				path.join(novacodeDir, "config.json"),
 				JSON.stringify({
 					project: {
 						id: "my-project",
@@ -63,7 +63,7 @@ describe("project-config", () => {
 				}),
 			)
 
-			const config = await getKilocodeConfigFile(tempDir)
+			const config = await getNovacodeConfigFile(tempDir)
 
 			expect(config).toEqual({
 				project: {
@@ -73,17 +73,17 @@ describe("project-config", () => {
 		})
 
 		it("returns null when no config file exists", async () => {
-			const config = await getKilocodeConfigFile(tempDir)
+			const config = await getNovacodeConfigFile(tempDir)
 
 			expect(config).toBeNull()
 		})
 
 		it("returns null when config file is invalid JSON", async () => {
-			const kilocodeDir = path.join(tempDir, ".kilocode")
-			await fs.mkdir(kilocodeDir, { recursive: true })
-			await fs.writeFile(path.join(kilocodeDir, "config.json"), "{ invalid json }")
+			const novacodeDir = path.join(tempDir, ".novacode")
+			await fs.mkdir(novacodeDir, { recursive: true })
+			await fs.writeFile(path.join(novacodeDir, "config.json"), "{ invalid json }")
 
-			const config = await getKilocodeConfigFile(tempDir)
+			const config = await getNovacodeConfigFile(tempDir)
 
 			expect(config).toBeNull()
 		})
@@ -91,10 +91,10 @@ describe("project-config", () => {
 
 	describe("getProjectId", () => {
 		it("returns normalized project ID from config file when available", async () => {
-			const kilocodeDir = path.join(tempDir, ".kilocode")
-			await fs.mkdir(kilocodeDir, { recursive: true })
+			const novacodeDir = path.join(tempDir, ".novacode")
+			await fs.mkdir(novacodeDir, { recursive: true })
 			await fs.writeFile(
-				path.join(kilocodeDir, "config.json"),
+				path.join(novacodeDir, "config.json"),
 				JSON.stringify({
 					project: {
 						id: "config-project-id",
@@ -114,16 +114,16 @@ describe("project-config", () => {
 		})
 
 		it("normalizes SSH git URL when config file doesn't exist", async () => {
-			const projectId = await getProjectId(tempDir, "git@github.com:Kilo-Org/handbook.git")
+			const projectId = await getProjectId(tempDir, "git@github.com:Nova-Org/handbook.git")
 
 			expect(projectId).toBe("handbook")
 		})
 
 		it("normalizes git URL when config file has no project.id", async () => {
-			const kilocodeDir = path.join(tempDir, ".kilocode")
-			await fs.mkdir(kilocodeDir, { recursive: true })
+			const novacodeDir = path.join(tempDir, ".novacode")
+			await fs.mkdir(novacodeDir, { recursive: true })
 			await fs.writeFile(
-				path.join(kilocodeDir, "config.json"),
+				path.join(novacodeDir, "config.json"),
 				JSON.stringify({
 					project: {},
 				}),
@@ -141,10 +141,10 @@ describe("project-config", () => {
 		})
 
 		it("prioritizes config file over git URL", async () => {
-			const kilocodeDir = path.join(tempDir, ".kilocode")
-			await fs.mkdir(kilocodeDir, { recursive: true })
+			const novacodeDir = path.join(tempDir, ".novacode")
+			await fs.mkdir(novacodeDir, { recursive: true })
 			await fs.writeFile(
-				path.join(kilocodeDir, "config.json"),
+				path.join(novacodeDir, "config.json"),
 				JSON.stringify({
 					project: {
 						id: "override-project",
@@ -158,13 +158,13 @@ describe("project-config", () => {
 		})
 
 		it("normalizes git URL in config file", async () => {
-			const kilocodeDir = path.join(tempDir, ".kilocode")
-			await fs.mkdir(kilocodeDir, { recursive: true })
+			const novacodeDir = path.join(tempDir, ".novacode")
+			await fs.mkdir(novacodeDir, { recursive: true })
 			await fs.writeFile(
-				path.join(kilocodeDir, "config.json"),
+				path.join(novacodeDir, "config.json"),
 				JSON.stringify({
 					project: {
-						id: "https://github.com/Kilo-Org/handbook.git",
+						id: "https://github.com/Nova-Org/handbook.git",
 					},
 				}),
 			)

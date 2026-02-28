@@ -1,4 +1,4 @@
-import { serializeError } from "serialize-error"
+﻿import { serializeError } from "serialize-error"
 import { Anthropic } from "@anthropic-ai/sdk"
 
 import type { ToolName, ClineAsk, ToolProgressStatus } from "@roo-code/types"
@@ -43,14 +43,14 @@ import { codebaseSearchTool } from "../tools/CodebaseSearchTool"
 
 import { formatResponse } from "../prompts/responses"
 
-import { yieldPromise } from "../kilocode"
-import { evaluateGatekeeperApproval } from "./kilocode/gatekeeper"
-import { editFileTool as fastEditFileTool, isFastApplyAvailable } from "../tools/kilocode/editFileTool"
-import { deleteFileTool } from "../tools/kilocode/deleteFileTool"
-import { newRuleTool } from "../tools/kilocode/newRuleTool"
-import { reportBugTool } from "../tools/kilocode/reportBugTool"
-import { condenseTool } from "../tools/kilocode/condenseTool"
-import { captureAskApproval } from "./kilocode/captureAskApprovalEvent"
+import { yieldPromise } from "../novacode"
+import { evaluateGatekeeperApproval } from "./nova/gatekeeper"
+import { editFileTool as fastEditFileTool, isFastApplyAvailable } from "../tools/nova/editFileTool"
+import { deleteFileTool } from "../tools/nova/deleteFileTool"
+import { newRuleTool } from "../tools/nova/newRuleTool"
+import { reportBugTool } from "../tools/nova/reportBugTool"
+import { condenseTool } from "../tools/nova/condenseTool"
+import { captureAskApproval } from "./nova/captureAskApprovalEvent"
 
 /**
  * Processes and presents assistant message content to the user interface.
@@ -337,7 +337,7 @@ export async function presentAssistantMessage(cline: Task) {
 				content = content.replace(/\s?<\/thinking>/g, "")
 
 				// Remove internal verification tags (for skill evaluation control flow)
-				content = content.replace(/<internal_verification>[\s\S]*?<\/internal_verification>/g, "") // kilocode_change
+				content = content.replace(/<internal_verification>[\s\S]*?<\/internal_verification>/g, "") // novacode_change
 
 				// Remove partial XML tag at the very end of the content (for
 				// tool use and thinking tags), Prevents scrollview from
@@ -388,7 +388,7 @@ export async function presentAssistantMessage(cline: Task) {
 			const state = await cline.providerRef.deref()?.getState()
 			const { mode, customModes, experiments: stateExperiments } = state ?? {}
 
-			// kilocode_change start
+			// novacode_change start
 			// Fast Apply compatibility:
 			// - Some older prompts/models may still call `edit_file` with Fast Apply-style params
 			//   (target_file/instructions/code_edit). Route those calls to the Fast Apply tool.
@@ -406,7 +406,7 @@ export async function presentAssistantMessage(cline: Task) {
 					block.originalName = undefined
 				}
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			const toolDescription = (): string => {
 				switch (block.name) {
@@ -448,20 +448,20 @@ export async function presentAssistantMessage(cline: Task) {
 						}]`
 					case "search_and_replace":
 						return `[${block.name} for '${block.params.path}']`
-					// kilocode_change start
+					// novacode_change start
 					// case "edit_file":
 					// 	return `[${block.name} for '${block.params.target_file}']`
 					case "delete_file":
 						return `[${block.name} for '${block.params.path}']`
-					// kilocode_change end
+					// novacode_change end
 					case "search_replace":
 						return `[${block.name} for '${block.params.file_path}']`
 					case "edit_file":
 						return `[${block.name} for '${block.params.file_path}']`
-					// kilocode_change start: Fast Apply
+					// novacode_change start: Fast Apply
 					case "fast_edit_file":
 						return `[${block.name} for '${block.params.target_file}']`
-					// kilocode_change end
+					// novacode_change end
 					case "apply_patch":
 						return `[${block.name}]`
 					case "list_files":
@@ -488,14 +488,14 @@ export async function presentAssistantMessage(cline: Task) {
 						const modeName = getModeBySlug(mode, customModes)?.name ?? mode
 						return `[${block.name} in ${modeName} mode: '${message}']`
 					}
-					// kilocode_change start
+					// novacode_change start
 					case "new_rule":
 						return `[${block.name} for '${block.params.path}']`
 					case "report_bug":
 						return `[${block.name}]`
 					case "condense":
 						return `[${block.name}]`
-					// kilocode_change end
+					// novacode_change end
 					case "run_slash_command":
 						return `[${block.name} for '${block.params.command}'${block.params.args ? ` with args: ${block.params.args}` : ""}]`
 					case "generate_image":
@@ -694,7 +694,7 @@ export async function presentAssistantMessage(cline: Task) {
 				progressStatus?: ToolProgressStatus,
 				isProtected?: boolean,
 			) => {
-				// kilocode_change start: YOLO mode with AI gatekeeper
+				// novacode_change start: YOLO mode with AI gatekeeper
 				const state = await cline.providerRef.deref()?.getState()
 				if (state?.yoloMode) {
 					// If gatekeeper is configured, use it to evaluate the approval
@@ -709,7 +709,7 @@ export async function presentAssistantMessage(cline: Task) {
 					captureAskApproval(block.name, true)
 					return true
 				}
-				// kilocode_change end
+				// novacode_change end
 
 				const { response, text, images } = await cline.ask(
 					type,
@@ -733,7 +733,7 @@ export async function presentAssistantMessage(cline: Task) {
 						pushToolResult(formatResponse.toolDenied(toolProtocol))
 					}
 					cline.didRejectTool = true
-					captureAskApproval(block.name, false) // kilocode_change
+					captureAskApproval(block.name, false) // novacode_change
 					return false
 				}
 
@@ -745,7 +745,7 @@ export async function presentAssistantMessage(cline: Task) {
 					approvalFeedback = { text, images }
 				}
 
-				captureAskApproval(block.name, true) // kilocode_change
+				captureAskApproval(block.name, true) // novacode_change
 				return true
 			}
 
@@ -938,10 +938,10 @@ export async function presentAssistantMessage(cline: Task) {
 				}
 			}
 
-			await checkpointSaveAndMark(cline) // kilocode_change: moved out of switch
+			await checkpointSaveAndMark(cline) // novacode_change: moved out of switch
 			switch (block.name) {
 				case "write_to_file":
-					// await checkpointSaveAndMark(cline) // kilocode_change
+					// await checkpointSaveAndMark(cline) // novacode_change
 					await writeToFileTool.handle(cline, block as ToolUse<"write_to_file">, {
 						askApproval,
 						handleError,
@@ -1030,12 +1030,12 @@ export async function presentAssistantMessage(cline: Task) {
 						toolProtocol,
 					})
 					break
-				// kilocode_change start: Fast Apply
+				// novacode_change start: Fast Apply
 				case "fast_edit_file":
 					await checkpointSaveAndMark(cline)
 					await fastEditFileTool(cline, block, askApproval, handleError, pushToolResult, removeClosingTag)
 					break
-				// kilocode_change end
+				// novacode_change end
 				case "apply_patch":
 					await checkpointSaveAndMark(cline)
 					await applyPatchTool.handle(cline, block as ToolUse<"apply_patch">, {
@@ -1046,14 +1046,14 @@ export async function presentAssistantMessage(cline: Task) {
 						toolProtocol,
 					})
 					break
-				// kilocode_change start: Morph fast apply
+				// novacode_change start: Morph fast apply
 				// case "edit_file":
 				// 	await editFileTool(cline, block, askApproval, handleError, pushToolResult, removeClosingTag)
 				// 	break
 				case "delete_file":
 					await deleteFileTool(cline, block, askApproval, handleError, pushToolResult, removeClosingTag)
 					break
-				// kilocode_change end
+				// novacode_change end
 				case "read_file":
 					// Type assertion is safe here because we're in the "read_file" case
 					await readFileTool.handle(cline, block as ToolUse<"read_file">, {
@@ -1182,7 +1182,7 @@ export async function presentAssistantMessage(cline: Task) {
 					)
 					break
 				}
-				// kilocode_change start
+				// novacode_change start
 				case "new_rule":
 					await newRuleTool(cline, block, askApproval, handleError, pushToolResult, removeClosingTag)
 					break
@@ -1192,7 +1192,7 @@ export async function presentAssistantMessage(cline: Task) {
 				case "condense":
 					await condenseTool(cline, block, askApproval, handleError, pushToolResult, removeClosingTag)
 					break
-				// kilocode_change end
+				// novacode_change end
 
 				case "run_slash_command":
 					await runSlashCommandTool.handle(cline, block as ToolUse<"run_slash_command">, {
@@ -1327,10 +1327,10 @@ export async function presentAssistantMessage(cline: Task) {
 		if (cline.currentStreamingContentIndex < cline.assistantMessageContent.length) {
 			// There are already more content blocks to stream, so we'll call
 			// this function ourselves.
-			// kilocode_change start: prevent excessive recursion
+			// novacode_change start: prevent excessive recursion
 			await yieldPromise()
 			await presentAssistantMessage(cline)
-			// kilocode_change end
+			// novacode_change end
 			return
 		} else {
 			// CRITICAL FIX: If we're out of bounds and the stream is complete, set userMessageContentReady
@@ -1343,10 +1343,10 @@ export async function presentAssistantMessage(cline: Task) {
 
 	// Block is partial, but the read stream may have finished.
 	if (cline.presentAssistantMessageHasPendingUpdates) {
-		// kilocode_change start: prevent excessive recursion
+		// novacode_change start: prevent excessive recursion
 		await yieldPromise()
 		await presentAssistantMessage(cline)
-		// kilocode_change end
+		// novacode_change end
 	}
 }
 
@@ -1360,7 +1360,7 @@ async function checkpointSaveAndMark(task: Task) {
 		return
 	}
 	try {
-		// kilocode_change: order changed to prevent second execution while still awaiting the save
+		// novacode_change: order changed to prevent second execution while still awaiting the save
 		task.currentStreamingDidCheckpoint = true
 		await task.checkpointSave(true)
 	} catch (error) {

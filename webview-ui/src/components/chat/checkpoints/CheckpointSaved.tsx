@@ -69,7 +69,7 @@ export const CheckpointSaved = ({ checkpoint, currentHash, ...props }: Checkpoin
 			return undefined
 		}
 
-		// kilocode_change start
+		// novacode_change start
 		// ifFirst is misscalculated by the ShadowCheckpointService because use the length of the array of checkpoints
 		// insead of the from-to attributes.
 		// ifFirst need to be removed from the checkpointShema and the core pkg and move the logic to the frontend
@@ -77,7 +77,7 @@ export const CheckpointSaved = ({ checkpoint, currentHash, ...props }: Checkpoin
 			...result.data,
 			isFirst: result.data.from === result.data.to,
 		}
-		// kilocode_change end
+		// novacode_change end
 	}, [checkpoint])
 
 	if (!metadata) {
@@ -86,21 +86,21 @@ export const CheckpointSaved = ({ checkpoint, currentHash, ...props }: Checkpoin
 
 	return (
 		<div
-			className="flex items-center justify-between gap-2 opacity-40 hover:opacity-100 transition-opacity" // kilocode_change: removed pt-2 pb-3, added opacity transition
+			className="flex items-center justify-between gap-2 opacity-40 hover:opacity-100 transition-opacity" // novacode_change: removed pt-2 pb-3, added opacity transition
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}>
-			{/* kilocode_change start */}
+			{/* novacode_change start */}
 			<div className="flex items-center gap-2 text-vscode-foreground whitespace-nowrap">
 				<GitCommitVertical className="w-4" />
 				<span className="text-sm">{t("chat:checkpoint.regular")}</span>
-				{/* kilocode_change end */}
+				{/* novacode_change end */}
 				{isCurrent && <span className="text-muted">({t("chat:checkpoint.current")})</span>}
 			</div>
 			<span
 				className="block w-full h-[2px] mt-[2px] text-xs"
 				style={{
 					backgroundImage:
-						"linear-gradient(90deg, color-mix(in srgb, var(--vscode-editorGroup-border) 65%, transparent), color-mix(in srgb, var(--vscode-editorGroup-border) 65%, transparent) 80%, transparent 99%)", // kilocode_change: theme-aware gradient
+						"linear-gradient(90deg, color-mix(in srgb, var(--vscode-editorGroup-border) 65%, transparent), color-mix(in srgb, var(--vscode-editorGroup-border) 65%, transparent) 80%, transparent 99%)", // novacode_change: theme-aware gradient
 				}}></span>
 
 			{/* Keep menu visible while hovering, popover is open, or briefly after close to prevent jump */}

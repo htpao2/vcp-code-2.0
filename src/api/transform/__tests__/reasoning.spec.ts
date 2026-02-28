@@ -615,7 +615,7 @@ describe("reasoning.ts", () => {
 			const result = getGeminiReasoning(options) as GeminiReasoningParams | undefined
 
 			// Budget should not be used for effort-only models
-			expect(result).toEqual({ thinkingLevel: "high", includeThoughts: true })
+			expect(result).toEqual({ thinkingLevel: "HIGH", includeThoughts: true })
 		})
 
 		it("should still return thinkingLevel when enableReasoningEffort is false but effort is explicitly set", () => {
@@ -641,7 +641,7 @@ describe("reasoning.ts", () => {
 			}
 
 			const result = getGeminiReasoning(options) as GeminiReasoningParams | undefined
-			expect(result).toEqual({ thinkingLevel: "high", includeThoughts: true })
+			expect(result).toEqual({ thinkingLevel: "HIGH", includeThoughts: true })
 		})
 
 		it("should return thinkingLevel for minimal effort", () => {
@@ -664,7 +664,7 @@ describe("reasoning.ts", () => {
 			}
 
 			const result = getGeminiReasoning(options) as GeminiReasoningParams | undefined
-			expect(result).toEqual({ thinkingLevel: "minimal", includeThoughts: true })
+			expect(result).toEqual({ thinkingLevel: "MINIMAL", includeThoughts: true })
 		})
 
 		it("should return thinkingLevel for medium effort", () => {
@@ -687,11 +687,17 @@ describe("reasoning.ts", () => {
 			}
 
 			const result = getGeminiReasoning(options) as GeminiReasoningParams | undefined
-			expect(result).toEqual({ thinkingLevel: "medium", includeThoughts: true })
+			expect(result).toEqual({ thinkingLevel: "MEDIUM", includeThoughts: true })
 		})
 
 		it("should handle all four Gemini thinking levels", () => {
 			const levels: GeminiThinkingLevel[] = ["minimal", "low", "medium", "high"]
+			const expectedThinkingLevels: Record<GeminiThinkingLevel, string> = {
+				minimal: "MINIMAL",
+				low: "LOW",
+				medium: "MEDIUM",
+				high: "HIGH",
+			}
 
 			levels.forEach((level) => {
 				const geminiModel: ModelInfo = {
@@ -718,7 +724,7 @@ describe("reasoning.ts", () => {
 				}
 
 				const result = getGeminiReasoning(options) as GeminiReasoningParams | undefined
-				expect(result).toEqual({ thinkingLevel: level, includeThoughts: true })
+				expect(result).toEqual({ thinkingLevel: expectedThinkingLevels[level], includeThoughts: true })
 			})
 		})
 
@@ -836,10 +842,10 @@ describe("reasoning.ts", () => {
 			}
 
 			const result = getGeminiReasoning(options) as GeminiReasoningParams | undefined
-			expect(result).toEqual({ thinkingLevel: "medium", includeThoughts: true })
+			expect(result).toEqual({ thinkingLevel: "MEDIUM", includeThoughts: true })
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("should return undefined for budget-only models when budget is not enabled (fixes issue #4490)", () => {
 			// This test covers the bug where gemini-2.5-flash would fail with
 			// "Thinking level is not supported for this model" because thinkingLevel
@@ -896,7 +902,7 @@ describe("reasoning.ts", () => {
 			// Must not send thinkingLevel to a model that doesn't support it
 			expect(result).toBeUndefined()
 		})
-		// kilocode_change end
+		// novacode_change end
 	})
 
 	describe("Integration scenarios", () => {

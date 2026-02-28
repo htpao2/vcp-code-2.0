@@ -2,7 +2,7 @@ import * as vscode from "vscode"
 
 import { TerminalActionId, TerminalActionPromptType } from "@roo-code/types"
 
-import { getTerminalCommand } from "../utils/commands"
+import { getTerminalCommand, getLegacyTerminalCommand } from "../utils/commands"
 import { ClineProvider } from "../core/webview/ClineProvider"
 import { Terminal } from "../integrations/terminal/Terminal"
 import { t } from "../i18n"
@@ -18,22 +18,27 @@ const registerTerminalAction = (
 	command: TerminalActionId,
 	promptType: TerminalActionPromptType,
 ) => {
-	context.subscriptions.push(
-		vscode.commands.registerCommand(getTerminalCommand(command), async (args: any) => {
-			let content = args?.selection
+	const handler = async (args: any) => {
+		let content = args?.selection
 
-			if (!content || content === "") {
-				content = await Terminal.getTerminalContents(promptType === "TERMINAL_ADD_TO_CONTEXT" ? -1 : 1)
-			}
+		if (!content || content === "") {
+			content = await Terminal.getTerminalContents(promptType === "TERMINAL_ADD_TO_CONTEXT" ? -1 : 1)
+		}
 
-			if (!content) {
-				vscode.window.showWarningMessage(t("common:warnings.no_terminal_content"))
-				return
-			}
+		if (!content) {
+			vscode.window.showWarningMessage(t("common:warnings.no_terminal_content"))
+			return
+		}
 
-			await ClineProvider.handleTerminalAction(command, promptType, {
-				terminalContent: content,
-			})
-		}),
-	)
+		await ClineProvider.handleTerminalAction(command, promptType, {
+			terminalContent: content,
+		})
+	}
+
+	const primaryCommand = getTerminalCommand(command)
+	const legacyCommand = getLegacyTerminalCommand(command)
+	context.subscriptions.push(vscode.commands.registerCommand(primaryCommand, handler))
+	if (legacyCommand !== primaryCommand) {
+		context.subscriptions.push(vscode.commands.registerCommand(legacyCommand, handler))
+	}
 }

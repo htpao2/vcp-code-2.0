@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Kilo Code is an open source AI coding agent for VS Code that generates code from natural language, automates tasks, and supports 500+ AI models.
+Nova Code is an open source AI coding agent for VS Code that generates code from natural language, automates tasks, and supports 500+ AI models.
 
 ## Project Structure
 
@@ -21,7 +21,7 @@ Key source directories:
 
 ## Agent Runtime Architecture
 
-The `@kilocode/agent-runtime` package enables running Kilo Code agents as isolated Node.js processes without VS Code.
+The `@novacode/agent-runtime` package enables running Nova Code agents as isolated Node.js processes without VS Code.
 
 ### How It Works
 
@@ -32,7 +32,7 @@ The `@kilocode/agent-runtime` package enables running Kilo Code agents as isolat
 └─────────────────────┘                 └─────────────────────┘
 ```
 
-1. **ExtensionHost**: Hosts the Kilo Code extension with a complete VS Code API mock
+1. **ExtensionHost**: Hosts the Nova Code extension with a complete VS Code API mock
 2. **MessageBridge**: Bidirectional IPC communication (request/response with timeout)
 3. **ExtensionService**: Orchestrates host and bridge lifecycle
 
@@ -43,7 +43,7 @@ Agents are forked processes configured via the `AGENT_CONFIG` environment variab
 ```typescript
 import { fork } from "child_process"
 
-const agent = fork(require.resolve("@kilocode/agent-runtime/process"), [], {
+const agent = fork(require.resolve("@novacode/agent-runtime/process"), [], {
 	env: {
 		AGENT_CONFIG: JSON.stringify({
 			workspace: "/path/to/project",
@@ -109,11 +109,11 @@ pnpm check-types      # TypeScript type checking
 
 ## Skills
 
-- **Translation**: `.kilocode/skills/translation/SKILL.md` - Translation and localization guidelines
+- **Translation**: `.novacode/skills/translation/SKILL.md` - Translation and localization guidelines
 
 ## Workflows
 
-- **Add Missing Translations**: `.kilocode/workflows/add-missing-translations.md` - Run `/add-missing-translations` to find and fix missing translations
+- **Add Missing Translations**: `.novacode/workflows/add-missing-translations.md` - Run `/add-missing-translations` to find and fix missing translations
 
 ## Changesets
 
@@ -127,7 +127,7 @@ Format (in `.changeset/<random-name>.md`):
 
 ```md
 ---
-"kilo-code": patch
+"nova-code": patch
 ---
 
 Brief description of the change
@@ -143,47 +143,47 @@ Keep changesets concise and feature-oriented as they appear directly in release 
 
 ## Fork Merge Process
 
-Kilo Code is a fork of [Roo Code](https://github.com/RooVetGit/Roo-Code). We periodically merge upstream changes using scripts in `scripts/kilocode/`.
+Nova Code is a fork of [Roo Code](https://github.com/RooVetGit/Roo-Code). We periodically merge upstream changes using scripts in `scripts/novacode/`.
 
-## kilocode_change Markers
+## novacode_change Markers
 
-To minimize merge conflicts when syncing with upstream, mark Kilo Code-specific changes in shared code with `kilocode_change` comments.
+To minimize merge conflicts when syncing with upstream, mark Nova Code-specific changes in shared code with `novacode_change` comments.
 
 **Single line:**
 
 ```typescript
-const value = 42 // kilocode_change
+const value = 42 // novacode_change
 ```
 
 **Multi-line:**
 
 ```typescript
-// kilocode_change start
+// novacode_change start
 const foo = 1
 const bar = 2
-// kilocode_change end
+// novacode_change end
 ```
 
 **New files:**
 
 ```typescript
-// kilocode_change - new file
+// novacode_change - new file
 ```
 
 ### When markers are NOT needed
 
-Code in these directories is Kilo Code-specific and doesn't need markers:
+Code in these directories is Nova Code-specific and doesn't need markers:
 
 - `jetbrains/` - JetBrains plugin
 - `agent-manager/` directories
-- Any path containing `kilocode` in filename or directory name
+- Any path containing `novacode` in filename or directory name
 - `src/services/autocomplete/ - Autocomplete service
 
 ### When markers ARE needed
 
 All modifications to core extension code (files that exist in upstream Roo Code) require markers:
 
-- `src/` (except Kilo-specific subdirectories listed above)
+- `src/` (except Nova-specific subdirectories listed above)
 - `webview-ui/`
 - `packages/` (shared packages)
 
@@ -192,7 +192,6 @@ Keep changes to core extension code minimal to reduce merge conflicts during ups
 ## Code Quality Rules
 
 1. Test Coverage:
-
     - Before attempting completion, always make sure that any code changes have test coverage
     - Ensure all tests pass before submitting changes
     - The vitest framework is used for testing; the `vi`, `describe`, `test`, `it`, etc functions are defined by default in `tsconfig.json` and therefore don't need to be imported from `vitest`
@@ -207,17 +206,14 @@ Keep changes to core extension code minimal to reduce merge conflicts during ups
         - Monorepo default: `.spec.ts` / `.spec.tsx`
 
 2. Lint Rules:
-
     - Never disable any lint rules without explicit user approval
 
 3. Error Handling:
-
     - Never use empty catch blocks - always log or handle the error
     - Handle expected errors explicitly, or omit try-catch if the error should propagate
     - Consider user impact when deciding whether to throw or log errors
 
 4. Styling Guidelines:
-
     - Use Tailwind CSS classes instead of inline style objects for new markup
     - VSCode CSS variables must be added to webview-ui/src/index.css before using them in Tailwind classes
     - Example: `<div className="text-md text-vscode-descriptionForeground mb-2" />` instead of style objects

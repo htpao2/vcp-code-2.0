@@ -1,4 +1,4 @@
-// kilocode_change - new file: STT setup help popover
+// novacode_change - new file: STT setup help popover
 import React, { useCallback } from "react"
 import { useTranslation, Trans } from "react-i18next"
 import { VSCodeLink } from "@vscode/webview-ui-toolkit/react"
@@ -43,9 +43,9 @@ export const STTSetupPopoverContent: React.FC<STTSetupPopoverContentProps> = ({
 		onOpenChange?.(false)
 	}
 
-	// kilocode_change: FFmpeg help - send message to chat
+	// novacode_change: FFmpeg help - send message to chat
 	const handleFfmpegHelpClick = useCallback(() => {
-		const helpMessage = t("kilocode:speechToText.setupPopover.ffmpegMessage")
+		const helpMessage = t("novacode:speechToText.setupPopover.ffmpegMessage")
 		setInputValue(helpMessage)
 
 		setTimeout(() => {
@@ -55,7 +55,7 @@ export const STTSetupPopoverContent: React.FC<STTSetupPopoverContentProps> = ({
 
 	return (
 		<div className="p-4 cursor-default">
-			<h4 className="m-0 mb-3 text-base font-semibold">{t("kilocode:speechToText.setupPopover.title")}</h4>
+			<h4 className="m-0 mb-3 text-base font-semibold">{t("novacode:speechToText.setupPopover.title")}</h4>
 
 			{error ? (
 				// When there's an error, show just the error message
@@ -73,7 +73,7 @@ export const STTSetupPopoverContent: React.FC<STTSetupPopoverContentProps> = ({
 				<>
 					<p className="my-0 mb-3 text-sm text-vscode-descriptionForeground">
 						<Trans
-							i18nKey="kilocode:speechToText.setupPopover.description"
+							i18nKey="novacode:speechToText.setupPopover.description"
 							components={{
 								moreInfoLink: (
 									<VSCodeLink
@@ -91,12 +91,12 @@ export const STTSetupPopoverContent: React.FC<STTSetupPopoverContentProps> = ({
 
 					<ul className="my-0 mb-0 list-disc list-inside text-sm text-vscode-descriptionForeground space-y-1">
 						{reason === "openaiKeyMissing" || !reason ? (
-							<li>{t("kilocode:speechToText.setupPopover.openAiReason")}</li>
+							<li>{t("novacode:speechToText.setupPopover.openAiReason")}</li>
 						) : null}
 						{reason === "ffmpegNotInstalled" || !reason ? (
 							<li>
 								<Trans
-									i18nKey="kilocode:speechToText.setupPopover.ffmpegReason"
+									i18nKey="novacode:speechToText.setupPopover.ffmpegReason"
 									components={{
 										ffmpegLink: (
 											<VSCodeLink

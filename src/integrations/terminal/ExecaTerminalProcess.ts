@@ -1,11 +1,16 @@
-import { execa, ExecaError } from "execa"
 import psList from "ps-list"
 import process from "process"
 
 import type { RooTerminal } from "./types"
 import { BaseTerminalProcess } from "./BaseTerminalProcess"
 
-// kilocode_change start
+type ExecaSubprocess = {
+	pid?: number
+	kill: (signal?: number | NodeJS.Signals) => boolean
+	iterable: (options: { from: "all"; preserveNewlines: true }) => AsyncIterable<string | Uint8Array<ArrayBufferLike>>
+} & PromiseLike<unknown>
+
+// novacode_change start
 /**
  * Get child process IDs for a given parent PID
  */
@@ -18,13 +23,13 @@ async function getChildPids(parentPid: number): Promise<number[]> {
 		return []
 	}
 }
-// kilocode_change end
+// novacode_change end
 
 export class ExecaTerminalProcess extends BaseTerminalProcess {
 	private terminalRef: WeakRef<RooTerminal>
 	private aborted = false
 	private pid?: number
-	private subprocess?: ReturnType<typeof execa>
+	private subprocess?: ExecaSubprocess
 	private pidUpdatePromise?: Promise<void>
 
 	constructor(terminal: RooTerminal) {
@@ -53,7 +58,8 @@ export class ExecaTerminalProcess extends BaseTerminalProcess {
 		try {
 			this.isHot = true
 
-			this.subprocess = execa({
+			const { execa } = await import("execa")
+			const subprocess = execa({
 				shell: true,
 				cwd: this.terminal.getCurrentWorkingDirectory(),
 				all: true,
@@ -65,15 +71,16 @@ export class ExecaTerminalProcess extends BaseTerminalProcess {
 					LANG: "en_US.UTF-8",
 					LC_ALL: "en_US.UTF-8",
 				},
-			})`${command}`
+			})`${command}` as ExecaSubprocess
+			this.subprocess = subprocess
 
-			this.pid = this.subprocess.pid
+			this.pid = subprocess.pid
 
 			// When using shell: true, the PID is for the shell, not the actual command
 			// Find the actual command PID after a small delay
 			if (this.pid) {
 				this.pidUpdatePromise = new Promise<void>((resolve) => {
-					// kilocode_change start
+					// novacode_change start
 					setTimeout(async () => {
 						try {
 							const childPids = await getChildPids(this.pid!)
@@ -86,11 +93,11 @@ export class ExecaTerminalProcess extends BaseTerminalProcess {
 						}
 						resolve()
 					}, 100)
-					// kilocode_change end
+					// novacode_change end
 				})
 			}
 
-			const rawStream = this.subprocess.iterable({ from: "all", preserveNewlines: true })
+			const rawStream = subprocess.iterable({ from: "all", preserveNewlines: true })
 
 			// Wrap the stream to ensure all chunks are strings (execa can return Uint8Array)
 			const stream = (async function* () {
@@ -134,7 +141,7 @@ export class ExecaTerminalProcess extends BaseTerminalProcess {
 				})
 
 				try {
-					await Promise.race([this.subprocess, kill])
+					await Promise.race([subprocess, kill])
 				} catch (error) {
 					console.log(
 						`[ExecaTerminalProcess#run] subprocess termination error: ${error instanceof Error ? error.message : String(error)}`,
@@ -148,9 +155,15 @@ export class ExecaTerminalProcess extends BaseTerminalProcess {
 
 			this.emit("shell_execution_complete", { exitCode: 0 })
 		} catch (error) {
-			if (error instanceof ExecaError) {
-				console.error(`[ExecaTerminalProcess#run] shell execution error: ${error.message}`)
-				this.emit("shell_execution_complete", { exitCode: error.exitCode ?? 0, signalName: error.signal })
+			const execaLikeError = error as { message?: string; exitCode?: number; signal?: string }
+			if (typeof execaLikeError.exitCode === "number" || typeof execaLikeError.signal === "string") {
+				console.error(
+					`[ExecaTerminalProcess#run] shell execution error: ${execaLikeError.message ?? String(error)}`,
+				)
+				this.emit("shell_execution_complete", {
+					exitCode: execaLikeError.exitCode ?? 0,
+					signalName: execaLikeError.signal,
+				})
 			} else {
 				console.error(
 					`[ExecaTerminalProcess#run] shell execution error: ${error instanceof Error ? error.message : String(error)}`,
@@ -213,7 +226,7 @@ export class ExecaTerminalProcess extends BaseTerminalProcess {
 		// Continue with the rest of the abort logic
 		if (this.pid) {
 			// Also check for any child processes
-			// kilocode_change start
+			// novacode_change start
 			;(async () => {
 				try {
 					const childPids = await getChildPids(this.pid!)
@@ -236,7 +249,7 @@ export class ExecaTerminalProcess extends BaseTerminalProcess {
 					)
 				}
 			})()
-			// kilocode_change end
+			// novacode_change end
 		}
 	}
 

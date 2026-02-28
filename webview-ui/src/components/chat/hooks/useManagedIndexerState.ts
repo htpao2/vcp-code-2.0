@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
+﻿import { useEffect, useState } from "react"
 import { vscode } from "@/utils/vscode"
-import { type ManagedIndexerState, parseManagedIndexerStateMessage } from "../kilocode/managedIndexerSchema"
+import { type ManagedIndexerState, parseManagedIndexerStateMessage } from "../nova/managedIndexerSchema"
 
 /**
  * Default/initial state for the managed indexer

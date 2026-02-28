@@ -1,11 +1,11 @@
-import { memo, useMemo } from "react"
+﻿import { memo, useMemo } from "react"
 import { VSCodeProgressRing } from "@vscode/webview-ui-toolkit/react"
 import { type ToolProgressStatus } from "@roo-code/types"
 import { getLanguageFromPath } from "@src/utils/getLanguageFromPath"
 import { formatPathTooltip } from "@src/utils/formatPathTooltip"
 
 import { ToolUseBlock, ToolUseBlockHeader } from "./ToolUseBlock"
-import CodeBlock from "../kilocode/common/CodeBlock" // kilocode_change
+import CodeBlock from "../nova/common/CodeBlock" // novacode_change
 import { PathTooltip } from "../ui/PathTooltip"
 import DiffView from "./DiffView"
 
@@ -38,7 +38,7 @@ const CodeAccordian = ({
 	diffStats,
 }: CodeAccordianProps) => {
 	const inferredLanguage = useMemo(() => language ?? (path ? getLanguageFromPath(path) : "txt"), [path, language])
-	const source = useMemo(() => String(code).trim() /*kilocode_change: coerce to string*/, [code])
+	const source = useMemo(() => String(code).trim() /*novacode_change: coerce to string*/, [code])
 	const hasHeader = Boolean(path || isFeedback || header)
 
 	// Use provided diff stats only (render-only)

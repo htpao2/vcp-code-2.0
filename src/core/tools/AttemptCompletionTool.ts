@@ -1,4 +1,4 @@
-import * as vscode from "vscode"
+﻿import * as vscode from "vscode"
 
 import { RooCodeEventName, type HistoryItem, type SuggestionItem } from "@roo-code/types"
 import { TelemetryService } from "@roo-code/telemetry"
@@ -8,9 +8,9 @@ import { formatResponse } from "../prompts/responses"
 import { Package } from "../../shared/package"
 import type { ToolUse } from "../../shared/tools"
 import { t } from "../../i18n"
-import { getCommitRangeForNewCompletion } from "../checkpoints/kilocode/seeNewChanges" // kilocode_change
+import { getCommitRangeForNewCompletion } from "../checkpoints/nova/seeNewChanges" // novacode_change
 
-// kilocode_change start
+// novacode_change start
 async function getClineMessageOptions(
 	task: Task,
 ): Promise<{ isNonInteractive?: boolean; metadata?: Record<string, unknown> }> {
@@ -22,13 +22,13 @@ async function getClineMessageOptions(
 
 	return {
 		metadata: {
-			kiloCode: { commitRange },
+			novaCode: { commitRange },
 		},
 	}
 }
-// kilocode_change end
+// novacode_change end
 
-// kilocode_change start - Generate post-completion suggestions based on task mode
+// novacode_change start - Generate post-completion suggestions based on task mode
 export function getCompletionSuggestions(task: Task): SuggestionItem[] | undefined {
 	const mode = task.taskMode
 	if (mode === "code" || mode === "orchestrator") {
@@ -36,7 +36,7 @@ export function getCompletionSuggestions(task: Task): SuggestionItem[] | undefin
 	}
 	return undefined
 }
-// kilocode_change end
+// novacode_change end
 
 import { BaseTool, ToolCallbacks } from "./BaseTool"
 
@@ -119,11 +119,11 @@ export class AttemptCompletionTool extends BaseTool<"attempt_completion"> {
 				result,
 				undefined,
 				false,
-				// kilocode_change start
+				// novacode_change start
 				undefined,
 				undefined,
 				await getClineMessageOptions(task),
-				// kilocode_change end
+				// novacode_change end
 			)
 
 			// Force final token usage update before emitting TaskCompleted
@@ -180,10 +180,10 @@ export class AttemptCompletionTool extends BaseTool<"attempt_completion"> {
 				}
 			}
 
-			// kilocode_change start - Pass completion suggestions based on task mode
+			// novacode_change start - Pass completion suggestions based on task mode
 			const completionSuggestions = getCompletionSuggestions(task)
 			const completionAskText = completionSuggestions ? JSON.stringify({ suggest: completionSuggestions }) : ""
-			// kilocode_change end
+			// novacode_change end
 
 			const { response, text, images } = await task.ask("completion_result", completionAskText, false)
 
@@ -247,11 +247,11 @@ export class AttemptCompletionTool extends BaseTool<"attempt_completion"> {
 					this.removeClosingTag("result", result, block.partial),
 					undefined,
 					false,
-					// kilocode_change start
+					// novacode_change start
 					undefined,
 					undefined,
 					await getClineMessageOptions(task),
-					// kilocode_change end
+					// novacode_change end
 				)
 
 				// Force final token usage update before emitting TaskCompleted for consistency
@@ -270,11 +270,11 @@ export class AttemptCompletionTool extends BaseTool<"attempt_completion"> {
 				this.removeClosingTag("result", result, block.partial),
 				undefined,
 				block.partial,
-				// kilocode_change start
+				// novacode_change start
 				undefined,
 				undefined,
 				await getClineMessageOptions(task),
-				// kilocode_change end
+				// novacode_change end
 			)
 		}
 	}

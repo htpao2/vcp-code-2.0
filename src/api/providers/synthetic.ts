@@ -1,4 +1,4 @@
-// kilocode_change - provider added
+// novacode_change - provider added
 
 import { Anthropic } from "@anthropic-ai/sdk"
 import OpenAI from "openai"

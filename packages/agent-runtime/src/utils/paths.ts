@@ -4,11 +4,12 @@ import * as fs from "fs"
 import { logs } from "./logger.js"
 
 /**
- * Centralized path management for Kilo Code agent runtime
- * All configuration and logs are stored in ~/.kilocode/
+ * Centralized path management for Nova Code agent runtime.
+ * Prefer ~/.novacode, but transparently fall back to ~/.roo for compatibility.
  */
-export class KiloCodePaths {
-	private static readonly BASE_DIR_NAME = ".kilocode"
+export class NovaCodePaths {
+	private static readonly BASE_DIR_NAME = ".novacode"
+	private static readonly LEGACY_BASE_DIR_NAME = ".roo"
 	private static readonly CLI_SUBDIR = "cli"
 	private static readonly WORKSPACE_MAP_FILE = "workspace-map.json"
 
@@ -20,24 +21,48 @@ export class KiloCodePaths {
 	}
 
 	/**
-	 * Get base .kilocode/cli directory in user home
+	 * Resolve storage root with compatibility fallback.
+	 * - Use legacy dir when it exists and new dir doesn't.
+	 * - Otherwise prefer new dir.
 	 */
-	static getKiloCodeDir(): string {
-		return path.join(this.getHomeDir(), this.BASE_DIR_NAME, this.CLI_SUBDIR)
+	private static getStorageRootDirName(): string {
+		const homeDir = this.getHomeDir()
+		const newDir = path.join(homeDir, this.BASE_DIR_NAME, this.CLI_SUBDIR)
+		const legacyDir = path.join(homeDir, this.LEGACY_BASE_DIR_NAME, this.CLI_SUBDIR)
+
+		if (fs.existsSync(legacyDir) && !fs.existsSync(newDir)) {
+			return this.LEGACY_BASE_DIR_NAME
+		}
+
+		return this.BASE_DIR_NAME
+	}
+
+	/**
+	 * Get base storage directory in user home.
+	 */
+	static getNovaCodeDir(): string {
+		return path.join(this.getHomeDir(), this.getStorageRootDirName(), this.CLI_SUBDIR)
+	}
+
+	/**
+	 * Legacy alias kept for compatibility with existing call sites.
+	 */
+	static getRooCodeDir(): string {
+		return this.getNovaCodeDir()
 	}
 
 	/**
 	 * Get unified logs directory (shared across all workspaces)
 	 */
 	static getLogsDir(): string {
-		return path.join(this.getKiloCodeDir(), "logs")
+		return path.join(this.getNovaCodeDir(), "logs")
 	}
 
 	/**
 	 * Get global storage directory (shared across all workspaces)
 	 */
 	static getGlobalStorageDir(): string {
-		return path.join(this.getKiloCodeDir(), "global")
+		return path.join(this.getNovaCodeDir(), "global")
 	}
 
 	/**
@@ -60,7 +85,7 @@ export class KiloCodePaths {
 	 * Get workspaces base directory
 	 */
 	static getWorkspacesDir(): string {
-		return path.join(this.getKiloCodeDir(), "workspaces")
+		return path.join(this.getNovaCodeDir(), "workspaces")
 	}
 
 	/**
@@ -150,7 +175,7 @@ export class KiloCodePaths {
 			const content = fs.readFileSync(mapPath, "utf-8")
 			return JSON.parse(content)
 		} catch (error) {
-			logs.warn(`Failed to load workspace map: ${error}`, "KiloCodePaths")
+			logs.warn(`Failed to load workspace map: ${error}`, "NovaCodePaths")
 			return {}
 		}
 	}
@@ -172,7 +197,7 @@ export class KiloCodePaths {
 			const mapPath = this.getWorkspaceMapPath()
 			fs.writeFileSync(mapPath, JSON.stringify(map, null, 2))
 		} catch (error) {
-			logs.warn(`Failed to update workspace map: ${error}`, "KiloCodePaths")
+			logs.warn(`Failed to update workspace map: ${error}`, "NovaCodePaths")
 		}
 	}
 
@@ -181,7 +206,7 @@ export class KiloCodePaths {
 	 */
 	static initializeWorkspace(workspacePath: string): void {
 		// Ensure base directories exist
-		this.ensureDirectoryExists(this.getKiloCodeDir())
+		this.ensureDirectoryExists(this.getNovaCodeDir())
 		this.ensureDirectoryExists(this.getLogsDir())
 		this.ensureDirectoryExists(this.getGlobalStorageDir())
 		this.ensureDirectoryExists(this.getWorkspacesDir())

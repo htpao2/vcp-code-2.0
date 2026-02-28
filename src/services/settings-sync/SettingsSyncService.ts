@@ -1,9 +1,9 @@
-// kilocode_change - new file
+// novacode_change - new file
 import * as vscode from "vscode"
 import { Package } from "../../shared/package"
 
 /**
- * Service for managing Kilo Code settings synchronization with VS Code Settings Sync
+ * Service for managing Nova Code settings synchronization with VS Code Settings Sync
  */
 export class SettingsSyncService {
 	// Keys from global state that should be synchronized

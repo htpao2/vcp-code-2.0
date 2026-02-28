@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { afterEach, describe, expect, it, vi } from "vitest"
 import { ExtensionHost } from "../ExtensionHost.js"
 

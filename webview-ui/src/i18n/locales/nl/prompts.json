@@ -8,8 +8,8 @@
 		"noMatchFound": "Geen modi gevonden",
 		"editModesConfig": "Modusconfiguratie bewerken",
 		"editGlobalModes": "Globale modi bewerken",
-		"editProjectModes": "Projectmodi bewerken (.kilocodemodes)",
-		"createModeHelpText": "Modi zijn gespecialiseerde persona's die het gedrag van Kilo Code aanpassen. <0>Meer informatie over het gebruik van modi</0> of <1>het aanpassen van modi.</1>",
+		"editProjectModes": "Projectmodi bewerken (.novacodemodes)",
+		"createModeHelpText": "Modi zijn gespecialiseerde persona's die het gedrag van Nova Code aanpassen. <0>Meer informatie over het gebruik van modi</0> of <1>het aanpassen van modi.</1>",
 		"selectMode": "Modus zoeken"
 	},
 	"apiConfiguration": {
@@ -18,7 +18,7 @@
 	},
 	"organizationMode": {
 		"title": "Organisatiemodus",
-		"description": "Deze modus wordt geleverd door je organisatie en kan hier niet worden bewerkt. Om deze modus te wijzigen, bezoek het <dashboardLink>Kilo Code Dashboard</dashboardLink>.",
+		"description": "Deze modus wordt geleverd door je organisatie en kan hier niet worden bewerkt. Om deze modus te wijzigen, bezoek het <dashboardLink>Nova Code Dashboard</dashboardLink>.",
 		"cannotEdit": "Organisatiemodi kunnen niet worden bewerkt"
 	},
 	"tools": {
@@ -39,7 +39,7 @@
 	"roleDefinition": {
 		"title": "Roldefinitie",
 		"resetToDefault": "Terugzetten naar standaard",
-		"description": "Definieer Kilo Code's expertise en persoonlijkheid voor deze modus. Deze beschrijving bepaalt hoe Kilo Code zich presenteert en taken benadert."
+		"description": "Definieer Nova Code's expertise en persoonlijkheid voor deze modus. Deze beschrijving bepaalt hoe Nova Code zich presenteert en taken benadert."
 	},
 	"description": {
 		"title": "Korte beschrijving (voor mensen)",
@@ -55,11 +55,11 @@
 		"title": "Modusspecifieke instructies (optioneel)",
 		"resetToDefault": "Terugzetten naar standaard",
 		"description": "Voeg gedragsrichtlijnen toe die specifiek zijn voor de modus {{modeName}}.",
-		"loadFromFile": "Aangepaste instructies specifiek voor de {{mode}} modus kunnen ook worden geladen vanuit de map <span>.kilocode/rules-{{slug}}/</span> in je werkruimte of vanuit de globale <0>.kilocode/rules-{{slug}}/</0> (.kilocoderules-{{slug}} en .clinerules-{{slug}} zijn verouderd en zullen binnenkort niet meer werken)."
+		"loadFromFile": "Aangepaste instructies specifiek voor de {{mode}} modus kunnen ook worden geladen vanuit de map <span>.novacode/rules-{{slug}}/</span> in je werkruimte of vanuit de globale <0>.novacode/rules-{{slug}}/</0> (.novacoderules-{{slug}} en .clinerules-{{slug}} zijn verouderd en zullen binnenkort niet meer werken)."
 	},
 	"exportMode": {
 		"title": "Modus exporteren",
-		"description": "Exporteer deze modus met regels uit de .kilocode/rules-{{slug}}/ map gecombineerd in een deelbaar YAML-bestand. De originele bestanden blijven ongewijzigd.",
+		"description": "Exporteer deze modus met regels uit de .novacode/rules-{{slug}}/ map gecombineerd in een deelbaar YAML-bestand. De originele bestanden blijven ongewijzigd.",
 		"exporting": "Exporteren..."
 	},
 	"importMode": {
@@ -68,11 +68,11 @@
 		"importing": "Importeren...",
 		"global": {
 			"label": "Globaal niveau",
-			"description": "Beschikbaar in alle projecten. Als de geëxporteerde modus regelbestanden bevatte, worden deze opnieuw gemaakt in de globale map .kilocode/rules-{slug}/."
+			"description": "Beschikbaar in alle projecten. Als de geëxporteerde modus regelbestanden bevatte, worden deze opnieuw gemaakt in de globale map .novacode/rules-{slug}/."
 		},
 		"project": {
 			"label": "Projectniveau",
-			"description": "Alleen beschikbaar in deze werkruimte. Als de geëxporteerde modus regelbestanden bevatte, worden deze opnieuw gemaakt in de map .kilocode/rules-{slug}/."
+			"description": "Alleen beschikbaar in deze werkruimte. Als de geëxporteerde modus regelbestanden bevatte, worden deze opnieuw gemaakt in de map .novacode/rules-{slug}/."
 		}
 	},
 	"advanced": {
@@ -81,7 +81,7 @@
 	"globalCustomInstructions": {
 		"title": "Aangepaste instructies voor alle modi",
 		"description": "Deze instructies gelden voor alle modi. Ze bieden een basisset aan gedragingen die kunnen worden uitgebreid met modusspecifieke instructies hieronder. <0>Meer informatie</0>",
-		"loadFromFile": "Instructies kunnen ook worden geladen vanuit de map <span>.kilocode/rules/</span> in je werkruimte of vanuit de globale <0>.kilocode/rules/</0> (.kilocoderules en .clinerules zijn verouderd en zullen binnenkort niet meer werken)."
+		"loadFromFile": "Instructies kunnen ook worden geladen vanuit de map <span>.novacode/rules/</span> in je werkruimte of vanuit de globale <0>.novacode/rules/</0> (.novacoderules en .clinerules zijn verouderd en zullen binnenkort niet meer werken)."
 	},
 	"systemPrompt": {
 		"preview": "Systeemprompt bekijken",
@@ -110,7 +110,7 @@
 		"types": {
 			"ENHANCE": {
 				"label": "Prompt verbeteren",
-				"description": "Gebruik promptverbetering om op maat gemaakte suggesties of verbeteringen voor je invoer te krijgen. Zo begrijpt Kilo Code je intentie en krijg je de best mogelijke antwoorden. Beschikbaar via het ✨-icoon in de chat."
+				"description": "Gebruik promptverbetering om op maat gemaakte suggesties of verbeteringen voor je invoer te krijgen. Zo begrijpt Nova Code je intentie en krijg je de best mogelijke antwoorden. Beschikbaar via het ✨-icoon in de chat."
 			},
 			"CONDENSE": {
 				"label": "Contextcondensatie",
@@ -160,7 +160,7 @@
 	},
 	"advancedSystemPrompt": {
 		"title": "Geavanceerd: Systeemprompt overschrijven",
-		"description": "<2>⚠️ Waarschuwing:</2> Deze geavanceerde functie omzeilt beveiligingen. <1>LEES DIT VOOR GEBRUIK!</1>Overschrijf de standaard systeemprompt door een bestand aan te maken op <span>.kilocode/system-prompt-{{slug}}</span>."
+		"description": "<2>⚠️ Waarschuwing:</2> Deze geavanceerde functie omzeilt beveiligingen. <1>LEES DIT VOOR GEBRUIK!</1>Overschrijf de standaard systeemprompt door een bestand aan te maken op <span>.novacode/system-prompt-{{slug}}</span>."
 	},
 	"createModeDialog": {
 		"title": "Nieuwe modus aanmaken",
@@ -181,13 +181,13 @@
 				"description": "Beschikbaar in alle werkruimtes"
 			},
 			"project": {
-				"label": "Projectspecifiek (.kilocodemodes)",
+				"label": "Projectspecifiek (.novacodemodes)",
 				"description": "Alleen beschikbaar in deze werkruimte, heeft voorrang op globaal"
 			}
 		},
 		"roleDefinition": {
 			"label": "Roldefinitie",
-			"description": "Definieer Kilo Code's expertise en persoonlijkheid voor deze modus."
+			"description": "Definieer Nova Code's expertise en persoonlijkheid voor deze modus."
 		},
 		"whenToUse": {
 			"label": "Wanneer te gebruiken (optioneel)",

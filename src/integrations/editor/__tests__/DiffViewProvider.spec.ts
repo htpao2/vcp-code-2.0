@@ -358,11 +358,11 @@ describe("DiffViewProvider", () => {
 	})
 
 	describe("saveDirectly method", () => {
-		const originalCliMode = process.env.KILO_CLI_MODE
+		const originalCliMode = process.env.NOVA_CLI_MODE
 
 		beforeEach(() => {
 			// Ensure tests run in non-CLI mode by default
-			delete process.env.KILO_CLI_MODE
+			delete process.env.NOVA_CLI_MODE
 			// Mock vscode functions
 			vi.mocked(vscode.window.showTextDocument).mockResolvedValue({} as any)
 			vi.mocked(vscode.languages.getDiagnostics).mockReturnValue([])
@@ -371,9 +371,9 @@ describe("DiffViewProvider", () => {
 		afterEach(() => {
 			// Restore original environment
 			if (originalCliMode === undefined) {
-				delete process.env.KILO_CLI_MODE
+				delete process.env.NOVA_CLI_MODE
 			} else {
-				process.env.KILO_CLI_MODE = originalCliMode
+				process.env.NOVA_CLI_MODE = originalCliMode
 			}
 		})
 
@@ -532,14 +532,14 @@ describe("DiffViewProvider", () => {
 	})
 
 	describe("CLI mode optimization", () => {
-		const originalEnv = process.env.KILO_CLI_MODE
+		const originalEnv = process.env.NOVA_CLI_MODE
 
 		afterEach(() => {
 			// Restore original environment
 			if (originalEnv === undefined) {
-				delete process.env.KILO_CLI_MODE
+				delete process.env.NOVA_CLI_MODE
 			} else {
-				process.env.KILO_CLI_MODE = originalEnv
+				process.env.NOVA_CLI_MODE = originalEnv
 			}
 		})
 
@@ -549,8 +549,8 @@ describe("DiffViewProvider", () => {
 				vi.mocked(vscode.languages.getDiagnostics).mockReturnValue([])
 			})
 
-			it("should skip diagnostic delay when KILO_CLI_MODE is true", async () => {
-				process.env.KILO_CLI_MODE = "true"
+			it("should skip diagnostic delay when NOVA_CLI_MODE is true", async () => {
+				process.env.NOVA_CLI_MODE = "true"
 				const mockDelay = vi.mocked(delay)
 				mockDelay.mockClear()
 				vi.mocked(vscode.languages.getDiagnostics).mockClear()
@@ -563,8 +563,8 @@ describe("DiffViewProvider", () => {
 				expect(vscode.languages.getDiagnostics).toHaveBeenCalledTimes(1)
 			})
 
-			it("should apply diagnostic delay when KILO_CLI_MODE is not set", async () => {
-				delete process.env.KILO_CLI_MODE
+			it("should apply diagnostic delay when NOVA_CLI_MODE is not set", async () => {
+				delete process.env.NOVA_CLI_MODE
 				const mockDelay = vi.mocked(delay)
 				mockDelay.mockClear()
 
@@ -575,7 +575,7 @@ describe("DiffViewProvider", () => {
 			})
 
 			it("should skip document opening in CLI mode when openFile is false", async () => {
-				process.env.KILO_CLI_MODE = "true"
+				process.env.NOVA_CLI_MODE = "true"
 				vi.mocked(vscode.workspace.openTextDocument).mockClear()
 
 				await diffViewProvider.saveDirectly("test.ts", "new content", false, true, 1000)
@@ -587,7 +587,7 @@ describe("DiffViewProvider", () => {
 
 		describe("update in CLI mode", () => {
 			it("should avoid delete edit when finalizing in CLI mode", async () => {
-				process.env.KILO_CLI_MODE = "true"
+				process.env.NOVA_CLI_MODE = "true"
 				mockWorkspaceEdit.delete.mockClear()
 				vi.mocked(vscode.workspace.applyEdit).mockClear()
 				;(diffViewProvider as any).originalContent = "old\ncontent\n"
@@ -599,7 +599,7 @@ describe("DiffViewProvider", () => {
 			})
 
 			it("should preserve CRLF line endings when finalizing in CLI mode", async () => {
-				process.env.KILO_CLI_MODE = "true"
+				process.env.NOVA_CLI_MODE = "true"
 				mockWorkspaceEdit.delete.mockClear()
 				mockWorkspaceEdit.replace.mockClear()
 				vi.mocked(vscode.workspace.applyEdit).mockClear()

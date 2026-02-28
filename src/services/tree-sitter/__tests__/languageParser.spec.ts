@@ -3,8 +3,8 @@
 import * as path from "path"
 import { loadRequiredLanguageParsers } from "../languageParser"
 
-// Path to the directory containing the WASM files.
-const WASM_DIR = path.join(__dirname, "../../../node_modules/tree-sitter-wasms/out")
+// Resolve WASM directory in both local and hoisted node_modules layouts.
+const WASM_DIR = path.dirname(require.resolve("tree-sitter-wasms/out/tree-sitter-javascript.wasm"))
 
 describe("loadRequiredLanguageParsers", () => {
 	it("should load Python parser for .py files", async () => {

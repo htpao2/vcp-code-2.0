@@ -6,8 +6,8 @@ import { vscode } from "@src/utils/vscode"
 import { useExtensionState } from "@src/context/ExtensionStateContext"
 import { useAppTranslation } from "@src/i18n/TranslationContext"
 import { AutoApproveToggle, AutoApproveSetting, autoApproveSettingsConfig } from "../settings/AutoApproveToggle"
-import { MaxRequestsInput } from "../settings/MaxRequestsInput" // kilocode_change
-import { MaxCostInput } from "../settings/MaxCostInput" // kilocode_change
+import { MaxRequestsInput } from "../settings/MaxRequestsInput" // novacode_change
+import { MaxCostInput } from "../settings/MaxCostInput" // novacode_change
 import { StandardTooltip } from "@src/components/ui"
 import { useAutoApprovalState } from "@src/hooks/useAutoApprovalState"
 import { useAutoApprovalToggles } from "@src/hooks/useAutoApprovalToggles"
@@ -22,19 +22,19 @@ const AutoApproveMenu = ({ style }: AutoApproveMenuProps) => {
 	const {
 		autoApprovalEnabled,
 		setAutoApprovalEnabled,
-		allowedMaxRequests, // kilocode_change
-		allowedMaxCost, // kilocode_change
+		allowedMaxRequests, // novacode_change
+		allowedMaxCost, // novacode_change
 		setAlwaysAllowReadOnly,
 		setAlwaysAllowWrite,
-		setAlwaysAllowDelete, // kilocode_change
+		setAlwaysAllowDelete, // novacode_change
 		setAlwaysAllowExecute,
 		setAlwaysAllowBrowser,
 		setAlwaysAllowMcp,
 		setAlwaysAllowModeSwitch,
 		setAlwaysAllowSubtasks,
 		setAlwaysAllowFollowupQuestions,
-		setAllowedMaxRequests, // kilocode_change
-		setAllowedMaxCost, // kilocode_change
+		setAllowedMaxRequests, // novacode_change
+		setAllowedMaxCost, // novacode_change
 	} = useExtensionState()
 
 	const { t } = useAppTranslation()
@@ -54,11 +54,11 @@ const AutoApproveMenu = ({ style }: AutoApproveMenuProps) => {
 				case "alwaysAllowWrite":
 					setAlwaysAllowWrite(value)
 					break
-				// kilocode_change start
+				// novacode_change start
 				case "alwaysAllowDelete":
 					setAlwaysAllowDelete(value)
 					break
-				// kilocode_change end
+				// novacode_change end
 				case "alwaysAllowExecute":
 					setAlwaysAllowExecute(value)
 					break
@@ -104,7 +104,7 @@ const AutoApproveMenu = ({ style }: AutoApproveMenuProps) => {
 			hasEnabledOptions,
 			setAlwaysAllowReadOnly,
 			setAlwaysAllowWrite,
-			setAlwaysAllowDelete, // kilocode_change
+			setAlwaysAllowDelete, // novacode_change
 			setAlwaysAllowExecute,
 			setAlwaysAllowBrowser,
 			setAlwaysAllowMcp,
@@ -166,7 +166,7 @@ const AutoApproveMenu = ({ style }: AutoApproveMenuProps) => {
 
 					<AutoApproveToggle {...toggles} onToggle={onAutoApproveToggle} />
 
-					{/* kilocode_change start */}
+					{/* novacode_change start */}
 					<div className="flex gap-2 w-full justify-stretch mb-2">
 						<MaxRequestsInput
 							allowedMaxRequests={allowedMaxRequests ?? undefined}
@@ -177,7 +177,7 @@ const AutoApproveMenu = ({ style }: AutoApproveMenuProps) => {
 							onValueChange={(value) => setAllowedMaxCost(value)}
 						/>
 					</div>
-					{/* kilocode_change end */}
+					{/* novacode_change end */}
 				</div>
 			)}
 

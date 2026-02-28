@@ -1,4 +1,4 @@
-import React, {
+﻿import React, {
 	forwardRef,
 	memo,
 	useCallback,
@@ -20,25 +20,26 @@ import {
 	AlertTriangle,
 	Globe,
 	Info,
-	Bot, // kilocode_change
+	Bot, // novacode_change
 	MessageSquare,
 	Monitor,
 	LucideIcon,
-	// SquareSlash, // kilocode_change
-	// Glasses, // kilocode_change
+	// SquareSlash, // novacode_change
+	// Glasses, // novacode_change
 	Plug,
-	// Server, // kilocode_change - no longer needed, merged into agentBehaviour
+	// Server, // novacode_change - no longer needed, merged into agentBehaviour
 	Users2,
 	ArrowLeft,
+	Shield,
 } from "lucide-react"
 
-// kilocode_change
+// novacode_change
 import { ensureBodyPointerEventsRestored } from "@/utils/fixPointerEvents"
 import {
 	type ProviderSettings,
 	type ExperimentId,
 	type TelemetrySetting,
-	type ProfileType, // kilocode_change - autocomplete profile type system
+	type ProfileType, // novacode_change - autocomplete profile type system
 	DEFAULT_CHECKPOINT_TIMEOUT_SECONDS,
 	ImageGenerationProvider,
 } from "@roo-code/types"
@@ -72,7 +73,7 @@ import ApiOptions from "./ApiOptions"
 import { AutoApproveSettings } from "./AutoApproveSettings"
 import { BrowserSettings } from "./BrowserSettings"
 import { CheckpointSettings } from "./CheckpointSettings"
-import { DisplaySettings } from "./DisplaySettings" // kilocode_change
+import { DisplaySettings } from "./DisplaySettings" // novacode_change
 import { NotificationSettings } from "./NotificationSettings"
 import { ContextManagementSettings } from "./ContextManagementSettings"
 import { TerminalSettings } from "./TerminalSettings"
@@ -80,14 +81,15 @@ import { ExperimentalSettings } from "./ExperimentalSettings"
 import { LanguageSettings } from "./LanguageSettings"
 import { About } from "./About"
 import { Section } from "./Section"
+import { VcpSettings } from "./VcpSettings"
 import PromptsSettings from "./PromptsSettings"
-import deepEqual from "fast-deep-equal" // kilocode_change
-import { AutocompleteServiceSettingsView } from "../kilocode/settings/AutocompleteServiceSettings" // kilocode_change
+import deepEqual from "fast-deep-equal" // novacode_change
+import { AutocompleteServiceSettingsView } from "../nova/settings/AutocompleteServiceSettings" // novacode_change
 import { SlashCommandsSettings } from "./SlashCommandsSettings"
 import { UISettings } from "./UISettings"
-import AgentBehaviourView from "../kilocode/settings/AgentBehaviourView" // kilocode_change - new combined view
-// import ModesView from "../modes/ModesView" // kilocode_change - now used inside AgentBehaviourView
-// import McpView from "../mcp/McpView" // kilocode_change: own view
+import AgentBehaviourView from "../nova/settings/AgentBehaviourView" // novacode_change - new combined view
+// import ModesView from "../modes/ModesView" // novacode_change - now used inside AgentBehaviourView
+// import McpView from "../mcp/McpView" // novacode_change: own view
 import { SettingsSearch } from "./SettingsSearch"
 import { useSearchIndexRegistry, SearchIndexProvider } from "./useSettingsSearch"
 
@@ -95,9 +97,9 @@ export const settingsTabsContainer = "flex flex-1 overflow-hidden [&.narrow_.tab
 export const settingsTabList =
 	"w-48 data-[compact=true]:w-12 flex-shrink-0 flex flex-col overflow-y-auto overflow-x-hidden border-r border-vscode-sideBar-background"
 export const settingsTabTrigger =
-	"whitespace-nowrap overflow-hidden min-w-0 h-12 px-4 py-3 box-border flex items-center border-l-2 border-transparent text-vscode-foreground opacity-70 hover:bg-vscode-list-hoverBackground data-[compact=true]:w-12 data-[compact=true]:p-4 cursor-pointer" // kilocode_change add cursor-pointer
+	"whitespace-nowrap overflow-hidden min-w-0 h-12 px-4 py-3 box-border flex items-center border-l-2 border-transparent text-vscode-foreground opacity-70 hover:bg-vscode-list-hoverBackground data-[compact=true]:w-12 data-[compact=true]:p-4 cursor-pointer" // novacode_change add cursor-pointer
 export const settingsTabTriggerActive =
-	"opacity-100 border-vscode-focusBorder bg-vscode-list-activeSelectionBackground hover:bg-vscode-list-activeSelectionBackground cursor-default" // kilocode_change add hover:bg-* and cursor-default
+	"opacity-100 border-vscode-focusBorder bg-vscode-list-activeSelectionBackground hover:bg-vscode-list-activeSelectionBackground cursor-default" // novacode_change add hover:bg-* and cursor-default
 
 export interface SettingsViewRef {
 	checkUnsaveChanges: (then: () => void) => void
@@ -105,18 +107,19 @@ export interface SettingsViewRef {
 
 export const sectionNames = [
 	"providers",
+	"vcp",
 	"autoApprove",
 	"slashCommands",
 	"browser",
 	"checkpoints",
-	"autocomplete", // kilocode_change
-	"display", // kilocode_change
+	"autocomplete", // novacode_change
+	"display", // novacode_change
 	"notifications",
 	"contextManagement",
 	"terminal",
-	"agentBehaviour", // kilocode_change - renamed from "modes" and merged with "mcp"
-	// "modes",  // kilocode_change - now used inside AgentBehaviourView
-	// "mcp",  // kilocode_change - now used inside AgentBehaviourView
+	"agentBehaviour", // novacode_change - renamed from "modes" and merged with "mcp"
+	// "modes",  // novacode_change - now used inside AgentBehaviourView
+	// "mcp",  // novacode_change - now used inside AgentBehaviourView
 	"prompts",
 	"ui",
 	"experimental",
@@ -129,13 +132,13 @@ export type SectionName = (typeof sectionNames)[number]
 type SettingsViewProps = {
 	onDone: () => void
 	targetSection?: string
-	editingProfile?: string // kilocode_change - profile to edit
+	editingProfile?: string // novacode_change - profile to edit
 }
 
-// kilocode_change start - editingProfile
+// novacode_change start - editingProfile
 const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref) => {
 	const { onDone, targetSection, editingProfile } = props
-	// kilocode_change end - editingProfile
+	// novacode_change end - editingProfile
 	const { t } = useAppTranslation()
 
 	const extensionState = useExtensionState()
@@ -150,7 +153,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 			: "providers",
 	)
 
-	const [editingApiConfigName, setEditingApiConfigName] = useState<string>(currentApiConfigName || "default") // kilocode_change: Track which profile is being edited separately from the active profile
+	const [editingApiConfigName, setEditingApiConfigName] = useState<string>(currentApiConfigName || "default") // novacode_change: Track which profile is being edited separately from the active profile
 
 	const scrollPositions = useRef<Record<SectionName, number>>(
 		Object.fromEntries(sectionNames.map((s) => [s, 0])) as Record<SectionName, number>,
@@ -162,11 +165,11 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 
 	const [cachedState, setCachedState] = useState(() => extensionState)
 
-	// kilocode_change begin
+	// novacode_change begin
 	useEffect(() => {
 		ensureBodyPointerEventsRestored()
 	}, [isDiscardDialogShow])
-	// kilocode_change end
+	// novacode_change end
 
 	const {
 		alwaysAllowReadOnly,
@@ -184,7 +187,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 		alwaysAllowWrite,
 		alwaysAllowWriteOutsideWorkspace,
 		alwaysAllowWriteProtected,
-		alwaysAllowDelete, // kilocode_change
+		alwaysAllowDelete, // novacode_change
 		autoCondenseContext,
 		autoCondenseContextPercent,
 		browserToolEnabled,
@@ -193,9 +196,9 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 		checkpointTimeout,
 		diffEnabled,
 		experiments,
-		morphApiKey, // kilocode_change
-		fastApplyModel, // kilocode_change: Fast Apply model selection
-		fastApplyApiProvider, // kilocode_change: Fast Apply model api base url
+		morphApiKey, // novacode_change
+		fastApplyModel, // novacode_change: Fast Apply model selection
+		fastApplyApiProvider, // novacode_change: Fast Apply model api base url
 		fuzzyMatchThreshold,
 		maxOpenTabsContext,
 		maxWorkspaceFiles,
@@ -222,42 +225,42 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 		enableSubfolderRules,
 		remoteBrowserEnabled,
 		maxReadFileLine,
-		showAutoApproveMenu, // kilocode_change
-		yoloMode, // kilocode_change
-		showTaskTimeline, // kilocode_change
-		sendMessageOnEnter, // kilocode_change
-		showTimestamps, // kilocode_change
-		hideCostBelowThreshold, // kilocode_change
+		showAutoApproveMenu, // novacode_change
+		yoloMode, // novacode_change
+		showTaskTimeline, // novacode_change
+		sendMessageOnEnter, // novacode_change
+		showTimestamps, // novacode_change
+		hideCostBelowThreshold, // novacode_change
 		maxImageFileSize,
 		maxTotalImageSize,
 		terminalCompressProgressBar,
 		maxConcurrentFileReads,
-		allowVeryLargeReads, // kilocode_change
-		terminalCommandApiConfigId, // kilocode_change
+		allowVeryLargeReads, // novacode_change
+		terminalCommandApiConfigId, // novacode_change
 		condensingApiConfigId,
 		customCondensingPrompt,
-		yoloGatekeeperApiConfigId, // kilocode_change: AI gatekeeper for YOLO mode
+		yoloGatekeeperApiConfigId, // novacode_change: AI gatekeeper for YOLO mode
 		customSupportPrompts,
 		profileThresholds,
-		systemNotificationsEnabled, // kilocode_change
+		systemNotificationsEnabled, // novacode_change
 		alwaysAllowFollowupQuestions,
 		followupAutoApproveTimeoutMs,
-		ghostServiceSettings, // kilocode_change
-		// kilocode_change start - Auto-purge settings
+		ghostServiceSettings, // novacode_change
+		// novacode_change start - Auto-purge settings
 		autoPurgeEnabled,
 		autoPurgeDefaultRetentionDays,
 		autoPurgeFavoritedTaskRetentionDays,
 		autoPurgeCompletedTaskRetentionDays,
 		autoPurgeIncompleteTaskRetentionDays,
 		autoPurgeLastRunTimestamp,
-		kiloCodeWrapperProperties,
-		// kilocode_change end - Auto-purge settings
+		novaCodeWrapperProperties,
+		// novacode_change end - Auto-purge settings
 		includeDiagnosticMessages,
 		maxDiagnosticMessages,
 		includeTaskHistoryInEnhance,
 		imageGenerationProvider,
 		openRouterImageApiKey,
-		kiloCodeImageApiKey,
+		novaCodeImageApiKey,
 		openRouterImageGenerationSelectedModel,
 		reasoningBlockCollapsed,
 		enterBehavior,
@@ -278,14 +281,14 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 		setCachedState((prevCachedState) => ({ ...prevCachedState, ...extensionState }))
 		prevApiConfigName.current = currentApiConfigName
 		setChangeDetected(false)
-		// kilocode_change start - Don't reset editingApiConfigName if we have an editingProfile prop (from auth return)
+		// novacode_change start - Don't reset editingApiConfigName if we have an editingProfile prop (from auth return)
 		if (!editingProfile) {
 			setEditingApiConfigName(currentApiConfigName || "default")
 		}
-		// kilocode_change end
-	}, [currentApiConfigName, extensionState, editingProfile]) // kilocode_change
+		// novacode_change end
+	}, [currentApiConfigName, extensionState, editingProfile]) // novacode_change
 
-	// kilocode_change start: Set editing profile when prop changes (from auth return)
+	// novacode_change start: Set editing profile when prop changes (from auth return)
 	useEffect(() => {
 		if (editingProfile) {
 			console.log("[SettingsView] Setting editing profile from prop:", editingProfile)
@@ -297,9 +300,9 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 			})
 		}
 	}, [editingProfile])
-	// kilocode_change end
+	// novacode_change end
 
-	// kilocode_change start
+	// novacode_change start
 	const isLoadingProfileForEditing = useRef(false)
 
 	useEffect(() => {
@@ -322,7 +325,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 
 	// Temporary way of making sure that the Settings view updates its local state properly when receiving
 	// api keys from providers that support url callbacks. This whole Settings View needs proper with this local state thing later
-	const { kilocodeToken, openRouterApiKey, glamaApiKey, requestyApiKey } = extensionState.apiConfiguration ?? {}
+	const { novacodeToken, openRouterApiKey, glamaApiKey, requestyApiKey } = extensionState.apiConfiguration ?? {}
 	useEffect(() => {
 		setCachedState((prevCachedState) => ({
 			...prevCachedState,
@@ -330,13 +333,13 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 				...prevCachedState.apiConfiguration,
 				// Only set specific tokens/keys instead of spreading the entire
 				// `prevCachedState.apiConfiguration` since it may contain unsaved changes
-				kilocodeToken,
+				novacodeToken,
 				openRouterApiKey,
 				glamaApiKey,
 				requestyApiKey,
 			},
 		}))
-	}, [kilocodeToken, openRouterApiKey, glamaApiKey, requestyApiKey])
+	}, [novacodeToken, openRouterApiKey, glamaApiKey, requestyApiKey])
 
 	useEffect(() => {
 		// Only update if we're not already detecting changes
@@ -373,22 +376,22 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 		window.addEventListener("message", handleMessage)
 		return () => window.removeEventListener("message", handleMessage)
 	})
-	// kilocode_change end
+	// novacode_change end
 
 	const setCachedStateField: SetCachedStateField<keyof ExtensionStateContextType> = useCallback((field, value) => {
 		setCachedState((prevState) => {
-			// kilocode_change start
+			// novacode_change start
 			if (deepEqual(prevState[field], value)) {
 				return prevState
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			setChangeDetected(true)
 			return { ...prevState, [field]: value }
 		})
 	}, [])
 
-	// kilocode_change start
+	// novacode_change start
 	const setAutocompleteServiceSettingsField = useCallback(
 		<K extends keyof NonNullable<ExtensionStateContextType["ghostServiceSettings"]>>(
 			field: K,
@@ -412,7 +415,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 		},
 		[],
 	)
-	// kilocode_change end
+	// novacode_change end
 
 	const setApiConfigurationField = useCallback(
 		<K extends keyof ProviderSettings>(field: K, value: ProviderSettings[K], isUserAction: boolean = true) => {
@@ -495,10 +498,10 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 		})
 	}, [])
 
-	const setKiloCodeImageApiKey = useCallback((apiKey: string) => {
+	const setNovaCodeImageApiKey = useCallback((apiKey: string) => {
 		setCachedState((prevState) => {
 			setChangeDetected(true)
-			return { ...prevState, kiloCodeImageApiKey: apiKey }
+			return { ...prevState, novaCodeImageApiKey: apiKey }
 		})
 	}, [])
 
@@ -539,7 +542,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 					alwaysAllowWrite: alwaysAllowWrite ?? undefined,
 					alwaysAllowWriteOutsideWorkspace: alwaysAllowWriteOutsideWorkspace ?? undefined,
 					alwaysAllowWriteProtected: alwaysAllowWriteProtected ?? undefined,
-					alwaysAllowDelete: alwaysAllowDelete ?? undefined, // kilocode_change
+					alwaysAllowDelete: alwaysAllowDelete ?? undefined, // novacode_change
 					alwaysAllowExecute: alwaysAllowExecute ?? undefined,
 					alwaysAllowBrowser: alwaysAllowBrowser ?? undefined,
 					alwaysAllowMcp,
@@ -583,7 +586,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 					maxWorkspaceFiles: Math.min(Math.max(0, maxWorkspaceFiles ?? 200), 500),
 					showRooIgnoredFiles: showRooIgnoredFiles ?? true,
 					enableSubfolderRules: enableSubfolderRules ?? false,
-					maxReadFileLine: maxReadFileLine ?? 500 /*kilocode_change*/,
+					maxReadFileLine: maxReadFileLine ?? 500 /*novacode_change*/,
 					maxImageFileSize: maxImageFileSize ?? 5,
 					maxTotalImageSize: maxTotalImageSize ?? 20,
 					maxConcurrentFileReads: cachedState.maxConcurrentFileReads ?? 5,
@@ -610,28 +613,28 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 			})
 			vscode.postMessage({ type: "ttsEnabled", bool: ttsEnabled })
 			vscode.postMessage({ type: "ttsSpeed", value: ttsSpeed })
-			vscode.postMessage({ type: "terminalCommandApiConfigId", text: terminalCommandApiConfigId || "" }) // kilocode_change
-			vscode.postMessage({ type: "showAutoApproveMenu", bool: showAutoApproveMenu }) // kilocode_change
-			vscode.postMessage({ type: "yoloMode", bool: yoloMode }) // kilocode_change
-			vscode.postMessage({ type: "allowVeryLargeReads", bool: allowVeryLargeReads }) // kilocode_change
+			vscode.postMessage({ type: "terminalCommandApiConfigId", text: terminalCommandApiConfigId || "" }) // novacode_change
+			vscode.postMessage({ type: "showAutoApproveMenu", bool: showAutoApproveMenu }) // novacode_change
+			vscode.postMessage({ type: "yoloMode", bool: yoloMode }) // novacode_change
+			vscode.postMessage({ type: "allowVeryLargeReads", bool: allowVeryLargeReads }) // novacode_change
 			vscode.postMessage({ type: "currentApiConfigName", text: currentApiConfigName })
-			vscode.postMessage({ type: "showTaskTimeline", bool: showTaskTimeline }) // kilocode_change
-			vscode.postMessage({ type: "sendMessageOnEnter", bool: sendMessageOnEnter }) // kilocode_change
-			vscode.postMessage({ type: "showTimestamps", bool: showTimestamps }) // kilocode_change
-			vscode.postMessage({ type: "showDiffStats", bool: cachedState.showDiffStats }) // kilocode_change
-			vscode.postMessage({ type: "hideCostBelowThreshold", value: hideCostBelowThreshold }) // kilocode_change
+			vscode.postMessage({ type: "showTaskTimeline", bool: showTaskTimeline }) // novacode_change
+			vscode.postMessage({ type: "sendMessageOnEnter", bool: sendMessageOnEnter }) // novacode_change
+			vscode.postMessage({ type: "showTimestamps", bool: showTimestamps }) // novacode_change
+			vscode.postMessage({ type: "showDiffStats", bool: cachedState.showDiffStats }) // novacode_change
+			vscode.postMessage({ type: "hideCostBelowThreshold", value: hideCostBelowThreshold }) // novacode_change
 			vscode.postMessage({ type: "updateCondensingPrompt", text: customCondensingPrompt || "" })
-			vscode.postMessage({ type: "yoloGatekeeperApiConfigId", text: yoloGatekeeperApiConfigId || "" }) // kilocode_change: AI gatekeeper for YOLO mode
+			vscode.postMessage({ type: "yoloGatekeeperApiConfigId", text: yoloGatekeeperApiConfigId || "" }) // novacode_change: AI gatekeeper for YOLO mode
 			vscode.postMessage({ type: "setReasoningBlockCollapsed", bool: reasoningBlockCollapsed ?? true })
-			vscode.postMessage({ type: "upsertApiConfiguration", text: editingApiConfigName, apiConfiguration }) // kilocode_change: Save to editing profile instead of current active profile
+			vscode.postMessage({ type: "upsertApiConfiguration", text: editingApiConfigName, apiConfiguration }) // novacode_change: Save to editing profile instead of current active profile
 			vscode.postMessage({ type: "telemetrySetting", text: telemetrySetting })
-			vscode.postMessage({ type: "systemNotificationsEnabled", bool: systemNotificationsEnabled }) // kilocode_change
-			vscode.postMessage({ type: "ghostServiceSettings", values: ghostServiceSettings }) // kilocode_change
-			vscode.postMessage({ type: "morphApiKey", text: morphApiKey }) // kilocode_change
-			vscode.postMessage({ type: "fastApplyModel", text: fastApplyModel }) // kilocode_change: Fast Apply model selection
-			vscode.postMessage({ type: "fastApplyApiProvider", text: fastApplyApiProvider }) // kilocode_change: Fast Apply model api base url
-			vscode.postMessage({ type: "kiloCodeImageApiKey", text: kiloCodeImageApiKey })
-			// kilocode_change start - Auto-purge settings
+			vscode.postMessage({ type: "systemNotificationsEnabled", bool: systemNotificationsEnabled }) // novacode_change
+			vscode.postMessage({ type: "ghostServiceSettings", values: ghostServiceSettings }) // novacode_change
+			vscode.postMessage({ type: "morphApiKey", text: morphApiKey }) // novacode_change
+			vscode.postMessage({ type: "fastApplyModel", text: fastApplyModel }) // novacode_change: Fast Apply model selection
+			vscode.postMessage({ type: "fastApplyApiProvider", text: fastApplyApiProvider }) // novacode_change: Fast Apply model api base url
+			vscode.postMessage({ type: "novaCodeImageApiKey", text: novaCodeImageApiKey })
+			// novacode_change start - Auto-purge settings
 			vscode.postMessage({ type: "autoPurgeEnabled", bool: autoPurgeEnabled })
 			vscode.postMessage({ type: "autoPurgeDefaultRetentionDays", value: autoPurgeDefaultRetentionDays })
 			vscode.postMessage({
@@ -646,10 +649,10 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 				type: "autoPurgeIncompleteTaskRetentionDays",
 				value: autoPurgeIncompleteTaskRetentionDays,
 			})
-			// kilocode_change end - Auto-purge settings
+			// novacode_change end - Auto-purge settings
 			vscode.postMessage({ type: "debugSetting", bool: cachedState.debug })
 
-			// kilocode_change: After saving, sync cachedState to extensionState without clobbering
+			// novacode_change: After saving, sync cachedState to extensionState without clobbering
 			// the editing profile's apiConfiguration when editing a non-active profile.
 			if (editingApiConfigName !== currentApiConfigName) {
 				// Only sync non-apiConfiguration fields from extensionState
@@ -662,7 +665,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 				// When editing the active profile, sync everything including apiConfiguration
 				setCachedState((prevState) => ({ ...prevState, ...extensionState }))
 			}
-			// kilocode_change end
+			// novacode_change end
 			setChangeDetected(false)
 		}
 	}
@@ -681,7 +684,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 
 	useImperativeHandle(ref, () => ({ checkUnsaveChanges }), [checkUnsaveChanges])
 
-	// kilocode_change start
+	// novacode_change start
 	const onConfirmDialogResult = useCallback(
 		(confirm: boolean) => {
 			if (confirm) {
@@ -712,7 +715,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 			}
 		}
 	}, [isChangeDetected, onConfirmDialogResult])
-	// kilocode_change end
+	// novacode_change end
 
 	// Handle tab changes with unsaved changes check
 	const handleTabChange = useCallback(
@@ -761,33 +764,34 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 	const sections: { id: SectionName; icon: LucideIcon }[] = useMemo(
 		() => [
 			{ id: "providers", icon: Plug },
-			{ id: "agentBehaviour", icon: Users2 }, // kilocode_change - renamed from "modes" and merged with "mcp"
+			{ id: "vcp", icon: Shield },
+			{ id: "agentBehaviour", icon: Users2 }, // novacode_change - renamed from "modes" and merged with "mcp"
 			{ id: "autoApprove", icon: CheckCheck },
-			// { id: "slashCommands", icon: SquareSlash }, // kilocode_change: needs work to be re-introduced
+			// { id: "slashCommands", icon: SquareSlash }, // novacode_change: needs work to be re-introduced
 			{ id: "browser", icon: SquareMousePointer },
 			{ id: "checkpoints", icon: GitBranch },
-			{ id: "display", icon: Monitor }, // kilocode_change
-			{ id: "autocomplete" as const, icon: Bot }, // kilocode_change
+			{ id: "display", icon: Monitor }, // novacode_change
+			{ id: "autocomplete" as const, icon: Bot }, // novacode_change
 			{ id: "notifications", icon: Bell },
 			{ id: "contextManagement", icon: Database },
 			{ id: "terminal", icon: SquareTerminal },
 			{ id: "prompts", icon: MessageSquare },
-			// { id: "ui", icon: Glasses }, // kilocode_change: we have our own display section
+			// { id: "ui", icon: Glasses }, // novacode_change: we have our own display section
 			{ id: "experimental", icon: FlaskConical },
 			{ id: "language", icon: Globe },
-			// { id: "mcp", icon: Server }, // kilocode_change - merged into agentBehaviour
+			// { id: "mcp", icon: Server }, // novacode_change - merged into agentBehaviour
 			{ id: "about", icon: Info },
 		],
-		[], // kilocode_change
+		[], // novacode_change
 	)
 	// Update target section logic to set active tab
 	useEffect(() => {
 		if (targetSection && sectionNames.includes(targetSection as SectionName)) {
 			setActiveTab(targetSection as SectionName)
 		}
-	}, [targetSection]) // kilocode_change
+	}, [targetSection]) // novacode_change
 
-	// kilocode_change start - Listen for messages to restore editing profile after auth
+	// novacode_change start - Listen for messages to restore editing profile after auth
 	useEffect(() => {
 		const handleMessage = (event: MessageEvent) => {
 			const message = event.data
@@ -811,7 +815,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 		window.addEventListener("message", handleMessage)
 		return () => window.removeEventListener("message", handleMessage)
 	}, [])
-	// kilocode_change end
+	// novacode_change end
 
 	// Function to scroll the active tab into view for vertical layout
 	const scrollToActiveTab = useCallback(() => {
@@ -847,7 +851,18 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 	}, [scrollToActiveTab])
 
 	// Search index registry - settings register themselves on mount
-	const getSectionLabel = useCallback((section: SectionName) => t(`settings:sections.${section}`), [t])
+	const getSectionLabel = useCallback(
+		(section: SectionName) => {
+			if (section === "vcp") {
+				return "VCP"
+			}
+			if (section === "about") {
+				return "About VCP Code"
+			}
+			return t(`settings:sections.${section}`)
+		},
+		[t],
+	)
 	const { contextValue: searchContextValue, index: searchIndex } = useSearchIndexRegistry(getSectionLabel)
 
 	// Track which tabs have been indexed (visited at least once)
@@ -978,13 +993,17 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 								<div className={cn("flex items-center gap-2", isCompactMode && "justify-center")}>
 									<Icon className="w-4 h-4" />
 									<span className="tab-label">
-										{/* kilocode_change start - handle agentBehaviour and autocomplete labels */}
+										{/* novacode_change start - handle agentBehaviour and autocomplete labels */}
 										{id === "agentBehaviour"
-											? t(`kilocode:settings.sections.agentBehaviour`)
-											: id === "autocomplete"
-												? t(`kilocode:autocomplete.title`)
-												: t(`settings:sections.${id}`)}
-										{/* kilocode_change end */}
+											? t(`novacode:settings.sections.agentBehaviour`)
+											: id === "vcp"
+												? "VCP"
+												: id === "autocomplete"
+													? t(`novacode:autocomplete.title`)
+													: id === "about"
+														? "About VCP Code"
+														: t(`settings:sections.${id}`)}
+										{/* novacode_change end */}
 									</span>
 								</div>
 							</TabTrigger>
@@ -1001,13 +1020,17 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 										</TooltipTrigger>
 										<TooltipContent side="right" className="text-base">
 											<p className="m-0">
-												{/* kilocode_change start - handle agentBehaviour and autocomplete labels */}
+												{/* novacode_change start - handle agentBehaviour and autocomplete labels */}
 												{id === "agentBehaviour"
-													? t(`kilocode:settings.sections.agentBehaviour`)
-													: id === "autocomplete"
-														? t(`kilocode:autocomplete.title`)
-														: t(`settings:sections.${id}`)}
-												{/* kilocode_change end */}
+													? t(`novacode:settings.sections.agentBehaviour`)
+													: id === "vcp"
+														? "VCP"
+														: id === "autocomplete"
+															? t(`novacode:autocomplete.title`)
+															: id === "about"
+																? "About VCP Code"
+																: t(`settings:sections.${id}`)}
+												{/* novacode_change end */}
 											</p>
 										</TooltipContent>
 									</Tooltip>
@@ -1033,7 +1056,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 								<SectionHeader>{t("settings:sections.providers")}</SectionHeader>
 
 								<Section>
-									{/* kilocode_change start changes to allow for editting a non-active profile */}
+									{/* novacode_change start changes to allow for editting a non-active profile */}
 									<ApiConfigManager
 										currentApiConfigName={editingApiConfigName}
 										activeApiConfigName={currentApiConfigName}
@@ -1080,7 +1103,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 												prevApiConfigName.current = newName
 											}
 										}}
-										// kilocode_change start - autocomplete profile type system
+										// novacode_change start - autocomplete profile type system
 										onUpsertConfig={(configName: string, profileType?: ProfileType) => {
 											vscode.postMessage({
 												type: "upsertApiConfiguration",
@@ -1093,9 +1116,9 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 											setEditingApiConfigName(configName)
 										}}
 									/>
-									{/* kilocode_change end changes to allow for editting a non-active profile */}
+									{/* novacode_change end changes to allow for editting a non-active profile */}
 
-									{/* kilocode_change start - pass editing profile name */}
+									{/* novacode_change start - pass editing profile name */}
 									<ApiOptions
 										uriScheme={uriScheme}
 										apiConfiguration={apiConfiguration}
@@ -1104,23 +1127,35 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 										setErrorMessage={setErrorMessage}
 										currentApiConfigName={editingApiConfigName}
 									/>
-									{/* kilocode_change end - pass editing profile name */}
+									{/* novacode_change end - pass editing profile name */}
 								</Section>
 							</div>
+						)}
+
+						{renderTab === "vcp" && (
+							<VcpSettings
+								yoloMode={yoloMode}
+								showAutoApproveMenu={showAutoApproveMenu}
+								browserToolEnabled={browserToolEnabled}
+								remoteBrowserEnabled={remoteBrowserEnabled}
+								ghostServiceSettings={ghostServiceSettings}
+								setCachedStateField={setCachedStateField}
+								setAutocompleteServiceSettingsField={setAutocompleteServiceSettingsField}
+							/>
 						)}
 
 						{/* Auto-Approve Section */}
 						{activeTab === "autoApprove" && (
 							<AutoApproveSettings
-								showAutoApproveMenu={showAutoApproveMenu} // kilocode_change
-								yoloMode={yoloMode} // kilocode_change
-								yoloGatekeeperApiConfigId={yoloGatekeeperApiConfigId} // kilocode_change: AI gatekeeper for YOLO mode
+								showAutoApproveMenu={showAutoApproveMenu} // novacode_change
+								yoloMode={yoloMode} // novacode_change
+								yoloGatekeeperApiConfigId={yoloGatekeeperApiConfigId} // novacode_change: AI gatekeeper for YOLO mode
 								alwaysAllowReadOnly={alwaysAllowReadOnly}
 								alwaysAllowReadOnlyOutsideWorkspace={alwaysAllowReadOnlyOutsideWorkspace}
 								alwaysAllowWrite={alwaysAllowWrite}
 								alwaysAllowWriteOutsideWorkspace={alwaysAllowWriteOutsideWorkspace}
 								alwaysAllowWriteProtected={alwaysAllowWriteProtected}
-								alwaysAllowDelete={alwaysAllowDelete} // kilocode_change
+								alwaysAllowDelete={alwaysAllowDelete} // novacode_change
 								alwaysAllowBrowser={alwaysAllowBrowser}
 								alwaysAllowMcp={alwaysAllowMcp}
 								alwaysAllowModeSwitch={alwaysAllowModeSwitch}
@@ -1157,7 +1192,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 								enableCheckpoints={enableCheckpoints}
 								checkpointTimeout={checkpointTimeout}
 								setCachedStateField={setCachedStateField}
-								// kilocode_change start
+								// novacode_change start
 								autoPurgeEnabled={autoPurgeEnabled}
 								autoPurgeDefaultRetentionDays={autoPurgeDefaultRetentionDays}
 								autoPurgeFavoritedTaskRetentionDays={autoPurgeFavoritedTaskRetentionDays}
@@ -1167,18 +1202,18 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 								onManualPurge={() => {
 									vscode.postMessage({ type: "manualPurge" })
 								}}
-								// kilocode_change end
+								// novacode_change end
 							/>
 						)}
 
-						{/* kilocode_change start display section */}
+						{/* novacode_change start display section */}
 						{activeTab === "display" && (
 							<DisplaySettings
 								reasoningBlockCollapsed={reasoningBlockCollapsed ?? true}
 								showTaskTimeline={showTaskTimeline}
 								sendMessageOnEnter={sendMessageOnEnter}
-								showTimestamps={cachedState.showTimestamps} // kilocode_change
-								showDiffStats={cachedState.showDiffStats} // kilocode_change
+								showTimestamps={cachedState.showTimestamps} // novacode_change
+								showDiffStats={cachedState.showDiffStats} // novacode_change
 								hideCostBelowThreshold={hideCostBelowThreshold}
 								setCachedStateField={setCachedStateField}
 							/>
@@ -1189,7 +1224,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 								onAutocompleteServiceSettingsChange={setAutocompleteServiceSettingsField}
 							/>
 						)}
-						{/* kilocode_change end display section */}
+						{/* novacode_change end display section */}
 
 						{/* Notifications Section */}
 						{activeTab === "notifications" && (
@@ -1218,7 +1253,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 								maxImageFileSize={maxImageFileSize}
 								maxTotalImageSize={maxTotalImageSize}
 								maxConcurrentFileReads={maxConcurrentFileReads}
-								allowVeryLargeReads={allowVeryLargeReads /* kilocode_change */}
+								allowVeryLargeReads={allowVeryLargeReads /* novacode_change */}
 								profileThresholds={profileThresholds}
 								includeDiagnosticMessages={includeDiagnosticMessages}
 								maxDiagnosticMessages={maxDiagnosticMessages}
@@ -1244,17 +1279,17 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 								terminalZshP10k={terminalZshP10k}
 								terminalZdotdir={terminalZdotdir}
 								terminalCompressProgressBar={terminalCompressProgressBar}
-								terminalCommandApiConfigId={terminalCommandApiConfigId} // kilocode_change
+								terminalCommandApiConfigId={terminalCommandApiConfigId} // novacode_change
 								setCachedStateField={setCachedStateField}
 							/>
 						)}
 
-						{/* kilocode_change: Agent Behaviour Section - kilocode_change: merged modes and mcp */}
+						{/* novacode_change: Agent Behaviour Section - novacode_change: merged modes and mcp */}
 						{activeTab === "agentBehaviour" && <AgentBehaviourView />}
 
-						{/* kilocode_change: removed: Modes Section */}
+						{/* novacode_change: removed: Modes Section */}
 
-						{/*kilocode_change: removed: MCP Section */}
+						{/*novacode_change: removed: MCP Section */}
 
 						{/* Prompts Section */}
 						{renderTab === "prompts" && (
@@ -1282,25 +1317,25 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 							<ExperimentalSettings
 								setExperimentEnabled={setExperimentEnabled}
 								experiments={experiments}
-								// kilocode_change start
+								// novacode_change start
 								setCachedStateField={setCachedStateField}
 								morphApiKey={morphApiKey}
 								fastApplyModel={fastApplyModel}
 								fastApplyApiProvider={fastApplyApiProvider}
-								// kilocode_change end
+								// novacode_change end
 								apiConfiguration={apiConfiguration}
 								setApiConfigurationField={setApiConfigurationField}
 								imageGenerationProvider={imageGenerationProvider}
 								openRouterImageApiKey={openRouterImageApiKey as string | undefined}
-								kiloCodeImageApiKey={kiloCodeImageApiKey}
+								novaCodeImageApiKey={novaCodeImageApiKey}
 								openRouterImageGenerationSelectedModel={
 									openRouterImageGenerationSelectedModel as string | undefined
 								}
 								setImageGenerationProvider={setImageGenerationProvider}
 								setOpenRouterImageApiKey={setOpenRouterImageApiKey}
-								setKiloCodeImageApiKey={setKiloCodeImageApiKey}
+								setNovaCodeImageApiKey={setNovaCodeImageApiKey}
 								setImageGenerationSelectedModel={setImageGenerationSelectedModel}
-								currentProfileKilocodeToken={apiConfiguration.kilocodeToken}
+								currentProfileNovacodeToken={apiConfiguration.novacodeToken}
 							/>
 						)}
 
@@ -1314,7 +1349,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 							<About
 								telemetrySetting={telemetrySetting}
 								setTelemetrySetting={setTelemetrySetting}
-								isVsCode={kiloCodeWrapperProperties?.kiloCodeWrapped !== true /*kilocode_change*/}
+								isVsCode={novaCodeWrapperProperties?.novaCodeWrapped !== true /*novacode_change*/}
 							/>
 						)}
 					</SearchIndexProvider>

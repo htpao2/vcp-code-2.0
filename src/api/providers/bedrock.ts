@@ -252,8 +252,8 @@ export class AwsBedrockHandler extends BaseProvider implements SingleCompletionH
 		this.costModelConfig = this.getModel()
 
 		const clientConfig: BedrockRuntimeClientConfig = {
-			defaultUserAgentProvider: () => Promise.resolve([["KiloCode", Package.version]]),
-			userAgentAppId: `KiloCode#${Package.version}`,
+			defaultUserAgentProvider: () => Promise.resolve([["NovaCode", Package.version]]),
+			userAgentAppId: `NovaCode#${Package.version}`,
 			region: this.options.awsRegion,
 			// Add the endpoint configuration when specified and enabled
 			...(this.options.awsBedrockEndpoint &&

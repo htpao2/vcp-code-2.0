@@ -209,7 +209,7 @@ export class ReadFileTool extends BaseTool<"read_file"> {
 			}
 
 			if (filesToApprove.length > 1) {
-				const { maxReadFileLine = 500 /*kilocode_change*/ } = (await task.providerRef.deref()?.getState()) ?? {}
+				const { maxReadFileLine = 500 /*novacode_change*/ } = (await task.providerRef.deref()?.getState()) ?? {}
 
 				const batchFiles = filesToApprove.map((fileResult) => {
 					const relPath = fileResult.path
@@ -297,7 +297,7 @@ export class ReadFileTool extends BaseTool<"read_file"> {
 				const relPath = fileResult.path
 				const fullPath = path.resolve(task.cwd, relPath)
 				const isOutsideWorkspace = isPathOutsideWorkspace(fullPath)
-				const { maxReadFileLine = 500 /*kilocode_change*/ } = (await task.providerRef.deref()?.getState()) ?? {}
+				const { maxReadFileLine = 500 /*novacode_change*/ } = (await task.providerRef.deref()?.getState()) ?? {}
 
 				let lineSnippet = ""
 				if (fileResult.lineRanges && fileResult.lineRanges.length > 0) {
@@ -340,7 +340,7 @@ export class ReadFileTool extends BaseTool<"read_file"> {
 			const imageMemoryTracker = new ImageMemoryTracker()
 			const state = await task.providerRef.deref()?.getState()
 			const {
-				maxReadFileLine = 500 /*kilocode_change*/,
+				maxReadFileLine = 500 /*novacode_change*/,
 				maxImageFileSize = DEFAULT_MAX_IMAGE_FILE_SIZE_MB,
 				maxTotalImageSize = DEFAULT_MAX_TOTAL_IMAGE_SIZE_MB,
 			} = state ?? {}

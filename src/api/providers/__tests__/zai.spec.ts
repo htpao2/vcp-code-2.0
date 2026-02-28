@@ -1,6 +1,6 @@
 // npx vitest run src/api/providers/__tests__/zai.spec.ts
 
-// kilocode_change start
+// novacode_change start
 vitest.mock("vscode", () => ({
 	workspace: {
 		getConfiguration: vitest.fn().mockReturnValue({
@@ -8,7 +8,7 @@ vitest.mock("vscode", () => ({
 		}),
 	},
 }))
-// kilocode_change end
+// novacode_change end
 
 import OpenAI from "openai"
 import { Anthropic } from "@anthropic-ai/sdk"
@@ -108,7 +108,7 @@ describe("ZAiHandler", () => {
 			expect(model.info.preserveReasoning).toBe(true)
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("should return GLM-5 international model with documented limits", () => {
 			const testModelId: InternationalZAiModelId = "glm-5"
 			const handlerWithModel = new ZAiHandler({
@@ -125,7 +125,7 @@ describe("ZAiHandler", () => {
 			expect(model.info.reasoningEffort).toBe("medium")
 			expect(model.info.preserveReasoning).toBe(true)
 		})
-		// kilocode_change end
+		// novacode_change end
 
 		it("should return GLM-4.5v international model with vision support", () => {
 			const testModelId: InternationalZAiModelId = "glm-4.5v"
@@ -223,7 +223,7 @@ describe("ZAiHandler", () => {
 			expect(model.info.preserveReasoning).toBe(true)
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("should return GLM-5 China model with documented limits", () => {
 			const testModelId: MainlandZAiModelId = "glm-5"
 			const handlerWithModel = new ZAiHandler({
@@ -240,7 +240,7 @@ describe("ZAiHandler", () => {
 			expect(model.info.reasoningEffort).toBe("medium")
 			expect(model.info.preserveReasoning).toBe(true)
 		})
-		// kilocode_change end
+		// novacode_change end
 	})
 
 	describe("International API", () => {
@@ -281,7 +281,7 @@ describe("ZAiHandler", () => {
 			expect(model.info).toEqual(internationalZAiModels[testModelId])
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("should return GLM-5 international API model with documented limits", () => {
 			const testModelId: InternationalZAiModelId = "glm-5"
 			const handlerWithModel = new ZAiHandler({
@@ -296,7 +296,7 @@ describe("ZAiHandler", () => {
 			expect(model.info.maxTokens).toBe(131_072)
 			expect(model.info.supportsReasoningEffort).toEqual(["disable", "medium"])
 		})
-		// kilocode_change end
+		// novacode_change end
 	})
 
 	describe("China API", () => {
@@ -337,7 +337,7 @@ describe("ZAiHandler", () => {
 			expect(model.info).toEqual(mainlandZAiModels[testModelId])
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("should return GLM-5 China API model with documented limits", () => {
 			const testModelId: MainlandZAiModelId = "glm-5"
 			const handlerWithModel = new ZAiHandler({
@@ -352,7 +352,7 @@ describe("ZAiHandler", () => {
 			expect(model.info.maxTokens).toBe(131_072)
 			expect(model.info.supportsReasoningEffort).toEqual(["disable", "medium"])
 		})
-		// kilocode_change end
+		// novacode_change end
 	})
 
 	describe("Default behavior", () => {
@@ -486,7 +486,7 @@ describe("ZAiHandler", () => {
 		})
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	describe("Z.ai Thinking Mode", () => {
 		it("should enable thinking by default for GLM-4.7 (default reasoningEffort is medium)", async () => {
 			const handlerWithModel = new ZAiHandler({
@@ -663,5 +663,5 @@ describe("ZAiHandler", () => {
 			expect(callArgs.thinking).toBeUndefined()
 		})
 	})
-	// kilocode_change end
+	// novacode_change end
 })

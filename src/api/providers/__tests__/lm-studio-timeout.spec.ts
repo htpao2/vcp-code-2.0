@@ -28,7 +28,7 @@ vitest.mock("openai", () => {
 	}
 })
 
-// kilocode_change: own timeout
+// novacode_change: own timeout
 describe.skip("LmStudioHandler timeout configuration", () => {
 	beforeEach(() => {
 		vitest.clearAllMocks()

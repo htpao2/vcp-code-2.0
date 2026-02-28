@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from "react"
+﻿import React, { memo, useMemo } from "react"
 import ReactMarkdown from "react-markdown"
 import styled from "styled-components"
 import { visit } from "unist-util-visit"
@@ -8,7 +8,7 @@ import remarkGfm from "remark-gfm"
 
 import { vscode } from "@src/utils/vscode"
 
-import CodeBlock from "../kilocode/common/CodeBlock" // kilocode_change
+import CodeBlock from "../nova/common/CodeBlock" // novacode_change
 import MermaidBlock from "./MermaidBlock"
 
 interface MarkdownBlockProps {

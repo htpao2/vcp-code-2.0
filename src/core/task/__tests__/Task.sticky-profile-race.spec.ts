@@ -125,7 +125,7 @@ describe("Task - sticky provider profile init race", () => {
 		} as unknown as ClineProvider
 
 		const task = new Task({
-			context: mockProvider.context as any, // kilocode_change
+			context: mockProvider.context as any, // novacode_change
 			provider: mockProvider,
 			apiConfiguration: apiConfig,
 			task: "test task",

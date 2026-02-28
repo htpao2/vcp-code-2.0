@@ -34,13 +34,13 @@ export const toolNames = [
 	"new_task",
 	"fetch_instructions",
 	"codebase_search",
-	// kilocode_change start
+	// novacode_change start
 	"fast_edit_file",
 	"new_rule",
 	"report_bug",
 	"condense",
 	"delete_file",
-	// kilocode_change end
+	// novacode_change end
 	"update_todo_list",
 	"run_slash_command",
 	"generate_image",
@@ -79,7 +79,7 @@ export const TOOL_PROTOCOL = {
  */
 export type ToolProtocol = (typeof TOOL_PROTOCOL)[keyof typeof TOOL_PROTOCOL]
 
-export const toolProtocolSchema = z.enum([TOOL_PROTOCOL.XML, TOOL_PROTOCOL.NATIVE]) // kilocode_change
+export const toolProtocolSchema = z.enum([TOOL_PROTOCOL.XML, TOOL_PROTOCOL.NATIVE]) // novacode_change
 
 /**
  * Default model info properties for native tool support.

@@ -1,9 +1,9 @@
 {
-	"name": "kilo-code",
+	"name": "nova-code",
 	"displayName": "%extension.displayName%",
 	"description": "%extension.description%",
-	"publisher": "kilocode",
-	"version": "5.9.0",
+	"publisher": "novacode",
+	"version": "1.0.3",
 	"icon": "assets/icons/logo-outline-black.png",
 	"galleryBanner": {
 		"color": "#FFFFFF",
@@ -17,13 +17,13 @@
 		"workspace"
 	],
 	"author": {
-		"name": "Kilo Code"
+		"name": "Nova Code"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Kilo-Org/kilocode"
+		"url": "https://github.com/DerstedtCasper/vcp-code-2.0.git"
 	},
-	"homepage": "https://kilo.ai",
+	"homepage": "https://github.com/DerstedtCasper/vcp-code-2.0",
 	"categories": [
 		"AI",
 		"Chat",
@@ -33,7 +33,7 @@
 		"Testing"
 	],
 	"keywords": [
-		"kilo",
+		"nova",
 		"claude",
 		"dev",
 		"mcp",
@@ -45,25 +45,30 @@
 		"sonnet",
 		"ai",
 		"llama",
-		"Kilo Code",
-		"kilocode"
+		"Nova Code",
+		"novacode"
 	],
 	"activationEvents": [
 		"onLanguage",
-		"onStartupFinished"
+		"onStartupFinished",
+		"onView:nova-code.SidebarProvider",
+		"onCommand:nova-code.plusButtonClicked",
+		"onCommand:nova-code.marketplaceButtonClicked",
+		"onCommand:nova-code.settingsButtonClicked",
+		"onCommand:nova-code.vcpButtonClicked"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
 		"walkthroughs": [
 			{
-				"id": "kiloCodeWalkthrough",
-				"title": "5 ways Kilo Code helps you code",
+				"id": "novaCodeWalkthrough",
+				"title": "5 ways VCP Code helps you code",
 				"description": "You now have a personal AI coding assistant.",
 				"steps": [
 					{
 						"id": "welcome",
 						"title": "Write code for you",
-						"description": "Describe what you want to build. Kilo Code will write it from scratch, generate the files, and run them for you.",
+						"description": "Describe what you want to build. VCP Code will write it from scratch, generate the files, and run them for you.",
 						"media": {
 							"markdown": "./dist/walkthrough/step1.md"
 						}
@@ -71,7 +76,7 @@
 					{
 						"id": "getting-started",
 						"title": "Understand your codebase",
-						"description": "Need clarity on how something works? Ask Kilo Code about any part of your files and get a clear explanation.",
+						"description": "Need clarity on how something works? Ask VCP Code about any part of your files and get a clear explanation.",
 						"media": {
 							"markdown": "./dist/walkthrough/step2.md"
 						},
@@ -82,7 +87,7 @@
 					{
 						"id": "modes",
 						"title": "Get things working again",
-						"description": "Stuck on an error? Kilo Code can find the issue, fix it, and get your code running.",
+						"description": "Stuck on an error? VCP Code can find the issue, fix it, and get your code running.",
 						"media": {
 							"markdown": "./dist/walkthrough/step3.md"
 						}
@@ -109,323 +114,333 @@
 		"viewsContainers": {
 			"activitybar": [
 				{
-					"id": "kilo-code-ActivityBar",
+					"id": "nova-code-ActivityBar",
 					"title": "%views.activitybar.title%",
-					"icon": "assets/icons/kilo.png",
-					"darkIcon": "assets/icons/kilo-dark.png"
+					"icon": "assets/icons/nova.png",
+					"darkIcon": "assets/icons/nova-dark.png"
 				}
 			]
 		},
 		"views": {
-			"kilo-code-ActivityBar": [
+			"nova-code-ActivityBar": [
 				{
 					"type": "webview",
-					"id": "kilo-code.SidebarProvider",
+					"id": "nova-code.SidebarProvider",
 					"name": "%views.sidebar.name%",
-					"icon": "assets/icons/kilo.png",
-					"darkIcon": "assets/icons/kilo-dark.png"
+					"icon": "assets/icons/nova.png",
+					"darkIcon": "assets/icons/nova-dark.png"
 				}
 			]
 		},
 		"commands": [
 			{
-				"command": "kilo-code.plusButtonClicked",
+				"command": "nova-code.plusButtonClicked",
 				"title": "%command.newTask.title%",
 				"icon": "$(add)"
 			},
 			{
-				"command": "kilo-code.importSettings",
+				"command": "nova-code.importSettings",
 				"title": "%command.importSettings.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.exportSettings",
+				"command": "nova-code.exportSettings",
 				"title": "Export Settings",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.promptsButtonClicked",
+				"command": "nova-code.promptsButtonClicked",
 				"title": "%command.prompts.title%",
 				"icon": "$(organization)"
 			},
 			{
-				"command": "kilo-code.historyButtonClicked",
+				"command": "nova-code.historyButtonClicked",
 				"title": "%command.history.title%",
 				"icon": "$(history)"
 			},
 			{
-				"command": "kilo-code.marketplaceButtonClicked",
+				"command": "nova-code.marketplaceButtonClicked",
 				"title": "%command.marketplace.title%",
 				"icon": "$(extensions)"
 			},
 			{
-				"command": "kilo-code.popoutButtonClicked",
+				"command": "nova-code.popoutButtonClicked",
 				"title": "%command.openInEditor.title%",
 				"icon": "$(link-external)"
 			},
 			{
-				"command": "kilo-code.settingsButtonClicked",
+				"command": "nova-code.settingsButtonClicked",
 				"title": "%command.settings.title%",
 				"icon": "$(settings-gear)"
 			},
 			{
-				"command": "kilo-code.helpButtonClicked",
+				"command": "nova-code.vcpButtonClicked",
+				"title": "%command.vcp.title%",
+				"icon": "$(symbol-property)"
+			},
+			{
+				"command": "nova-code.helpButtonClicked",
 				"title": "%command.documentation.title%",
 				"icon": "$(question)"
 			},
 			{
-				"command": "kilo-code.openInNewTab",
+				"command": "nova-code.openInNewTab",
 				"title": "%command.openInNewTab.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.explainCode",
+				"command": "nova-code.explainCode",
 				"title": "%command.explainCode.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.fixCode",
+				"command": "nova-code.fixCode",
 				"title": "%command.fixCode.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.improveCode",
+				"command": "nova-code.improveCode",
 				"title": "%command.improveCode.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.addToContext",
+				"command": "nova-code.addToContext",
 				"title": "%command.addToContext.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.newTask",
+				"command": "nova-code.newTask",
 				"title": "%command.newTask.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.terminalAddToContext",
+				"command": "nova-code.terminalAddToContext",
 				"title": "%command.terminal.addToContext.title%",
 				"category": "%extension.displayName%"
 			},
 			{
-				"command": "kilo-code.terminalFixCommand",
+				"command": "nova-code.terminalFixCommand",
 				"title": "%command.terminal.fixCommand.title%",
 				"category": "%extension.displayName%"
 			},
 			{
-				"command": "kilo-code.terminalExplainCommand",
+				"command": "nova-code.terminalExplainCommand",
 				"title": "%command.terminal.explainCommand.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.generateTerminalCommand",
+				"command": "nova-code.generateTerminalCommand",
 				"title": "%command.terminal.generateCommand.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.setCustomStoragePath",
+				"command": "nova-code.setCustomStoragePath",
 				"title": "%command.setCustomStoragePath.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.focusChatInput",
+				"command": "nova-code.focusChatInput",
 				"title": "%command.focusInput.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.acceptInput",
+				"command": "nova-code.acceptInput",
 				"title": "%command.acceptInput.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.profileButtonClicked",
+				"command": "nova-code.profileButtonClicked",
 				"title": "%command.profile.title%",
 				"icon": "$(account)",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.vsc.generateCommitMessage",
+				"command": "nova-code.vsc.generateCommitMessage",
 				"title": "%command.generateCommitMessage.title%",
 				"icon": {
-					"light": "assets/icons/kilo-light.svg",
-					"dark": "assets/icons/kilo-dark.svg"
+					"light": "assets/icons/nova-light.svg",
+					"dark": "assets/icons/nova-dark.svg"
 				},
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.autocomplete.generateSuggestions",
+				"command": "nova-code.autocomplete.generateSuggestions",
 				"title": "%autocomplete.commands.generateSuggestions%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.autocomplete.cancelSuggestions",
+				"command": "nova-code.autocomplete.cancelSuggestions",
 				"title": "%autocomplete.commands.cancelSuggestions%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.autocomplete.applyCurrentSuggestions",
+				"command": "nova-code.autocomplete.applyCurrentSuggestions",
 				"title": "%autocomplete.commands.applyCurrentSuggestion%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.autocomplete.applyAllSuggestions",
+				"command": "nova-code.autocomplete.applyAllSuggestions",
 				"title": "%autocomplete.commands.applyAllSuggestions%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.autocomplete.goToNextSuggestion",
+				"command": "nova-code.autocomplete.goToNextSuggestion",
 				"title": "%autocomplete.commands.goToNextSuggestion%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.autocomplete.goToPreviousSuggestion",
+				"command": "nova-code.autocomplete.goToPreviousSuggestion",
 				"title": "%autocomplete.commands.goToPreviousSuggestion%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.agentManagerOpen",
+				"command": "nova-code.agentManagerOpen",
 				"title": "Open Agent Manager",
 				"icon": "$(circuit-board)",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "kilo-code.popoutButtonClicked",
+				"command": "nova-code.popoutButtonClicked",
 				"title": "%command.openInEditor.title%",
 				"icon": "$(link-external)"
 			},
 			{
-				"command": "kilo-code.open",
+				"command": "nova-code.open",
 				"title": "%views.activitybar.title%",
 				"icon": {
-					"light": "assets/icons/kilo-light.svg",
-					"dark": "assets/icons/kilo-dark.svg"
+					"light": "assets/icons/nova-light.svg",
+					"dark": "assets/icons/nova-dark.svg"
 				}
 			}
 		],
 		"menus": {
 			"editor/context": [
 				{
-					"submenu": "kilo-code.contextMenu",
+					"submenu": "nova-code.contextMenu",
 					"group": "1"
 				}
 			],
-			"kilo-code.contextMenu": [
+			"nova-code.contextMenu": [
 				{
-					"command": "kilo-code.explainCode",
+					"command": "nova-code.explainCode",
 					"group": "1_actions@1"
 				},
 				{
-					"command": "kilo-code.fixCode",
+					"command": "nova-code.fixCode",
 					"group": "1_actions@2"
 				},
 				{
-					"command": "kilo-code.improveCode",
+					"command": "nova-code.improveCode",
 					"group": "1_actions@3"
 				},
 				{
-					"command": "kilo-code.addToContext",
+					"command": "nova-code.addToContext",
 					"group": "1_actions@4"
 				}
 			],
 			"terminal/context": [
 				{
-					"submenu": "kilo-code.terminalMenu",
+					"submenu": "nova-code.terminalMenu",
 					"group": "2"
 				}
 			],
-			"kilo-code.terminalMenu": [
+			"nova-code.terminalMenu": [
 				{
-					"command": "kilo-code.terminalAddToContext",
+					"command": "nova-code.terminalAddToContext",
 					"group": "1_actions@1"
 				},
 				{
-					"command": "kilo-code.terminalFixCommand",
+					"command": "nova-code.terminalFixCommand",
 					"group": "1_actions@2"
 				},
 				{
-					"command": "kilo-code.terminalExplainCommand",
+					"command": "nova-code.terminalExplainCommand",
 					"group": "1_actions@3"
 				}
 			],
 			"view/title": [
 				{
-					"command": "kilo-code.plusButtonClicked",
+					"command": "nova-code.plusButtonClicked",
 					"group": "navigation@0",
-					"when": "view == kilo-code.SidebarProvider"
+					"when": "view == nova-code.SidebarProvider"
 				},
 				{
-					"command": "kilo-code.agentManagerOpen",
+					"command": "nova-code.agentManagerOpen",
 					"group": "navigation@1",
-					"when": "view == kilo-code.SidebarProvider"
+					"when": "view == nova-code.SidebarProvider"
 				},
 				{
-					"command": "kilo-code.marketplaceButtonClicked",
+					"command": "nova-code.marketplaceButtonClicked",
 					"group": "navigation@3",
-					"when": "view == kilo-code.SidebarProvider"
+					"when": "view == nova-code.SidebarProvider"
 				},
 				{
-					"command": "kilo-code.historyButtonClicked",
+					"command": "nova-code.historyButtonClicked",
 					"group": "navigation@4",
-					"when": "view == kilo-code.SidebarProvider"
+					"when": "view == nova-code.SidebarProvider"
 				},
 				{
-					"command": "kilo-code.profileButtonClicked",
+					"command": "nova-code.profileButtonClicked",
 					"group": "navigation@5",
-					"when": "view == kilo-code.SidebarProvider"
+					"when": "view == nova-code.SidebarProvider"
 				},
 				{
-					"command": "kilo-code.settingsButtonClicked",
+					"command": "nova-code.vcpButtonClicked",
 					"group": "navigation@6",
-					"when": "view == kilo-code.SidebarProvider"
+					"when": "view == nova-code.SidebarProvider"
 				},
 				{
-					"command": "kilo-code.popoutButtonClicked",
+					"command": "nova-code.settingsButtonClicked",
 					"group": "navigation@7",
-					"when": "view == kilo-code.SidebarProvider"
+					"when": "view == nova-code.SidebarProvider"
 				},
 				{
-					"command": "kilo-code.helpButtonClicked",
+					"command": "nova-code.popoutButtonClicked",
 					"group": "navigation@8",
-					"when": "false && view == kilo-code.SidebarProvider"
+					"when": "view == nova-code.SidebarProvider"
+				},
+				{
+					"command": "nova-code.helpButtonClicked",
+					"group": "navigation@9",
+					"when": "false && view == nova-code.SidebarProvider"
 				}
 			],
 			"editor/title": [
 				{
-					"command": "kilo-code.plusButtonClicked",
+					"command": "nova-code.plusButtonClicked",
 					"group": "navigation@1",
-					"when": "activeWebviewPanelId == kilo-code.TabPanelProvider"
+					"when": "activeWebviewPanelId == nova-code.TabPanelProvider"
 				},
 				{
-					"command": "kilo-code.historyButtonClicked",
+					"command": "nova-code.historyButtonClicked",
 					"group": "navigation@3",
-					"when": "activeWebviewPanelId == kilo-code.TabPanelProvider"
+					"when": "activeWebviewPanelId == nova-code.TabPanelProvider"
 				},
 				{
-					"command": "kilo-code.settingsButtonClicked",
+					"command": "nova-code.settingsButtonClicked",
 					"group": "navigation@5",
-					"when": "activeWebviewPanelId == kilo-code.TabPanelProvider"
+					"when": "activeWebviewPanelId == nova-code.TabPanelProvider"
 				},
 				{
-					"command": "kilo-code.helpButtonClicked",
+					"command": "nova-code.helpButtonClicked",
 					"group": "navigation@6",
-					"when": "activeWebviewPanelId == kilo-code.TabPanelProvider"
+					"when": "activeWebviewPanelId == nova-code.TabPanelProvider"
 				},
 				{
-					"command": "kilo-code.open",
+					"command": "nova-code.open",
 					"group": "navigation",
 					"when": "true"
 				}
 			],
 			"scm/input": [
 				{
-					"command": "kilo-code.vsc.generateCommitMessage",
+					"command": "nova-code.vsc.generateCommitMessage",
 					"group": "navigation"
 				}
 			],
 			"scm/title": [
 				{
-					"command": "kilo-code.vsc.generateCommitMessage",
+					"command": "nova-code.vsc.generateCommitMessage",
 					"when": "scmProvider == git",
 					"group": "navigation"
 				}
@@ -433,35 +448,35 @@
 		},
 		"keybindings": [
 			{
-				"command": "kilo-code.focusChatInput",
+				"command": "nova-code.focusChatInput",
 				"key": "ctrl+shift+a",
 				"mac": "cmd+shift+a",
 				"when": "true"
 			},
 			{
-				"command": "kilo-code.autocomplete.cancelSuggestions",
+				"command": "nova-code.autocomplete.cancelSuggestions",
 				"key": "escape",
-				"when": "editorTextFocus && !editorTabMovesFocus && !inSnippetMode && kilocode.autocomplete.hasSuggestions"
+				"when": "editorTextFocus && !editorTabMovesFocus && !inSnippetMode && novacode.autocomplete.hasSuggestions"
 			},
 			{
-				"command": "kilo-code.autocomplete.generateSuggestions",
+				"command": "nova-code.autocomplete.generateSuggestions",
 				"key": "ctrl+l",
 				"mac": "cmd+l",
-				"when": "editorTextFocus && !editorTabMovesFocus && !inSnippetMode && kilocode.autocomplete.enableSmartInlineTaskKeybinding && !github.copilot.completions.enabled"
+				"when": "editorTextFocus && !editorTabMovesFocus && !inSnippetMode && novacode.autocomplete.enableSmartInlineTaskKeybinding && !github.copilot.completions.enabled"
 			},
 			{
-				"command": "kilo-code.autocomplete.showIncompatibilityExtensionPopup",
+				"command": "nova-code.autocomplete.showIncompatibilityExtensionPopup",
 				"key": "ctrl+l",
 				"mac": "cmd+l",
-				"when": "editorTextFocus && !editorTabMovesFocus && !inSnippetMode && kilocode.autocomplete.enableSmartInlineTaskKeybinding && github.copilot.completions.enabled"
+				"when": "editorTextFocus && !editorTabMovesFocus && !inSnippetMode && novacode.autocomplete.enableSmartInlineTaskKeybinding && github.copilot.completions.enabled"
 			},
 			{
-				"command": "kilo-code.generateTerminalCommand",
+				"command": "nova-code.generateTerminalCommand",
 				"key": "ctrl+shift+g",
 				"mac": "cmd+shift+g"
 			},
 			{
-				"command": "kilo-code.addToContext",
+				"command": "nova-code.addToContext",
 				"key": "cmd+k cmd+a",
 				"mac": "cmd+k cmd+a",
 				"win": "ctrl+k ctrl+a",
@@ -469,7 +484,7 @@
 				"when": "editorTextFocus && editorHasSelection"
 			},
 			{
-				"command": "kilo-code.toggleAutoApprove",
+				"command": "nova-code.toggleAutoApprove",
 				"key": "cmd+alt+a",
 				"mac": "cmd+alt+a",
 				"win": "ctrl+alt+a",
@@ -478,18 +493,18 @@
 		],
 		"submenus": [
 			{
-				"id": "kilo-code.contextMenu",
+				"id": "nova-code.contextMenu",
 				"label": "%views.contextMenu.label%"
 			},
 			{
-				"id": "kilo-code.terminalMenu",
+				"id": "nova-code.terminalMenu",
 				"label": "%views.terminalMenu.label%"
 			}
 		],
 		"configuration": {
 			"title": "%configuration.title%",
 			"properties": {
-				"kilo-code.allowedCommands": {
+				"nova-code.allowedCommands": {
 					"type": "array",
 					"items": {
 						"type": "string"
@@ -501,7 +516,7 @@
 					],
 					"description": "%commands.allowedCommands.description%"
 				},
-				"kilo-code.deniedCommands": {
+				"nova-code.deniedCommands": {
 					"type": "array",
 					"items": {
 						"type": "string"
@@ -509,14 +524,14 @@
 					"default": [],
 					"description": "%commands.deniedCommands.description%"
 				},
-				"kilo-code.commandExecutionTimeout": {
+				"nova-code.commandExecutionTimeout": {
 					"type": "number",
 					"default": 0,
 					"minimum": 0,
 					"maximum": 600,
 					"description": "%commands.commandExecutionTimeout.description%"
 				},
-				"kilo-code.commandTimeoutAllowlist": {
+				"nova-code.commandTimeoutAllowlist": {
 					"type": "array",
 					"items": {
 						"type": "string"
@@ -524,12 +539,12 @@
 					"default": [],
 					"description": "%commands.commandTimeoutAllowlist.description%"
 				},
-				"kilo-code.preventCompletionWithOpenTodos": {
+				"nova-code.preventCompletionWithOpenTodos": {
 					"type": "boolean",
 					"default": false,
 					"description": "%commands.preventCompletionWithOpenTodos.description%"
 				},
-				"kilo-code.vsCodeLmModelSelector": {
+				"nova-code.vsCodeLmModelSelector": {
 					"type": "object",
 					"properties": {
 						"vendor": {
@@ -543,58 +558,58 @@
 					},
 					"description": "%settings.vsCodeLmModelSelector.description%"
 				},
-				"kilo-code.customStoragePath": {
+				"nova-code.customStoragePath": {
 					"type": "string",
 					"default": "",
 					"description": "%settings.customStoragePath.description%"
 				},
-				"kilo-code.enableCodeActions": {
+				"nova-code.enableCodeActions": {
 					"type": "boolean",
 					"default": true,
 					"description": "%settings.enableCodeActions.description%"
 				},
-				"kilo-code.autoImportSettingsPath": {
+				"nova-code.autoImportSettingsPath": {
 					"type": "string",
 					"default": "",
 					"description": "%settings.autoImportSettingsPath.description%"
 				},
-				"kilo-code.maximumIndexedFilesForFileSearch": {
+				"nova-code.maximumIndexedFilesForFileSearch": {
 					"type": "number",
 					"default": 10000,
 					"minimum": 5000,
 					"maximum": 500000,
 					"description": "%settings.maximumIndexedFilesForFileSearch.description%"
 				},
-				"kilo-code.useAgentRules": {
+				"nova-code.useAgentRules": {
 					"type": "boolean",
 					"default": true,
 					"description": "%settings.useAgentRules.description%"
 				},
-				"kilo-code.apiRequestTimeout": {
+				"nova-code.apiRequestTimeout": {
 					"type": "number",
 					"default": 600,
 					"minimum": 0,
 					"maximum": 86400,
 					"description": "%settings.apiRequestTimeout.description%"
 				},
-				"kilo-code.newTaskRequireTodos": {
+				"nova-code.newTaskRequireTodos": {
 					"type": "boolean",
 					"default": false,
 					"description": "%settings.newTaskRequireTodos.description%"
 				},
-				"kilo-code.enableSettingsSync": {
+				"nova-code.enableSettingsSync": {
 					"type": "boolean",
 					"default": true,
 					"description": "%settings.enableSettingsSync.description%"
 				},
-				"kilo-code.codeIndex.embeddingBatchSize": {
+				"nova-code.codeIndex.embeddingBatchSize": {
 					"type": "number",
 					"default": 60,
 					"minimum": 1,
 					"maximum": 200,
 					"description": "%settings.codeIndex.embeddingBatchSize.description%"
 				},
-				"kilo-code.toolProtocol": {
+				"nova-code.toolProtocol": {
 					"type": "string",
 					"enum": [
 						"xml",
@@ -603,24 +618,24 @@
 					"default": "xml",
 					"description": "%settings.toolProtocol.description%"
 				},
-				"kilo-code.debug": {
+				"nova-code.debug": {
 					"type": "boolean",
 					"default": false,
 					"description": "%settings.debug.description%"
 				},
-				"kilo-code.debugProxy.enabled": {
+				"nova-code.debugProxy.enabled": {
 					"type": "boolean",
 					"default": false,
 					"description": "%settings.debugProxy.enabled.description%",
 					"markdownDescription": "%settings.debugProxy.enabled.description%"
 				},
-				"kilo-code.debugProxy.serverUrl": {
+				"nova-code.debugProxy.serverUrl": {
 					"type": "string",
 					"default": "http://127.0.0.1:8888",
 					"description": "%settings.debugProxy.serverUrl.description%",
 					"markdownDescription": "%settings.debugProxy.serverUrl.description%"
 				},
-				"kilo-code.debugProxy.tlsInsecure": {
+				"nova-code.debugProxy.tlsInsecure": {
 					"type": "boolean",
 					"default": false,
 					"description": "%settings.debugProxy.tlsInsecure.description%",
@@ -629,10 +644,10 @@
 			}
 		},
 		"icons": {
-			"kilo-logo": {
-				"description": "Kilo Code logo",
+			"nova-logo": {
+				"description": "Nova Code logo",
 				"default": {
-					"fontPath": "assets/icons/kilo-icon-font.woff2",
+					"fontPath": "assets/icons/nova-icon-font.woff2",
 					"fontCharacter": "\\F101"
 				}
 			}
@@ -651,14 +666,14 @@
 	"scripts": {
 		"lint": "eslint . --ext=ts --max-warnings=0",
 		"check-types": "tsc --noEmit",
-		"pretest": "turbo run kilo-code#bundle --cwd ..",
-		"test": "vitest run",
+		"pretest": "turbo run nova-code#bundle --cwd ..",
+		"test": "vitest run --passWithNoTests",
 		"format": "prettier --write .",
 		"bundle": "node esbuild.mjs",
 		"vscode:prepublish": "pnpm bundle --production",
 		"vsix:clean": "rimraf ../bin",
-		"vsix": "mkdirp ../bin && vsce package --no-dependencies --out ../bin",
-		"vsix:unpacked": "mkdirp ../bin-unpacked && unzip -q -o ../bin/kilo-code-*.vsix -d ../bin-unpacked",
+		"vsix": "mkdirp ../bin && vsce package --no-dependencies --out ../bin/vcp-code-1.0.3.vsix",
+		"vsix:unpacked": "mkdirp ../bin-unpacked && unzip -q -o ../bin/vcp-code-*.vsix -d ../bin-unpacked",
 		"publish:marketplace": "vsce publish --no-dependencies && ovsx publish --no-dependencies",
 		"watch:bundle": "pnpm bundle --watch",
 		"watch:tsc": "cd .. && tsc --noEmit --watch --project src/tsconfig.json",
@@ -679,7 +694,7 @@
 		"@qdrant/js-client-rest": "^1.14.0",
 		"@roo-code/cloud": "workspace:^",
 		"@roo-code/core": "workspace:^",
-		"@kilocode/core-schemas": "workspace:^",
+		"@novacode/core-schemas": "workspace:^",
 		"@roo-code/ipc": "workspace:^",
 		"@roo-code/telemetry": "workspace:^",
 		"@roo-code/types": "workspace:^",

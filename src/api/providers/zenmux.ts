@@ -1,4 +1,4 @@
-// kilocode_change - new file
+﻿// novacode_change - new file
 import OpenAI from "openai"
 import type Anthropic from "@anthropic-ai/sdk"
 import type { ModelInfo } from "@roo-code/types"
@@ -17,7 +17,7 @@ import { getModels } from "./fetchers/modelCache"
 
 import { DEFAULT_HEADERS } from "./constants"
 import { BaseProvider } from "./base-provider"
-import { verifyFinishReason } from "./kilocode/verifyFinishReason"
+import { verifyFinishReason } from "./nova/verifyFinishReason"
 
 import type { ApiHandlerCreateMessageMetadata, SingleCompletionHandler } from "../index"
 import { ChatCompletionTool } from "openai/resources"
@@ -26,7 +26,7 @@ import { convertToR1Format } from "../transform/r1-format"
 import { resolveToolProtocol } from "../../utils/resolveToolProtocol"
 import { ApiStreamChunk } from "../transform/stream"
 import { NativeToolCallParser } from "../../core/assistant-message/NativeToolCallParser"
-import { KiloCodeChunkSchema } from "./kilocode/chunk-schema"
+import { NovaCodeChunkSchema } from "./nova/chunk-schema"
 
 // ZenMux provider parameters
 type ZenMuxProviderParams = {
@@ -217,9 +217,9 @@ export class ZenMuxHandler extends BaseProvider implements SingleCompletionHandl
 		}
 
 		// Process reasoning_details when switching models to Gemini for native tool call compatibility
-		// kilocode_change start
+		// novacode_change start
 		const toolProtocol = resolveToolProtocol(this.options, model.info, metadata?.toolProtocol)
-		// kilocode_change end
+		// novacode_change end
 		const isNativeProtocol = toolProtocol === TOOL_PROTOCOL.NATIVE
 		const isGemini = modelId.startsWith("google/gemini")
 
@@ -264,11 +264,11 @@ export class ZenMuxHandler extends BaseProvider implements SingleCompletionHandl
 			}
 		}
 
-		// kilocode_change start
+		// novacode_change start
 		const tools = isNativeProtocol ? metadata?.tools : undefined
 		const toolChoice = isNativeProtocol ? metadata?.tool_choice : undefined
 		const parallelToolCalls = isNativeProtocol ? (metadata?.parallelToolCalls ?? false) : false
-		// kilocode_change end
+		// novacode_change end
 
 		let stream
 		try {
@@ -313,10 +313,10 @@ export class ZenMuxHandler extends BaseProvider implements SingleCompletionHandl
 				this.handleStreamingError(chunk.error as ZenMuxErrorResponse, modelId, "createMessage")
 			}
 
-			const kiloCodeChunk = KiloCodeChunkSchema.safeParse(chunk).data
+			const novaCodeChunk = NovaCodeChunkSchema.safeParse(chunk).data
 			inferenceProvider =
-				kiloCodeChunk?.choices?.[0]?.delta?.provider_metadata?.gateway?.routing?.resolvedProvider ??
-				kiloCodeChunk?.provider ??
+				novaCodeChunk?.choices?.[0]?.delta?.provider_metadata?.gateway?.routing?.resolvedProvider ??
+				novaCodeChunk?.provider ??
 				inferenceProvider
 
 			verifyFinishReason(chunk.choices[0])
@@ -454,9 +454,9 @@ export class ZenMuxHandler extends BaseProvider implements SingleCompletionHandl
 
 	override getModel() {
 		const id = this.options.zenmuxModelId ?? zenmuxDefaultModelId
-		// kilocode_change start
+		// novacode_change start
 		let info = { ...NATIVE_TOOL_DEFAULTS, ...(this.models[id] ?? zenmuxDefaultModelInfo) }
-		// kilocode_change end
+		// novacode_change end
 
 		const isDeepSeekR1 = id.startsWith("deepseek/deepseek-r1") || id === "perplexity/sonar-reasoning"
 

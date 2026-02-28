@@ -1,4 +1,4 @@
-import axios from "axios"
+﻿import axios from "axios"
 import { z } from "zod"
 
 import {
@@ -11,14 +11,14 @@ import {
 
 import type { ApiHandlerOptions } from "../../../shared/api"
 import { parseApiPrice } from "../../../shared/cost"
-import { DEFAULT_HEADERS } from "../constants" // kilocode_change
+import { DEFAULT_HEADERS } from "../constants" // novacode_change
 import {
 	ModelSettings,
 	ModelSettingsSchema,
 	parseModelSettings,
 	VersionedModelSettingsSchema,
-} from "../kilocode/model-settings"
-import { resolveVersionedSettings } from "./versionedSettings" // kilocode_change
+} from "../nova/model-settings"
+import { resolveVersionedSettings } from "./versionedSettings" // novacode_change
 
 /**
  * OpenRouterBaseModel
@@ -44,11 +44,11 @@ const modelRouterBaseModelSchema = z.object({
 	max_completion_tokens: z.number().nullish(),
 	pricing: openRouterPricingSchema.optional(),
 
-	// kilocode_change start
+	// novacode_change start
 	preferredIndex: z.number().nullish(),
 	settings: ModelSettingsSchema.nullish(),
 	versioned_settings: VersionedModelSettingsSchema.nullish(),
-	// kilocode_change end
+	// novacode_change end
 })
 
 export type OpenRouterBaseModel = z.infer<typeof modelRouterBaseModelSchema>
@@ -71,7 +71,7 @@ export type OpenRouterModel = z.infer<typeof openRouterModelSchema>
  */
 
 export const openRouterModelEndpointSchema = modelRouterBaseModelSchema.extend({
-	model_name: z.string(), // kilocode_change
+	model_name: z.string(), // novacode_change
 	provider_name: z.string(),
 	tag: z.string().optional(),
 })
@@ -110,27 +110,27 @@ type OpenRouterModelEndpointsResponse = z.infer<typeof openRouterModelEndpointsR
  */
 
 export async function getOpenRouterModels(
-	options?: ApiHandlerOptions & { headers?: Record<string, string> }, // kilocode_change: added headers
+	options?: ApiHandlerOptions & { headers?: Record<string, string> }, // novacode_change: added headers
 ): Promise<Record<string, ModelInfo>> {
 	const models: Record<string, ModelInfo> = {}
 	const baseURL = options?.openRouterBaseUrl || "https://openrouter.ai/api/v1"
 
 	try {
-		// kilocode_change: use fetch, added headers
+		// novacode_change: use fetch, added headers
 		const response = await fetch(`${baseURL}/models`, {
 			headers: { ...DEFAULT_HEADERS, ...(options?.headers ?? {}) },
 		})
 		const json = await response.json()
 		const result = openRouterModelsResponseSchema.safeParse(json)
 		const data = result.success ? result.data.data : json.data
-		// kilocode_change end
+		// novacode_change end
 
 		if (!result.success) {
-			// kilocode_change start
+			// novacode_change start
 			throw new Error(
 				"OpenRouter models response is invalid: " + JSON.stringify(result.error.format(), undefined, 2),
 			)
-			// kilocode_change end
+			// novacode_change end
 		}
 
 		for (const model of data) {
@@ -144,7 +144,7 @@ export async function getOpenRouterModels(
 			const parsedModel = parseOpenRouterModel({
 				id,
 				model,
-				displayName: model.name, // kilocode_change
+				displayName: model.name, // novacode_change
 				inputModality: architecture?.input_modalities,
 				outputModality: architecture?.output_modalities,
 				maxTokens: top_provider?.max_completion_tokens,
@@ -157,7 +157,7 @@ export async function getOpenRouterModels(
 		console.error(
 			`Error fetching OpenRouter models: ${JSON.stringify(error, Object.getOwnPropertyNames(error), 2)}`,
 		)
-		throw error // kilocode_change
+		throw error // novacode_change
 	}
 
 	return models
@@ -194,7 +194,7 @@ export async function getOpenRouterModelEndpoints(
 			models[endpoint.tag ?? endpoint.provider_name] = parseOpenRouterModel({
 				id,
 				model: endpoint,
-				displayName: endpoint.model_name, // kilocode_change
+				displayName: endpoint.model_name, // novacode_change
 				inputModality: architecture?.input_modalities,
 				outputModality: architecture?.output_modalities,
 				maxTokens: endpoint.max_completion_tokens,
@@ -216,7 +216,7 @@ export async function getOpenRouterModelEndpoints(
 export const parseOpenRouterModel = ({
 	id,
 	model,
-	displayName, // kilocode_change
+	displayName, // novacode_change
 	inputModality,
 	outputModality,
 	maxTokens,
@@ -224,7 +224,7 @@ export const parseOpenRouterModel = ({
 }: {
 	id: string
 	model: OpenRouterBaseModel
-	displayName?: string // kilocode_change
+	displayName?: string // novacode_change
 	inputModality: string[] | null | undefined
 	outputModality: string[] | null | undefined
 	maxTokens: number | null | undefined
@@ -240,11 +240,11 @@ export const parseOpenRouterModel = ({
 
 	const supportsNativeTools = supportedParameters ? supportedParameters.includes("tools") : undefined
 
-	// kilocode_change start
+	// novacode_change start
 	const resolvedVersionedSettings = model.versioned_settings
 		? resolveVersionedSettings<ModelSettings>(model.versioned_settings)
 		: {}
-	// kilocode_change end
+	// novacode_change end
 
 	const modelInfo: ModelInfo = {
 		maxTokens: maxTokens || Math.ceil(model.context_length * 0.2),
@@ -259,14 +259,14 @@ export const parseOpenRouterModel = ({
 		supportsReasoningEffort: supportedParameters ? supportedParameters.includes("reasoning") : undefined,
 		supportsNativeTools,
 		supportedParameters: supportedParameters ? supportedParameters.filter(isModelParameter) : undefined,
-		// kilocode_change start
+		// novacode_change start
 		displayName,
 		preferredIndex: model.preferredIndex,
 		supportsVerbosity: !!supportedParameters?.includes("verbosity") || undefined,
 		...parseModelSettings(
 			Object.keys(resolvedVersionedSettings).length > 0 ? resolvedVersionedSettings : (model.settings ?? {}),
 		),
-		// kilocode_change end
+		// novacode_change end
 		// Default to native tool protocol when native tools are supported
 		defaultToolProtocol: supportsNativeTools ? ("native" as const) : undefined,
 	}
@@ -320,11 +320,11 @@ export const parseOpenRouterModel = ({
 		modelInfo.maxTokens = 32768
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	if (id.includes("minimax-2.1:free") || id.includes("kimi-2.5:free")) {
 		modelInfo.contextWindow = 200000
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	return modelInfo
 }

@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 /**
  * Tests for git-tracked files functionality
  */

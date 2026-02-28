@@ -1,4 +1,4 @@
-import { Anthropic } from "@anthropic-ai/sdk"
+﻿import { Anthropic } from "@anthropic-ai/sdk"
 
 import type { ModelInfo } from "@roo-code/types"
 
@@ -7,7 +7,7 @@ import { ApiStream } from "../transform/stream"
 import { countTokens } from "../../utils/countTokens"
 import { isMcpTool } from "../../utils/mcp-name"
 
-import { normalizeObjectAdditionalPropertiesFalse } from "./kilocode/openai-strict-schema" // kilocode_change
+import { normalizeObjectAdditionalPropertiesFalse } from "./nova/openai-strict-schema" // novacode_change
 
 /**
  * Base class for API providers that implements common functionality.
@@ -86,14 +86,14 @@ export abstract class BaseProvider implements ApiHandler {
 				const prop = newProps[key]
 
 				// Handle nullable types by removing null
-				// kilocode_change start: this is wrong https://platform.openai.com/docs/guides/function-calling?api-mode=chat#strict-mode
+				// novacode_change start: this is wrong https://platform.openai.com/docs/guides/function-calling?api-mode=chat#strict-mode
 				/*
 				if (prop && Array.isArray(prop.type) && prop.type.includes("null")) {
 					const nonNullTypes = prop.type.filter((t: string) => t !== "null")
 					prop.type = nonNullTypes.length === 1 ? nonNullTypes[0] : nonNullTypes
 				}
 				*/
-				// kilocode_change end
+				// novacode_change end
 
 				// Recursively process nested objects
 				if (prop && prop.type === "object") {
@@ -108,7 +108,7 @@ export abstract class BaseProvider implements ApiHandler {
 			result.properties = newProps
 		}
 
-		return normalizeObjectAdditionalPropertiesFalse(result) // kilocode_change: normalize invalid schemes for strict mode
+		return normalizeObjectAdditionalPropertiesFalse(result) // novacode_change: normalize invalid schemes for strict mode
 	}
 
 	/**

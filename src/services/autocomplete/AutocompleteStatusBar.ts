@@ -30,8 +30,8 @@ export class AutocompleteStatusBar {
 	}
 
 	private init() {
-		this.statusBar.text = t("kilocode:autocomplete.statusBar.enabled")
-		this.statusBar.tooltip = this.createMarkdownTooltip(t("kilocode:autocomplete.statusBar.tooltip.basic"))
+		this.statusBar.text = t("novacode:autocomplete.statusBar.enabled")
+		this.statusBar.tooltip = this.createMarkdownTooltip(t("novacode:autocomplete.statusBar.tooltip.basic"))
 		this.statusBar.show()
 	}
 
@@ -55,8 +55,8 @@ export class AutocompleteStatusBar {
 
 	private humanFormatSessionCost(): string {
 		const cost = this.props.totalSessionCost
-		if (cost === 0) return t("kilocode:autocomplete.statusBar.cost.zero")
-		if (cost > 0 && cost < 0.01) return t("kilocode:autocomplete.statusBar.cost.lessThanCent") // Less than one cent
+		if (cost === 0) return t("novacode:autocomplete.statusBar.cost.zero")
+		if (cost > 0 && cost < 0.01) return t("novacode:autocomplete.statusBar.cost.lessThanCent") // Less than one cent
 		return `$${cost.toFixed(2)}`
 	}
 
@@ -76,19 +76,19 @@ export class AutocompleteStatusBar {
 		const sessionStartTime = this.formatTime(this.props.sessionStartTime)
 		const now = this.formatTime(Date.now())
 
-		const snoozedSuffix = this.props.snoozed ? ` (${t("kilocode:autocomplete.statusBar.snoozed")})` : ""
-		this.statusBar.text = `${t("kilocode:autocomplete.statusBar.enabled")} (${this.props.completionCount})${snoozedSuffix}`
+		const snoozedSuffix = this.props.snoozed ? ` (${t("novacode:autocomplete.statusBar.snoozed")})` : ""
+		this.statusBar.text = `${t("novacode:autocomplete.statusBar.enabled")} (${this.props.completionCount})${snoozedSuffix}`
 
 		this.statusBar.tooltip = this.createMarkdownTooltip(
 			[
-				t("kilocode:autocomplete.statusBar.tooltip.completionSummary", {
+				t("novacode:autocomplete.statusBar.tooltip.completionSummary", {
 					count: this.props.completionCount,
 					startTime: sessionStartTime,
 					endTime: now,
 					cost: this.humanFormatSessionCost(),
 				}),
 				this.props.model && this.props.provider
-					? t("kilocode:autocomplete.statusBar.tooltip.providerInfo", {
+					? t("novacode:autocomplete.statusBar.tooltip.providerInfo", {
 							model: this.props.model,
 							provider: this.props.provider,
 						})
@@ -100,7 +100,7 @@ export class AutocompleteStatusBar {
 	}
 
 	public render() {
-		if (this.props.hasKilocodeProfileWithNoBalance) {
+		if (this.props.hasNovacodeProfileWithNoBalance) {
 			return this.renderNoCreditsError()
 		}
 		if (this.props.hasNoUsableProvider) {
@@ -110,16 +110,16 @@ export class AutocompleteStatusBar {
 	}
 
 	private renderNoCreditsError() {
-		this.statusBar.text = t("kilocode:autocomplete.statusBar.warning")
-		this.statusBar.tooltip = this.createMarkdownTooltip(t("kilocode:autocomplete.statusBar.tooltip.noCredits"))
+		this.statusBar.text = t("novacode:autocomplete.statusBar.warning")
+		this.statusBar.tooltip = this.createMarkdownTooltip(t("novacode:autocomplete.statusBar.tooltip.noCredits"))
 	}
 
 	private renderNoUsableProviderError() {
-		this.statusBar.text = t("kilocode:autocomplete.statusBar.warning")
+		this.statusBar.text = t("novacode:autocomplete.statusBar.warning")
 		const providers = getSupportedProviderDisplayNames()
 		const providerList = providers.join(", ")
 		this.statusBar.tooltip = this.createMarkdownTooltip(
-			t("kilocode:autocomplete.statusBar.tooltip.noUsableProvider", { providers: providerList }),
+			t("novacode:autocomplete.statusBar.tooltip.noUsableProvider", { providers: providerList }),
 		)
 	}
 }

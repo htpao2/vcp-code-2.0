@@ -20,21 +20,21 @@ import {
 	TabsList,
 	TabsTrigger,
 	TabsContent,
-	// StandardTooltip, // kilocode_change: not used
+	// StandardTooltip, // novacode_change: not used
 } from "@src/components/ui"
 import { buildDocLink } from "@src/utils/docLinks"
 import { Section } from "@src/components/settings/Section"
 
-import { Tab, TabHeader } from "../common/Tab" // kilocode_change
+import { Tab, TabHeader } from "../common/Tab" // novacode_change
 
 import McpToolRow from "./McpToolRow"
 import McpResourceRow from "./McpResourceRow"
-// import McpEnabledToggle from "./McpEnabledToggle" // kilocode_change not used
+// import McpEnabledToggle from "./McpEnabledToggle" // novacode_change not used
 import { McpErrorRow } from "./McpErrorRow"
 
 type McpViewProps = {
 	onDone: () => void
-	hideHeader?: boolean // kilocode_change
+	hideHeader?: boolean // novacode_change
 }
 
 const McpView = ({ onDone, hideHeader = false }: McpViewProps) => {
@@ -49,9 +49,9 @@ const McpView = ({ onDone, hideHeader = false }: McpViewProps) => {
 	const { t } = useAppTranslation()
 
 	return (
-		// kilocode_change: add relative className
+		// novacode_change: add relative className
 		<Tab className="relative">
-			{/*  kilocode_change: display header conditionally */}
+			{/*  novacode_change: display header conditionally */}
 			<TabHeader style={{ display: hideHeader ? "none" : "flex" }} className="flex justify-between items-center">
 				<h3 className="text-vscode-foreground m-0">{t("mcp:title")}</h3>
 				<Button onClick={onDone}>{t("mcp:done")}</Button>
@@ -67,18 +67,18 @@ const McpView = ({ onDone, hideHeader = false }: McpViewProps) => {
 					}}>
 					<Trans i18nKey="mcp:description">
 						<VSCodeLink
-							href={buildDocLink("features/mcp/using-mcp-in-kilo-code", "mcp_settings")}
+							href={buildDocLink("features/mcp/using-mcp-in-nova-code", "mcp_settings")}
 							style={{ display: "inline" }}>
 							Learn More
 						</VSCodeLink>
 					</Trans>
 				</div>
 
-				{/* <McpEnabledToggle /> kilocode_change: we always enable MCP */}
+				{/* <McpEnabledToggle /> novacode_change: we always enable MCP */}
 
 				{mcpEnabled && (
 					<>
-						{/* kilocode_change: display: none; we always allow mcp server creation */}
+						{/* novacode_change: display: none; we always allow mcp server creation */}
 						<div style={{ display: "none", marginBottom: 15 }}>
 							<VSCodeCheckbox
 								checked={enableMcpServerCreation}
@@ -97,7 +97,7 @@ const McpView = ({ onDone, hideHeader = false }: McpViewProps) => {
 								<Trans i18nKey="mcp:enableServerCreation.description">
 									<VSCodeLink
 										href={buildDocLink(
-											"features/mcp/using-mcp-in-kilo-code#how-to-use-kilo-code-to-create-an-mcp-server",
+											"features/mcp/using-mcp-in-nova-code#how-to-use-nova-code-to-create-an-mcp-server",
 											"mcp_server_creation",
 										)}
 										style={{ display: "inline" }}>
@@ -158,7 +158,7 @@ const McpView = ({ onDone, hideHeader = false }: McpViewProps) => {
 								<span className="codicon codicon-refresh" style={{ marginRight: "6px" }}></span>
 								{t("mcp:refreshMCP")}
 							</Button>
-							{/* kilocode_change
+							{/* novacode_change
 							<StandardTooltip content={t("mcp:marketplace")}>
 								<Button
 									variant="secondary"
@@ -179,11 +179,11 @@ const McpView = ({ onDone, hideHeader = false }: McpViewProps) => {
 							</StandardTooltip>
 							*/}
 						</div>
-						{/* kilocode_change start */}
+						{/* novacode_change start */}
 						<div className="mt-5">
 							You can find the MCP Marketplace under Settings &gt; MCP Servers &gt; Marketplace
 						</div>
-						{/* kilocode_change end */}
+						{/* novacode_change end */}
 						<div
 							style={{
 								marginTop: "15px",
@@ -192,7 +192,7 @@ const McpView = ({ onDone, hideHeader = false }: McpViewProps) => {
 							}}>
 							<VSCodeLink
 								href={buildDocLink(
-									"features/mcp/using-mcp-in-kilo-code#editing-mcp-settings-files",
+									"features/mcp/using-mcp-in-nova-code#editing-mcp-settings-files",
 									"mcp_edit_settings",
 								)}
 								style={{ display: "inline" }}>
@@ -260,7 +260,7 @@ const ServerRow = ({ server, alwaysAllowMcp }: { server: McpServer; alwaysAllowM
 		})
 	}
 
-	// kilocode_change start: OAuth sign-in handler
+	// novacode_change start: OAuth sign-in handler
 	const handleOAuthSignIn = () => {
 		vscode.postMessage({
 			type: "mcpServerOAuthSignIn",
@@ -268,7 +268,7 @@ const ServerRow = ({ server, alwaysAllowMcp }: { server: McpServer; alwaysAllowM
 			source: server.source || "global",
 		})
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	const handleTimeoutChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		const seconds = parseInt(event.target.value)
@@ -383,7 +383,7 @@ const ServerRow = ({ server, alwaysAllowMcp }: { server: McpServer; alwaysAllowM
 								border: "none",
 								minWidth: "260px",
 							}}>
-							{/* kilocode_change start: Replace VSCodePanels with Radix UI Tabs for independent tab overflow */}
+							{/* novacode_change start: Replace VSCodePanels with Radix UI Tabs for independent tab overflow */}
 							<Tabs defaultValue="tools" style={{ marginBottom: "10px" }}>
 								<div className="overflow-x-auto scrollbar-hide">
 									<TabsList className="w-max min-w-full">
@@ -503,7 +503,7 @@ const ServerRow = ({ server, alwaysAllowMcp }: { server: McpServer; alwaysAllowM
 									</TabsContent>
 								)}
 							</Tabs>
-							{/* kilocode_change end */}
+							{/* novacode_change end */}
 
 							{/* Network Timeout */}
 							<div style={{ padding: "10px 7px" }}>
@@ -571,7 +571,7 @@ const ServerRow = ({ server, alwaysAllowMcp }: { server: McpServer; alwaysAllowM
 										</React.Fragment>
 									))}
 							</div>
-							{/* kilocode_change start: OAuth sign-in button */}
+							{/* novacode_change start: OAuth sign-in button */}
 							{server.authStatus?.status === "required" ? (
 								<Button
 									variant="secondary"
@@ -594,7 +594,7 @@ const ServerRow = ({ server, alwaysAllowMcp }: { server: McpServer; alwaysAllowM
 										: t("mcp:serverStatus.retryConnection")}
 								</Button>
 							)}
-							{/* kilocode_change end */}
+							{/* novacode_change end */}
 						</div>
 					)}
 
@@ -621,7 +621,7 @@ const ServerRow = ({ server, alwaysAllowMcp }: { server: McpServer; alwaysAllowM
 	)
 }
 
-// kilocode_change start: OAuth Debug Info Component
+// novacode_change start: OAuth Debug Info Component
 /**
  * Formats a timestamp to a human-readable date/time string
  */
@@ -837,6 +837,6 @@ const OAuthDebugInfo = ({ authStatus }: { authStatus: McpAuthStatus }) => {
 		</div>
 	)
 }
-// kilocode_change end
+// novacode_change end
 
 export default McpView

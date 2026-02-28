@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 
 import * as vscode from "vscode"
 import type { ClineProvider } from "../../core/webview/ClineProvider"
@@ -90,7 +90,7 @@ export class ConfigChangeNotifier {
 		const modeStr = change.mode ? ` (${change.mode} mode)` : ""
 		const sourceStr = change.source === "global" ? "global" : "project"
 		const key =
-			change.changeType === "added" ? "kilocode:configDiscovery.added" : "kilocode:configDiscovery.removed"
+			change.changeType === "added" ? "novacode:configDiscovery.added" : "novacode:configDiscovery.removed"
 		return t(key, { configType: change.configType, name: change.name, source: sourceStr, modeStr })
 	}
 }

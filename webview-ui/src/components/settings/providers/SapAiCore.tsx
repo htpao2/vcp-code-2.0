@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useEvent } from "react-use"
 import { vscode } from "@src/utils/vscode"
@@ -12,7 +12,7 @@ import type { ProviderSettings } from "@roo-code/types"
 import { useAppTranslation } from "@src/i18n/TranslationContext"
 
 import { inputEventTransform } from "../transforms"
-// kilocode_change: Local deployment shape used by the webview.
+// novacode_change: Local deployment shape used by the webview.
 // The extension's SAP AI Core fetcher includes `model` + `targetStatus`, but the
 // canonical `@roo-code/types` DeploymentRecord is a different shape.
 type SapAiCoreDeployment = {

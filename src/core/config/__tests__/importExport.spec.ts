@@ -1,4 +1,4 @@
-// npx vitest src/core/config/__tests__/importExport.spec.ts
+﻿// npx vitest src/core/config/__tests__/importExport.spec.ts
 
 import fs from "fs/promises"
 import * as path from "path"
@@ -217,6 +217,65 @@ describe("importExport", () => {
 				{ name: "test", id: "test-id", apiProvider: "openai" as ProviderName },
 				{ name: "default", id: "default-id", apiProvider: "anthropic" as ProviderName },
 			])
+		})
+
+		it("should restore current profile and mode configuration after import", async () => {
+			;(vscode.window.showOpenDialog as Mock).mockResolvedValue([{ fsPath: "/mock/path/settings.json" }])
+
+			const mockFileContent = JSON.stringify({
+				providerProfiles: {
+					currentApiConfigName: "team",
+					apiConfigs: {
+						team: { apiProvider: "openai" as ProviderName, apiKey: "team-key", id: "team-id" },
+					},
+					modeApiConfigs: {
+						architect: "team-id",
+					},
+				},
+				globalSettings: { mode: "architect", autoApprovalEnabled: true },
+			})
+
+			;(fs.readFile as Mock).mockResolvedValue(mockFileContent)
+
+			const previousProviderProfiles = {
+				currentApiConfigName: "default",
+				apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+				modeApiConfigs: {
+					code: "default-id",
+				},
+			}
+
+			mockProviderSettingsManager.export.mockResolvedValue(previousProviderProfiles)
+			mockProviderSettingsManager.listConfig.mockResolvedValue([
+				{ name: "team", id: "team-id", apiProvider: "openai" as ProviderName },
+				{ name: "default", id: "default-id", apiProvider: "anthropic" as ProviderName },
+			])
+
+			const result = await importSettings({
+				providerSettingsManager: mockProviderSettingsManager,
+				contextProxy: mockContextProxy,
+				customModesManager: mockCustomModesManager,
+			})
+
+			expect(result.success).toBe(true)
+			expect(mockProviderSettingsManager.import).toHaveBeenCalledWith({
+				currentApiConfigName: "team",
+				apiConfigs: {
+					default: { apiProvider: "anthropic" as ProviderName, id: "default-id" },
+					team: { apiProvider: "openai" as ProviderName, apiKey: "team-key", id: "team-id" },
+				},
+				modeApiConfigs: {
+					code: "default-id",
+					architect: "team-id",
+				},
+			})
+			expect(mockContextProxy.setValues).toHaveBeenCalledWith({ mode: "architect", autoApprovalEnabled: true })
+			expect(mockContextProxy.setValue).toHaveBeenCalledWith("currentApiConfigName", "team")
+			expect(mockContextProxy.setProviderSettings).toHaveBeenCalledWith({
+				apiProvider: "openai",
+				apiKey: "team-key",
+				id: "team-id",
+			})
 		})
 
 		it("should return success: false when file content is invalid", async () => {
@@ -481,6 +540,62 @@ describe("importExport", () => {
 			showErrorMessageSpy.mockRestore()
 		})
 
+		it("should update provider state and show success feedback when import succeeds with file path", async () => {
+			const filePath = "/mock/path/settings.json"
+			const fixedNow = 1700000000000
+			const dateNowSpy = vi.spyOn(Date, "now").mockReturnValue(fixedNow)
+			;(fs.access as Mock).mockResolvedValue(undefined)
+			;(fs.readFile as Mock).mockResolvedValue(
+				JSON.stringify({
+					providerProfiles: {
+						currentApiConfigName: "success-profile",
+						apiConfigs: {
+							"success-profile": {
+								apiProvider: "openai" as ProviderName,
+								apiKey: "ok-key",
+								id: "ok-id",
+							},
+						},
+						modeApiConfigs: {},
+					},
+					globalSettings: { mode: "code", autoApprovalEnabled: true },
+				}),
+			)
+			mockProviderSettingsManager.export.mockResolvedValue({
+				currentApiConfigName: "default",
+				apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+				modeApiConfigs: {},
+			})
+			mockProviderSettingsManager.listConfig.mockResolvedValue([
+				{ name: "success-profile", id: "ok-id", apiProvider: "openai" as ProviderName },
+				{ name: "default", id: "default-id", apiProvider: "anthropic" as ProviderName },
+			])
+
+			const mockProvider = {
+				settingsImportedAt: 0,
+				postStateToWebview: vi.fn().mockResolvedValue(undefined),
+			}
+
+			await importSettingsWithFeedback(
+				{
+					providerSettingsManager: mockProviderSettingsManager,
+					contextProxy: mockContextProxy,
+					customModesManager: mockCustomModesManager,
+					provider: mockProvider,
+				},
+				filePath,
+			)
+
+			expect(fs.access).toHaveBeenCalledWith(filePath, fs.constants.F_OK | fs.constants.R_OK)
+			expect(mockProvider.postStateToWebview).toHaveBeenCalledTimes(1)
+			expect(mockProvider.settingsImportedAt).toBe(fixedNow)
+			expect(vscode.window.showInformationMessage).toHaveBeenCalledWith(
+				expect.stringContaining("info.settings_imported"),
+			)
+
+			dateNowSpy.mockRestore()
+		})
+
 		it("should handle import when reasoning budget fields are missing from config", async () => {
 			// This test verifies that import works correctly when reasoning budget fields are not present
 			// Using claude-code provider which doesn't support reasoning budgets
@@ -568,7 +683,7 @@ describe("importExport", () => {
 
 		it("should export settings to the selected file location", async () => {
 			;(vscode.window.showSaveDialog as Mock).mockResolvedValue({
-				fsPath: "/mock/path/kilo-code-settings.json",
+				fsPath: "/mock/path/nova-code-settings.json",
 			})
 
 			const mockProviderProfiles = {
@@ -595,7 +710,7 @@ describe("importExport", () => {
 			expect(mockContextProxy.export).toHaveBeenCalled()
 			expect(fs.mkdir).toHaveBeenCalledWith("/mock/path", { recursive: true })
 
-			expect(safeWriteJson).toHaveBeenCalledWith("/mock/path/kilo-code-settings.json", {
+			expect(safeWriteJson).toHaveBeenCalledWith("/mock/path/nova-code-settings.json", {
 				providerProfiles: mockProviderProfiles,
 				globalSettings: mockGlobalSettings,
 			})
@@ -603,7 +718,7 @@ describe("importExport", () => {
 
 		it("should include globalSettings when allowedMaxRequests is null", async () => {
 			;(vscode.window.showSaveDialog as Mock).mockResolvedValue({
-				fsPath: "/mock/path/kilo-code-settings.json",
+				fsPath: "/mock/path/nova-code-settings.json",
 			})
 
 			const mockProviderProfiles = {
@@ -627,7 +742,7 @@ describe("importExport", () => {
 				contextProxy: mockContextProxy,
 			})
 
-			expect(safeWriteJson).toHaveBeenCalledWith("/mock/path/kilo-code-settings.json", {
+			expect(safeWriteJson).toHaveBeenCalledWith("/mock/path/nova-code-settings.json", {
 				providerProfiles: mockProviderProfiles,
 				globalSettings: mockGlobalSettings,
 			})
@@ -635,7 +750,7 @@ describe("importExport", () => {
 
 		it("should handle errors during the export process", async () => {
 			;(vscode.window.showSaveDialog as Mock).mockResolvedValue({
-				fsPath: "/mock/path/kilo-code-settings.json",
+				fsPath: "/mock/path/nova-code-settings.json",
 			})
 
 			mockProviderSettingsManager.export.mockResolvedValue({
@@ -665,7 +780,7 @@ describe("importExport", () => {
 
 		it("should handle errors during directory creation", async () => {
 			;(vscode.window.showSaveDialog as Mock).mockResolvedValue({
-				fsPath: "/mock/path/kilo-code-settings.json",
+				fsPath: "/mock/path/nova-code-settings.json",
 			})
 
 			mockProviderSettingsManager.export.mockResolvedValue({
@@ -703,7 +818,7 @@ describe("importExport", () => {
 			})
 
 			expect(vscode.Uri.file).toHaveBeenCalledWith(
-				path.join("/mock/home", "Documents", "kilo-code-settings.json"),
+				path.join("/mock/home", "Documents", "nova-code-settings.json"),
 			)
 		})
 

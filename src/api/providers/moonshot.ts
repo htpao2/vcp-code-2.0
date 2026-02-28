@@ -7,7 +7,7 @@ import { getModelParams } from "../transform/model-params"
 
 import { OpenAICompatibleHandler, OpenAICompatibleConfig } from "./openai-compatible"
 
-// kilocode_change start
+// novacode_change start
 const STRICT_KIMI_TEMPERATURES = {
 	"kimi-k2.5": {
 		thinkingEnabled: 1.0,
@@ -21,7 +21,7 @@ const STRICT_KIMI_TEMPERATURES = {
 
 type StrictKimiModelId = keyof typeof STRICT_KIMI_TEMPERATURES
 const STRICT_KIMI_MODELS = new Set(Object.keys(STRICT_KIMI_TEMPERATURES))
-// kilocode_change end
+// novacode_change end
 
 export class MoonshotHandler extends OpenAICompatibleHandler {
 	constructor(options: ApiHandlerOptions) {
@@ -84,7 +84,7 @@ export class MoonshotHandler extends OpenAICompatibleHandler {
 		return this.options.modelMaxTokens || modelInfo.maxTokens || undefined
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	private isStrictKimiModel(modelId: string): boolean {
 		return STRICT_KIMI_MODELS.has(modelId)
 	}
@@ -151,5 +151,5 @@ export class MoonshotHandler extends OpenAICompatibleHandler {
 			},
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 }

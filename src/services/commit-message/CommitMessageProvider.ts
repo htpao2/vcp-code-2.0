@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import * as vscode from "vscode"
 import { ProviderSettingsManager } from "../../core/config/ProviderSettingsManager"
 import { t } from "../../i18n"
@@ -9,6 +9,7 @@ import { VSCodeCommitMessageAdapter } from "./adapters/VSCodeCommitMessageAdapte
 import { JetBrainsCommitMessageAdapter } from "./adapters/JetBrainsCommitMessageAdapter"
 import { VscGenerationRequest } from "./types"
 import { JetbrainsGenerationRequest } from "./types/jetbrains"
+import { Package } from "../../shared/package"
 
 /**
  * Orchestrates commit message generation by routing requests to appropriate adapters.
@@ -34,19 +35,40 @@ export class CommitMessageProvider implements vscode.Disposable {
 	 * Activate the commit message service by registering commands.
 	 */
 	public async activate(): Promise<void> {
-		this.outputChannel.appendLine(t("kilocode:commitMessage.activated"))
+		this.outputChannel.appendLine(t("novacode:commitMessage.activated"))
+		const primaryVsCodeCommand = `${Package.name}.vsc.generateCommitMessage`
+		const primaryJetbrainsCommand = `${Package.name}.jetbrains.generateCommitMessage`
+		const legacyVsCodeCommand = "nova-code.vsc.generateCommitMessage"
+		const legacyJetbrainsCommand = "nova-code.jetbrains.generateCommitMessage"
 
 		const disposables = [
-			vscode.commands.registerCommand("kilo-code.vsc.generateCommitMessage", (vsRequest?: VscGenerationRequest) =>
+			vscode.commands.registerCommand(primaryVsCodeCommand, (vsRequest?: VscGenerationRequest) =>
 				this.handleVSCodeCommand(vsRequest),
 			),
 			vscode.commands.registerCommand(
-				"kilo-code.jetbrains.generateCommitMessage",
+				primaryJetbrainsCommand,
 				(...args: JetbrainsGenerationRequest): Promise<CommitMessageResult> => {
 					return this.handleJetBrainsCommand(...args)
 				},
 			),
 		]
+
+		if (legacyVsCodeCommand !== primaryVsCodeCommand) {
+			disposables.push(
+				vscode.commands.registerCommand(legacyVsCodeCommand, (vsRequest?: VscGenerationRequest) =>
+					this.handleVSCodeCommand(vsRequest),
+				),
+			)
+		}
+		if (legacyJetbrainsCommand !== primaryJetbrainsCommand) {
+			disposables.push(
+				vscode.commands.registerCommand(
+					legacyJetbrainsCommand,
+					(...args: JetbrainsGenerationRequest): Promise<CommitMessageResult> =>
+						this.handleJetBrainsCommand(...args),
+				),
+			)
+		}
 		this.context.subscriptions.push(...disposables)
 	}
 

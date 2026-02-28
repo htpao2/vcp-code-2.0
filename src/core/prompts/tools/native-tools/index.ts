@@ -1,4 +1,4 @@
-import type OpenAI from "openai"
+﻿import type OpenAI from "openai"
 import accessMcpResource from "./access_mcp_resource"
 import { apply_diff } from "./apply_diff"
 import applyPatch from "./apply_patch"
@@ -21,8 +21,8 @@ import switchMode from "./switch_mode"
 import updateTodoList from "./update_todo_list"
 import writeToFile from "./write_to_file"
 
-import deleteFile from "./kilocode/delete_file"
-import fastEditFile from "./kilocode/fast_edit_file"
+import deleteFile from "./nova/delete_file"
+import fastEditFile from "./nova/fast_edit_file"
 
 export { getMcpServerTools } from "./mcp_server"
 export { convertOpenAIToolToAnthropic, convertOpenAIToolsToAnthropic } from "./converters"
@@ -56,14 +56,14 @@ export function getNativeTools(options: NativeToolsOptions = {}): OpenAI.Chat.Ch
 	}
 
 	return [
-		// kilocode_change start
+		// novacode_change start
 		deleteFile,
 		fastEditFile,
 		// todo:
 		// condenseTool,
 		// newRuleTool,
 		// reportBugTool,
-		// kilocode_change end
+		// novacode_change end
 		accessMcpResource,
 		apply_diff,
 		applyPatch,

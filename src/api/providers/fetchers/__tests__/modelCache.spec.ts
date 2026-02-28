@@ -41,10 +41,10 @@ vi.mock("fs", () => ({
 vi.mock("../litellm")
 vi.mock("../openrouter")
 vi.mock("../requesty")
-vi.mock("../glama") // kilocode_change start
+vi.mock("../glama") // novacode_change start
 vi.mock("../unbound")
 vi.mock("../io-intelligence")
-vi.mock("../ovhcloud") // kilocode_change
+vi.mock("../ovhcloud") // novacode_change
 
 // Mock ContextProxy with a simple static instance
 vi.mock("../../../core/config/ContextProxy", () => ({
@@ -65,18 +65,18 @@ import { getModels, getModelsFromCache } from "../modelCache"
 import { getLiteLLMModels } from "../litellm"
 import { getOpenRouterModels } from "../openrouter"
 import { getRequestyModels } from "../requesty"
-import { getGlamaModels } from "../glama" // kilocode_change
+import { getGlamaModels } from "../glama" // novacode_change
 import { getUnboundModels } from "../unbound"
 import { getIOIntelligenceModels } from "../io-intelligence"
-import { getOvhCloudAiEndpointsModels } from "../ovhcloud" // kilocode_change
+import { getOvhCloudAiEndpointsModels } from "../ovhcloud" // novacode_change
 
 const mockGetLiteLLMModels = getLiteLLMModels as Mock<typeof getLiteLLMModels>
 const mockGetOpenRouterModels = getOpenRouterModels as Mock<typeof getOpenRouterModels>
 const mockGetRequestyModels = getRequestyModels as Mock<typeof getRequestyModels>
-const mockGetGlamaModels = getGlamaModels as Mock<typeof getGlamaModels> // kilocode_Change
+const mockGetGlamaModels = getGlamaModels as Mock<typeof getGlamaModels> // novacode_Change
 const mockGetUnboundModels = getUnboundModels as Mock<typeof getUnboundModels>
 const mockGetIOIntelligenceModels = getIOIntelligenceModels as Mock<typeof getIOIntelligenceModels>
-const mockGetOvhCloudAiEndpointsModels = getOvhCloudAiEndpointsModels as Mock<typeof getOvhCloudAiEndpointsModels> // kilocode_change
+const mockGetOvhCloudAiEndpointsModels = getOvhCloudAiEndpointsModels as Mock<typeof getOvhCloudAiEndpointsModels> // novacode_change
 
 const DUMMY_REQUESTY_KEY = "requesty-key-for-testing"
 const DUMMY_UNBOUND_KEY = "unbound-key-for-testing"
@@ -142,7 +142,7 @@ describe("getModels with new GetModelsOptions", () => {
 		expect(result).toEqual(mockModels)
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	it("calls getGlamaModels for glama provider", async () => {
 		const mockModels = {
 			"glama/model": {
@@ -159,7 +159,7 @@ describe("getModels with new GetModelsOptions", () => {
 		expect(mockGetGlamaModels).toHaveBeenCalled()
 		expect(result).toEqual(mockModels)
 	})
-	// kilocode_change end
+	// novacode_change end
 
 	it("calls getUnboundModels with optional API key", async () => {
 		const mockModels = {
@@ -195,7 +195,7 @@ describe("getModels with new GetModelsOptions", () => {
 		expect(result).toEqual(mockModels)
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	it("calls OvhCloudAiEndpointsModels for ovhcloud provider", async () => {
 		const mockModels = {
 			"ovhcloud/model": {
@@ -212,7 +212,7 @@ describe("getModels with new GetModelsOptions", () => {
 		expect(mockGetOvhCloudAiEndpointsModels).toHaveBeenCalled()
 		expect(result).toEqual(mockModels)
 	})
-	// kilocode_change end
+	// novacode_change end
 
 	it("handles errors and re-throws them", async () => {
 		const expectedError = new Error("LiteLLM connection failed")
@@ -326,7 +326,7 @@ describe("getModelsFromCache disk fallback", () => {
 
 		const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {})
 
-		const result = getModelsFromCache("glama") // kilocode_change
+		const result = getModelsFromCache("glama") // novacode_change
 
 		expect(result).toBeUndefined()
 		expect(consoleErrorSpy).toHaveBeenCalled()
@@ -334,7 +334,7 @@ describe("getModelsFromCache disk fallback", () => {
 		consoleErrorSpy.mockRestore()
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	it("rejects stale ZenMux cache entries with invalid contextWindow", () => {
 		const invalidZenmuxModels = {
 			"anthropic/claude-opus-4": {
@@ -375,7 +375,7 @@ describe("getModelsFromCache disk fallback", () => {
 		expect(result).toEqual(validZenmuxModels)
 		expect(fsSync.existsSync).not.toHaveBeenCalled()
 	})
-	// kilocode_change end
+	// novacode_change end
 })
 
 describe("empty cache protection", () => {

@@ -107,12 +107,12 @@ export function convertToMistralMessages(anthropicMessages: Anthropic.Messages.M
 								return {
 									type: "image_url",
 									imageUrl: {
-										// kilocode_change begin support type==url
+										// novacode_change begin support type==url
 										url:
 											part.source.type === "url"
 												? part.source.url
 												: `data:${part.source.media_type};base64,${part.source.data}`,
-										// kilocode_change end
+										// novacode_change end
 									},
 								}
 							}

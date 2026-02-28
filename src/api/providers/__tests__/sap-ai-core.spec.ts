@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 // npx vitest run api/providers/__tests__/sap-ai-core.spec.ts
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"

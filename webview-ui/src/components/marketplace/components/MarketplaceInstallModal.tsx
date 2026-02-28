@@ -46,12 +46,12 @@ export const MarketplaceInstallModal: React.FC<MarketplaceInstallModalProps> = (
 
 	// Check if item has multiple installation methods
 	const hasMultipleMethods = useMemo(() => {
-		return item && !isSkillItem(item) && Array.isArray(item.content) && item.content.length > 1 // kilocode_change: skills don't have content
+		return item && !isSkillItem(item) && Array.isArray(item.content) && item.content.length > 1 // novacode_change: skills don't have content
 	}, [item])
 
 	// Get installation method names (for display in dropdown)
 	const methodNames = useMemo(() => {
-		if (!item || isSkillItem(item) || !Array.isArray(item.content)) return [] // kilocode_change: skills don't have content
+		if (!item || isSkillItem(item) || !Array.isArray(item.content)) return [] // novacode_change: skills don't have content
 
 		// Content is an array of McpInstallationMethod objects
 		return (item.content as Array<{ name: string; content: string }>).map((method) => method.name)
@@ -59,7 +59,7 @@ export const MarketplaceInstallModal: React.FC<MarketplaceInstallModalProps> = (
 
 	// Get effective parameters for the selected method (global + method-specific)
 	const effectiveParameters = useMemo(() => {
-		if (!item || isSkillItem(item)) return [] // kilocode_change: skills don't have content/parameters
+		if (!item || isSkillItem(item)) return [] // novacode_change: skills don't have content/parameters
 
 		const globalParams = item.type === "mcp" ? item.parameters || [] : []
 		let methodParams: McpParameter[] = []
@@ -86,7 +86,7 @@ export const MarketplaceInstallModal: React.FC<MarketplaceInstallModalProps> = (
 		let methodPrereqs: string[] = []
 
 		// Get method-specific prerequisites if content is an array
-		if (!isSkillItem(item) && Array.isArray(item.content) /* kilocode_change skills don't have content*/) {
+		if (!isSkillItem(item) && Array.isArray(item.content) /* novacode_change skills don't have content*/) {
 			const selectedMethod = item.content[selectedMethodIndex] as McpInstallationMethod
 			methodPrereqs = selectedMethod?.prerequisites || []
 		}
@@ -99,12 +99,12 @@ export const MarketplaceInstallModal: React.FC<MarketplaceInstallModalProps> = (
 	// Update parameter values when method changes
 	React.useEffect(() => {
 		if (item) {
-			// kilocode_change start: skills don't have content/parameters
+			// novacode_change start: skills don't have content/parameters
 			if (isSkillItem(item)) {
 				setParameterValues({})
 				return
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			// Get effective parameters for current method
 			const globalParams = item.type === "mcp" ? item.parameters || [] : []
@@ -373,7 +373,7 @@ export const MarketplaceInstallModal: React.FC<MarketplaceInstallModalProps> = (
 								{t("marketplace:install.done")}
 							</Button>
 							<Button
-								// kilocode_change: only display when item type is modes
+								// novacode_change: only display when item type is modes
 								style={item.type === "mcp" ? { display: "none" } : undefined}
 								onClick={() => handlePostInstallAction(item.type === "mcp" ? "mcp" : "modes")}>
 								{item.type === "mcp"

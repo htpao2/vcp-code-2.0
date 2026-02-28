@@ -1,10 +1,10 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
 import * as vscode from "vscode"
 import { ManagedIndexer } from "../ManagedIndexer"
 import { GitWatcher, GitWatcherEvent, GitWatcherFile } from "../../../../shared/GitWatcher"
 import * as gitUtils from "../git-utils"
-import * as kiloConfigFile from "../../../../utils/kilo-config-file"
+import * as novaConfigFile from "../../../../utils/nova-config-file"
 import * as git from "../../../../utils/git"
 import * as apiClient from "../api-client"
 
@@ -34,7 +34,7 @@ vi.mock("vscode", () => ({
 // Mock dependencies
 vi.mock("../../../../shared/GitWatcher")
 vi.mock("../git-utils")
-vi.mock("../../../../utils/kilo-config-file")
+vi.mock("../../../../utils/nova-config-file")
 vi.mock("../../../../utils/git")
 vi.mock("../api-client")
 vi.mock("../../../../utils/logging", () => ({
@@ -70,12 +70,12 @@ describe("ManagedIndexer", () => {
 		// Setup mock ContextProxy
 		mockContextProxy = {
 			getSecret: vi.fn((key: string) => {
-				if (key === "kilocodeToken") return "test-token"
+				if (key === "novacodeToken") return "test-token"
 				return null
 			}),
 			getValue: vi.fn((key: string) => {
-				if (key === "kilocodeOrganizationId") return "test-org-id"
-				if (key === "kilocodeTesterWarningsDisabledUntil") return null
+				if (key === "novacodeOrganizationId") return "test-org-id"
+				if (key === "novacodeTesterWarningsDisabledUntil") return null
 				return null
 			}),
 			getGlobalState: vi.fn((key: string) => {
@@ -100,7 +100,7 @@ describe("ManagedIndexer", () => {
 			repositoryUrl: "https://github.com/test/repo",
 			repositoryName: "repo",
 		})
-		vi.mocked(kiloConfigFile.getKilocodeConfig).mockResolvedValue({
+		vi.mocked(novaConfigFile.getNovacodeConfig).mockResolvedValue({
 			project: { id: "test-project-id" },
 		} as any)
 		vi.mocked(apiClient.getServerManifest).mockResolvedValue({
@@ -154,13 +154,13 @@ describe("ManagedIndexer", () => {
 		it("should fetch config from ContextProxy", async () => {
 			const config = await indexer.fetchConfig()
 
-			expect(mockContextProxy.getSecret).toHaveBeenCalledWith("kilocodeToken")
-			expect(mockContextProxy.getValue).toHaveBeenCalledWith("kilocodeOrganizationId")
-			expect(mockContextProxy.getValue).toHaveBeenCalledWith("kilocodeTesterWarningsDisabledUntil")
+			expect(mockContextProxy.getSecret).toHaveBeenCalledWith("novacodeToken")
+			expect(mockContextProxy.getValue).toHaveBeenCalledWith("novacodeOrganizationId")
+			expect(mockContextProxy.getValue).toHaveBeenCalledWith("novacodeTesterWarningsDisabledUntil")
 			expect(config).toEqual({
-				kilocodeOrganizationId: "test-org-id",
-				kilocodeToken: "test-token",
-				kilocodeTesterWarningsDisabledUntil: null,
+				novacodeOrganizationId: "test-org-id",
+				novacodeToken: "test-token",
+				novacodeTesterWarningsDisabledUntil: null,
 			})
 		})
 
@@ -168,9 +168,9 @@ describe("ManagedIndexer", () => {
 			await indexer.fetchConfig()
 
 			expect(indexer.config).toEqual({
-				kilocodeOrganizationId: "test-org-id",
-				kilocodeToken: "test-token",
-				kilocodeTesterWarningsDisabledUntil: null,
+				novacodeOrganizationId: "test-org-id",
+				novacodeToken: "test-token",
+				novacodeTesterWarningsDisabledUntil: null,
 			})
 		})
 
@@ -181,9 +181,9 @@ describe("ManagedIndexer", () => {
 			const config = await indexer.fetchConfig()
 
 			expect(config).toEqual({
-				kilocodeOrganizationId: null,
-				kilocodeToken: null,
-				kilocodeTesterWarningsDisabledUntil: null,
+				novacodeOrganizationId: null,
+				novacodeToken: null,
+				novacodeTesterWarningsDisabledUntil: null,
 			})
 		})
 	})
@@ -230,7 +230,7 @@ describe("ManagedIndexer", () => {
 		})
 
 		it("should skip folders without project ID", async () => {
-			vi.mocked(kiloConfigFile.getKilocodeConfig).mockResolvedValue(null)
+			vi.mocked(novaConfigFile.getNovacodeConfig).mockResolvedValue(null)
 
 			await indexer.start()
 
@@ -278,7 +278,7 @@ describe("ManagedIndexer", () => {
 
 			vi.mocked(vscode.workspace).workspaceFolders = [mockWorkspaceFolder, folder2]
 
-			vi.mocked(kiloConfigFile.getKilocodeConfig).mockImplementation(async (cwd) => {
+			vi.mocked(novaConfigFile.getNovacodeConfig).mockImplementation(async (cwd) => {
 				if (cwd === "/test/workspace") {
 					return { project: { id: "project-1" } } as any
 				}
@@ -506,7 +506,7 @@ describe("ManagedIndexer", () => {
 
 				await indexer.onEvent(event)
 
-				expect(kiloConfigFile.getKilocodeConfig).toHaveBeenCalledWith(
+				expect(novaConfigFile.getNovacodeConfig).toHaveBeenCalledWith(
 					"/test/workspace",
 					"https://github.com/test/repo",
 				)
@@ -1027,7 +1027,7 @@ describe("ManagedIndexer", () => {
 
 			vi.mocked(vscode.workspace).workspaceFolders = [folder1, folder2]
 
-			vi.mocked(kiloConfigFile.getKilocodeConfig).mockImplementation(async (cwd) => {
+			vi.mocked(novaConfigFile.getNovacodeConfig).mockImplementation(async (cwd) => {
 				if (cwd === "/test/workspace") {
 					return { project: { id: "project-1" } } as any
 				}
@@ -1067,7 +1067,7 @@ describe("ManagedIndexer", () => {
 
 			vi.mocked(vscode.workspace).workspaceFolders = [folder1, folder2]
 
-			vi.mocked(kiloConfigFile.getKilocodeConfig).mockImplementation(async (cwd) => {
+			vi.mocked(novaConfigFile.getNovacodeConfig).mockImplementation(async (cwd) => {
 				if (cwd === "/test/workspace") {
 					return { project: { id: "project-1" } } as any
 				}

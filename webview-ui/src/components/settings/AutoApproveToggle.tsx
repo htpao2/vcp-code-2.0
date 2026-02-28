@@ -8,7 +8,7 @@ type AutoApproveToggles = Pick<
 	GlobalSettings,
 	| "alwaysAllowReadOnly"
 	| "alwaysAllowWrite"
-	| "alwaysAllowDelete" // kilocode_change
+	| "alwaysAllowDelete" // novacode_change
 	| "alwaysAllowBrowser"
 	| "alwaysAllowMcp"
 	| "alwaysAllowModeSwitch"
@@ -42,7 +42,7 @@ export const autoApproveSettingsConfig: Record<AutoApproveSetting, AutoApproveCo
 		icon: "edit",
 		testId: "always-allow-write-toggle",
 	},
-	// kilocode_change start
+	// novacode_change start
 	alwaysAllowDelete: {
 		key: "alwaysAllowDelete",
 		labelKey: "settings:autoApprove.delete.label",
@@ -50,7 +50,7 @@ export const autoApproveSettingsConfig: Record<AutoApproveSetting, AutoApproveCo
 		icon: "trash",
 		testId: "always-allow-delete-toggle",
 	},
-	// kilocode_change end
+	// novacode_change end
 	alwaysAllowBrowser: {
 		key: "alwaysAllowBrowser",
 		labelKey: "settings:autoApprove.browser.label",

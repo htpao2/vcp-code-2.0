@@ -9,7 +9,7 @@ type SectionHeaderProps = HTMLAttributes<HTMLDivElement> & {
 
 export const SectionHeader = ({ description, children, className, ...props }: SectionHeaderProps) => {
 	return (
-		// kilocode_change: Add bg-vscode-sideBar-background class
+		// novacode_change: Add bg-vscode-sideBar-background class
 		<div
 			className={cn(
 				"sticky top-0 z-10 bg-vscode-sideBar-background text-vscode-sideBar-foreground px-5 pt-6 pb-4",

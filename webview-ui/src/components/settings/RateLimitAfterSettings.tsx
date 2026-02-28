@@ -1,4 +1,4 @@
-// kilocode_change - file added
+// novacode_change - file added
 import { useAppTranslation } from "@/i18n/TranslationContext"
 import { VSCodeCheckbox } from "@vscode/webview-ui-toolkit/react"
 import { useCallback } from "react"

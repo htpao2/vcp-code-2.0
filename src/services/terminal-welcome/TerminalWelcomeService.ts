@@ -1,7 +1,8 @@
-// kilocode_change - new file
+// novacode_change - new file
 import * as vscode from "vscode"
 import { t } from "../../i18n"
 import { getKeybindingForCommand } from "../../utils/keybindings"
+import { Package } from "../../shared/package"
 
 /**
  * Service that displays welcome messages in newly opened terminals
@@ -34,13 +35,16 @@ export class TerminalWelcomeService {
 			return // Don't show the tip if already shown this session
 		}
 
-		this.tipShownThisSession = true // kilocode_change: Mark as shown for this session
+		this.tipShownThisSession = true // novacode_change: Mark as shown for this session
 		setTimeout(() => this.showWelcomeMessage(terminal), 500)
 	}
 
 	private async showWelcomeMessage(terminal: vscode.Terminal): Promise<void> {
-		const shortcut = await getKeybindingForCommand("kilo-code.generateTerminalCommand")
-		const message = t("kilocode:terminalCommandGenerator.tipMessage", { shortcut })
+		const primaryCommand = `${Package.name}.generateTerminalCommand`
+		const legacyCommand = "nova-code.generateTerminalCommand"
+		const shortcut =
+			(await getKeybindingForCommand(primaryCommand)) || (await getKeybindingForCommand(legacyCommand))
+		const message = t("novacode:terminalCommandGenerator.tipMessage", { shortcut })
 		vscode.window.showInformationMessage(message)
 	}
 

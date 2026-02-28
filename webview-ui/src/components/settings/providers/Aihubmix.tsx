@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { useCallback, useState } from "react"
 import { Checkbox } from "vscrui"
 import { VSCodeTextField } from "@vscode/webview-ui-toolkit/react"

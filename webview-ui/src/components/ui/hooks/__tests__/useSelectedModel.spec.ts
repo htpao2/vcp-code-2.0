@@ -17,7 +17,7 @@ import {
 import { useSelectedModel } from "../useSelectedModel"
 import { useRouterModels } from "../useRouterModels"
 import { useOpenRouterModelProviders } from "../useOpenRouterModelProviders"
-import { ExtensionStateContextProvider } from "@src/context/ExtensionStateContext" // kilocode_change
+import { ExtensionStateContextProvider } from "@src/context/ExtensionStateContext" // novacode_change
 
 vi.mock("../useRouterModels")
 vi.mock("../useOpenRouterModelProviders")
@@ -33,14 +33,14 @@ const createWrapper = () => {
 			},
 		},
 	})
-	// kilocode_change start: wrap with ExtensionStateContextProvider
+	// novacode_change start: wrap with ExtensionStateContextProvider
 	return ({ children }: { children: React.ReactNode }) =>
 		React.createElement(
 			ExtensionStateContextProvider,
 			null,
 			React.createElement(QueryClientProvider, { client: queryClient }, children),
 		)
-	// kilocode_change end
+	// novacode_change end
 }
 
 describe("useSelectedModel", () => {
@@ -72,7 +72,7 @@ describe("useSelectedModel", () => {
 					huggingface: {},
 					litellm: {},
 					apertis: {},
-					kilocode: {},
+					novacode: {},
 					ovhcloud: {},
 					gemini: {},
 					inception: {},
@@ -152,7 +152,7 @@ describe("useSelectedModel", () => {
 					huggingface: {},
 					litellm: {},
 					apertis: {},
-					kilocode: {},
+					novacode: {},
 					ovhcloud: {},
 					gemini: {},
 					inception: {},
@@ -236,7 +236,7 @@ describe("useSelectedModel", () => {
 					huggingface: {},
 					litellm: {},
 					apertis: {},
-					kilocode: {},
+					novacode: {},
 					ovhcloud: {},
 					gemini: {},
 					inception: {},
@@ -307,7 +307,7 @@ describe("useSelectedModel", () => {
 					huggingface: {},
 					litellm: {},
 					apertis: {},
-					kilocode: {},
+					novacode: {},
 					ovhcloud: {},
 					gemini: {},
 					inception: {},
@@ -367,7 +367,7 @@ describe("useSelectedModel", () => {
 					huggingface: {},
 					litellm: {},
 					apertis: {},
-					kilocode: {},
+					novacode: {},
 					ovhcloud: {},
 					gemini: {},
 					inception: {},
@@ -449,7 +449,7 @@ describe("useSelectedModel", () => {
 					huggingface: {},
 					litellm: {},
 					apertis: {},
-					kilocode: {},
+					novacode: {},
 					ovhcloud: {},
 					gemini: {},
 					inception: {},
@@ -543,7 +543,7 @@ describe("useSelectedModel", () => {
 			expect(result.current.id).toBe(firstNonCodingMoonshotModelId)
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("keeps non-coding model when Moonshot coding endpoint is selected", () => {
 			const apiConfiguration: ProviderSettings = {
 				apiProvider: "moonshot",
@@ -556,7 +556,7 @@ describe("useSelectedModel", () => {
 
 			expect(result.current.id).toBe("kimi-k2-thinking")
 		})
-		// kilocode_change end
+		// novacode_change end
 
 		it("keeps kimi-for-coding when Moonshot coding endpoint is selected", () => {
 			const apiConfiguration: ProviderSettings = {
@@ -581,7 +581,7 @@ describe("useSelectedModel", () => {
 					huggingface: {},
 					litellm: {},
 					apertis: {},
-					kilocode: {},
+					novacode: {},
 					ovhcloud: {},
 					gemini: {},
 					inception: {},
@@ -635,7 +635,7 @@ describe("useSelectedModel", () => {
 					huggingface: {},
 					litellm: {},
 					apertis: {},
-					kilocode: {},
+					novacode: {},
 					ovhcloud: {},
 					gemini: {},
 					inception: {},
@@ -710,7 +710,7 @@ describe("useSelectedModel", () => {
 		})
 	})
 
-	// kilocode_change end
+	// novacode_change end
 
 	describe("anthropic provider with 1M context", () => {
 		beforeEach(() => {
@@ -753,7 +753,7 @@ describe("useSelectedModel", () => {
 					huggingface: {},
 					litellm: {},
 					apertis: {},
-					kilocode: {},
+					novacode: {},
 					ovhcloud: {},
 					gemini: {},
 					inception: {},
@@ -825,8 +825,8 @@ describe("useSelectedModel", () => {
 		})
 	})
 
-		// kilocode_change start
-		describe("vertex provider", () => {
+	// novacode_change start
+	describe("vertex provider", () => {
 		beforeEach(() => {
 			mockUseRouterModels.mockReturnValue({
 				data: {
@@ -861,10 +861,10 @@ describe("useSelectedModel", () => {
 			expect(result.current.id).toBe("claude-opus-4-6")
 			expect(result.current.info?.supportsImages).toBe(true)
 		})
-		})
-		// kilocode_change end
+	})
+	// novacode_change end
 
-		describe("litellm provider", () => {
+	describe("litellm provider", () => {
 		beforeEach(() => {
 			mockUseOpenRouterModelProviders.mockReturnValue({
 				data: {},
@@ -881,7 +881,7 @@ describe("useSelectedModel", () => {
 					huggingface: {},
 					litellm: {},
 					apertis: {},
-					kilocode: {},
+					novacode: {},
 					ovhcloud: {},
 					gemini: {},
 					inception: {},
@@ -935,7 +935,7 @@ describe("useSelectedModel", () => {
 						},
 					},
 					apertis: {},
-					kilocode: {},
+					novacode: {},
 					ovhcloud: {},
 					gemini: {},
 					inception: {},
@@ -992,7 +992,7 @@ describe("useSelectedModel", () => {
 						"custom-model": customModelInfo,
 					},
 					apertis: {},
-					kilocode: {},
+					novacode: {},
 					ovhcloud: {},
 					gemini: {},
 					inception: {},
@@ -1045,7 +1045,7 @@ describe("useSelectedModel", () => {
 					huggingface: {},
 					litellm: {},
 					apertis: {},
-					kilocode: {},
+					novacode: {},
 					ovhcloud: {},
 					gemini: {},
 					inception: {},

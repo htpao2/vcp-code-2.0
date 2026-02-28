@@ -1,12 +1,12 @@
-import React, { useState, useCallback, memo, useMemo } from "react"
+﻿import React, { useState, useCallback, memo, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { VSCodeButton } from "@vscode/webview-ui-toolkit/react"
 import { BookOpenText, MessageCircleWarning, Copy, Check, Microscope, Info } from "lucide-react"
 
 import { useCopyToClipboard } from "@src/utils/clipboard"
 import { vscode } from "@src/utils/vscode"
-import CodeBlock from "../kilocode/common/CodeBlock" // kilocode_change
-import { Button } from "@src/components/ui" // kilocode_change
+import CodeBlock from "../nova/common/CodeBlock" // novacode_change
+import { Button } from "@src/components/ui" // novacode_change
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@src/components/ui/dialog"
 import { useExtensionState } from "@src/context/ExtensionStateContext"
 import { useSelectedModel } from "@src/components/ui/hooks/useSelectedModel"
@@ -68,8 +68,8 @@ export interface ErrorRowProps {
 	messageClassName?: string
 	code?: number
 	docsURL?: string // NEW: Optional documentation link
-	showLoginButton?: boolean // kilocode_change
-	onLoginClick?: () => void // kilocode_change
+	showLoginButton?: boolean // novacode_change
+	onLoginClick?: () => void // novacode_change
 	errorDetails?: string // Optional detailed error message shown in modal
 }
 
@@ -89,8 +89,8 @@ export const ErrorRow = memo(
 		messageClassName,
 		docsURL,
 		code,
-		showLoginButton = false, // kilocode_change
-		onLoginClick, // kilocode_change
+		showLoginButton = false, // novacode_change
+		onLoginClick, // novacode_change
 		errorDetails,
 	}: ErrorRowProps) => {
 		const { t } = useTranslation()
@@ -286,15 +286,15 @@ export const ErrorRow = memo(
 								</button>
 							)}
 						</p>
-						{/* kilocode_change start */}
+						{/* novacode_change start */}
 						{showLoginButton && onLoginClick && (
 							<div className="ml-6 mt-3">
 								<Button variant="secondary" onClick={onLoginClick}>
-									{t("kilocode:settings.provider.login")}
+									{t("novacode:settings.provider.login")}
 								</Button>
 							</div>
 						)}
-						{/* kilocode_change end */}
+						{/* novacode_change end */}
 						{additionalContent}
 					</div>
 				</div>

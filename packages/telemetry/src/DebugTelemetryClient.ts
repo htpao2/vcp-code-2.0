@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { type TelemetryEvent } from "@roo-code/types"
 
 import { BaseTelemetryClient } from "./BaseTelemetryClient"

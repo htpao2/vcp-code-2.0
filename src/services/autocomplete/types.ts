@@ -137,7 +137,7 @@ export interface AutocompleteStatusBarStateProps {
 	model?: string
 	provider?: string
 	profileName?: string | null
-	hasKilocodeProfileWithNoBalance?: boolean
+	hasNovacodeProfileWithNoBalance?: boolean
 	hasNoUsableProvider?: boolean
 	totalSessionCost: number
 	completionCount: number

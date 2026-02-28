@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { render, screen } from "@testing-library/react"
 
 import type { ProviderSettings } from "@roo-code/types"

@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { test, type TestFixtures } from "./playwright-base-test"
 import {
 	sendMessage,
@@ -11,7 +11,7 @@ import {
 test.describe("E2E Chat Test", () => {
 	test("should configure credentials and send a message", async ({ workbox: page, takeScreenshot }: TestFixtures) => {
 		await verifyExtensionInstalled(page)
-		await waitForWebviewText(page, "Welcome to Kilo Code!")
+		await waitForWebviewText(page, "Welcome to Nova Code!")
 
 		await configureApiKeyThroughUI(page)
 		await waitForWebviewText(page, "Generate, refactor, and debug code with AI assistance")

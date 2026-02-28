@@ -10,8 +10,8 @@ export const geminiModels = {
 		maxTokens: 65_536,
 		contextWindow: 1_048_576,
 		supportsImages: true,
-		supportsNativeTools: true, // kilocode_change
-		defaultToolProtocol: "native", // kilocode_change
+		supportsNativeTools: true, // novacode_change
+		defaultToolProtocol: "native", // novacode_change
 		supportsPromptCache: true,
 		supportsReasoningEffort: ["low", "medium", "high"],
 		reasoningEffort: "low",
@@ -41,8 +41,8 @@ export const geminiModels = {
 		maxTokens: 65_536,
 		contextWindow: 1_048_576,
 		supportsImages: true,
-		supportsNativeTools: true, // kilocode_change
-		defaultToolProtocol: "native", // kilocode_change
+		supportsNativeTools: true, // novacode_change
+		defaultToolProtocol: "native", // novacode_change
 		supportsPromptCache: true,
 		supportsReasoningEffort: ["low", "medium", "high"],
 		reasoningEffort: "low",

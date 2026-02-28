@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { describe, it, expect, vi, beforeEach } from "vitest"
 import * as vscode from "vscode"
 import { SettingsSyncService } from "../SettingsSyncService"
@@ -41,16 +41,16 @@ describe("SettingsSyncService", () => {
 			await SettingsSyncService.initialize(mockContext, mockOutputChannel)
 
 			expect(mockGlobalState.setKeysForSync).toHaveBeenCalledWith([
-				"kilo-code.allowedCommands",
-				"kilo-code.deniedCommands",
-				"kilo-code.autoApprovalEnabled",
-				"kilo-code.fuzzyMatchThreshold",
-				"kilo-code.diffEnabled",
-				"kilo-code.directoryContextAddedContext",
-				"kilo-code.language",
-				"kilo-code.customModes",
-				"kilo-code.firstInstallCompleted",
-				"kilo-code.telemetrySetting",
+				"nova-code.allowedCommands",
+				"nova-code.deniedCommands",
+				"nova-code.autoApprovalEnabled",
+				"nova-code.fuzzyMatchThreshold",
+				"nova-code.diffEnabled",
+				"nova-code.directoryContextAddedContext",
+				"nova-code.language",
+				"nova-code.customModes",
+				"nova-code.firstInstallCompleted",
+				"nova-code.telemetrySetting",
 			])
 			expect(mockOutputChannel.appendLine).toHaveBeenCalledWith(
 				expect.stringContaining("[SettingsSyncService] Registered 10 keys for synchronization"),
@@ -81,7 +81,7 @@ describe("SettingsSyncService", () => {
 
 			expect(mockConfiguration.get).toHaveBeenCalledWith("enableSettingsSync", true)
 			expect(mockGlobalState.setKeysForSync).toHaveBeenCalledWith(
-				expect.arrayContaining(["kilo-code.allowedCommands", "kilo-code.deniedCommands"]),
+				expect.arrayContaining(["nova-code.allowedCommands", "nova-code.deniedCommands"]),
 			)
 		})
 
@@ -94,7 +94,7 @@ describe("SettingsSyncService", () => {
 			await SettingsSyncService.initialize(mockContext)
 
 			expect(mockGlobalState.setKeysForSync).toHaveBeenCalledWith(
-				expect.arrayContaining(["kilo-code.allowedCommands"]),
+				expect.arrayContaining(["nova-code.allowedCommands"]),
 			)
 		})
 	})
@@ -120,16 +120,16 @@ describe("SettingsSyncService", () => {
 			const syncKeys = SettingsSyncService.getSyncKeys()
 
 			expect(syncKeys).toEqual([
-				"kilo-code.allowedCommands",
-				"kilo-code.deniedCommands",
-				"kilo-code.autoApprovalEnabled",
-				"kilo-code.fuzzyMatchThreshold",
-				"kilo-code.diffEnabled",
-				"kilo-code.directoryContextAddedContext",
-				"kilo-code.language",
-				"kilo-code.customModes",
-				"kilo-code.firstInstallCompleted",
-				"kilo-code.telemetrySetting",
+				"nova-code.allowedCommands",
+				"nova-code.deniedCommands",
+				"nova-code.autoApprovalEnabled",
+				"nova-code.fuzzyMatchThreshold",
+				"nova-code.diffEnabled",
+				"nova-code.directoryContextAddedContext",
+				"nova-code.language",
+				"nova-code.customModes",
+				"nova-code.firstInstallCompleted",
+				"nova-code.telemetrySetting",
 			])
 		})
 	})

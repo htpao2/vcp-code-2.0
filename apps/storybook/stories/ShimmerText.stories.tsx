@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { ShimmerText } from "../../../webview-ui/src/components/ui/shimmer-text"

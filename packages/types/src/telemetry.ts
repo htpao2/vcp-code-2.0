@@ -2,7 +2,7 @@ import { z } from "zod"
 
 import { providerNames } from "./provider-settings.js"
 import { clineMessageSchema } from "./message.js"
-import { toolProtocolSchema } from "./tool.js" // kilocode_change
+import { toolProtocolSchema } from "./tool.js" // novacode_change
 
 /**
  * TelemetrySetting
@@ -19,7 +19,7 @@ export type TelemetrySetting = z.infer<typeof telemetrySettingsSchema>
  */
 
 export enum TelemetryEventName {
-	// kilocode_change start
+	// novacode_change start
 	COMMIT_MSG_GENERATED = "Commit Message Generated",
 
 	INLINE_ASSIST_AUTO_TASK = "Inline Assist Auto Task",
@@ -58,7 +58,7 @@ export enum TelemetryEventName {
 	AGENT_MANAGER_SESSION_STOPPED = "Agent Manager Session Stopped",
 	AGENT_MANAGER_SESSION_ERROR = "Agent Manager Session Error",
 	AGENT_MANAGER_LOGIN_ISSUE = "Agent Manager Login Issue",
-	// kilocode_change end
+	// novacode_change end
 
 	TASK_CREATED = "Task Created",
 	TASK_RESTARTED = "Task Reopened",
@@ -127,7 +127,7 @@ export const staticAppPropertiesSchema = z.object({
 	vscodeVersion: z.string(),
 	platform: z.string(),
 	editorName: z.string(),
-	// kilocode_change start
+	// novacode_change start
 	wrapped: z.boolean(),
 	wrapper: z.string().nullable(),
 	wrapperTitle: z.string().nullable(),
@@ -135,7 +135,7 @@ export const staticAppPropertiesSchema = z.object({
 	wrapperVersion: z.string().nullable(),
 	machineId: z.string().nullable(),
 	vscodeIsTelemetryEnabled: z.boolean().nullable(),
-	// kilocode_change end
+	// novacode_change end
 	hostname: z.string().optional(),
 })
 
@@ -177,11 +177,11 @@ export const taskPropertiesSchema = z.object({
 			pending: z.number(),
 		})
 		.optional(),
-	// kilocode_change start
+	// novacode_change start
 	currentTaskSize: z.number().optional(),
 	taskHistorySize: z.number().optional(),
 	toolStyle: toolProtocolSchema.optional(),
-	// kilocode_change end
+	// novacode_change end
 })
 
 export type TaskProperties = z.infer<typeof taskPropertiesSchema>
@@ -219,30 +219,30 @@ export type TelemetryEvent = {
 export const rooCodeTelemetryEventSchema = z.discriminatedUnion("type", [
 	z.object({
 		type: z.enum([
-			// kilocode_change start
-			TelemetryEventName.COMMIT_MSG_GENERATED, // kilocode_change
-			TelemetryEventName.INLINE_ASSIST_AUTO_TASK, // kilocode_change
-			TelemetryEventName.AUTOCOMPLETE_SUGGESTION_REQUESTED, // kilocode_change
-			TelemetryEventName.AUTOCOMPLETE_LLM_REQUEST_COMPLETED, // kilocode_change
-			TelemetryEventName.AUTOCOMPLETE_LLM_REQUEST_FAILED, // kilocode_change
-			TelemetryEventName.AUTOCOMPLETE_LLM_SUGGESTION_RETURNED, // kilocode_change
-			TelemetryEventName.AUTOCOMPLETE_SUGGESTION_CACHE_HIT, // kilocode_change
-			TelemetryEventName.AUTOCOMPLETE_ACCEPT_SUGGESTION, // kilocode_change
-			TelemetryEventName.AUTOCOMPLETE_SUGGESTION_FILTERED, // kilocode_change
-			TelemetryEventName.AUTOCOMPLETE_UNIQUE_SUGGESTION_SHOWN, // kilocode_change
-			TelemetryEventName.WEBVIEW_MEMORY_USAGE, // kilocode_change
-			TelemetryEventName.AUTO_PURGE_STARTED, // kilocode_change
-			TelemetryEventName.AUTO_PURGE_COMPLETED, // kilocode_change
-			TelemetryEventName.AUTO_PURGE_FAILED, // kilocode_change
-			TelemetryEventName.MANUAL_PURGE_TRIGGERED, // kilocode_change
-			TelemetryEventName.GHOST_SERVICE_DISABLED, // kilocode_change
-			TelemetryEventName.AGENT_MANAGER_OPENED, // kilocode_change
-			TelemetryEventName.AGENT_MANAGER_SESSION_STARTED, // kilocode_change
-			TelemetryEventName.AGENT_MANAGER_SESSION_COMPLETED, // kilocode_change
-			TelemetryEventName.AGENT_MANAGER_SESSION_STOPPED, // kilocode_change
-			TelemetryEventName.AGENT_MANAGER_SESSION_ERROR, // kilocode_change
-			TelemetryEventName.AGENT_MANAGER_LOGIN_ISSUE, // kilocode_change
-			// kilocode_change end
+			// novacode_change start
+			TelemetryEventName.COMMIT_MSG_GENERATED, // novacode_change
+			TelemetryEventName.INLINE_ASSIST_AUTO_TASK, // novacode_change
+			TelemetryEventName.AUTOCOMPLETE_SUGGESTION_REQUESTED, // novacode_change
+			TelemetryEventName.AUTOCOMPLETE_LLM_REQUEST_COMPLETED, // novacode_change
+			TelemetryEventName.AUTOCOMPLETE_LLM_REQUEST_FAILED, // novacode_change
+			TelemetryEventName.AUTOCOMPLETE_LLM_SUGGESTION_RETURNED, // novacode_change
+			TelemetryEventName.AUTOCOMPLETE_SUGGESTION_CACHE_HIT, // novacode_change
+			TelemetryEventName.AUTOCOMPLETE_ACCEPT_SUGGESTION, // novacode_change
+			TelemetryEventName.AUTOCOMPLETE_SUGGESTION_FILTERED, // novacode_change
+			TelemetryEventName.AUTOCOMPLETE_UNIQUE_SUGGESTION_SHOWN, // novacode_change
+			TelemetryEventName.WEBVIEW_MEMORY_USAGE, // novacode_change
+			TelemetryEventName.AUTO_PURGE_STARTED, // novacode_change
+			TelemetryEventName.AUTO_PURGE_COMPLETED, // novacode_change
+			TelemetryEventName.AUTO_PURGE_FAILED, // novacode_change
+			TelemetryEventName.MANUAL_PURGE_TRIGGERED, // novacode_change
+			TelemetryEventName.GHOST_SERVICE_DISABLED, // novacode_change
+			TelemetryEventName.AGENT_MANAGER_OPENED, // novacode_change
+			TelemetryEventName.AGENT_MANAGER_SESSION_STARTED, // novacode_change
+			TelemetryEventName.AGENT_MANAGER_SESSION_COMPLETED, // novacode_change
+			TelemetryEventName.AGENT_MANAGER_SESSION_STOPPED, // novacode_change
+			TelemetryEventName.AGENT_MANAGER_SESSION_ERROR, // novacode_change
+			TelemetryEventName.AGENT_MANAGER_LOGIN_ISSUE, // novacode_change
+			// novacode_change end
 
 			TelemetryEventName.TASK_CREATED,
 			TelemetryEventName.TASK_RESTARTED,
@@ -343,10 +343,10 @@ export interface TelemetryClient {
 
 	setProvider(provider: TelemetryPropertiesProvider): void
 	capture(options: TelemetryEvent): Promise<void>
-	// kilocode_change start
+	// novacode_change start
 	captureException(error: Error, properties?: Record<string | number, unknown>): void
-	updateIdentity(kilocodeToken: string): Promise<void>
-	// kilocode_change end
+	updateIdentity(novacodeToken: string): Promise<void>
+	// novacode_change end
 	updateTelemetryState(isOptedIn: boolean): void
 	isTelemetryEnabled(): boolean
 	shutdown(): Promise<void>

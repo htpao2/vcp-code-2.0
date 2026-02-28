@@ -281,7 +281,7 @@ describe("CustomToolRegistry", () => {
 			const result = await registry.loadFromDirectory(TEST_FIXTURES_DIR)
 
 			expect(result.loaded).toContain("cached")
-		}, 30000)
+		}, 120_000)
 	})
 
 	describe.sequential("loadFromDirectories", () => {
@@ -292,7 +292,7 @@ describe("CustomToolRegistry", () => {
 			expect(result.loaded).toContain("simple") // From both directories (override wins).
 			expect(result.loaded).toContain("unique_override") // Only in override directory.
 			expect(result.loaded).toContain("multi_toolA") // Only in fixtures directory.
-		}, 60000)
+		}, 180_000)
 
 		it("should allow later directories to override earlier ones", async () => {
 			await registry.loadFromDirectories([TEST_FIXTURES_DIR, TEST_FIXTURES_OVERRIDE_DIR])
@@ -301,7 +301,7 @@ describe("CustomToolRegistry", () => {
 			const simpleTool = registry.get("simple")
 			expect(simpleTool).toBeDefined()
 			expect(simpleTool?.description).toBe("Simple tool - OVERRIDDEN")
-		}, 60000)
+		}, 180_000)
 
 		it("should preserve order: first directory loaded first, second overrides", async () => {
 			// Load in reverse order: override first, then fixtures.

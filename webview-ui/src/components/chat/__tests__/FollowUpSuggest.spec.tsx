@@ -339,7 +339,7 @@ describe("FollowUpSuggest", () => {
 		expect(mockOnSuggestionClick).not.toHaveBeenCalled()
 	})
 
-	it("should update countdown display as time progresses", async () => {
+	it("should update countdown display as time progresses", () => {
 		renderWithTestProviders(
 			<FollowUpSuggest
 				suggestions={mockSuggestions}
@@ -355,7 +355,7 @@ describe("FollowUpSuggest", () => {
 		expect(screen.getByText(/3s/)).toBeInTheDocument()
 
 		// Advance timer by 1 second and wait for React to update
-		await act(async () => {
+		act(() => {
 			vi.advanceTimersByTime(1000)
 		})
 
@@ -363,7 +363,7 @@ describe("FollowUpSuggest", () => {
 		expect(screen.getByText(/2s/)).toBeInTheDocument()
 
 		// Advance timer by another second
-		await act(async () => {
+		act(() => {
 			vi.advanceTimersByTime(1000)
 		})
 
@@ -371,7 +371,7 @@ describe("FollowUpSuggest", () => {
 		expect(screen.getByText(/1s/)).toBeInTheDocument()
 
 		// Advance timer to completion - countdown should disappear
-		await act(async () => {
+		act(() => {
 			vi.advanceTimersByTime(1000)
 		})
 
@@ -524,7 +524,7 @@ describe("FollowUpSuggest", () => {
 			expect(screen.queryByText(/\d+s/)).not.toBeInTheDocument()
 		})
 
-		it("should handle pause during countdown progress", async () => {
+		it("should handle pause during countdown progress", () => {
 			const { rerender } = renderWithTestProviders(
 				<FollowUpSuggest
 					suggestions={mockSuggestions}
@@ -540,7 +540,7 @@ describe("FollowUpSuggest", () => {
 			expect(screen.getByText(/3s/)).toBeInTheDocument()
 
 			// Advance timer by 1 second
-			await act(async () => {
+			act(() => {
 				vi.advanceTimersByTime(1000)
 			})
 
@@ -566,7 +566,7 @@ describe("FollowUpSuggest", () => {
 			expect(screen.queryByText(/\d+s/)).not.toBeInTheDocument()
 
 			// Advance timer while paused
-			await act(async () => {
+			act(() => {
 				vi.advanceTimersByTime(2000)
 			})
 

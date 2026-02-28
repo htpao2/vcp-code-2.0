@@ -1,8 +1,8 @@
-// kilocode_change - new file
+// novacode_change - new file
 
 /**
  * All discoverable configuration types that affect agent behavior.
- * These are things that can be discovered from .kilocode directories.
+ * These are things that can be discovered from .novacode directories.
  */
 export type ContextConfigType = "skill" | "workflow" | "command" | "rule" | "mcp"
 
@@ -16,7 +16,7 @@ export interface ContextConfigChange {
 	changeType: "added" | "removed"
 	/** Name/identifier of the item */
 	name: string
-	/** Where was it discovered: global (~/.kilocode) or project (.kilocode) */
+	/** Where was it discovered: global (~/.novacode) or project (.novacode) */
 	source: "global" | "project"
 	/** Optional mode for mode-specific configs (e.g., 'code', 'architect') */
 	mode?: string

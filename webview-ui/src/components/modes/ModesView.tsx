@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback, useRef, useMemo } from "react"
-import { KiloShareModesBanner } from "../kilocode/KiloShareModesBanner" // kilocode_change
+﻿import React, { useState, useEffect, useCallback, useRef, useMemo } from "react"
+import { NovaShareModesBanner } from "../nova/NovaShareModesBanner" // novacode_change
 import {
 	VSCodeCheckbox,
 	VSCodeRadioGroup,
@@ -51,7 +51,7 @@ import {
 } from "@src/components/ui"
 import { DeleteModeDialog } from "@src/components/modes/DeleteModeDialog"
 import { useEscapeKey } from "@src/hooks/useEscapeKey"
-import { OrganizationModeWarning } from "../kilocode/OrganizationModeWarning"
+import { OrganizationModeWarning } from "../nova/OrganizationModeWarning"
 import { SectionHeader } from "../settings/SectionHeader"
 
 // Get all available groups that should show in prompts view
@@ -66,9 +66,9 @@ function getGroupName(group: GroupEntry): ToolGroup {
 	return Array.isArray(group) ? group[0] : group
 }
 
-// kilocode_change start - add hideHeader prop
+// novacode_change start - add hideHeader prop
 const ModesView = ({ hideHeader = false }: { hideHeader?: boolean }) => {
-	// kilocode_change end
+	// novacode_change end
 	const { t } = useAppTranslation()
 
 	const {
@@ -292,11 +292,11 @@ const ModesView = ({ hideHeader = false }: { hideHeader?: boolean }) => {
 		return customModes?.find(findMode) || modes.find(findMode)
 	}, [visualMode, customModes, modes])
 
-	// kilocode_change start
+	// novacode_change start
 	const isOrganizationMode = useMemo(() => {
 		return getCurrentMode()?.source === "organization"
 	}, [getCurrentMode])
-	// kilocode_change end
+	// novacode_change end
 
 	// Check if the current mode has rules to export
 	const checkRulesDirectory = useCallback((slug: string) => {
@@ -603,7 +603,7 @@ const ModesView = ({ hideHeader = false }: { hideHeader?: boolean }) => {
 
 	return (
 		<div>
-			{/* kilocode_change start - conditionally render header */}
+			{/* novacode_change start - conditionally render header */}
 			{!hideHeader && (
 				<SectionHeader>
 					<div className="flex items-center gap-2">
@@ -612,7 +612,7 @@ const ModesView = ({ hideHeader = false }: { hideHeader?: boolean }) => {
 					</div>
 				</SectionHeader>
 			)}
-			{/* kilocode_change end */}
+			{/* novacode_change end */}
 
 			<Section>
 				<div>
@@ -662,7 +662,7 @@ const ModesView = ({ hideHeader = false }: { hideHeader?: boolean }) => {
 												e.preventDefault() // Prevent blur
 												vscode.postMessage({
 													type: "openFile",
-													text: "./.kilocodemodes",
+													text: "./.novacodemodes",
 													values: {
 														create: true,
 														content: JSON.stringify({ customModes: [] }, null, 2),
@@ -709,8 +709,8 @@ const ModesView = ({ hideHeader = false }: { hideHeader?: boolean }) => {
 					</div>
 
 					<div className="text-sm text-vscode-descriptionForeground mb-6">
-						{/* kilocode_change - add KiloShareModesBanner */}
-						<KiloShareModesBanner />
+						{/* novacode_change - add NovaShareModesBanner */}
+						<NovaShareModesBanner />
 
 						<Trans i18nKey="prompts:modes.createModeHelpText">
 							<VSCodeLink
@@ -929,9 +929,9 @@ const ModesView = ({ hideHeader = false }: { hideHeader?: boolean }) => {
 						)}
 					</div>
 
-					{/* kilocode_change start */}
+					{/* novacode_change start */}
 					{isOrganizationMode && <OrganizationModeWarning />}
-					{/* kilocode_change end */}
+					{/* novacode_change end */}
 
 					{/* API Configuration - Moved Here */}
 					<div className="mb-3">
@@ -1299,7 +1299,7 @@ const ModesView = ({ hideHeader = false }: { hideHeader?: boolean }) => {
 											// Open or create an empty file
 											vscode.postMessage({
 												type: "openFile",
-												text: `./.kilocode/rules-${currentMode.slug}/rules.md`, // kilocode_change
+												text: `./.novacode/rules-${currentMode.slug}/rules.md`, // novacode_change
 												values: {
 													create: true,
 													content: "",
@@ -1392,7 +1392,7 @@ const ModesView = ({ hideHeader = false }: { hideHeader?: boolean }) => {
 
 															vscode.postMessage({
 																type: "openFile",
-																text: `./.kilocode/system-prompt-${currentMode.slug}`, // kilocode_change
+																text: `./.novacode/system-prompt-${currentMode.slug}`, // novacode_change
 																values: {
 																	create: true,
 																	content: "",
@@ -1461,7 +1461,7 @@ const ModesView = ({ hideHeader = false }: { hideHeader?: boolean }) => {
 										onClick={() =>
 											vscode.postMessage({
 												type: "openFile",
-												text: "./.kilocode/rules/rules.md",
+												text: "./.novacode/rules/rules.md",
 												values: {
 													create: true,
 													content: "",

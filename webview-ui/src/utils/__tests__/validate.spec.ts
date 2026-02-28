@@ -38,7 +38,7 @@ describe("Model Validation Functions", () => {
 				outputPrice: 5.0,
 			},
 		},
-		kilocode: {
+		novacode: {
 			"valid-model": {
 				maxTokens: 8192,
 				contextWindow: 200000,
@@ -56,8 +56,8 @@ describe("Model Validation Functions", () => {
 				outputPrice: 5.0,
 			},
 		},
-		"nano-gpt": {}, //kilocode_change
-		// kilocode_change start
+		"nano-gpt": {}, //novacode_change
+		// novacode_change start
 		glama: {
 			"valid-model": {
 				maxTokens: 8192,
@@ -68,7 +68,7 @@ describe("Model Validation Functions", () => {
 				outputPrice: 15.0,
 			},
 		},
-		// kilocode_change end
+		// novacode_change end
 		requesty: {},
 		unbound: {},
 		litellm: {},
@@ -78,7 +78,7 @@ describe("Model Validation Functions", () => {
 		"io-intelligence": {},
 		"vercel-ai-gateway": {},
 		huggingface: {},
-		// kilocode_change start
+		// novacode_change start
 		apertis: {},
 		ovhcloud: {},
 		gemini: {},
@@ -86,10 +86,10 @@ describe("Model Validation Functions", () => {
 		synthetic: {},
 		"sap-ai-core": {},
 		aihubmix: {},
-		// kilocode_change end
+		// novacode_change end
 		roo: {},
 		chutes: {},
-		poe: {}, // kilocode_change
+		poe: {}, // novacode_change
 		zenmux: {},
 	}
 
@@ -139,7 +139,7 @@ describe("Model Validation Functions", () => {
 			expect(result).toContain("model")
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("returns undefined for valid Glama model", () => {
 			const config: ProviderSettings = {
 				apiProvider: "glama",
@@ -159,7 +159,7 @@ describe("Model Validation Functions", () => {
 			const result = getModelValidationError(config, mockRouterModels, allowAllOrganization)
 			expect(result).toBeUndefined()
 		})
-		// kilocode_change end
+		// novacode_change end
 
 		it("returns undefined for OpenAI models when no router models provided", () => {
 			const config: ProviderSettings = {
@@ -204,7 +204,7 @@ describe("Model Validation Functions", () => {
 			expect(result).toBeUndefined()
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("returns openAi validation error for incomplete openai-responses configuration", () => {
 			const config: ProviderSettings = {
 				apiProvider: "openai-responses",
@@ -227,7 +227,7 @@ describe("Model Validation Functions", () => {
 			const result = validateApiConfigurationExcludingModelErrors(config, mockRouterModels, allowAllOrganization)
 			expect(result).toBeUndefined()
 		})
-		// kilocode_change end
+		// novacode_change end
 
 		it("returns error for missing API key", () => {
 			const config: ProviderSettings = {
@@ -266,7 +266,7 @@ describe("Model Validation Functions", () => {
 			expect(result).toBeUndefined() // Should exclude model-specific org errors
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("returns undefined for valid IO Intelligence model", () => {
 			const config: ProviderSettings = {
 				apiProvider: "io-intelligence",
@@ -286,7 +286,7 @@ describe("Model Validation Functions", () => {
 			const result = getModelValidationError(config, mockRouterModels, allowAllOrganization)
 			expect(result).toBeUndefined()
 		})
-		// kilocode_change end
+		// novacode_change end
 	})
 })
 

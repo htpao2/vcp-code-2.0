@@ -10,6 +10,7 @@ import { ContextProxy } from "../../core/config/ContextProxy"
 import { TelemetryService } from "@roo-code/telemetry"
 import { ClineProvider } from "../../core/webview/ClineProvider"
 import { AutocompleteTelemetry } from "./classic-auto-complete/AutocompleteTelemetry"
+import { executeCommandWithPrefixFallback } from "../../utils/commandFallback"
 
 export class AutocompleteServiceManager {
 	private static _instance: AutocompleteServiceManager | null = null
@@ -94,7 +95,7 @@ export class AutocompleteServiceManager {
 			...this.settings,
 			provider: this.getCurrentProviderName(),
 			model: this.getCurrentModelName(),
-			hasKilocodeProfileWithNoBalance: this.model.hasKilocodeProfileWithNoBalance,
+			hasNovacodeProfileWithNoBalance: this.model.hasNovacodeProfileWithNoBalance,
 		}
 		await ContextProxy.instance.setValues({ ghostServiceSettings: settingsWithModelInfo })
 		await this.cline.postStateToWebview()
@@ -287,7 +288,7 @@ export class AutocompleteServiceManager {
 	private async updateGlobalContext() {
 		await vscode.commands.executeCommand(
 			"setContext",
-			"kilocode.autocomplete.enableSmartInlineTaskKeybinding",
+			"novacode.autocomplete.enableSmartInlineTaskKeybinding",
 			this.settings?.enableSmartInlineTaskKeybinding || false,
 		)
 	}
@@ -319,8 +320,8 @@ export class AutocompleteServiceManager {
 
 	private hasNoUsableProvider(): boolean {
 		// We have no usable provider if the model is loaded but has no valid credentials
-		// and it's not because of a kilocode profile with no balance (that's a different error)
-		return this.model.loaded && !this.model.hasValidCredentials() && !this.model.hasKilocodeProfileWithNoBalance
+		// and it's not because of a novacode profile with no balance (that's a different error)
+		return this.model.loaded && !this.model.hasValidCredentials() && !this.model.hasNovacodeProfileWithNoBalance
 	}
 
 	private updateCostTracking(cost: number, inputTokens: number, outputTokens: number): void {
@@ -340,7 +341,7 @@ export class AutocompleteServiceManager {
 			model: this.getCurrentModelName(),
 			provider: this.getCurrentProviderName(),
 			profileName: this.model.profileName,
-			hasKilocodeProfileWithNoBalance: this.model.hasKilocodeProfileWithNoBalance,
+			hasNovacodeProfileWithNoBalance: this.model.hasNovacodeProfileWithNoBalance,
 			hasNoUsableProvider: this.hasNoUsableProvider(),
 			totalSessionCost: this.sessionCost,
 			completionCount: this.completionCount,
@@ -349,15 +350,15 @@ export class AutocompleteServiceManager {
 	}
 
 	public async showIncompatibilityExtensionPopup() {
-		const message = t("kilocode:autocomplete.incompatibilityExtensionPopup.message")
-		const disableCopilot = t("kilocode:autocomplete.incompatibilityExtensionPopup.disableCopilot")
-		const disableInlineAssist = t("kilocode:autocomplete.incompatibilityExtensionPopup.disableInlineAssist")
+		const message = t("novacode:autocomplete.incompatibilityExtensionPopup.message")
+		const disableCopilot = t("novacode:autocomplete.incompatibilityExtensionPopup.disableCopilot")
+		const disableInlineAssist = t("novacode:autocomplete.incompatibilityExtensionPopup.disableInlineAssist")
 		const response = await vscode.window.showErrorMessage(message, disableCopilot, disableInlineAssist)
 
 		if (response === disableCopilot) {
 			await vscode.commands.executeCommand<any>("github.copilot.completions.disable")
 		} else if (response === disableInlineAssist) {
-			await vscode.commands.executeCommand<any>("kilo-code.autocomplete.disable")
+			await executeCommandWithPrefixFallback("autocomplete.disable")
 		}
 	}
 

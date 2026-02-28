@@ -1,10 +1,10 @@
 export type ApiStream = AsyncGenerator<ApiStreamChunk>
 
 export type ApiStreamChunk =
-	// kilocode_change start
+	// novacode_change start
 	| ApiStreamAnthropicThinkingChunk
 	| ApiStreamAnthropicRedactedThinkingChunk
-	// kilocode_change end
+	// novacode_change end
 	| ApiStreamTextChunk
 	| ApiStreamUsageChunk
 	| ApiStreamReasoningChunk
@@ -59,7 +59,7 @@ export interface ApiStreamThinkingCompleteChunk {
 	signature: string
 }
 
-// kilocode_change start
+// novacode_change start
 export interface ApiStreamAnthropicThinkingChunk {
 	type: "ant_thinking"
 	thinking: string
@@ -70,7 +70,7 @@ export interface ApiStreamAnthropicRedactedThinkingChunk {
 	type: "ant_redacted_thinking"
 	data: string
 }
-// kilocode_change end
+// novacode_change end
 
 export interface ApiStreamUsageChunk {
 	type: "usage"
@@ -80,7 +80,7 @@ export interface ApiStreamUsageChunk {
 	cacheReadTokens?: number
 	reasoningTokens?: number
 	totalCost?: number
-	inferenceProvider?: string // kilocode_change
+	inferenceProvider?: string // novacode_change
 }
 
 export interface ApiStreamGroundingChunk {
@@ -93,26 +93,26 @@ export interface ApiStreamToolCallChunk {
 	id: string
 	name: string
 	arguments: string
-	// kilocode_change start
+	// novacode_change start
 	/**
 	 * Extra content from provider-specific extensions (e.g., Gemini 3 thought_signature).
 	 * Must be preserved and sent back in subsequent requests for multi-turn conversations.
 	 */
 	extra_content?: Record<string, unknown>
-	// kilocode_change end
+	// novacode_change end
 }
 
 export interface ApiStreamToolCallStartChunk {
 	type: "tool_call_start"
 	id: string
 	name: string
-	// kilocode_change start
+	// novacode_change start
 	/**
 	 * Extra content from provider-specific extensions (e.g., Gemini 3 thought_signature).
 	 * Must be preserved and sent back in subsequent requests for multi-turn conversations.
 	 */
 	extra_content?: Record<string, unknown>
-	// kilocode_change end
+	// novacode_change end
 }
 
 export interface ApiStreamToolCallDeltaChunk {
@@ -137,13 +137,13 @@ export interface ApiStreamToolCallPartialChunk {
 	id?: string
 	name?: string
 	arguments?: string
-	// kilocode_change start
+	// novacode_change start
 	/**
 	 * Extra content from provider-specific extensions (e.g., Gemini 3 thought_signature).
 	 * Must be preserved and sent back in subsequent requests for multi-turn conversations.
 	 */
 	extra_content?: Record<string, unknown>
-	// kilocode_change end
+	// novacode_change end
 }
 
 export interface GroundingSource {

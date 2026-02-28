@@ -38,7 +38,7 @@ export function convertToAiSdkMessages(messages: Anthropic.Messages.MessageParam
 			})
 		} else {
 			if (message.role === "user") {
-				// kilocode_change start
+				// novacode_change start
 				// Keep user text/image parts and tool results in their original order.
 				const parts: Array<
 					{ type: "text"; text: string } | { type: "image"; image: string; mimeType?: string }
@@ -121,9 +121,9 @@ export function convertToAiSdkMessages(messages: Anthropic.Messages.MessageParam
 
 				flushToolResults()
 				flushUserParts()
-				// kilocode_change end
+				// novacode_change end
 			} else if (message.role === "assistant") {
-				// kilocode_change start
+				// novacode_change start
 				// Keep assistant text and tool calls in original order.
 				const textParts: string[] = []
 				const content: Array<
@@ -181,7 +181,7 @@ export function convertToAiSdkMessages(messages: Anthropic.Messages.MessageParam
 				}
 
 				modelMessages.push(aiSdkAssistantMessage)
-				// kilocode_change end
+				// novacode_change end
 			}
 		}
 	}

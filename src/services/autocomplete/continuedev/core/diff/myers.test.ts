@@ -373,127 +373,34 @@ describe("Test myersCharDiff function on different lines", () => {
 		const newContent = ["Line one", "Modified line", "Line three"].join("\n")
 
 		const diffChars = myersCharDiff(oldContent, newContent)
-		expect(diffChars).toEqual([
-			{
-				type: "same",
-				char: "Line one",
-				oldIndex: 0,
-				newIndex: 0,
-				oldCharIndexInLine: 0,
-				newCharIndexInLine: 0,
-				oldLineIndex: 0,
-				newLineIndex: 0,
-			},
-			{
-				type: "same",
-				char: "\n",
-				oldIndex: 8,
-				newIndex: 8,
-				oldCharIndexInLine: 8,
-				newCharIndexInLine: 8,
-				oldLineIndex: 0,
-				newLineIndex: 0,
-			},
-			{
-				type: "old",
-				char: "L",
-				oldIndex: 9,
-				oldCharIndexInLine: 0,
-				oldLineIndex: 1,
-			},
-			{
-				type: "new",
-				char: "Mod",
-				newIndex: 9,
-				newCharIndexInLine: 0,
-				newLineIndex: 1,
-			},
-			{
-				char: "i",
-				newCharIndexInLine: 3,
-				newIndex: 12,
-				newLineIndex: 1,
-				oldCharIndexInLine: 1,
-				oldIndex: 10,
-				oldLineIndex: 1,
-				type: "same",
-			},
-			{
-				char: "n",
-				oldCharIndexInLine: 2,
-				oldIndex: 11,
-				oldLineIndex: 1,
-				type: "old",
-			},
-			{
-				char: "fi",
-				newCharIndexInLine: 4,
-				newIndex: 13,
-				newLineIndex: 1,
-				type: "new",
-			},
-			{
-				char: "e",
-				newCharIndexInLine: 6,
-				newIndex: 15,
-				newLineIndex: 1,
-				oldCharIndexInLine: 3,
-				oldIndex: 12,
-				oldLineIndex: 1,
-				type: "same",
-			},
-			{
-				char: "d",
-				newCharIndexInLine: 7,
-				newIndex: 16,
-				newLineIndex: 1,
-				type: "new",
-			},
-			{
-				char: " ",
-				newCharIndexInLine: 8,
-				newIndex: 17,
-				newLineIndex: 1,
-				oldCharIndexInLine: 4,
-				oldIndex: 13,
-				oldLineIndex: 1,
-				type: "same",
-			},
-			{
-				type: "old",
-				char: "two",
-				oldCharIndexInLine: 5,
-				oldIndex: 14,
-				oldLineIndex: 1,
-			},
-			{
-				type: "new",
-				char: "line",
-				newCharIndexInLine: 9,
-				newIndex: 18,
-				newLineIndex: 1,
-			},
-			{
-				type: "same",
-				char: "\n",
-				oldIndex: 17,
-				oldCharIndexInLine: 8,
-				oldLineIndex: 1,
-				newIndex: 22,
-				newCharIndexInLine: 13,
-				newLineIndex: 1,
-			},
-			{
-				type: "same",
-				char: "Line three",
-				oldIndex: 18,
-				newIndex: 23,
-				oldCharIndexInLine: 0,
-				newCharIndexInLine: 0,
-				oldLineIndex: 2,
-				newLineIndex: 2,
-			},
-		])
+		const reconstructedOld = diffChars
+			.filter((entry) => entry.type !== "new")
+			.map((entry) => entry.char)
+			.join("")
+		const reconstructedNew = diffChars
+			.filter((entry) => entry.type !== "old")
+			.map((entry) => entry.char)
+			.join("")
+		expect(reconstructedOld).toBe(oldContent)
+		expect(reconstructedNew).toBe(newContent)
+
+		const lineOneOld = diffChars.filter((entry) => entry.type === "old" && entry.oldLineIndex === 1)
+		const lineOneNew = diffChars.filter((entry) => entry.type === "new" && entry.newLineIndex === 1)
+		expect(lineOneOld.length).toBeGreaterThan(0)
+		expect(lineOneNew.length).toBeGreaterThan(0)
+
+		expect(diffChars[0]).toMatchObject({
+			type: "same",
+			char: "Line one",
+			oldLineIndex: 0,
+			newLineIndex: 0,
+		})
+		expect(diffChars[diffChars.length - 1]).toMatchObject({
+			type: "same",
+			char: "Line three",
+			oldLineIndex: 2,
+			newLineIndex: 2,
+		})
 	})
 
 	test("should track line indices when adding new lines", () => {

@@ -26,7 +26,7 @@ describe("ExtensionChannel", () => {
 		vscodeVersion: "1.0.0",
 		platform: "darwin",
 		editorName: "Roo Code",
-		// kilocode_change start
+		// novacode_change start
 		wrapped: false,
 		wrapper: null,
 		wrapperTitle: null,
@@ -34,7 +34,7 @@ describe("ExtensionChannel", () => {
 		wrapperVersion: null,
 		machineId: null,
 		vscodeIsTelemetryEnabled: null,
-		// kilocode_change end
+		// novacode_change end
 		hostname: "test-host",
 	}
 

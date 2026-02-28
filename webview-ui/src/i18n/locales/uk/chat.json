@@ -1,5 +1,5 @@
 {
-	"greeting": "Що Kilo Code може зробити для тебе?",
+	"greeting": "Що Nova Code може зробити для тебе?",
 	"task": {
 		"title": "Завдання",
 		"seeMore": "Дивитися більше",
@@ -20,7 +20,7 @@
 		"sharePublicly": "Поділитися публічно",
 		"sharePubliclyDescription": "Будь-хто з посиланням має доступ",
 		"connectToCloud": "Підключитися до Cloud",
-		"connectToCloudDescription": "Увійдіть до Kilo Code Cloud для обміну завданнями",
+		"connectToCloudDescription": "Увійдіть до Nova Code Cloud для обміну завданнями",
 		"sharingDisabledByOrganization": "Обмін вимкнено організацією",
 		"shareSuccessOrganization": "Посилання організації скопійовано до буфера обміну",
 		"shareSuccessPublic": "Публічне посилання скопійовано до буфера обміну",
@@ -132,7 +132,7 @@
 		},
 		"modelAgnostic": {
 			"title": "Використовуй власну модель без націноки чи прив'язки",
-			"description": "Використовуй ключ свого провайдера або навіть запускай локальний інференс — Kilo за це не стягує плату"
+			"description": "Використовуй ключ свого провайдера або навіть запускай локальний інференс — Nova за це не стягує плату"
 		}
 	},
 	"selectMode": "Вибери режим для взаємодії",
@@ -144,7 +144,7 @@
 		"title": "Режими",
 		"marketplace": "Ринок режимів",
 		"settings": "Налаштування режимів",
-		"description": "Спеціалізовані персони, які налаштовують поведінку Kilo Code.",
+		"description": "Спеціалізовані персони, які налаштовують поведінку Nova Code.",
 		"searchPlaceholder": "Пошук режимів...",
 		"noResults": "Результатів не знайдено",
 		"organizationModes": "Режими організації"
@@ -233,52 +233,52 @@
 		"tokens": "токени"
 	},
 	"instructions": {
-		"wantsToFetch": "Kilo Code хоче отримати детальні інструкції для допомоги з поточним завданням"
+		"wantsToFetch": "Nova Code хоче отримати детальні інструкції для допомоги з поточним завданням"
 	},
 	"fileOperations": {
-		"wantsToRead": "Kilo Code хоче прочитати цей файл:",
-		"wantsToReadMultiple": "Kilo Code хоче прочитати кілька файлів:",
-		"wantsToReadAndXMore": "Kilo Code хоче прочитати цей файл і ще {{count}}:",
-		"wantsToReadOutsideWorkspace": "Kilo Code хоче прочитати цей файл за межами робочого простору:",
-		"didRead": "Kilo Code прочитав цей файл:",
-		"wantsToEdit": "Kilo Code хоче редагувати цей файл:",
-		"wantsToEditOutsideWorkspace": "Kilo Code хоче редагувати цей файл за межами робочого простору:",
-		"wantsToEditProtected": "Kilo Code хоче редагувати захищений файл конфігурації:",
-		"wantsToApplyBatchChanges": "Kilo Code хоче застосувати зміни до кількох файлів:",
-		"wantsToGenerateImage": "Kilo Code хоче згенерувати зображення:",
-		"wantsToGenerateImageOutsideWorkspace": "Kilo Code хоче згенерувати зображення поза робочою областю:",
-		"wantsToGenerateImageProtected": "Kilo Code хоче згенерувати зображення у захищеному місці:",
-		"didGenerateImage": "Kilo Code згенерував зображення:",
-		"wantsToCreate": "Kilo Code хоче створити новий файл:",
-		"wantsToSearchReplace": "Kilo Code хоче шукати та замінити в цьому файлі:",
-		"didSearchReplace": "Kilo Code виконав пошук і заміну в цьому файлі:",
-		"wantsToInsert": "Kilo Code хоче вставити вміст у цей файл:",
-		"wantsToInsertWithLineNumber": "Kilo Code хоче вставити вміст у цей файл на рядку {{lineNumber}}:",
-		"wantsToInsertAtEnd": "Kilo Code хоче додати вміст в кінець цього файлу:",
-		"wantsToDelete": "Kilo Code хоче видалити цей файл",
-		"wantsToDeleteDirectory": "Kilo Code хоче видалити цю директорію"
+		"wantsToRead": "Nova Code хоче прочитати цей файл:",
+		"wantsToReadMultiple": "Nova Code хоче прочитати кілька файлів:",
+		"wantsToReadAndXMore": "Nova Code хоче прочитати цей файл і ще {{count}}:",
+		"wantsToReadOutsideWorkspace": "Nova Code хоче прочитати цей файл за межами робочого простору:",
+		"didRead": "Nova Code прочитав цей файл:",
+		"wantsToEdit": "Nova Code хоче редагувати цей файл:",
+		"wantsToEditOutsideWorkspace": "Nova Code хоче редагувати цей файл за межами робочого простору:",
+		"wantsToEditProtected": "Nova Code хоче редагувати захищений файл конфігурації:",
+		"wantsToApplyBatchChanges": "Nova Code хоче застосувати зміни до кількох файлів:",
+		"wantsToGenerateImage": "Nova Code хоче згенерувати зображення:",
+		"wantsToGenerateImageOutsideWorkspace": "Nova Code хоче згенерувати зображення поза робочою областю:",
+		"wantsToGenerateImageProtected": "Nova Code хоче згенерувати зображення у захищеному місці:",
+		"didGenerateImage": "Nova Code згенерував зображення:",
+		"wantsToCreate": "Nova Code хоче створити новий файл:",
+		"wantsToSearchReplace": "Nova Code хоче шукати та замінити в цьому файлі:",
+		"didSearchReplace": "Nova Code виконав пошук і заміну в цьому файлі:",
+		"wantsToInsert": "Nova Code хоче вставити вміст у цей файл:",
+		"wantsToInsertWithLineNumber": "Nova Code хоче вставити вміст у цей файл на рядку {{lineNumber}}:",
+		"wantsToInsertAtEnd": "Nova Code хоче додати вміст в кінець цього файлу:",
+		"wantsToDelete": "Nova Code хоче видалити цей файл",
+		"wantsToDeleteDirectory": "Nova Code хоче видалити цю директорію"
 	},
 	"directoryOperations": {
-		"wantsToViewTopLevel": "Kilo Code хоче переглянути файли верхнього рівня в цій директорії:",
-		"didViewTopLevel": "Kilo Code переглянув файли верхнього рівня в цій директорії:",
-		"wantsToViewTopLevelOutsideWorkspace": "Kilo Code хоче переглянути файли верхнього рівня в цій директорії (за межами робочого простору):",
-		"didViewTopLevelOutsideWorkspace": "Kilo Code переглянув файли верхнього рівня в цій директорії (за межами робочого простору):",
-		"wantsToViewRecursive": "Kilo Code хоче рекурсивно переглянути всі файли в цій директорії:",
-		"didViewRecursive": "Kilo Code рекурсивно переглянув всі файли в цій директорії:",
-		"wantsToViewRecursiveOutsideWorkspace": "Kilo Code хоче рекурсивно переглянути всі файли в цій директорії (за межами робочого простору):",
-		"didViewRecursiveOutsideWorkspace": "Kilo Code рекурсивно переглянув всі файли в цій директорії (за межами робочого простору):",
-		"wantsToViewDefinitions": "Kilo Code хоче переглянути назви визначень вихідного коду, що використовуються в цій директорії:",
-		"didViewDefinitions": "Kilo Code переглянув назви визначень вихідного коду, що використовуються в цій директорії:",
-		"wantsToViewDefinitionsOutsideWorkspace": "Kilo Code хоче переглянути назви визначень вихідного коду, що використовуються в цій директорії (за межами робочого простору):",
-		"didViewDefinitionsOutsideWorkspace": "Kilo Code переглянув назви визначень вихідного коду, що використовуються в цій директорії (за межами робочого простору):",
-		"wantsToSearch": "Kilo Code хоче шукати в цій директорії <code>{{regex}}</code>:",
-		"didSearch": "Kilo Code шукав у цій директорії <code>{{regex}}</code>:",
-		"wantsToSearchOutsideWorkspace": "Kilo Code хоче шукати в цій директорії (за межами робочого простору) <code>{{regex}}</code>:",
-		"didSearchOutsideWorkspace": "Kilo Code шукав у цій директорії (за межами робочого простору) <code>{{regex}}</code>:"
+		"wantsToViewTopLevel": "Nova Code хоче переглянути файли верхнього рівня в цій директорії:",
+		"didViewTopLevel": "Nova Code переглянув файли верхнього рівня в цій директорії:",
+		"wantsToViewTopLevelOutsideWorkspace": "Nova Code хоче переглянути файли верхнього рівня в цій директорії (за межами робочого простору):",
+		"didViewTopLevelOutsideWorkspace": "Nova Code переглянув файли верхнього рівня в цій директорії (за межами робочого простору):",
+		"wantsToViewRecursive": "Nova Code хоче рекурсивно переглянути всі файли в цій директорії:",
+		"didViewRecursive": "Nova Code рекурсивно переглянув всі файли в цій директорії:",
+		"wantsToViewRecursiveOutsideWorkspace": "Nova Code хоче рекурсивно переглянути всі файли в цій директорії (за межами робочого простору):",
+		"didViewRecursiveOutsideWorkspace": "Nova Code рекурсивно переглянув всі файли в цій директорії (за межами робочого простору):",
+		"wantsToViewDefinitions": "Nova Code хоче переглянути назви визначень вихідного коду, що використовуються в цій директорії:",
+		"didViewDefinitions": "Nova Code переглянув назви визначень вихідного коду, що використовуються в цій директорії:",
+		"wantsToViewDefinitionsOutsideWorkspace": "Nova Code хоче переглянути назви визначень вихідного коду, що використовуються в цій директорії (за межами робочого простору):",
+		"didViewDefinitionsOutsideWorkspace": "Nova Code переглянув назви визначень вихідного коду, що використовуються в цій директорії (за межами робочого простору):",
+		"wantsToSearch": "Nova Code хоче шукати в цій директорії <code>{{regex}}</code>:",
+		"didSearch": "Nova Code шукав у цій директорії <code>{{regex}}</code>:",
+		"wantsToSearchOutsideWorkspace": "Nova Code хоче шукати в цій директорії (за межами робочого простору) <code>{{regex}}</code>:",
+		"didSearchOutsideWorkspace": "Nova Code шукав у цій директорії (за межами робочого простору) <code>{{regex}}</code>:"
 	},
 	"codebaseSearch": {
-		"wantsToSearch": "Kilo Code хоче шукати в кодовій базі <code>{{query}}</code>:",
-		"wantsToSearchWithPath": "Kilo Code хоче шукати в кодовій базі <code>{{query}}</code> в <code>{{path}}</code>:",
+		"wantsToSearch": "Nova Code хоче шукати в кодовій базі <code>{{query}}</code>:",
+		"wantsToSearchWithPath": "Nova Code хоче шукати в кодовій базі <code>{{query}}</code> в <code>{{path}}</code>:",
 		"didSearch_one": "Знайдено 1 результат",
 		"didSearch_other": "Знайдено {{count}} результатів",
 		"resultTooltip": "Оцінка схожості: {{score}} (клікни для відкриття файлу)"
@@ -305,24 +305,24 @@
 	"response": "Відповідь",
 	"arguments": "Аргументи",
 	"text": {
-		"rooSaid": "Kilo сказав"
+		"rooSaid": "Nova сказав"
 	},
 	"feedback": {
 		"youSaid": "Ти сказав"
 	},
 	"mcp": {
-		"wantsToUseTool": "Kilo Code хоче використати інструмент на сервері MCP {{serverName}}:",
-		"wantsToAccessResource": "Kilo Code хоче отримати доступ до ресурсу на сервері MCP {{serverName}}:"
+		"wantsToUseTool": "Nova Code хоче використати інструмент на сервері MCP {{serverName}}:",
+		"wantsToAccessResource": "Nova Code хоче отримати доступ до ресурсу на сервері MCP {{serverName}}:"
 	},
 	"modes": {
-		"wantsToSwitch": "Kilo Code хоче перейти в режим {{mode}}",
-		"wantsToSwitchWithReason": "Kilo Code хоче перейти в режим {{mode}}, тому що: {{reason}}",
-		"didSwitch": "Kilo Code перейшов у режим {{mode}}",
-		"didSwitchWithReason": "Kilo Code перейшов у режим {{mode}}, тому що: {{reason}}"
+		"wantsToSwitch": "Nova Code хоче перейти в режим {{mode}}",
+		"wantsToSwitchWithReason": "Nova Code хоче перейти в режим {{mode}}, тому що: {{reason}}",
+		"didSwitch": "Nova Code перейшов у режим {{mode}}",
+		"didSwitchWithReason": "Nova Code перейшов у режим {{mode}}, тому що: {{reason}}"
 	},
 	"subtasks": {
-		"wantsToCreate": "Kilo Code хоче створити нове підзавдання в режимі {{mode}}:",
-		"wantsToFinish": "Kilo Code хоче завершити це підзавдання",
+		"wantsToCreate": "Nova Code хоче створити нове підзавдання в режимі {{mode}}:",
+		"wantsToFinish": "Nova Code хоче завершити це підзавдання",
 		"newTaskContent": "Інструкції підзавдання",
 		"completionContent": "Підзавдання завершено",
 		"resultContent": "Результати підзавдання",
@@ -330,7 +330,7 @@
 		"completionInstructions": "Підзавдання завершено! Ти можеш переглянути результати та запропонувати будь-які виправлення або наступні кроки. Якщо все виглядає добре, підтверди, щоб повернути результат до батьківського завдання."
 	},
 	"questions": {
-		"hasQuestion": "Kilo Code має питання:"
+		"hasQuestion": "Nova Code має питання:"
 	},
 	"taskCompleted": "Завдання виконано",
 	"error": "Помилка",
@@ -352,14 +352,14 @@
 	"diffError": {
 		"title": "Редагування не вдалося"
 	},
-	"troubleMessage": "Kilo Code має проблеми...",
+	"troubleMessage": "Nova Code має проблеми...",
 	"powershell": {
 		"issues": "Схоже, у тебе проблеми з Windows PowerShell, будь ласка, подивись це"
 	},
 	"autoApprove": {
 		"title": "Автосхвалення:",
 		"none": "Немає",
-		"description": "Автосхвалення дозволяє Kilo Code виконувати дії без запиту дозволу. Увімкни лише для дій, яким ти повністю довіряєш. Більш детальна конфігурація доступна в <settingsLink>Налаштуваннях</settingsLink>.",
+		"description": "Автосхвалення дозволяє Nova Code виконувати дії без запиту дозволу. Увімкни лише для дій, яким ти повністю довіряєш. Більш детальна конфігурація доступна в <settingsLink>Налаштуваннях</settingsLink>.",
 		"selectOptionsFirst": "Спочатку вибери принаймні один варіант нижче, щоб увімкнути автосхвалення",
 		"toggleAriaLabel": "Перемкнути автосхвалення",
 		"disabledAriaLabel": "Автосхвалення вимкнено - спочатку вибери варіанти",
@@ -428,7 +428,7 @@
 	},
 	"browser": {
 		"session": "Сесія браузера",
-		"rooWantsToUse": "Kilo Code хоче використати браузер:",
+		"rooWantsToUse": "Nova Code хоче використати браузер:",
 		"active": "Активний",
 		"consoleLogs": "Логи консолі",
 		"noNewLogs": "(Немає нових логів)",
@@ -497,18 +497,18 @@
 	"profileViolationWarning": "Поточний профіль несумісний з налаштуваннями твоєї організації",
 	"shellIntegration": {
 		"title": "Попередження про виконання команди",
-		"description": "Твоя команда виконується без інтеграції оболонки терміналу VSCode. Щоб прибрати це попередження, ти можеш вимкнути інтеграцію оболонки в розділі <strong>Terminal</strong> <settingsLink>налаштувань Kilo Code</settingsLink> або усунути проблеми з інтеграцією терміналу VSCode, використовуючи посилання нижче.",
+		"description": "Твоя команда виконується без інтеграції оболонки терміналу VSCode. Щоб прибрати це попередження, ти можеш вимкнути інтеграцію оболонки в розділі <strong>Terminal</strong> <settingsLink>налаштувань Nova Code</settingsLink> або усунути проблеми з інтеграцією терміналу VSCode, використовуючи посилання нижче.",
 		"troubleshooting": "Натисни тут для документації з інтеграції оболонки."
 	},
 	"ask": {
 		"autoApprovedRequestLimitReached": {
 			"title": "Досягнуто ліміт автосхвалених запитів",
-			"description": "Kilo Code досяг автосхваленого ліміту {{count}} API запит(ів). Хочеш скинути лічильник і продовжити завдання?",
+			"description": "Nova Code досяг автосхваленого ліміту {{count}} API запит(ів). Хочеш скинути лічильник і продовжити завдання?",
 			"button": "Скинути і продовжити"
 		},
 		"autoApprovedCostLimitReached": {
 			"title": "Досягнуто ліміт автоматично схвалених витрат",
-			"description": "Kilo Code досяг ліміту автоматично схвалених витрат ${{count}}. Хочете скинути витрати і продовжити завдання?",
+			"description": "Nova Code досяг ліміту автоматично схвалених витрат ${{count}}. Хочете скинути витрати і продовжити завдання?",
 			"button": "Скинути і продовжити"
 		}
 	},
@@ -556,8 +556,8 @@
 	},
 	"generateCommitMessage": "Згенерувати повідомлення коміту",
 	"slashCommand": {
-		"wantsToRun": "Kilo Code хоче виконати slash команду:",
-		"didRun": "Kilo Code виконав slash команду:"
+		"wantsToRun": "Nova Code хоче виконати slash команду:",
+		"didRun": "Nova Code виконав slash команду:"
 	},
 	"contextMenu": {
 		"noResults": "Результатів немає",

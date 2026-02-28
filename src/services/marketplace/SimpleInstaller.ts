@@ -2,7 +2,7 @@ import * as vscode from "vscode"
 import * as path from "path"
 import * as fs from "fs/promises"
 import * as yaml from "yaml"
-// kilocode_change start - Added SkillMarketplaceItem import
+// novacode_change start - Added SkillMarketplaceItem import
 import type {
 	MarketplaceItem,
 	MarketplaceItemType,
@@ -10,12 +10,12 @@ import type {
 	McpParameter,
 	SkillMarketplaceItem,
 } from "@roo-code/types"
-// kilocode_change end
+// novacode_change end
 import { GlobalFileNames } from "../../shared/globalFileNames"
 import { ensureSettingsDirectoryExists } from "../../utils/globalContext"
 import type { CustomModesManager } from "../../core/config/CustomModesManager"
-import { getGlobalRooDirectory } from "../roo-config" // kilocode_change
-import { extractTarball } from "./tarball-utils" // kilocode_change
+import { getGlobalRooDirectory } from "../roo-config" // novacode_change
+import { extractTarball } from "./tarball-utils" // novacode_change
 
 export interface InstallOptions extends InstallMarketplaceItemOptions {
 	target: "project" | "global"
@@ -36,21 +36,21 @@ export class SimpleInstaller {
 				return await this.installMode(item, target)
 			case "mcp":
 				return await this.installMcp(item, target, options)
-			// kilocode_change start - Handle skill type
+			// novacode_change start - Handle skill type
 			case "skill":
 				return await this.installSkill(item, target)
-			// kilocode_change end
+			// novacode_change end
 			default:
 				throw new Error(`Unsupported item type: ${(item as any).type}`)
 		}
 	}
 
-	// kilocode_change start - Use narrowed type for better type safety
+	// novacode_change start - Use narrowed type for better type safety
 	private async installMode(
 		item: Extract<MarketplaceItem, { type: "mode" }>,
 		target: "project" | "global",
 	): Promise<{ filePath: string; line?: number }> {
-		// kilocode_change end
+		// novacode_change end
 		if (!item.content) {
 			throw new Error("Mode item missing content")
 		}
@@ -118,7 +118,7 @@ export class SimpleInstaller {
 				existingData = { customModes: [] }
 			} else if (error.name === "YAMLParseError" || error.message?.includes("YAML")) {
 				// YAML parsing error - don't overwrite the file!
-				const fileName = target === "project" ? ".kilocodemodes" : "custom-modes.yaml"
+				const fileName = target === "project" ? ".novacodemodes" : "custom-modes.yaml"
 				throw new Error(
 					`Cannot install mode: The ${fileName} file contains invalid YAML. ` +
 						`Please fix the syntax errors in the file before installing new modes.`,
@@ -170,13 +170,13 @@ export class SimpleInstaller {
 		return { filePath, line }
 	}
 
-	// kilocode_change start - Use narrowed type for better type safety
+	// novacode_change start - Use narrowed type for better type safety
 	private async installMcp(
 		item: Extract<MarketplaceItem, { type: "mcp" }>,
 		target: "project" | "global",
 		options?: InstallOptions,
 	): Promise<{ filePath: string; line?: number }> {
-		// kilocode_change end
+		// novacode_change end
 		if (!item.content) {
 			throw new Error("MCP item missing content")
 		}
@@ -201,7 +201,7 @@ export class SimpleInstaller {
 		}
 
 		// Merge parameters (method-specific override global)
-		const itemParameters = item.parameters || [] // kilocode_change - simplified due to narrowed type
+		const itemParameters = item.parameters || [] // novacode_change - simplified due to narrowed type
 		const allParameters = [...itemParameters, ...methodParameters]
 		const uniqueParameters = Array.from(new Map(allParameters.map((p) => [p.key, p])).values())
 
@@ -225,7 +225,7 @@ export class SimpleInstaller {
 				methodParameters = method.parameters || []
 
 				// Re-merge parameters with the newly selected method
-				const itemParametersForNewMethod = item.parameters || [] // kilocode_change - simplified due to narrowed type
+				const itemParametersForNewMethod = item.parameters || [] // novacode_change - simplified due to narrowed type
 				const allParametersForNewMethod = [...itemParametersForNewMethod, ...methodParameters]
 				const uniqueParametersForNewMethod = Array.from(
 					new Map(allParametersForNewMethod.map((p) => [p.key, p])).values(),
@@ -255,7 +255,7 @@ export class SimpleInstaller {
 				existingData = { mcpServers: {} }
 			} else if (error instanceof SyntaxError) {
 				// JSON parsing error - don't overwrite the file!
-				const fileName = target === "project" ? ".kilocode/mcp.json" : "mcp-settings.json"
+				const fileName = target === "project" ? ".novacode/mcp.json" : "mcp-settings.json"
 				throw new Error(
 					`Cannot install MCP server: The ${fileName} file contains invalid JSON. ` +
 						`Please fix the syntax errors in the file before installing new servers.`,
@@ -306,22 +306,22 @@ export class SimpleInstaller {
 			case "mcp":
 				await this.removeMcp(item, target)
 				break
-			// kilocode_change start - Handle skill type
+			// novacode_change start - Handle skill type
 			case "skill":
 				await this.removeSkill(item, target)
 				break
-			// kilocode_change end
+			// novacode_change end
 			default:
 				throw new Error(`Unsupported item type: ${(item as any).type}`)
 		}
 	}
 
-	// kilocode_change start - Use narrowed type for better type safety
+	// novacode_change start - Use narrowed type for better type safety
 	private async removeMode(
 		item: Extract<MarketplaceItem, { type: "mode" }>,
 		target: "project" | "global",
 	): Promise<void> {
-		// kilocode_change end
+		// novacode_change end
 		if (!this.customModesManager) {
 			throw new Error("CustomModesManager is not available")
 		}
@@ -330,7 +330,7 @@ export class SimpleInstaller {
 		let content: string
 		if (Array.isArray(item.content)) {
 			// Array of McpInstallationMethod objects - use first method
-			content = (item.content as any)[0].content // kilocode_change - cast needed due to narrowed type
+			content = (item.content as any)[0].content // novacode_change - cast needed due to narrowed type
 		} else {
 			content = item.content || ""
 		}
@@ -356,12 +356,12 @@ export class SimpleInstaller {
 		await this.customModesManager.deleteCustomMode(modeSlug, true)
 	}
 
-	// kilocode_change start - Use narrowed type for better type safety
+	// novacode_change start - Use narrowed type for better type safety
 	private async removeMcp(
 		item: Extract<MarketplaceItem, { type: "mcp" }>,
 		target: "project" | "global",
 	): Promise<void> {
-		// kilocode_change end
+		// novacode_change end
 		const filePath = await this.getMcpFilePath(target)
 
 		try {
@@ -369,7 +369,7 @@ export class SimpleInstaller {
 			const existingData = JSON.parse(existing)
 
 			if (existingData?.mcpServers) {
-				// kilocode change removed parsing logic which wasn't necessary as evidenced by types
+				// novacode change removed parsing logic which wasn't necessary as evidenced by types
 				const serverName = item.id
 				delete existingData.mcpServers[serverName]
 
@@ -387,7 +387,7 @@ export class SimpleInstaller {
 			if (!workspaceFolder) {
 				throw new Error("No workspace folder found")
 			}
-			return path.join(workspaceFolder.uri.fsPath, ".kilocodemodes")
+			return path.join(workspaceFolder.uri.fsPath, ".novacodemodes")
 		} else {
 			const globalSettingsPath = await ensureSettingsDirectoryExists(this.context)
 			return path.join(globalSettingsPath, GlobalFileNames.customModes)
@@ -400,20 +400,20 @@ export class SimpleInstaller {
 			if (!workspaceFolder) {
 				throw new Error("No workspace folder found")
 			}
-			return path.join(workspaceFolder.uri.fsPath, ".kilocode", "mcp.json")
+			return path.join(workspaceFolder.uri.fsPath, ".novacode", "mcp.json")
 		} else {
 			const globalSettingsPath = await ensureSettingsDirectoryExists(this.context)
 			return path.join(globalSettingsPath, GlobalFileNames.mcpSettings)
 		}
 	}
 
-	// kilocode_change start - Skill installation methods
+	// novacode_change start - Skill installation methods
 	/**
 	 * Install a skill from the marketplace by downloading and extracting its tarball.
 	 *
 	 * Skills are installed to:
-	 * - Global: ~/.kilocode/skills/{skill-id}/
-	 * - Project: .kilocode/skills/{skill-id}/
+	 * - Global: ~/.novacode/skills/{skill-id}/
+	 * - Project: .novacode/skills/{skill-id}/
 	 *
 	 * The tarball must contain a SKILL.md at the root level (after stripping the top-level directory).
 	 */
@@ -467,11 +467,11 @@ export class SimpleInstaller {
 			if (!workspaceFolder) {
 				throw new Error("No workspace folder found")
 			}
-			return path.join(workspaceFolder.uri.fsPath, ".kilocode", "skills")
+			return path.join(workspaceFolder.uri.fsPath, ".novacode", "skills")
 		} else {
 			const globalDir = getGlobalRooDirectory()
 			return path.join(globalDir, "skills")
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 }

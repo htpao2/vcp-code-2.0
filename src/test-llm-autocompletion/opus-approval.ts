@@ -1,6 +1,6 @@
 import OpenAI from "openai"
 import { DEFAULT_HEADERS } from "../api/providers/constants.js"
-import { getKiloBaseUriFromToken } from "./llm-client.js"
+import { getNovaBaseUriFromToken } from "./llm-client.js"
 import { ContextFile } from "./test-cases.js"
 
 const OPUS_MODEL = "anthropic/claude-opus-4.5"
@@ -14,18 +14,18 @@ export async function askOpusApproval(
 	previouslyApproved: string[],
 	previouslyRejected: string[],
 ): Promise<"APPROVED" | "REJECTED" | "UNCERTAIN"> {
-	const apiKey = process.env.KILOCODE_API_KEY
+	const apiKey = process.env.NOVACODE_API_KEY
 	if (!apiKey) {
-		throw new Error("KILOCODE_API_KEY is required for Opus auto-approval")
+		throw new Error("NOVACODE_API_KEY is required for Opus auto-approval")
 	}
 
-	const baseUrl = getKiloBaseUriFromToken(apiKey)
+	const baseUrl = getNovaBaseUriFromToken(apiKey)
 	const openai = new OpenAI({
 		baseURL: `${baseUrl}/api/openrouter/`,
 		apiKey,
 		defaultHeaders: {
 			...DEFAULT_HEADERS,
-			"X-KILOCODE-TESTER": "SUPPRESS",
+			"X-NOVACODE-TESTER": "SUPPRESS",
 		},
 	})
 

@@ -64,19 +64,19 @@ type OpenRouterModelParams = {
 	reasoning: OpenRouterReasoningParams | undefined
 } & BaseModelParams
 
-// kilocode_change start
+// novacode_change start
 type ZenMuxModelParams = {
 	format: "zenmux"
 	reasoning: OpenRouterReasoningParams | undefined
 } & BaseModelParams
-// kilocode_change end
+// novacode_change end
 
 export type ModelParams =
 	| AnthropicModelParams
 	| OpenAiModelParams
 	| GeminiModelParams
 	| OpenRouterModelParams
-	| ZenMuxModelParams // kilocode_change
+	| ZenMuxModelParams // novacode_change
 
 // Function overloads for specific return types
 export function getModelParams(options: GetModelParamsOptions<"anthropic">): AnthropicModelParams
@@ -110,13 +110,13 @@ export function getModelParams({
 	let temperature = customTemperature ?? model.defaultTemperature ?? defaultTemperature
 	let reasoningBudget: ModelParams["reasoningBudget"] = undefined
 	let reasoningEffort: ModelParams["reasoningEffort"] = undefined
-	let verbosity: VerbosityLevel | undefined = model.supportsVerbosity ? customVerbosity : undefined // kilocode_change
+	let verbosity: VerbosityLevel | undefined = model.supportsVerbosity ? customVerbosity : undefined // novacode_change
 
-	// kilocode_change start
+	// novacode_change start
 	if (model.supportsAdaptiveThinking && settings.enableReasoningEffort !== false) {
 		temperature = 1.0
 	} else if (shouldUseReasoningBudget({ model, settings })) {
-		// kilocode_change end
+		// novacode_change end
 		// Check if this is a Gemini 2.5 Pro model
 		const isGemini25Pro = modelId.includes("gemini-2.5-pro")
 
@@ -200,16 +200,16 @@ export function getModelParams({
 		return {
 			format,
 			...params,
-			// kilocode_change start
+			// novacode_change start
 			reasoning: shouldDisableReasoning(modelId, reasoningEffort)
 				? { enabled: false }
 				: getOpenRouterReasoning({ model, reasoningBudget, reasoningEffort, settings }),
-			// kilocode_change end
+			// novacode_change end
 		}
 	}
 }
 
-// kilocode_change start
+// novacode_change start
 function shouldDisableReasoning(modelId: string, reasoningEffort: ReasoningEffortExtended | undefined) {
 	const supportsReasoningToggle =
 		modelId.startsWith("deepseek/deepseek-v3.1") ||
@@ -218,4 +218,4 @@ function shouldDisableReasoning(modelId: string, reasoningEffort: ReasoningEffor
 		modelId.startsWith("z-ai/glm-4.6")
 	return supportsReasoningToggle && reasoningEffort === "minimal"
 }
-// kilocode_change end
+// novacode_change end

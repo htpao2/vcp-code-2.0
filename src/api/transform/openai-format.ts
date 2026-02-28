@@ -273,7 +273,7 @@ export interface ConvertToOpenAiMessagesOptions {
 	mergeToolResultText?: boolean
 }
 
-// kilocode_change start
+// novacode_change start
 type ReasoningBlockParam = {
 	/**
 	 * Non-Anthropic block type used by some providers. We preserve it so we can
@@ -283,7 +283,7 @@ type ReasoningBlockParam = {
 	text?: string
 	thinking?: string
 }
-// kilocode_change end
+// novacode_change end
 
 function isReasoningBlockParam(part: unknown): part is ReasoningBlockParam {
 	return typeof part === "object" && part !== null && (part as { type?: unknown }).type === "reasoning"
@@ -442,12 +442,12 @@ export function convertToOpenAiMessages(
 										type: "image_url",
 
 										image_url: {
-											// kilocode_change begin support type==url
+											// novacode_change begin support type==url
 											url:
 												part.source.type === "url"
 													? part.source.url
 													: `data:${part.source.media_type};base64,${part.source.data}`,
-											// kilocode_change end
+											// novacode_change end
 										},
 									}
 								}
@@ -458,14 +458,14 @@ export function convertToOpenAiMessages(
 				}
 			} else if (anthropicMessage.role === "assistant") {
 				const { nonToolMessages, toolMessages } = anthropicMessage.content.reduce<{
-					// kilocode_change start
+					// novacode_change start
 					nonToolMessages: (
 						| Anthropic.TextBlockParam
 						| Anthropic.ImageBlockParam
 						| Anthropic.ThinkingBlockParam
 						| ReasoningBlockParam
 					)[]
-					// kilocode_change end
+					// novacode_change end
 					toolMessages: Anthropic.ToolUseBlockParam[]
 				}>(
 					(acc, part) => {
@@ -473,11 +473,11 @@ export function convertToOpenAiMessages(
 							acc.toolMessages.push(part)
 						} else if (part.type === "text" || part.type === "image") {
 							acc.nonToolMessages.push(part)
-							// kilocode_change start
+							// novacode_change start
 						} else if (part.type === "thinking" || isReasoningBlockParam(part)) {
 							acc.nonToolMessages.push(part)
 						} // assistant cannot send tool_result messages
-						// kilocode_change end
+						// novacode_change end
 						return acc
 					},
 					{ nonToolMessages: [], toolMessages: [] },
@@ -493,7 +493,7 @@ export function convertToOpenAiMessages(
 							} else if (part.type === "thinking") {
 								return "<think>" + part.thinking + "</think>"
 							} else if (part.type === "reasoning") {
-								// kilocode_change - support custom "reasoning" type used by some providers
+								// novacode_change - support custom "reasoning" type used by some providers
 								return "<think>" + (part.text || part.thinking || "") + "</think>"
 							}
 							return part.text
@@ -502,7 +502,7 @@ export function convertToOpenAiMessages(
 				}
 
 				// Process tool use messages
-				// kilocode_change start: Use type assertion to access extra_content which may be added for Gemini 3 support
+				// novacode_change start: Use type assertion to access extra_content which may be added for Gemini 3 support
 				let tool_calls: (OpenAI.Chat.ChatCompletionMessageToolCall & {
 					extra_content?: Record<string, unknown>
 				})[] = toolMessages.map((toolMessage) => {
@@ -524,7 +524,7 @@ export function convertToOpenAiMessages(
 					}
 					return toolCall
 				})
-				// kilocode_change end
+				// novacode_change end
 
 				// Check if the message has reasoning_details (used by Gemini 3, xAI, etc.)
 				const messageWithDetails = anthropicMessage as any

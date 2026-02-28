@@ -1,6 +1,6 @@
 import { BetaThinkingConfigParam } from "@anthropic-ai/sdk/resources/beta"
 import OpenAI from "openai"
-import type { GenerateContentConfig } from "@google/genai"
+import { type GenerateContentConfig, ThinkingLevel } from "@google/genai"
 
 import type { ModelInfo, ProviderSettings, ReasoningEffortExtended } from "@roo-code/types"
 
@@ -10,7 +10,7 @@ export type OpenRouterReasoningParams = {
 	effort?: ReasoningEffortExtended
 	max_tokens?: number
 	exclude?: boolean
-	enabled?: boolean // kilocode_change
+	enabled?: boolean // novacode_change
 }
 
 export type RooReasoningParams = {
@@ -18,9 +18,9 @@ export type RooReasoningParams = {
 	effort?: ReasoningEffortExtended
 }
 
-// kilocode_change start
+// novacode_change start
 export type AnthropicReasoningParams = BetaThinkingConfigParam | { type: "adaptive" }
-// kilocode_change end
+// novacode_change end
 
 export type OpenAiReasoningParams = { reasoning_effort: OpenAI.Chat.ChatCompletionCreateParams["reasoning_effort"] }
 
@@ -33,8 +33,13 @@ export function isGeminiThinkingLevel(value: unknown): value is GeminiThinkingLe
 	return typeof value === "string" && GEMINI_THINKING_LEVELS.includes(value as GeminiThinkingLevel)
 }
 
-export type GeminiReasoningParams = GenerateContentConfig["thinkingConfig"] & {
-	thinkingLevel?: GeminiThinkingLevel
+export type GeminiReasoningParams = NonNullable<GenerateContentConfig["thinkingConfig"]>
+
+const GEMINI_THINKING_LEVEL_MAP: Record<GeminiThinkingLevel, ThinkingLevel> = {
+	minimal: ThinkingLevel.MINIMAL,
+	low: ThinkingLevel.LOW,
+	medium: ThinkingLevel.MEDIUM,
+	high: ThinkingLevel.HIGH,
 }
 
 export type GetModelReasoningOptions = {
@@ -112,11 +117,11 @@ export const getAnthropicReasoning = ({
 	reasoningBudget,
 	settings,
 }: GetModelReasoningOptions): AnthropicReasoningParams | undefined => {
-	// kilocode_change start
+	// novacode_change start
 	if (model.supportsAdaptiveThinking && settings?.enableReasoningEffort !== false) {
 		return { type: "adaptive" }
 	}
-	// kilocode_change end
+	// novacode_change end
 	return shouldUseReasoningBudget({ model, settings })
 		? { type: "enabled", budget_tokens: reasoningBudget! }
 		: undefined
@@ -147,11 +152,11 @@ export const getGeminiReasoning = ({
 		return { thinkingBudget: reasoningBudget!, includeThoughts: true }
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	if (!model.supportsReasoningEffort) {
 		return undefined
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	// For effort-based Gemini models, rely directly on the selected effort value.
 	// We intentionally ignore enableReasoningEffort here so that explicitly chosen
@@ -172,5 +177,5 @@ export const getGeminiReasoning = ({
 		return undefined
 	}
 
-	return { thinkingLevel: selectedEffort, includeThoughts: true }
+	return { thinkingLevel: GEMINI_THINKING_LEVEL_MAP[selectedEffort], includeThoughts: true }
 }

@@ -1,4 +1,4 @@
-// npx vitest core/webview/__tests__/ClineProvider.apiHandlerRebuild.spec.ts
+﻿// npx vitest core/webview/__tests__/ClineProvider.apiHandlerRebuild.spec.ts
 
 import * as vscode from "vscode"
 
@@ -118,7 +118,7 @@ vi.mock("../../task/Task", () => ({
 			updateApiConfiguration: vi.fn().mockImplementation(function (this: any, newConfig: any) {
 				this.apiConfiguration = newConfig
 			}),
-			getCumulativeTotalCost: vi.fn().mockReturnValue(0), // kilocode_change
+			getCumulativeTotalCost: vi.fn().mockReturnValue(0), // novacode_change
 		}
 		// Define apiConfiguration as a property so tests can read it
 		Object.defineProperty(mockTask, "apiConfiguration", {
@@ -145,7 +145,7 @@ vi.mock("@roo-code/cloud", () => ({
 	getRooCodeApiUrl: vi.fn().mockReturnValue("https://app.roocode.com"),
 }))
 
-vi.mock("../../../shared/kilocode/cli-sessions/core/SessionManager", () => ({
+vi.mock("../../../shared/nova/cli-sessions/core/SessionManager", () => ({
 	SessionManager: {
 		init: vi.fn().mockReturnValue({
 			startTimer: vi.fn(),
@@ -589,7 +589,7 @@ describe("ClineProvider - API Handler Rebuild Guard", () => {
 				"claude-3-5-sonnet-20241022",
 			)
 			expect(getModelId({ apiProvider: "openai", openAiModelId: "gpt-4-turbo" })).toBe("gpt-4-turbo")
-			expect(getModelId({ apiProvider: "glama", glamaModelId: "some-model" })).toBe("some-model") // kilocode_change
+			expect(getModelId({ apiProvider: "glama", glamaModelId: "some-model" })).toBe("some-model") // novacode_change
 			expect(getModelId({ apiProvider: "bedrock", apiModelId: "anthropic.claude-v2" })).toBe(
 				"anthropic.claude-v2",
 			)

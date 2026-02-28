@@ -39,7 +39,7 @@ export class ZAiHandler extends BaseOpenAiCompatibleProvider<string> {
 		})
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	/**
 	 * Override createStream to handle Z.ai models with thinking mode.
 	 * Thinking-capable models have reasoning enabled by default in the API,
@@ -68,9 +68,9 @@ export class ZAiHandler extends BaseOpenAiCompatibleProvider<string> {
 		// For non-thinking models, use the default behavior
 		return super.createStream(systemPrompt, messages, metadata, requestOptions)
 	}
-	// kilocode_change end
+	// novacode_change end
 
-	// kilocode_change start
+	// novacode_change start
 	/**
 	 * Creates a stream with explicit thinking control for Z.ai thinking models.
 	 */
@@ -113,5 +113,5 @@ export class ZAiHandler extends BaseOpenAiCompatibleProvider<string> {
 
 		return this.client.chat.completions.create(params)
 	}
-	// kilocode_change end
+	// novacode_change end
 }

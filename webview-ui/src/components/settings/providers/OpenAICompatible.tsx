@@ -264,11 +264,11 @@ export const OpenAICompatible = ({
 									...openAiCustomModelInfo,
 									reasoningEffort: value as ReasoningEffort,
 								})
-								// kilocode_change start - also set reasoningEffort on API config
+								// novacode_change start - also set reasoningEffort on API config
 								setApiConfigurationField("reasoningEffort", value as ReasoningEffort)
 							} else {
 								setApiConfigurationField(field, value)
-								// kilocode_change end
+								// novacode_change end
 							}
 						}}
 						modelInfo={{

@@ -1,4 +1,4 @@
-// kilocode_change: STT Microphone Settings
+// novacode_change: STT Microphone Settings
 import { useEffect } from "react"
 import { VSCodeDropdown, VSCodeOption } from "@vscode/webview-ui-toolkit/react"
 import { useAppTranslation } from "@/i18n/TranslationContext"
@@ -46,7 +46,7 @@ export const STTSettings = () => {
 	return (
 		<div className="space-y-3">
 			<div>
-				<label className="block font-medium mb-1">{t("kilocode:speechToText.microphone.label")}</label>
+				<label className="block font-medium mb-1">{t("novacode:speechToText.microphone.label")}</label>
 				<div className="flex gap-2">
 					<VSCodeDropdown
 						value={getCurrentDeviceValue()}
@@ -54,7 +54,7 @@ export const STTSettings = () => {
 						className="flex-1"
 						disabled={isLoadingDevices}>
 						<VSCodeOption value="default" className="py-2 px-3">
-							{t("kilocode:speechToText.microphone.defaultOption")}
+							{t("novacode:speechToText.microphone.defaultOption")}
 						</VSCodeOption>
 						{devices.map((device: MicrophoneDevice) => (
 							<VSCodeOption key={device.id} value={device.id} className="py-2 px-3">
@@ -64,20 +64,20 @@ export const STTSettings = () => {
 					</VSCodeDropdown>
 					<Button onClick={loadDevices} disabled={isLoadingDevices} className="flex items-center gap-2">
 						<RefreshCw className={`w-4 h-4 ${isLoadingDevices ? "animate-spin" : ""}`} />
-						{t("kilocode:speechToText.microphone.refresh")}
+						{t("novacode:speechToText.microphone.refresh")}
 					</Button>
 				</div>
 				<p className="text-vscode-descriptionForeground text-xs mt-1">
-					{t("kilocode:speechToText.microphone.description")}
+					{t("novacode:speechToText.microphone.description")}
 				</p>
 				{isLoadingDevices && (
 					<p className="text-vscode-descriptionForeground text-xs mt-1">
-						{t("kilocode:speechToText.microphone.loading")}
+						{t("novacode:speechToText.microphone.loading")}
 					</p>
 				)}
 				{!isLoadingDevices && devices.length === 0 && (
 					<p className="text-vscode-descriptionForeground text-xs mt-1">
-						{t("kilocode:speechToText.microphone.noDevices")}
+						{t("novacode:speechToText.microphone.noDevices")}
 					</p>
 				)}
 			</div>

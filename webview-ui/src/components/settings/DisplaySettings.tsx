@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { HTMLAttributes, useMemo } from "react"
 import { useAppTranslation } from "@/i18n/TranslationContext"
 import { VSCodeCheckbox } from "@vscode/webview-ui-toolkit/react"
@@ -14,9 +14,9 @@ import { Slider } from "../ui"
 
 type DisplaySettingsProps = HTMLAttributes<HTMLDivElement> & {
 	showTaskTimeline?: boolean
-	sendMessageOnEnter?: boolean // kilocode_change
+	sendMessageOnEnter?: boolean // novacode_change
 	showTimestamps?: boolean
-	showDiffStats?: boolean // kilocode_change
+	showDiffStats?: boolean // novacode_change
 	reasoningBlockCollapsed: boolean
 	setCachedStateField: SetCachedStateField<
 		| "showTaskTimeline"

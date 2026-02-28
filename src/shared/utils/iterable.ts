@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 /**
  * Given an async iterable, re-yield the chunks into line chunks
  */

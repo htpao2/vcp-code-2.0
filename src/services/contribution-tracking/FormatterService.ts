@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import * as vscode from "vscode"
 import * as path from "path"
 import * as crypto from "crypto"
@@ -42,7 +42,7 @@ export class FormatterService {
 		const dir = path.dirname(filePath)
 		const ext = path.extname(filePath)
 		const uniqueId = crypto.randomBytes(8).toString("hex")
-		const tempFileName = `.kilo-format-temp-${uniqueId}${ext}`
+		const tempFileName = `.nova-format-temp-${uniqueId}${ext}`
 		return path.join(dir, tempFileName)
 	}
 

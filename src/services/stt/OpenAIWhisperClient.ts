@@ -208,9 +208,9 @@ export class OpenAIWhisperClient extends EventEmitter {
 					this.ws?.off("open", onOpen)
 					this.ws?.off("error", onError)
 					if (error.message.includes("401")) {
-						reject(new Error(t("kilocode:speechToText.errors.invalidApiKey")))
+						reject(new Error(t("novacode:speechToText.errors.invalidApiKey")))
 					} else {
-						reject(new Error(t("kilocode:speechToText.errors.unknown")))
+						reject(new Error(t("novacode:speechToText.errors.unknown")))
 					}
 				}
 

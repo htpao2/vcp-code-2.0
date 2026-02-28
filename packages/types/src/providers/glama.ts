@@ -1,4 +1,4 @@
-// kilocode_change: kilo file
+// novacode_change: nova file
 import type { ModelInfo } from "../model.js"
 
 // https://glama.ai/models

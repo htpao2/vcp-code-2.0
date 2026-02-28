@@ -32,8 +32,8 @@ interface ContextMenuProps {
 	commands?: Command[]
 }
 
-const EMPTY_COMMANDS: Command[] = [] // kilocode_change - maintain stable references for React props
-const EMPTY_SEARCH_RESULTS: SearchResult[] = [] // kilocode_change - maintain stable references for React props
+const EMPTY_COMMANDS: Command[] = [] // novacode_change - maintain stable references for React props
+const EMPTY_SEARCH_RESULTS: SearchResult[] = [] // novacode_change - maintain stable references for React props
 
 const ContextMenu: React.FC<ContextMenuProps> = ({
 	onSelect,
@@ -44,8 +44,8 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 	selectedType,
 	queryItems,
 	modes,
-	dynamicSearchResults = EMPTY_SEARCH_RESULTS, // kilocode_change
-	commands = EMPTY_COMMANDS, // kilocode_change
+	dynamicSearchResults = EMPTY_SEARCH_RESULTS, // novacode_change
+	commands = EMPTY_COMMANDS, // novacode_change
 }) => {
 	const [materialIconsBaseUri, setMaterialIconsBaseUri] = useState("")
 	const menuRef = useRef<HTMLDivElement>(null)
@@ -54,7 +54,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 		return getContextMenuOptions(searchQuery, selectedType, queryItems, dynamicSearchResults, modes, commands)
 	}, [searchQuery, selectedType, queryItems, dynamicSearchResults, modes, commands])
 
-	// kilocode_change start - disable hover selection briefly when items change to prevent accidental selections
+	// novacode_change start - disable hover selection briefly when items change to prevent accidental selections
 	const [allowSelection, setAllowSelection] = useState(false)
 	const prevOptionsRef = useRef<ContextMenuQueryItem[] | null>(null)
 
@@ -68,7 +68,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 		}
 		prevOptionsRef.current = filteredOptions
 	}, [filteredOptions])
-	// kilocode_change end - disable hover selection briefly when items change to prevent accidental selections
+	// novacode_change end - disable hover selection briefly when items change to prevent accidental selections
 
 	useEffect(() => {
 		if (menuRef.current) {
@@ -165,10 +165,10 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 				return <span>{t("chat:contextMenu.url")}</span>
 			case ContextMenuOptionType.NoResults:
 				return <span>{t("chat:contextMenu.noResults")}</span>
-			// kilocode_change start
+			// novacode_change start
 			case ContextMenuOptionType.Image:
 				return <span>Add Image</span>
-			// kilocode_change end
+			// novacode_change end
 			case ContextMenuOptionType.Git:
 				if (option.value) {
 					return (
@@ -251,10 +251,10 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 				return "terminal"
 			case ContextMenuOptionType.URL:
 				return "link"
-			// kilocode_change start
+			// novacode_change start
 			case ContextMenuOptionType.Image:
 				return "device-camera"
-			// kilocode_change end
+			// novacode_change end
 			case ContextMenuOptionType.Git:
 				return "git-commit"
 			case ContextMenuOptionType.NoResults:
@@ -393,11 +393,11 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 									: {}),
 							}}
 							onMouseEnter={() => {
-								// kilocode_change start - add allowEvents check
+								// novacode_change start - add allowEvents check
 								if (allowSelection && isOptionSelectable(option)) {
 									setSelectedIndex(index)
 								}
-								// kilocode_change end - add allowEvents check
+								// novacode_change end - add allowEvents check
 							}}>
 							<div
 								style={{

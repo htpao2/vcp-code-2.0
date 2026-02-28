@@ -1,6 +1,6 @@
 {
 	"extension": {
-		"name": "Kilo Code",
+		"name": "Nova Code",
 		"description": "AI-агент для программирования с открытым исходным кодом, который генерирует код из естественного языка, автоматизирует задачи и выполняет команды терминала. Включает встроенное автодополнение, автоматизацию браузера, автоматический рефакторинг и пользовательские режимы для планирования, программирования и отладки. Поддерживает более 500 AI-моделей, включая Claude (Anthropic), Gemini, Grok, GPT, Codex и GLM."
 	},
 	"number_format": {
@@ -165,7 +165,7 @@
 	"warnings": {
 		"no_terminal_content": "Не выбрано содержимое терминала",
 		"missing_task_files": "Файлы этой задачи отсутствуют. Хотите удалить её из списка задач?",
-		"auto_import_failed": "Не удалось автоматически импортировать настройки Kilo Code: {{error}}"
+		"auto_import_failed": "Не удалось автоматически импортировать настройки Nova Code: {{error}}"
 	},
 	"info": {
 		"no_changes": "Изменения не найдены.",
@@ -174,7 +174,7 @@
 		"custom_storage_path_set": "Установлен пользовательский путь хранения: {{path}}",
 		"default_storage_path": "Возвращено использование пути хранения по умолчанию",
 		"settings_imported": "Настройки успешно импортированы.",
-		"auto_import_success": "Настройки Kilo Code автоматически импортированы из {{filename}}",
+		"auto_import_success": "Настройки Nova Code автоматически импортированы из {{filename}}",
 		"share_link_copied": "Ссылка для совместного использования скопирована в буфер обмена",
 		"image_copied_to_clipboard": "URI данных изображения скопирован в буфер обмена",
 		"image_saved": "Изображение сохранено в {{path}}",
@@ -208,12 +208,12 @@
 	},
 	"storage": {
 		"prompt_custom_path": "Введите пользовательский путь хранения истории разговоров, оставьте пустым для использования расположения по умолчанию",
-		"path_placeholder": "D:\\KiloCodeStorage",
-		"enter_absolute_path": "Пожалуйста, введите абсолютный путь (например, D:\\KiloCodeStorage или /home/user/storage)",
+		"path_placeholder": "D:\\NovaCodeStorage",
+		"enter_absolute_path": "Пожалуйста, введите абсолютный путь (например, D:\\NovaCodeStorage или /home/user/storage)",
 		"enter_valid_path": "Пожалуйста, введите корректный путь"
 	},
 	"input": {
-		"task_prompt": "Что должен сделать Kilo Code?",
+		"task_prompt": "Что должен сделать Nova Code?",
 		"task_placeholder": "Введите вашу задачу здесь"
 	},
 	"settings": {
@@ -224,8 +224,8 @@
 	},
 	"customModes": {
 		"errors": {
-			"yamlParseError": "Недопустимый YAML в файле .kilocodemodes на строке {{line}}. Проверь:\n• Правильные отступы (используй пробелы, не табы)\n• Соответствующие кавычки и скобки\n• Допустимый синтаксис YAML",
-			"schemaValidationError": "Недопустимый формат пользовательских режимов в .kilocodemodes:\n{{issues}}",
+			"yamlParseError": "Недопустимый YAML в файле .novacodemodes на строке {{line}}. Проверь:\n• Правильные отступы (используй пробелы, не табы)\n• Соответствующие кавычки и скобки\n• Допустимый синтаксис YAML",
+			"schemaValidationError": "Недопустимый формат пользовательских режимов в .novacodemodes:\n{{issues}}",
 			"invalidFormat": "Недопустимый формат пользовательских режимов. Убедись, что твои настройки соответствуют правильному формату YAML.",
 			"updateFailed": "Не удалось обновить пользовательский режим: {{error}}",
 			"deleteFailed": "Не удалось удалить пользовательский режим: {{error}}",
@@ -274,7 +274,7 @@
 	},
 	"docsLink": {
 		"label": "Docs",
-		"url": "https://kilo.ai/docs"
+		"url": "https://nova.ai/docs"
 	},
 	"errorBoundary": {
 		"title": "Ошибка",

@@ -7,10 +7,10 @@ import { EmbedderProvider } from "./manager"
 export interface CodeIndexConfig {
 	isConfigured: boolean
 	embedderProvider: EmbedderProvider
-	// kilocode_change start
+	// novacode_change start
 	vectorStoreProvider?: "lancedb" | "qdrant"
 	lancedbVectorStoreDirectoryPlaceholder?: string
-	// kilocode_change end
+	// novacode_change end
 	modelId?: string
 	modelDimension?: number // Generic dimension property for all providers
 	openAiOptions?: ApiHandlerOptions
@@ -21,15 +21,15 @@ export interface CodeIndexConfig {
 	vercelAiGatewayOptions?: { apiKey: string }
 	bedrockOptions?: { region: string; profile?: string }
 	openRouterOptions?: { apiKey: string; specificProvider?: string }
-	voyageOptions?: { apiKey: string } // kilocode_change
+	voyageOptions?: { apiKey: string } // novacode_change
 	qdrantUrl?: string
 	qdrantApiKey?: string
 	searchMinScore?: number
 	searchMaxResults?: number
-	// kilocode_change start
+	// novacode_change start
 	embeddingBatchSize?: number
 	scannerMaxBatchRetries?: number
-	// kilocode_change end
+	// novacode_change end
 }
 
 /**
@@ -39,10 +39,10 @@ export type PreviousConfigSnapshot = {
 	enabled: boolean
 	configured: boolean
 	embedderProvider: EmbedderProvider
-	// kilocode_change start
+	// novacode_change start
 	vectorStoreProvider?: "lancedb" | "qdrant"
 	lancedbVectorStoreDirectory?: string
-	// kilocode_change end
+	// novacode_change end
 	modelId?: string
 	modelDimension?: number // Generic dimension property
 	openAiKey?: string
@@ -56,7 +56,7 @@ export type PreviousConfigSnapshot = {
 	bedrockProfile?: string
 	openRouterApiKey?: string
 	openRouterSpecificProvider?: string
-	voyageApiKey?: string // kilocode_change
+	voyageApiKey?: string // novacode_change
 	qdrantUrl?: string
 	qdrantApiKey?: string
 }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react"
+﻿import { useCallback, useEffect } from "react"
 import { useKeyPress } from "react-use"
 import { AlertDialogProps } from "@radix-ui/react-alert-dialog"
 
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui"
 import { useAppTranslation } from "@/i18n/TranslationContext"
 import { vscode } from "@/utils/vscode"
-import { useTaskWithId } from "@/kilocode/hooks/useTaskHistory"
+import { useTaskWithId } from "@/nova/hooks/useTaskHistory"
 
 interface DeleteTaskDialogProps extends AlertDialogProps {
 	taskId: string
@@ -24,12 +24,12 @@ interface DeleteTaskDialogProps extends AlertDialogProps {
 export const DeleteTaskDialog = ({ taskId, ...props }: DeleteTaskDialogProps) => {
 	const { t } = useAppTranslation()
 	const [isEnterPressed] = useKeyPress("Enter")
-	const { data: tasks } = useTaskWithId([taskId]) // kilocode_change
+	const { data: tasks } = useTaskWithId([taskId]) // novacode_change
 
 	const { onOpenChange } = props
 
-	const task = tasks?.find((t) => t.id === taskId) // kilocode_change
-	const isFavorited = task?.isFavorited // kilocode_change
+	const task = tasks?.find((t) => t.id === taskId) // novacode_change
+	const isFavorited = task?.isFavorited // novacode_change
 
 	const onDelete = useCallback(() => {
 		if (taskId) {
@@ -49,14 +49,14 @@ export const DeleteTaskDialog = ({ taskId, ...props }: DeleteTaskDialogProps) =>
 			<AlertDialogContent onEscapeKeyDown={() => onOpenChange?.(false)}>
 				<AlertDialogHeader>
 					<AlertDialogTitle>{t("history:deleteTask")}</AlertDialogTitle>
-					{/* kilocode_change start */}
+					{/* novacode_change start */}
 					<AlertDialogDescription>
 						{isFavorited ? (
 							<div className="text-yellow-500 mb-2">{t("history:deleteTaskFavoritedWarning")}</div>
 						) : null}
 						{t("history:deleteTaskMessage")}
 					</AlertDialogDescription>
-					{/* kilocode_change end */}
+					{/* novacode_change end */}
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel asChild>

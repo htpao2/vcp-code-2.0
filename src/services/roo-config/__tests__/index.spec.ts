@@ -62,10 +62,10 @@ describe("RooConfigService", () => {
 		it("should return correct path for global .roo directory", () => {
 			mockExistsSync.mockReturnValue(false)
 			const result = getGlobalRooDirectory()
-			expect(result).toBe(path.join("/mock/home", ".kilocode"))
+			expect(result).toBe(path.join("/mock/home", ".novacode"))
 		})
 
-		it("should fallback to legacy .roo when it exists and .kilocode does not", () => {
+		it("should fallback to legacy .roo when it exists and .novacode does not", () => {
 			mockExistsSync.mockImplementation((p: string) => p === path.join("/mock/home", ".roo"))
 
 			const result = getGlobalRooDirectory()
@@ -76,7 +76,7 @@ describe("RooConfigService", () => {
 		it("should handle different home directories", () => {
 			mockHomedir.mockReturnValue("/different/home")
 			const result = getGlobalRooDirectory()
-			expect(result).toBe(path.join("/different/home", ".kilocode"))
+			expect(result).toBe(path.join("/different/home", ".novacode"))
 		})
 	})
 
@@ -85,10 +85,10 @@ describe("RooConfigService", () => {
 			mockExistsSync.mockReturnValue(false)
 			const cwd = "/custom/project/path"
 			const result = getProjectRooDirectoryForCwd(cwd)
-			expect(result).toBe(path.join(cwd, ".kilocode"))
+			expect(result).toBe(path.join(cwd, ".novacode"))
 		})
 
-		it("should fallback to legacy .roo when it exists and .kilocode does not", () => {
+		it("should fallback to legacy .roo when it exists and .novacode does not", () => {
 			const cwd = "/custom/project/path"
 			mockExistsSync.mockImplementation((p: string) => p === path.join(cwd, ".roo"))
 
@@ -248,7 +248,7 @@ describe("RooConfigService", () => {
 
 			const result = getRooDirectoriesForCwd(cwd)
 
-			expect(result).toEqual([path.join("/mock/home", ".kilocode"), path.join(cwd, ".kilocode")])
+			expect(result).toEqual([path.join("/mock/home", ".novacode"), path.join(cwd, ".novacode")])
 		})
 	})
 
@@ -338,9 +338,9 @@ describe("RooConfigService", () => {
 
 			await loadConfiguration("rules/rules.md", "/project/path")
 
-			expect(mockReadFile).toHaveBeenCalledWith(path.join("/mock/home", ".kilocode", "rules/rules.md"), "utf-8")
+			expect(mockReadFile).toHaveBeenCalledWith(path.join("/mock/home", ".novacode", "rules/rules.md"), "utf-8")
 			expect(mockReadFile).toHaveBeenCalledWith(
-				path.join("/project/path", ".kilocode", "rules/rules.md"),
+				path.join("/project/path", ".novacode", "rules/rules.md"),
 				"utf-8",
 			)
 		})
@@ -355,62 +355,62 @@ describe("RooConfigService", () => {
 			expect(result).toEqual([])
 		})
 
-		it("should discover .kilocode directories from subfolders", async () => {
-			// Find any file inside .kilocode directories
+		it("should discover .novacode directories from subfolders", async () => {
+			// Find any file inside .novacode directories
 			mockExecuteRipgrep.mockResolvedValueOnce([
-				{ path: "package-a/.kilocode/rules/rule.md", type: "file" },
-				{ path: "package-b/.kilocode/workflows/rule.md", type: "file" },
+				{ path: "package-a/.novacode/rules/rule.md", type: "file" },
+				{ path: "package-b/.novacode/workflows/rule.md", type: "file" },
 			])
 
 			const result = await discoverSubfolderRooDirectories("/project/path")
 
 			expect(result).toEqual([
-				path.join("/project/path", "package-a", ".kilocode"),
-				path.join("/project/path", "package-b", ".kilocode"),
+				path.join("/project/path", "package-a", ".novacode"),
+				path.join("/project/path", "package-b", ".novacode"),
 			])
 		})
 
 		it("should sort discovered directories alphabetically", async () => {
 			mockExecuteRipgrep.mockResolvedValueOnce([
-				{ path: "zebra/.kilocode/rules/rule.md", type: "file" },
-				{ path: "apple/.kilocode/rules/rule.md", type: "file" },
-				{ path: "mango/.kilocode/rules/rule.md", type: "file" },
+				{ path: "zebra/.novacode/rules/rule.md", type: "file" },
+				{ path: "apple/.novacode/rules/rule.md", type: "file" },
+				{ path: "mango/.novacode/rules/rule.md", type: "file" },
 			])
 
 			const result = await discoverSubfolderRooDirectories("/project/path")
 
 			expect(result).toEqual([
-				path.join("/project/path", "apple", ".kilocode"),
-				path.join("/project/path", "mango", ".kilocode"),
-				path.join("/project/path", "zebra", ".kilocode"),
+				path.join("/project/path", "apple", ".novacode"),
+				path.join("/project/path", "mango", ".novacode"),
+				path.join("/project/path", "zebra", ".novacode"),
 			])
 		})
 
-		it("should exclude root .kilocode and .roo directories", async () => {
+		it("should exclude root .novacode and .roo directories", async () => {
 			// These would match the root dirs, which should be excluded
 			mockExecuteRipgrep.mockResolvedValueOnce([
-				{ path: ".kilocode/rules/rule.md", type: "file" }, // root - excluded
+				{ path: ".novacode/rules/rule.md", type: "file" }, // root - excluded
 				{ path: ".roo/rules/rule.md", type: "file" }, // root legacy - excluded
-				{ path: "subfolder/.kilocode/rules/rule.md", type: "file" },
+				{ path: "subfolder/.novacode/rules/rule.md", type: "file" },
 			])
 
 			const result = await discoverSubfolderRooDirectories("/project/path")
 
 			// Should only include subfolder, not roots
-			expect(result).toEqual([path.join("/project/path", "subfolder", ".kilocode")])
+			expect(result).toEqual([path.join("/project/path", "subfolder", ".novacode")])
 		})
 
 		it("should handle nested subdirectories", async () => {
 			mockExecuteRipgrep.mockResolvedValueOnce([
-				{ path: "packages/core/.kilocode/rules/rule.md", type: "file" },
-				{ path: "packages/utils/.kilocode/workflows/rule.md", type: "file" },
+				{ path: "packages/core/.novacode/rules/rule.md", type: "file" },
+				{ path: "packages/utils/.novacode/workflows/rule.md", type: "file" },
 			])
 
 			const result = await discoverSubfolderRooDirectories("/project/path")
 
 			expect(result).toEqual([
-				path.join("/project/path", "packages/core", ".kilocode"),
-				path.join("/project/path", "packages/utils", ".kilocode"),
+				path.join("/project/path", "packages/core", ".novacode"),
+				path.join("/project/path", "packages/utils", ".novacode"),
 			])
 		})
 
@@ -424,22 +424,22 @@ describe("RooConfigService", () => {
 
 		it("should deduplicate config directories from multiple files", async () => {
 			mockExecuteRipgrep.mockResolvedValueOnce([
-				{ path: "package-a/.kilocode/rules/rule1.md", type: "file" },
-				{ path: "package-a/.kilocode/rules/rule2.md", type: "file" },
-				{ path: "package-a/.kilocode/workflows/rule3.md", type: "file" },
+				{ path: "package-a/.novacode/rules/rule1.md", type: "file" },
+				{ path: "package-a/.novacode/rules/rule2.md", type: "file" },
+				{ path: "package-a/.novacode/workflows/rule3.md", type: "file" },
 			])
 
 			const result = await discoverSubfolderRooDirectories("/project/path")
 
-			// Should only include package-a/.kilocode once
-			expect(result).toEqual([path.join("/project/path", "package-a", ".kilocode")])
+			// Should only include package-a/.novacode once
+			expect(result).toEqual([path.join("/project/path", "package-a", ".novacode")])
 		})
 
-		it("should discover .kilocode/.roo directories with any content", async () => {
+		it("should discover .novacode/.roo directories with any content", async () => {
 			// Should find config directories regardless of what's inside them
 			mockExecuteRipgrep.mockResolvedValueOnce([
-				{ path: "package-a/.kilocode/rules/rule.md", type: "file" },
-				{ path: "package-b/.kilocode/workflows/code-rule.md", type: "file" },
+				{ path: "package-a/.novacode/rules/rule.md", type: "file" },
+				{ path: "package-b/.novacode/workflows/code-rule.md", type: "file" },
 				{ path: "package-c/.roo/rules-architect/arch-rule.md", type: "file" }, // legacy
 				{ path: "package-d/.roo/config/settings.json", type: "file" }, // legacy
 			])
@@ -447,36 +447,36 @@ describe("RooConfigService", () => {
 			const result = await discoverSubfolderRooDirectories("/project/path")
 
 			expect(result).toEqual([
-				path.join("/project/path", "package-a", ".kilocode"),
-				path.join("/project/path", "package-b", ".kilocode"),
+				path.join("/project/path", "package-a", ".novacode"),
+				path.join("/project/path", "package-b", ".novacode"),
 				path.join("/project/path", "package-c", ".roo"),
 				path.join("/project/path", "package-d", ".roo"),
 			])
 		})
 
-		it("should prefer .kilocode over .roo when both exist in the same subfolder", async () => {
+		it("should prefer .novacode over .roo when both exist in the same subfolder", async () => {
 			mockExecuteRipgrep.mockResolvedValueOnce([
 				{ path: "package-a/.roo/rules/rule.md", type: "file" },
-				{ path: "package-a/.kilocode/rules/rule.md", type: "file" },
+				{ path: "package-a/.novacode/rules/rule.md", type: "file" },
 			])
 
 			const result = await discoverSubfolderRooDirectories("/project/path")
 
-			expect(result).toEqual([path.join("/project/path", "package-a", ".kilocode")])
+			expect(result).toEqual([path.join("/project/path", "package-a", ".novacode")])
 		})
 	})
 
 	describe("getAllRooDirectoriesForCwd", () => {
 		it("should return global, project, and subfolder directories", async () => {
 			mockExistsSync.mockReturnValue(false)
-			mockExecuteRipgrep.mockResolvedValueOnce([{ path: "subfolder/.kilocode/rules/rule.md", type: "file" }])
+			mockExecuteRipgrep.mockResolvedValueOnce([{ path: "subfolder/.novacode/rules/rule.md", type: "file" }])
 
 			const result = await getAllRooDirectoriesForCwd("/project/path")
 
 			expect(result).toEqual([
-				path.join("/mock/home", ".kilocode"), // global
-				path.join("/project/path", ".kilocode"), // project
-				path.join("/project/path", "subfolder", ".kilocode"), // subfolder
+				path.join("/mock/home", ".novacode"), // global
+				path.join("/project/path", ".novacode"), // project
+				path.join("/project/path", "subfolder", ".novacode"), // subfolder
 			])
 		})
 
@@ -486,30 +486,30 @@ describe("RooConfigService", () => {
 
 			const result = await getAllRooDirectoriesForCwd("/project/path")
 
-			expect(result).toEqual([path.join("/mock/home", ".kilocode"), path.join("/project/path", ".kilocode")])
+			expect(result).toEqual([path.join("/mock/home", ".novacode"), path.join("/project/path", ".novacode")])
 		})
 
 		it("should maintain order: global, project, subfolders (alphabetically)", async () => {
 			mockExistsSync.mockReturnValue(false)
 			mockExecuteRipgrep.mockResolvedValueOnce([
-				{ path: "zebra/.kilocode/rules/rule.md", type: "file" },
-				{ path: "apple/.kilocode/rules/rule.md", type: "file" },
+				{ path: "zebra/.novacode/rules/rule.md", type: "file" },
+				{ path: "apple/.novacode/rules/rule.md", type: "file" },
 			])
 
 			const result = await getAllRooDirectoriesForCwd("/project/path")
 
 			expect(result).toEqual([
-				path.join("/mock/home", ".kilocode"), // global first
-				path.join("/project/path", ".kilocode"), // project second
-				path.join("/project/path", "apple", ".kilocode"), // subfolders alphabetically
-				path.join("/project/path", "zebra", ".kilocode"),
+				path.join("/mock/home", ".novacode"), // global first
+				path.join("/project/path", ".novacode"), // project second
+				path.join("/project/path", "apple", ".novacode"), // subfolders alphabetically
+				path.join("/project/path", "zebra", ".novacode"),
 			])
 		})
 	})
 
 	describe("getAgentsDirectoriesForCwd", () => {
 		it("should return root directory and parent directories of subfolder .roo dirs", async () => {
-			mockExecuteRipgrep.mockResolvedValueOnce([{ path: "package-a/.kilocode/rules/rule.md", type: "file" }])
+			mockExecuteRipgrep.mockResolvedValueOnce([{ path: "package-a/.novacode/rules/rule.md", type: "file" }])
 
 			const result = await getAgentsDirectoriesForCwd("/project/path")
 
@@ -529,9 +529,9 @@ describe("RooConfigService", () => {
 
 		it("should include multiple subfolder parent directories", async () => {
 			mockExecuteRipgrep.mockResolvedValueOnce([
-				{ path: "package-a/.kilocode/rules/rule.md", type: "file" },
-				{ path: "package-b/.kilocode/workflows/rule.md", type: "file" },
-				{ path: "packages/core/.kilocode/rules/rule.md", type: "file" },
+				{ path: "package-a/.novacode/rules/rule.md", type: "file" },
+				{ path: "package-b/.novacode/workflows/rule.md", type: "file" },
+				{ path: "packages/core/.novacode/rules/rule.md", type: "file" },
 			])
 
 			const result = await getAgentsDirectoriesForCwd("/project/path")

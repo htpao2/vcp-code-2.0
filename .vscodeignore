@@ -26,7 +26,7 @@ jest.*
 .vite-port
 .nvmrc
 .clinerules*
-.kilocodemodes
+.novacodemodes
 cline_docs/**
 coverage/**
 locales/**

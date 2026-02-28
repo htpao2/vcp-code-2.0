@@ -1,6 +1,6 @@
 # JetBrains Plugin Development Setup
 
-This directory contains the JetBrains plugin implementation for Kilo Code, including both the IntelliJ plugin (Kotlin) and the Extension Host (Node.js/TypeScript).
+This directory contains the JetBrains plugin implementation for Nova Code, including both the IntelliJ plugin (Kotlin) and the Extension Host (Node.js/TypeScript).
 
 ## Prerequisites
 
@@ -176,7 +176,7 @@ cd jetbrains/plugin
 pnpm build
 
 # Or with Turbo from project root
-pnpm --filter @kilo-code/jetbrains-host build
+pnpm --filter @nova-code/jetbrains-host build
 ```
 
 ## Turbo Integration
@@ -346,7 +346,7 @@ The plugin respects these environment variables:
 
 - `JAVA_HOME`: Java installation directory
 - `debugMode`: Build mode (idea/release/none)
-- `vscodePlugin`: Plugin name (default: kilocode)
+- `vscodePlugin`: Plugin name (default: novacode)
 - `vscodeVersion`: VSCode version for platform generation (default: 1.100.0)
 
 ## Platform Support

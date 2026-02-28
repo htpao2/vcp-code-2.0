@@ -1,4 +1,4 @@
-import fs from "fs/promises"
+﻿import fs from "fs/promises"
 import os from "os"
 import * as path from "path"
 import crypto from "crypto"
@@ -15,10 +15,10 @@ import { t } from "../../i18n"
 import { CheckpointDiff, CheckpointResult, CheckpointEventMap } from "./types"
 import { getExcludePatterns } from "./excludes"
 
-// kilocode_change start
+// novacode_change start
 import { TelemetryService } from "@roo-code/telemetry"
 import { TelemetryEventName } from "@roo-code/types"
-import { stringifyError } from "../../shared/kilocode/errorUtils"
+import { stringifyError } from "../../shared/nova/errorUtils"
 function reportError(callsite: string, error: unknown) {
 	TelemetryService.instance.captureEvent(TelemetryEventName.CHECKPOINT_FAILURE, {
 		callsite,
@@ -29,11 +29,11 @@ function reportError(callsite: string, error: unknown) {
 const warningsShown = new Set<string>()
 function showWarning(message: string) {
 	if (warningsShown.size < 5 && !warningsShown.has(message)) {
-		vscode.window.showWarningMessage(message, t("kilocode:checkpoints.dismissWarning"))
+		vscode.window.showWarningMessage(message, t("novacode:checkpoints.dismissWarning"))
 		warningsShown.add(message)
 	}
 }
-// kilocode_change end
+// novacode_change end
 /**
  * Creates a SimpleGit instance with sanitized environment variables to prevent
  * interference from inherited git environment variables like GIT_DIR and GIT_WORK_TREE.
@@ -132,7 +132,7 @@ export abstract class ShadowCheckpointService extends EventEmitter {
 		const protectedPaths = [homedir, desktopPath, documentsPath, downloadsPath]
 
 		if (protectedPaths.includes(workspaceDir)) {
-			showWarning(t("kilocode:checkpoints.protectedPaths", { workspaceDir })) // kilocode_change
+			showWarning(t("novacode:checkpoints.protectedPaths", { workspaceDir })) // novacode_change
 			throw new Error(`Cannot use checkpoints in ${workspaceDir}`)
 		}
 
@@ -155,7 +155,7 @@ export abstract class ShadowCheckpointService extends EventEmitter {
 			// Show persistent error message with the offending path
 			const relativePath = path.relative(this.workspaceDir, nestedGitPath)
 
-			showWarning(t("kilocode:checkpoints.nestedGitRepos", { path: relativePath })) // kilocode_change
+			showWarning(t("novacode:checkpoints.nestedGitRepos", { path: relativePath })) // novacode_change
 
 			throw new Error(
 				`Checkpoints are disabled because a nested git repository was detected at: ${relativePath}. ` +
@@ -188,7 +188,7 @@ export abstract class ShadowCheckpointService extends EventEmitter {
 			await git.init()
 			await git.addConfig("core.worktree", this.workspaceDir) // Sets the working tree to the current workspace.
 			await git.addConfig("commit.gpgSign", "false") // Disable commit signing for shadow repo.
-			await git.addConfig("user.name", "Kilo Code")
+			await git.addConfig("user.name", "Nova Code")
 			await git.addConfig("user.email", "noreply@example.com")
 			await this.writeExcludeFile()
 			await this.stageAll(git)
@@ -236,7 +236,7 @@ export abstract class ShadowCheckpointService extends EventEmitter {
 			this.log(
 				`[${this.constructor.name}#stageAll] failed to add files to git: ${error instanceof Error ? error.message : String(error)}`,
 			)
-			reportError(`${this.constructor.name}#stageAll`, error) // kilocode_change
+			reportError(`${this.constructor.name}#stageAll`, error) // novacode_change
 		}
 	}
 
@@ -285,7 +285,7 @@ export abstract class ShadowCheckpointService extends EventEmitter {
 			this.log(
 				`[${this.constructor.name}#getNestedGitRepository] failed to check for nested git repos: ${error instanceof Error ? error.message : String(error)}`,
 			)
-			reportError(`${this.constructor.name}#hasNestedGitRepositories`, error) // kilocode_change
+			reportError(`${this.constructor.name}#hasNestedGitRepositories`, error) // novacode_change
 
 			// If we can't check, assume there are no nested repos to avoid blocking the feature.
 			return null
@@ -300,7 +300,7 @@ export abstract class ShadowCheckpointService extends EventEmitter {
 				this.log(
 					`[${this.constructor.name}#getShadowGitConfigWorktree] failed to get core.worktree: ${error instanceof Error ? error.message : String(error)}`,
 				)
-				reportError(`${this.constructor.name}#getShadowGitConfigWorktree`, error) // kilocode_change
+				reportError(`${this.constructor.name}#getShadowGitConfigWorktree`, error) // novacode_change
 			}
 		}
 
@@ -409,17 +409,17 @@ export abstract class ShadowCheckpointService extends EventEmitter {
 			const relPath = file.file
 			const absPath = path.join(cwdPath, relPath)
 			const before = await this.git.show([`${from}:${relPath}`]).catch((err) => {
-				reportError(`[${this.constructor.name}#getDiff:git.show:before`, err) // kilocode_change
+				reportError(`[${this.constructor.name}#getDiff:git.show:before`, err) // novacode_change
 				return ""
 			})
 
 			const after = to
 				? await this.git.show([`${to}:${relPath}`]).catch((err) => {
-						reportError(`[${this.constructor.name}#getDiff:git.show:after`, err) // kilocode_change
+						reportError(`[${this.constructor.name}#getDiff:git.show:after`, err) // novacode_change
 						return ""
 					})
 				: await fs.readFile(absPath, "utf8").catch((err) => {
-						reportError(`[${this.constructor.name}#getDiff:readFile`, err) // kilocode_change
+						reportError(`[${this.constructor.name}#getDiff:readFile`, err) // novacode_change
 						return ""
 					})
 
@@ -526,7 +526,7 @@ export abstract class ShadowCheckpointService extends EventEmitter {
 				console.error(
 					`[${this.constructor.name}#deleteBranch] failed to delete branch ${branchName}: ${error instanceof Error ? error.message : String(error)}`,
 				)
-				reportError(`${this.constructor.name}#deleteBranch`, error) // kilocode_change
+				reportError(`${this.constructor.name}#deleteBranch`, error) // novacode_change
 
 				return false
 			} finally {

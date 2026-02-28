@@ -1,19 +1,19 @@
 // npx vitest src/components/settings/__tests__/ModelPicker.spec.tsx
 
-import { screen, fireEvent, render } from "@/utils/test-utils"
+import { screen, fireEvent, render, waitFor } from "@/utils/test-utils"
 import { act } from "react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 import {
 	ModelInfo,
-	openRouterDefaultModelId, // kilocode_change
+	openRouterDefaultModelId, // novacode_change
 } from "@roo-code/types"
 
 import { ModelPicker } from "../ModelPicker"
 
 vi.mock("@src/context/ExtensionStateContext", () => ({
 	useExtensionState: vi.fn(() => ({
-		kilocodeDefaultModel: openRouterDefaultModelId, // kilocode_change
+		novacodeDefaultModel: openRouterDefaultModelId, // novacode_change
 	})),
 }))
 
@@ -41,7 +41,7 @@ describe("ModelPicker", () => {
 	const defaultProps = {
 		apiConfiguration: {},
 		defaultModelId: "model1",
-		modelIdKey: "glamaModelId" as const, // kilocode_change
+		modelIdKey: "glamaModelId" as const, // novacode_change
 		serviceName: "Test Service",
 		serviceUrl: "https://test.service",
 		recommendedModel: "recommended-model",
@@ -62,13 +62,6 @@ describe("ModelPicker", () => {
 
 	beforeEach(() => {
 		vi.clearAllMocks()
-		vi.useFakeTimers()
-	})
-
-	afterEach(() => {
-		// Clear any pending timers to prevent test flakiness
-		vi.clearAllTimers()
-		vi.useRealTimers()
 	})
 
 	it("calls setApiConfigurationField when a model is selected", async () => {
@@ -80,14 +73,9 @@ describe("ModelPicker", () => {
 			fireEvent.click(button)
 		})
 
-		// Wait for popover to open and animations to complete.
-		await act(async () => {
-			vi.advanceTimersByTime(100)
-		})
-
 		await act(async () => {
 			// Find and set the input value
-			const modelInput = screen.getByTestId("model-input")
+			const modelInput = await screen.findByTestId("model-input")
 			fireEvent.input(modelInput, { target: { value: "model2" } })
 		})
 
@@ -98,13 +86,9 @@ describe("ModelPicker", () => {
 			fireEvent.click(modelItem)
 		})
 
-		// Advance timers to trigger the setTimeout in onSelect
-		await act(async () => {
-			vi.advanceTimersByTime(100)
+		await waitFor(() => {
+			expect(mockSetApiConfigurationField).toHaveBeenCalledWith(defaultProps.modelIdKey, "model2")
 		})
-
-		// Verify the API config was updated.
-		expect(mockSetApiConfigurationField).toHaveBeenCalledWith(defaultProps.modelIdKey, "model2")
 	})
 
 	it("allows setting a custom model ID that's not in the predefined list", async () => {
@@ -116,22 +100,12 @@ describe("ModelPicker", () => {
 			fireEvent.click(button)
 		})
 
-		// Wait for popover to open and animations to complete.
-		await act(async () => {
-			vi.advanceTimersByTime(100)
-		})
-
 		const customModelId = "custom-model-id"
 
 		await act(async () => {
 			// Find and set the input value to a custom model ID
 			const modelInput = screen.getByTestId("model-input")
 			fireEvent.input(modelInput, { target: { value: customModelId } })
-		})
-
-		// Wait for the UI to update
-		await act(async () => {
-			vi.advanceTimersByTime(100)
 		})
 
 		// Find and click the "Use custom" option
@@ -141,13 +115,9 @@ describe("ModelPicker", () => {
 			fireEvent.click(customOption)
 		})
 
-		// Advance timers to trigger the setTimeout in onSelect
-		await act(async () => {
-			vi.advanceTimersByTime(100)
+		await waitFor(() => {
+			expect(mockSetApiConfigurationField).toHaveBeenCalledWith(defaultProps.modelIdKey, customModelId)
 		})
-
-		// Verify the API config was updated with the custom model ID
-		expect(mockSetApiConfigurationField).toHaveBeenCalledWith(defaultProps.modelIdKey, customModelId)
 	})
 
 	describe("Error Message Display", () => {

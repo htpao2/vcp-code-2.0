@@ -9,7 +9,7 @@ import type { ClineProvider } from "../webview/ClineProvider"
 import { getRooDirectoriesForCwd } from "../../services/roo-config/index.js"
 
 import { getNativeTools, getMcpServerTools } from "../prompts/tools/native-tools"
-import type { ClineProviderState } from "../webview/ClineProvider" // kilocode_change
+import type { ClineProviderState } from "../webview/ClineProvider" // novacode_change
 import {
 	filterNativeToolsForMode,
 	filterMcpToolsForMode,
@@ -26,9 +26,9 @@ interface BuildToolsOptions {
 	maxReadFileLine: number
 	maxConcurrentFileReads: number
 	browserToolEnabled: boolean
-	// kilocode_change start
+	// novacode_change start
 	state?: ClineProviderState
-	// kilocode_change end
+	// novacode_change end
 	modelInfo?: ModelInfo
 	diffEnabled: boolean
 	/**
@@ -137,9 +137,9 @@ export async function buildNativeToolsArrayWithRestrictions(options: BuildToolsO
 		experiments,
 		codeIndexManager,
 		filterSettings,
-		// kilocode_change start
+		// novacode_change start
 		options.state,
-		// kilocode_change end
+		// novacode_change end
 		mcpHub,
 	)
 

@@ -1,5 +1,5 @@
 import { MermaidSyntaxFixer } from "../mermaidSyntaxFixer"
-import { vi, beforeEach, afterEach } from "vitest"
+import { vi } from "vitest"
 
 // Mock the mermaid library
 vi.mock("mermaid", () => ({

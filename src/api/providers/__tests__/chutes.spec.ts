@@ -153,7 +153,7 @@ describe("ChutesHandler", () => {
 		])
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	it("should handle non-DeepSeek reasoning field", async () => {
 		mockCreate.mockImplementationOnce(async () => ({
 			[Symbol.asyncIterator]: async function* () {
@@ -184,7 +184,7 @@ describe("ChutesHandler", () => {
 
 		expect(chunks).toEqual([{ type: "reasoning", text: "Thinking through it..." }])
 	})
-	// kilocode_change end
+	// novacode_change end
 
 	it("should return default model when no model is specified", async () => {
 		const model = await handler.fetchModel()
@@ -308,7 +308,7 @@ describe("ChutesHandler", () => {
 		})
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	it("createMessage should yield tool_call_end on finish_reason tool_calls", async () => {
 		mockCreate.mockImplementationOnce(() => {
 			return {
@@ -431,7 +431,7 @@ describe("ChutesHandler", () => {
 			},
 		])
 	})
-	// kilocode_change end
+	// novacode_change end
 
 	it("createMessage should pass tools and tool_choice to API", async () => {
 		const tools = [
@@ -498,7 +498,7 @@ describe("ChutesHandler", () => {
 		expect(model.info.temperature).toBe(0.5)
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	it("should preserve explicit Chutes model id when it is unavailable in cached model list", () => {
 		const unsupportedModelId = "moonshotai/Kimi-K2.5-TEE"
 		const handlerWithModel = new ChutesHandler({
@@ -511,5 +511,5 @@ describe("ChutesHandler", () => {
 		expect(model.id).toBe(unsupportedModelId)
 		expect(model.info.temperature).toBe(0.5)
 	})
-	// kilocode_change end
+	// novacode_change end
 })

@@ -23,7 +23,7 @@ function asObjectSafe(value: any): object {
 
 		return {}
 	} catch (error) {
-		console.warn("Kilo Code <Language Model API>: Failed to parse object:", error)
+		console.warn("Nova Code <Language Model API>: Failed to parse object:", error)
 		return {}
 	}
 }
@@ -73,9 +73,9 @@ export function convertToVsCodeLmMessages(
 								: (toolMessage.content?.map((part) => {
 										if (part.type === "image") {
 											return new vscode.LanguageModelTextPart(
-												// kilocode_change begin support type==url
+												// novacode_change begin support type==url
 												`[Image (${part.source?.type || "Unknown source-type"}): ${part.source?.type === "url" ? "URL" : part.source?.media_type || "unknown media-type"} not supported by VSCode LM API]`,
-												// kilocode_change end
+												// novacode_change end
 											)
 										}
 										return new vscode.LanguageModelTextPart(part.text)
@@ -88,9 +88,9 @@ export function convertToVsCodeLmMessages(
 					...nonToolMessages.map((part) => {
 						if (part.type === "image") {
 							return new vscode.LanguageModelTextPart(
-								// kilocode_change begin support type==url
+								// novacode_change begin support type==url
 								`[Image (${part.source?.type || "Unknown source-type"}): ${part.source?.type === "url" ? "URL" : part.source?.media_type || "unknown media-type"} not supported by VSCode LM API]`,
-								// kilocode_change end
+								// novacode_change end
 							)
 						}
 						return new vscode.LanguageModelTextPart(part.text)
@@ -188,7 +188,7 @@ export function extractTextCountFromMessage(message: vscode.LanguageModelChatMes
 					try {
 						text += JSON.stringify(item.input)
 					} catch (error) {
-						console.error("Kilo Code <Language Model API>: Failed to stringify tool call input:", error)
+						console.error("Nova Code <Language Model API>: Failed to stringify tool call input:", error)
 					}
 				}
 			}

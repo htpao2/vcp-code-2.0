@@ -1,21 +1,21 @@
 import {
 	type ModelInfo,
-	type ModelRecord, // kilocode_change
-	type RouterModels, // kilocode_change
+	type ModelRecord, // novacode_change
+	type RouterModels, // novacode_change
 	type ProviderSettings,
 	type DynamicProvider,
 	type LocalProvider,
 	ANTHROPIC_DEFAULT_MAX_TOKENS,
 	isDynamicProvider,
 	isLocalProvider,
-	ToolProtocol, // kilocode_change
+	ToolProtocol, // novacode_change
 } from "@roo-code/types"
 
 // Re-export for legacy imports (some providers still import ModelRecord from this module).
-export type { ModelRecord } // kilocode_change
+export type { ModelRecord } // novacode_change
 
 // Re-export for webview-ui legacy imports (via `@roo/api`).
-export type { RouterModels } // kilocode_change
+export type { RouterModels } // novacode_change
 
 // ApiHandlerOptions
 // Extend ProviderSettings (minus apiProvider) with handler-specific toggles.
@@ -108,9 +108,9 @@ export const shouldUseReasoningEffort = ({
 export const DEFAULT_HYBRID_REASONING_MODEL_MAX_TOKENS = 16_384
 export const DEFAULT_HYBRID_REASONING_MODEL_THINKING_TOKENS = 8_192
 export const GEMINI_25_PRO_MIN_THINKING_TOKENS = 128
-// kilocode_change start
+// novacode_change start
 const QWEN3_MAX_THINKING_OUTPUT_TOKEN_LIMIT = 32_768
-// kilocode_change end
+// novacode_change end
 
 // Max Tokens
 
@@ -136,7 +136,7 @@ export const getModelMaxOutputTokens = ({
 		(format === "zenmux" && modelId.startsWith("anthropic/"))
 
 	// For "Hybrid" reasoning models, discard the model's actual maxTokens for Anthropic contexts
-	/* kilocode_change: don't limit Anthropic model output, no idea why this was done before
+	/* novacode_change: don't limit Anthropic model output, no idea why this was done before
 	if (model.supportsReasoningBudget && isAnthropicContext) {
 		return ANTHROPIC_DEFAULT_MAX_TOKENS
 	}*/
@@ -146,9 +146,9 @@ export const getModelMaxOutputTokens = ({
 		return ANTHROPIC_DEFAULT_MAX_TOKENS
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	const isQwen3MaxThinkingModel = modelId.toLowerCase().includes("qwen3-max-thinking")
-	// kilocode_change end
+	// novacode_change end
 
 	// If model has explicit maxTokens, clamp it to 20% of the context window
 	// Exception: GPT-5 models should use their exact configured max output tokens
@@ -163,12 +163,12 @@ export const getModelMaxOutputTokens = ({
 
 		const contextCappedMaxTokens = Math.min(model.maxTokens, Math.ceil(model.contextWindow * 0.2))
 
-		// kilocode_change start
+		// novacode_change start
 		// qwen3-max-thinking currently rejects values above 32,768 (upstream provider constraint).
 		if (isQwen3MaxThinkingModel) {
 			return Math.min(contextCappedMaxTokens, QWEN3_MAX_THINKING_OUTPUT_TOKEN_LIMIT)
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		// All other models are clamped to 20% of context window
 		return contextCappedMaxTokens
@@ -196,30 +196,30 @@ type CommonFetchParams = {
 // If a new dynamic provider is added in packages/types, this will fail to compile
 // until a corresponding entry is added here.
 const dynamicProviderExtras = {
-	gemini: {} as { apiKey?: string; baseUrl?: string }, // kilocode_change
+	gemini: {} as { apiKey?: string; baseUrl?: string }, // novacode_change
 	openrouter: {} as {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
 	zenmux: {} as { apiKey?: string; baseUrl?: string },
 	"vercel-ai-gateway": {} as {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
 	huggingface: {} as {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
-	litellm: {} as { apiKey?: string; baseUrl?: string }, // kilocode_change: parameters optional
-	kilocode: {} as { kilocodeToken?: string; kilocodeOrganizationId?: string }, // kilocode_change
+	litellm: {} as { apiKey?: string; baseUrl?: string }, // novacode_change: parameters optional
+	novacode: {} as { novacodeToken?: string; novacodeOrganizationId?: string }, // novacode_change
 	deepinfra: {} as { apiKey?: string; baseUrl?: string },
-	"io-intelligence": {} as { apiKey?: string }, // kilocode_change: parameters optional
+	"io-intelligence": {} as { apiKey?: string }, // novacode_change: parameters optional
 	requesty: {} as { apiKey?: string; baseUrl?: string },
 	unbound: {} as { apiKey?: string },
-	// kilocode_change start
+	// novacode_change start
 	glama: {} as {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
-	// kilocode_change end
-	"nano-gpt": {} as { nanoGptModelList?: "all" | "personalized" | "subscription" }, // kilocode_change
-	ollama: {} as { numCtx?: number }, // kilocode_change
+	// novacode_change end
+	"nano-gpt": {} as { nanoGptModelList?: "all" | "personalized" | "subscription" }, // novacode_change
+	ollama: {} as { numCtx?: number }, // novacode_change
 	lmstudio: {} as {}, // eslint-disable-line @typescript-eslint/no-empty-object-type
-	ovhcloud: {} as { apiKey?: string }, // kilocode_change
-	inception: {} as { apiKey?: string; baseUrl?: string }, // kilocode_change
-	synthetic: {} as { apiKey?: string }, // kilocode_change
+	ovhcloud: {} as { apiKey?: string }, // novacode_change
+	inception: {} as { apiKey?: string; baseUrl?: string }, // novacode_change
+	synthetic: {} as { apiKey?: string }, // novacode_change
 	roo: {} as { apiKey?: string; baseUrl?: string },
 	chutes: {} as { apiKey?: string },
-	poe: {} as { apiKey?: string }, // kilocode_change
-	// kilocode_change start
+	poe: {} as { apiKey?: string }, // novacode_change
+	// novacode_change start
 	"sap-ai-core": {} as {
 		sapAiCoreServiceKey?: string
 		sapAiCoreResourceGroup?: string
@@ -227,7 +227,7 @@ const dynamicProviderExtras = {
 	},
 	aihubmix: {} as { apiKey?: string; baseUrl?: string },
 	apertis: {} as { apiKey?: string; baseUrl?: string },
-	// kilocode_change end
+	// novacode_change end
 } as const satisfies Record<RouterName, object>
 
 // Build the dynamic options union from the map, intersected with CommonFetchParams

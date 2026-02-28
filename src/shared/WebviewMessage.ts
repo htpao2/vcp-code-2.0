@@ -13,11 +13,11 @@ export type {
 	TasksByIdRequestPayload,
 	TasksByIdResponsePayload,
 	UpdateGlobalStateMessage,
-} from "@roo-code/types" // kilocode_change
+} from "@roo-code/types" // novacode_change
 
 export type ClineAskResponse =
 	| "yesButtonClicked"
 	| "noButtonClicked"
 	| "messageResponse"
 	| "objectResponse"
-	| "retry_clicked" // kilocode_change: Added retry_clicked for payment required dialog
+	| "retry_clicked" // novacode_change: Added retry_clicked for payment required dialog

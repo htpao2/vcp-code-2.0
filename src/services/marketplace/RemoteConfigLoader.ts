@@ -1,16 +1,16 @@
 import axios from "axios"
 import * as yaml from "yaml"
 import { z } from "zod"
-import { getApiUrl } from "@roo-code/types" // kilocode_change
+import { getApiUrl } from "@roo-code/types" // novacode_change
 import {
 	type MarketplaceItem,
 	type MarketplaceItemType,
-	type SkillMarketplaceItem, // kilocode_change
+	type SkillMarketplaceItem, // novacode_change
 	modeMarketplaceItemSchema,
 	mcpMarketplaceItemSchema,
-	skillsMarketplaceCatalogSchema, // kilocode_change
+	skillsMarketplaceCatalogSchema, // novacode_change
 } from "@roo-code/types"
-//import { getRooCodeApiUrl } from "@roo-code/cloud" kilocode_change: use our own api
+//import { getRooCodeApiUrl } from "@roo-code/cloud" novacode_change: use our own api
 
 const modeMarketplaceResponse = z.object({
 	items: z.array(modeMarketplaceItemSchema),
@@ -21,25 +21,25 @@ const mcpMarketplaceResponse = z.object({
 })
 
 export class RemoteConfigLoader {
-	// private apiBaseUrl: string // kilocode_change
+	// private apiBaseUrl: string // novacode_change
 	private cache: Map<string, { data: MarketplaceItem[]; timestamp: number }> = new Map()
 	private cacheDuration = 5 * 60 * 1000 // 5 minutes
 
-	// kilocode_change - empty constructor
+	// novacode_change - empty constructor
 	// constructor() {
-	// 	this.apiBaseUrl = getKiloBaseUriFromToken()
+	// 	this.apiBaseUrl = getNovaBaseUriFromToken()
 	// }
 
 	async loadAllItems(hideMarketplaceMcps = false): Promise<MarketplaceItem[]> {
 		const modesPromise = this.fetchModes()
 		const mcpsPromise = hideMarketplaceMcps ? Promise.resolve([]) : this.fetchMcps()
-		// kilocode_change start - add skills
+		// novacode_change start - add skills
 		const skillsPromise = this.fetchSkills()
 
 		const [modes, mcps, skills] = await Promise.all([modesPromise, mcpsPromise, skillsPromise])
 
 		return [...modes, ...mcps, ...skills]
-		//kilocode change end
+		//novacode change end
 	}
 
 	private async fetchModes(): Promise<MarketplaceItem[]> {
@@ -50,7 +50,7 @@ export class RemoteConfigLoader {
 			return cached
 		}
 
-		const url = getApiUrl("/api/marketplace/modes") // kilocode_change
+		const url = getApiUrl("/api/marketplace/modes") // novacode_change
 		const data = await this.fetchWithRetry<string>(url)
 
 		const yamlData = yaml.parse(data)
@@ -73,7 +73,7 @@ export class RemoteConfigLoader {
 			return cached
 		}
 
-		const url = getApiUrl("/api/marketplace/mcps") // kilocode_change
+		const url = getApiUrl("/api/marketplace/mcps") // novacode_change
 		const data = await this.fetchWithRetry<string>(url)
 
 		const yamlData = yaml.parse(data)
@@ -88,7 +88,7 @@ export class RemoteConfigLoader {
 		return items
 	}
 
-	// kilocode_change start - fetch skills from marketplace API and transform to MarketplaceItem
+	// novacode_change start - fetch skills from marketplace API and transform to MarketplaceItem
 	private async fetchSkills(): Promise<MarketplaceItem[]> {
 		const cacheKey = "skills"
 		const cached = this.getFromCache(cacheKey)
@@ -128,7 +128,7 @@ export class RemoteConfigLoader {
 		this.setCache(cacheKey, items)
 		return items
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	private async fetchWithRetry<T>(url: string, maxRetries = 3): Promise<T> {
 		let lastError: Error

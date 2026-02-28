@@ -1,150 +1,158 @@
-# kilo-code
+# nova-code
+
+## Unreleased
+
+### Patch Changes
+
+- Fix benchmark extension activation to prefer `novacode.nova-code` with fallback support for `novacode.Nova-Code`.
+- Fix eval setup extension detection/installation to support `novacode.nova-code` (and keep legacy fallback).
+- Ignore local `.codex-logs/` artifacts to prevent accidental commits.
 
 ## 5.9.0
 
 ### Minor Changes
 
-- [#5560](https://github.com/Kilo-Org/kilocode/pull/5560) [`84ab615`](https://github.com/Kilo-Org/kilocode/commit/84ab615365737f1db98ac9297bbffa8829c04963) Thanks [@marciepeters](https://github.com/marciepeters)! - Add Poe as a supported API provider
+- [#5560](https://github.com/Nova-Org/novacode/pull/5560) [`84ab615`](https://github.com/Nova-Org/novacode/commit/84ab615365737f1db98ac9297bbffa8829c04963) Thanks [@marciepeters](https://github.com/marciepeters)! - Add Poe as a supported API provider
 
 ### Patch Changes
 
-- [#5860](https://github.com/Kilo-Org/kilocode/pull/5860) [`baeb3f4`](https://github.com/Kilo-Org/kilocode/commit/baeb3f486d8e53f7207b3fc81522b4f352b066d4) Thanks [@Neonsy](https://github.com/Neonsy)! - Fix OpenAI Responses Azure URL normalization so Azure v1 endpoints avoid unsupported `api-version` parameters.
+- [#5860](https://github.com/Nova-Org/novacode/pull/5860) [`baeb3f4`](https://github.com/Nova-Org/novacode/commit/baeb3f486d8e53f7207b3fc81522b4f352b066d4) Thanks [@Neonsy](https://github.com/Neonsy)! - Fix OpenAI Responses Azure URL normalization so Azure v1 endpoints avoid unsupported `api-version` parameters.
 
-- [#5968](https://github.com/Kilo-Org/kilocode/pull/5968) [`053775e`](https://github.com/Kilo-Org/kilocode/commit/053775e2e797d6c0a7dd23026823106132c4cd70) Thanks [@Olusammytee](https://github.com/Olusammytee)! - Normalize legacy Claude Code model IDs so dated aliases resolve to canonical model metadata and preserve capabilities (including image support).
+- [#5968](https://github.com/Nova-Org/novacode/pull/5968) [`053775e`](https://github.com/Nova-Org/novacode/commit/053775e2e797d6c0a7dd23026823106132c4cd70) Thanks [@Olusammytee](https://github.com/Olusammytee)! - Normalize legacy Claude Code model IDs so dated aliases resolve to canonical model metadata and preserve capabilities (including image support).
 
-- [#5995](https://github.com/Kilo-Org/kilocode/pull/5995) [`a2c7c49`](https://github.com/Kilo-Org/kilocode/commit/a2c7c49bc389caa8dfcabe50969458dbe9841998) Thanks [@mujtaba93](https://github.com/mujtaba93)! - Fix: Prevent terminal focus stealing in Agent Manager (fixes #5946)
+- [#5995](https://github.com/Nova-Org/novacode/pull/5995) [`a2c7c49`](https://github.com/Nova-Org/novacode/commit/a2c7c49bc389caa8dfcabe50969458dbe9841998) Thanks [@mujtaba93](https://github.com/mujtaba93)! - Fix: Prevent terminal focus stealing in Agent Manager (fixes #5946)
 
-- [#5990](https://github.com/Kilo-Org/kilocode/pull/5990) [`7d23f2c`](https://github.com/Kilo-Org/kilocode/commit/7d23f2c9200552c4cbd0564d9ed79da799aa3a5b) Thanks [@hdcodedev](https://github.com/hdcodedev)! - Fix OpenAI-compatible Responses fallback requests when custom base URLs already include `/v1` (https://github.com/Kilo-Org/kilocode/issues/5979).
+- [#5990](https://github.com/Nova-Org/novacode/pull/5990) [`7d23f2c`](https://github.com/Nova-Org/novacode/commit/7d23f2c9200552c4cbd0564d9ed79da799aa3a5b) Thanks [@hdcodedev](https://github.com/hdcodedev)! - Fix OpenAI-compatible Responses fallback requests when custom base URLs already include `/v1` (https://github.com/Nova-Org/novacode/issues/5979).
 
-- [#5916](https://github.com/Kilo-Org/kilocode/pull/5916) [`8cceb67`](https://github.com/Kilo-Org/kilocode/commit/8cceb678a3c49f93639f81bb8e5cbaa60ae290c9) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Fix blank messages and UI not updating when canceling a task in Agent Manager
+- [#5916](https://github.com/Nova-Org/novacode/pull/5916) [`8cceb67`](https://github.com/Nova-Org/novacode/commit/8cceb678a3c49f93639f81bb8e5cbaa60ae290c9) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Fix blank messages and UI not updating when canceling a task in Agent Manager
 
-- [#5634](https://github.com/Kilo-Org/kilocode/pull/5634) [`be40801`](https://github.com/Kilo-Org/kilocode/commit/be40801adb101b2da622095ea4961f9b92220f78) Thanks [@Patel230](https://github.com/Patel230)! - Fix context condensing prompt not saving properly
+- [#5634](https://github.com/Nova-Org/novacode/pull/5634) [`be40801`](https://github.com/Nova-Org/novacode/commit/be40801adb101b2da622095ea4961f9b92220f78) Thanks [@Patel230](https://github.com/Patel230)! - Fix context condensing prompt not saving properly
 
-- [#5864](https://github.com/Kilo-Org/kilocode/pull/5864) [`c92c6b1`](https://github.com/Kilo-Org/kilocode/commit/c92c6b1675adfb53ae591931dd7c600b8e67551f) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Fixed organization selector overlapping with "Recent" text in chat pane header
+- [#5864](https://github.com/Nova-Org/novacode/pull/5864) [`c92c6b1`](https://github.com/Nova-Org/novacode/commit/c92c6b1675adfb53ae591931dd7c600b8e67551f) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Fixed organization selector overlapping with "Recent" text in chat pane header
 
-- [#5267](https://github.com/Kilo-Org/kilocode/pull/5267) [`1467783`](https://github.com/Kilo-Org/kilocode/commit/14677835d2a279dcf2022b4ce76394a5532e2c7b) Thanks [@maywzh](https://github.com/maywzh)! - fix: preserve extra_content for Gemini 3 thought_signature support
+- [#5267](https://github.com/Nova-Org/novacode/pull/5267) [`1467783`](https://github.com/Nova-Org/novacode/commit/14677835d2a279dcf2022b4ce76394a5532e2c7b) Thanks [@maywzh](https://github.com/maywzh)! - fix: preserve extra_content for Gemini 3 thought_signature support
 
-- [#5569](https://github.com/Kilo-Org/kilocode/pull/5569) [`30eb061`](https://github.com/Kilo-Org/kilocode/commit/30eb06116cf5bdbf90e93fb08a935b5200d8f9ef) Thanks [@romeoscript](https://github.com/romeoscript)! - Retry Amazon Bedrock network connection lost errors up till 3 times
+- [#5569](https://github.com/Nova-Org/novacode/pull/5569) [`30eb061`](https://github.com/Nova-Org/novacode/commit/30eb06116cf5bdbf90e93fb08a935b5200d8f9ef) Thanks [@romeoscript](https://github.com/romeoscript)! - Retry Amazon Bedrock network connection lost errors up till 3 times
 
-- [#5992](https://github.com/Kilo-Org/kilocode/pull/5992) [`23a083a`](https://github.com/Kilo-Org/kilocode/commit/23a083a130681801ba8821d00437190e3dbe45a5) Thanks [@shssoichiro](https://github.com/shssoichiro)! - fix: allow dropdowns in Modes modal to be changed
+- [#5992](https://github.com/Nova-Org/novacode/pull/5992) [`23a083a`](https://github.com/Nova-Org/novacode/commit/23a083a130681801ba8821d00437190e3dbe45a5) Thanks [@shssoichiro](https://github.com/shssoichiro)! - fix: allow dropdowns in Modes modal to be changed
 
-- [#5648](https://github.com/Kilo-Org/kilocode/pull/5648) [`af395f8`](https://github.com/Kilo-Org/kilocode/commit/af395f8e55674f13a46b17a90b4d458aef4f27bd) Thanks [@DDU1222](https://github.com/DDU1222)! - Feature: add new provider AIHubmix
+- [#5648](https://github.com/Nova-Org/novacode/pull/5648) [`af395f8`](https://github.com/Nova-Org/novacode/commit/af395f8e55674f13a46b17a90b4d458aef4f27bd) Thanks [@DDU1222](https://github.com/DDU1222)! - Feature: add new provider AIHubmix
 
-- [#5993](https://github.com/Kilo-Org/kilocode/pull/5993) [`bedf59d`](https://github.com/Kilo-Org/kilocode/commit/bedf59d3a2959d3108f2488281ef0c19dd478390) Thanks [@saneroen](https://github.com/saneroen)! - Use OpenAI Codex OAuth credentials in Agent Manager so ChatGPT Plus/Pro works in agent mode
+- [#5993](https://github.com/Nova-Org/novacode/pull/5993) [`bedf59d`](https://github.com/Nova-Org/novacode/commit/bedf59d3a2959d3108f2488281ef0c19dd478390) Thanks [@saneroen](https://github.com/saneroen)! - Use OpenAI Codex OAuth credentials in Agent Manager so ChatGPT Plus/Pro works in agent mode
 
-- [#5942](https://github.com/Kilo-Org/kilocode/pull/5942) [`d266500`](https://github.com/Kilo-Org/kilocode/commit/d2665000ef1f0b19f533461e0a2fe91da7a67668) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Fixed resumed agent runtime orchestrator tasks so previous task history is preserved.
+- [#5942](https://github.com/Nova-Org/novacode/pull/5942) [`d266500`](https://github.com/Nova-Org/novacode/commit/d2665000ef1f0b19f533461e0a2fe91da7a67668) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Fixed resumed agent runtime orchestrator tasks so previous task history is preserved.
 
-- [#5893](https://github.com/Kilo-Org/kilocode/pull/5893) [`e29306d`](https://github.com/Kilo-Org/kilocode/commit/e29306d8f4ca9b5a0f9ad714b867a81ae5df17cb) Thanks [@evanjacobson](https://github.com/evanjacobson)! - Fix duplicate text output when using OpenAI-compatible providers with streaming disabled.
+- [#5893](https://github.com/Nova-Org/novacode/pull/5893) [`e29306d`](https://github.com/Nova-Org/novacode/commit/e29306d8f4ca9b5a0f9ad714b867a81ae5df17cb) Thanks [@evanjacobson](https://github.com/evanjacobson)! - Fix duplicate text output when using OpenAI-compatible providers with streaming disabled.
 
-- [#5969](https://github.com/Kilo-Org/kilocode/pull/5969) [`902a33f`](https://github.com/Kilo-Org/kilocode/commit/902a33f22a9c57ba1830f086a4cc44a34c40edf8) Thanks [@Olusammytee](https://github.com/Olusammytee)! - Normalize Vertex Claude Opus 4.6 legacy aliases to the canonical model ID to prevent invalid API calls and keep UI/runtime model capabilities consistent.
+- [#5969](https://github.com/Nova-Org/novacode/pull/5969) [`902a33f`](https://github.com/Nova-Org/novacode/commit/902a33f22a9c57ba1830f086a4cc44a34c40edf8) Thanks [@Olusammytee](https://github.com/Olusammytee)! - Normalize Vertex Claude Opus 4.6 legacy aliases to the canonical model ID to prevent invalid API calls and keep UI/runtime model capabilities consistent.
 
-- [#5568](https://github.com/Kilo-Org/kilocode/pull/5568) [`82ba1a8`](https://github.com/Kilo-Org/kilocode/commit/82ba1a8f85d8e2e1bb6c5ed85b8476930b5bd248) Thanks [@romeoscript](https://github.com/romeoscript)! - fix: override context window for MiniMax/Kimi free models
+- [#5568](https://github.com/Nova-Org/novacode/pull/5568) [`82ba1a8`](https://github.com/Nova-Org/novacode/commit/82ba1a8f85d8e2e1bb6c5ed85b8476930b5bd248) Thanks [@romeoscript](https://github.com/romeoscript)! - fix: override context window for MiniMax/Kimi free models
 
-- [#5885](https://github.com/Kilo-Org/kilocode/pull/5885) [`c7d5865`](https://github.com/Kilo-Org/kilocode/commit/c7d5865ac2f7004b31a31f1f28886987294f62a1) Thanks [@Olusammytee](https://github.com/Olusammytee)! - fix: cap qwen3-max-thinking max_tokens to provider limit
+- [#5885](https://github.com/Nova-Org/novacode/pull/5885) [`c7d5865`](https://github.com/Nova-Org/novacode/commit/c7d5865ac2f7004b31a31f1f28886987294f62a1) Thanks [@Olusammytee](https://github.com/Olusammytee)! - fix: cap qwen3-max-thinking max_tokens to provider limit
 
 ## 5.8.1
 
 ### Patch Changes
 
-- [#6007](https://github.com/Kilo-Org/kilocode/pull/6007) [`39109ca`](https://github.com/Kilo-Org/kilocode/commit/39109ca06d719de2b468e4a73bc9da71bfbc327c) Thanks [@alex-alecu](https://github.com/alex-alecu)! - Show post-completion suggestions after `code` and `orchestrator` tasks to start `review` mode, including an option that clears context and starts a fresh review of uncommitted changes.
+- [#6007](https://github.com/Nova-Org/novacode/pull/6007) [`39109ca`](https://github.com/Nova-Org/novacode/commit/39109ca06d719de2b468e4a73bc9da71bfbc327c) Thanks [@alex-alecu](https://github.com/alex-alecu)! - Show post-completion suggestions after `code` and `orchestrator` tasks to start `review` mode, including an option that clears context and starts a fresh review of uncommitted changes.
 
-- [#5989](https://github.com/Kilo-Org/kilocode/pull/5989) [`7478c67`](https://github.com/Kilo-Org/kilocode/commit/7478c67f577a27d260e28eb83bec4d6a2583a8a8) Thanks [@pedroheyerdahl](https://github.com/pedroheyerdahl)! - Add X-KiloCode-Feature header for microdollar usage tracking
+- [#5989](https://github.com/Nova-Org/novacode/pull/5989) [`7478c67`](https://github.com/Nova-Org/novacode/commit/7478c67f577a27d260e28eb83bec4d6a2583a8a8) Thanks [@pedroheyerdahl](https://github.com/pedroheyerdahl)! - Add X-NovaCode-Feature header for microdollar usage tracking
 
-- [#6017](https://github.com/Kilo-Org/kilocode/pull/6017) [`34f7bc0`](https://github.com/Kilo-Org/kilocode/commit/34f7bc05d79081da2ccd03b3736e2bd359e7defa) Thanks [@PeterDaveHello](https://github.com/PeterDaveHello)! - Update Gemini default model metadata for Gemini 3.1 Pro and keep tool calling behavior consistent.
+- [#6017](https://github.com/Nova-Org/novacode/pull/6017) [`34f7bc0`](https://github.com/Nova-Org/novacode/commit/34f7bc05d79081da2ccd03b3736e2bd359e7defa) Thanks [@PeterDaveHello](https://github.com/PeterDaveHello)! - Update Gemini default model metadata for Gemini 3.1 Pro and keep tool calling behavior consistent.
 
-- [#5901](https://github.com/Kilo-Org/kilocode/pull/5901) [`8d7f102`](https://github.com/Kilo-Org/kilocode/commit/8d7f102e77178c6c40fc4a6f80130f041ee038f5) Thanks [@SkipperQ93](https://github.com/SkipperQ93)! - Fix: JetBrains editor initialization when ExtensionHostManager is missing from SystemObjectProvider
+- [#5901](https://github.com/Nova-Org/novacode/pull/5901) [`8d7f102`](https://github.com/Nova-Org/novacode/commit/8d7f102e77178c6c40fc4a6f80130f041ee038f5) Thanks [@SkipperQ93](https://github.com/SkipperQ93)! - Fix: JetBrains editor initialization when ExtensionHostManager is missing from SystemObjectProvider
 
-- [#5986](https://github.com/Kilo-Org/kilocode/pull/5986) [`fe0c0f0`](https://github.com/Kilo-Org/kilocode/commit/fe0c0f0cf914f5edf12d9683c01f2b53c0592291) Thanks [@imanolmzd-svg](https://github.com/imanolmzd-svg)! - Add promotion sign-up prompt when anonymous users hit the promotional model usage limit
+- [#5986](https://github.com/Nova-Org/novacode/pull/5986) [`fe0c0f0`](https://github.com/Nova-Org/novacode/commit/fe0c0f0cf914f5edf12d9683c01f2b53c0592291) Thanks [@imanolmzd-svg](https://github.com/imanolmzd-svg)! - Add promotion sign-up prompt when anonymous users hit the promotional model usage limit
 
-- [#6014](https://github.com/Kilo-Org/kilocode/pull/6014) [`c5d23dd`](https://github.com/Kilo-Org/kilocode/commit/c5d23ddf47959fc1e8cf8207a93c736e7f31b2a7) Thanks [@imanolmzd-svg](https://github.com/imanolmzd-svg)! - Updated promotion warning text and translations across all 22 languages
+- [#6014](https://github.com/Nova-Org/novacode/pull/6014) [`c5d23dd`](https://github.com/Nova-Org/novacode/commit/c5d23ddf47959fc1e8cf8207a93c736e7f31b2a7) Thanks [@imanolmzd-svg](https://github.com/imanolmzd-svg)! - Updated promotion warning text and translations across all 22 languages
 
 ## 5.8.0
 
 ### Minor Changes
 
-- [#5247](https://github.com/Kilo-Org/kilocode/pull/5247) [`12ea08e`](https://github.com/Kilo-Org/kilocode/commit/12ea08e6a5051d172910a620ce99e95fca1da88e) Thanks [@theQuert](https://github.com/theQuert)! - Add Apertis as a new API provider
+- [#5247](https://github.com/Nova-Org/novacode/pull/5247) [`12ea08e`](https://github.com/Nova-Org/novacode/commit/12ea08e6a5051d172910a620ce99e95fca1da88e) Thanks [@theQuert](https://github.com/theQuert)! - Add Apertis as a new API provider
 
-- [#5883](https://github.com/Kilo-Org/kilocode/pull/5883) [`31b271e`](https://github.com/Kilo-Org/kilocode/commit/31b271e501c21156314a77f576ffc47927e64347) Thanks [@Astricaelus](https://github.com/Astricaelus)! - Add MiniMax-M2.5, MiniMax-M2.5-highspeed and MiniMax-M2.1-highspeed models
+- [#5883](https://github.com/Nova-Org/novacode/pull/5883) [`31b271e`](https://github.com/Nova-Org/novacode/commit/31b271e501c21156314a77f576ffc47927e64347) Thanks [@Astricaelus](https://github.com/Astricaelus)! - Add MiniMax-M2.5, MiniMax-M2.5-highspeed and MiniMax-M2.1-highspeed models
 
-- [#5526](https://github.com/Kilo-Org/kilocode/pull/5526) [`fe86f25`](https://github.com/Kilo-Org/kilocode/commit/fe86f25b2cb1960247e5dfaff01fd6650f95509d) Thanks [@nubol23](https://github.com/nubol23)! - Added Voyage AI embedder support
+- [#5526](https://github.com/Nova-Org/novacode/pull/5526) [`fe86f25`](https://github.com/Nova-Org/novacode/commit/fe86f25b2cb1960247e5dfaff01fd6650f95509d) Thanks [@nubol23](https://github.com/nubol23)! - Added Voyage AI embedder support
 
 ### Patch Changes
 
-- [#5878](https://github.com/Kilo-Org/kilocode/pull/5878) [`74a9d8d`](https://github.com/Kilo-Org/kilocode/commit/74a9d8dc208664226d506a6018be6c982c25f0e3) Thanks [@CoinAnole](https://github.com/CoinAnole)! - Fix Moonshot coding endpoint model selection so it includes all Moonshot models while keeping `kimi-for-coding` hidden on non-coding endpoints.
+- [#5878](https://github.com/Nova-Org/novacode/pull/5878) [`74a9d8d`](https://github.com/Nova-Org/novacode/commit/74a9d8dc208664226d506a6018be6c982c25f0e3) Thanks [@CoinAnole](https://github.com/CoinAnole)! - Fix Moonshot coding endpoint model selection so it includes all Moonshot models while keeping `kimi-for-coding` hidden on non-coding endpoints.
 
-- [#5746](https://github.com/Kilo-Org/kilocode/pull/5746) [`38ea95b`](https://github.com/Kilo-Org/kilocode/commit/38ea95baadc7e3aec5fc6b139b25e95a57ab529a) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Add dev container persistence for threads and settings
+- [#5746](https://github.com/Nova-Org/novacode/pull/5746) [`38ea95b`](https://github.com/Nova-Org/novacode/commit/38ea95baadc7e3aec5fc6b139b25e95a57ab529a) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Add dev container persistence for threads and settings
 
-- [#5920](https://github.com/Kilo-Org/kilocode/pull/5920) [`4a11f4f`](https://github.com/Kilo-Org/kilocode/commit/4a11f4f5f08a56fa4a7c5872a879511617c05bf1) Thanks [@sebastiand-cerebras](https://github.com/sebastiand-cerebras)! - Remove deprecated Cerebras models: llama-3.3-70b and qwen-3-32b
+- [#5920](https://github.com/Nova-Org/novacode/pull/5920) [`4a11f4f`](https://github.com/Nova-Org/novacode/commit/4a11f4f5f08a56fa4a7c5872a879511617c05bf1) Thanks [@sebastiand-cerebras](https://github.com/sebastiand-cerebras)! - Remove deprecated Cerebras models: llama-3.3-70b and qwen-3-32b
 
-- [#5575](https://github.com/Kilo-Org/kilocode/pull/5575) [`c43b9b4`](https://github.com/Kilo-Org/kilocode/commit/c43b9b4cc14c6ea8d58f90ad1b1ce15201f20deb) Thanks [@Patel230](https://github.com/Patel230)! - fix: treat maxReadFileLine=0 as unlimited (same as -1)
+- [#5575](https://github.com/Nova-Org/novacode/pull/5575) [`c43b9b4`](https://github.com/Nova-Org/novacode/commit/c43b9b4cc14c6ea8d58f90ad1b1ce15201f20deb) Thanks [@Patel230](https://github.com/Patel230)! - fix: treat maxReadFileLine=0 as unlimited (same as -1)
 
-- [#5639](https://github.com/Kilo-Org/kilocode/pull/5639) [`853b03f`](https://github.com/Kilo-Org/kilocode/commit/853b03f4c6e340c26e9cddd13dae958815560c18) Thanks [@mikij](https://github.com/mikij)! - Updates some visual bugs in Agent Behaviour settings page
+- [#5639](https://github.com/Nova-Org/novacode/pull/5639) [`853b03f`](https://github.com/Nova-Org/novacode/commit/853b03f4c6e340c26e9cddd13dae958815560c18) Thanks [@mikij](https://github.com/mikij)! - Updates some visual bugs in Agent Behaviour settings page
 
-- [#5195](https://github.com/Kilo-Org/kilocode/pull/5195) [`d463a8b`](https://github.com/Kilo-Org/kilocode/commit/d463a8b8b30787c8787a0a10c8d90656847758e9) Thanks [@Drilmo](https://github.com/Drilmo)! - Filter internal verification tags from assistant messages before displaying to users
+- [#5195](https://github.com/Nova-Org/novacode/pull/5195) [`d463a8b`](https://github.com/Nova-Org/novacode/commit/d463a8b8b30787c8787a0a10c8d90656847758e9) Thanks [@Drilmo](https://github.com/Drilmo)! - Filter internal verification tags from assistant messages before displaying to users
 
-- [#5904](https://github.com/Kilo-Org/kilocode/pull/5904) [`25da368`](https://github.com/Kilo-Org/kilocode/commit/25da36876a569473d730a4b9e680efa656a342e9) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Fix scroll jump issue when reading long completion messages in Agent Manager
+- [#5904](https://github.com/Nova-Org/novacode/pull/5904) [`25da368`](https://github.com/Nova-Org/novacode/commit/25da36876a569473d730a4b9e680efa656a342e9) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Fix scroll jump issue when reading long completion messages in Agent Manager
 
-- [#5811](https://github.com/Kilo-Org/kilocode/pull/5811) [`90a34f6`](https://github.com/Kilo-Org/kilocode/commit/90a34f6e6a2718ab2d63f2474fe6c7b35f7a57f9) Thanks [@wombatepiclandingstudio](https://github.com/wombatepiclandingstudio)! - fix: prevent context token indicator flickering
+- [#5811](https://github.com/Nova-Org/novacode/pull/5811) [`90a34f6`](https://github.com/Nova-Org/novacode/commit/90a34f6e6a2718ab2d63f2474fe6c7b35f7a57f9) Thanks [@wombatepiclandingstudio](https://github.com/wombatepiclandingstudio)! - fix: prevent context token indicator flickering
 
-- [#5565](https://github.com/Kilo-Org/kilocode/pull/5565) [`d58ba04`](https://github.com/Kilo-Org/kilocode/commit/d58ba0462ea8555254dc23504d02c7927cdb928c) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Fix file deletion auto-approve checkbox not being clickable
+- [#5565](https://github.com/Nova-Org/novacode/pull/5565) [`d58ba04`](https://github.com/Nova-Org/novacode/commit/d58ba0462ea8555254dc23504d02c7927cdb928c) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Fix file deletion auto-approve checkbox not being clickable
 
-- [#5377](https://github.com/Kilo-Org/kilocode/pull/5377) [`cf9d90e`](https://github.com/Kilo-Org/kilocode/commit/cf9d90e8b4dd94421ebe11ce3543375ab12e7c70) Thanks [@benzntech](https://github.com/benzntech)! - Fix recurring MODEL_NO_TOOLS_USED error loop by detecting text-based tool call hallucinations and instructing the model to use the native API.
+- [#5377](https://github.com/Nova-Org/novacode/pull/5377) [`cf9d90e`](https://github.com/Nova-Org/novacode/commit/cf9d90e8b4dd94421ebe11ce3543375ab12e7c70) Thanks [@benzntech](https://github.com/benzntech)! - Fix recurring MODEL_NO_TOOLS_USED error loop by detecting text-based tool call hallucinations and instructing the model to use the native API.
 
-- [#5586](https://github.com/Kilo-Org/kilocode/pull/5586) [`ffb7d87`](https://github.com/Kilo-Org/kilocode/commit/ffb7d87e68dde7b0c404c9c3492bf76e2314bb99) Thanks [@abdulrahimpds](https://github.com/abdulrahimpds)! - Fixed UI issues in Settings search bar: clipping of results and layout shift when expanding
+- [#5586](https://github.com/Nova-Org/novacode/pull/5586) [`ffb7d87`](https://github.com/Nova-Org/novacode/commit/ffb7d87e68dde7b0c404c9c3492bf76e2314bb99) Thanks [@abdulrahimpds](https://github.com/abdulrahimpds)! - Fixed UI issues in Settings search bar: clipping of results and layout shift when expanding
 
-- [#5760](https://github.com/Kilo-Org/kilocode/pull/5760) [`ebbb072`](https://github.com/Kilo-Org/kilocode/commit/ebbb0729e3d6f4be88546d7a2c7eb5571eac58ed) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Fix user message visibility by using distinctive theme-aware colors
+- [#5760](https://github.com/Nova-Org/novacode/pull/5760) [`ebbb072`](https://github.com/Nova-Org/novacode/commit/ebbb0729e3d6f4be88546d7a2c7eb5571eac58ed) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Fix user message visibility by using distinctive theme-aware colors
 
-- [#5752](https://github.com/Kilo-Org/kilocode/pull/5752) [`3db4b15`](https://github.com/Kilo-Org/kilocode/commit/3db4b158e331dd9dc376d0eea74ed163db75c7b0) Thanks [@Madrawn](https://github.com/Madrawn)! - fix(mentions): process slash commands in tool_result blocks
+- [#5752](https://github.com/Nova-Org/novacode/pull/5752) [`3db4b15`](https://github.com/Nova-Org/novacode/commit/3db4b158e331dd9dc376d0eea74ed163db75c7b0) Thanks [@Madrawn](https://github.com/Madrawn)! - fix(mentions): process slash commands in tool_result blocks
 
-- [#5055](https://github.com/Kilo-Org/kilocode/pull/5055) [`74d904e`](https://github.com/Kilo-Org/kilocode/commit/74d904ea945d142489aee139cbb0572b406d08c3) Thanks [@Leoyzen](https://github.com/Leoyzen)! - feat: support preserving reasoning content in OpenAI format conversion
+- [#5055](https://github.com/Nova-Org/novacode/pull/5055) [`74d904e`](https://github.com/Nova-Org/novacode/commit/74d904ea945d142489aee139cbb0572b406d08c3) Thanks [@Leoyzen](https://github.com/Leoyzen)! - feat: support preserving reasoning content in OpenAI format conversion
 
-- [#5739](https://github.com/Kilo-Org/kilocode/pull/5739) [`fc02342`](https://github.com/Kilo-Org/kilocode/commit/fc023426ee2dc1497f81fdea30c23b6f939faeea) Thanks [@rayss868](https://github.com/rayss868)! - Fix: Honor explicit 'disable' for reasoning effort
+- [#5739](https://github.com/Nova-Org/novacode/pull/5739) [`fc02342`](https://github.com/Nova-Org/novacode/commit/fc023426ee2dc1497f81fdea30c23b6f939faeea) Thanks [@rayss868](https://github.com/rayss868)! - Fix: Honor explicit 'disable' for reasoning effort
 
-- [#5167](https://github.com/Kilo-Org/kilocode/pull/5167) [`8b9de69`](https://github.com/Kilo-Org/kilocode/commit/8b9de69d30030dff0811d33e28d0ac699ce7e871) Thanks [@hdcodedev](https://github.com/hdcodedev)! - Fix: "Kill Command" button now reliably terminates processes on all platforms, including those running in the background.
+- [#5167](https://github.com/Nova-Org/novacode/pull/5167) [`8b9de69`](https://github.com/Nova-Org/novacode/commit/8b9de69d30030dff0811d33e28d0ac699ce7e871) Thanks [@hdcodedev](https://github.com/hdcodedev)! - Fix: "Kill Command" button now reliably terminates processes on all platforms, including those running in the background.
 
-- [#5953](https://github.com/Kilo-Org/kilocode/pull/5953) [`45a5414`](https://github.com/Kilo-Org/kilocode/commit/45a5414c9df61383622dd99782c22f6c6a6a081f) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add support for Claude Sonnet 4.6 to Anthropic, Bedrock, and Vertex providers (thanks @PeterDaveHello & Roo)
+- [#5953](https://github.com/Nova-Org/novacode/pull/5953) [`45a5414`](https://github.com/Nova-Org/novacode/commit/45a5414c9df61383622dd99782c22f6c6a6a081f) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add support for Claude Sonnet 4.6 to Anthropic, Bedrock, and Vertex providers (thanks @PeterDaveHello & Roo)
 
-- [#5630](https://github.com/Kilo-Org/kilocode/pull/5630) [`29f287a`](https://github.com/Kilo-Org/kilocode/commit/29f287a65fa9b02de3ddfe52a38317f77411fd34) Thanks [@SenatusSPQR1](https://github.com/SenatusSPQR1)! - fix(nano-gpt): Add native reasoning field extraction
+- [#5630](https://github.com/Nova-Org/novacode/pull/5630) [`29f287a`](https://github.com/Nova-Org/novacode/commit/29f287a65fa9b02de3ddfe52a38317f77411fd34) Thanks [@SenatusSPQR1](https://github.com/SenatusSPQR1)! - fix(nano-gpt): Add native reasoning field extraction
 
-- [#5814](https://github.com/Kilo-Org/kilocode/pull/5814) [`5b10436`](https://github.com/Kilo-Org/kilocode/commit/5b104360c175c3aebecd42d0e3c184d43fc767b6) Thanks [@shssoichiro](https://github.com/shssoichiro)! - Support custom embed dimensions for Ollama provider
+- [#5814](https://github.com/Nova-Org/novacode/pull/5814) [`5b10436`](https://github.com/Nova-Org/novacode/commit/5b104360c175c3aebecd42d0e3c184d43fc767b6) Thanks [@shssoichiro](https://github.com/shssoichiro)! - Support custom embed dimensions for Ollama provider
 
-- [#5523](https://github.com/Kilo-Org/kilocode/pull/5523) [`5610aca`](https://github.com/Kilo-Org/kilocode/commit/5610aca37c401fd5958b548cb8eab6013779a3ed) Thanks [@abdulrahimpds](https://github.com/abdulrahimpds)! - Fix: Persist total API cost after message deletion
+- [#5523](https://github.com/Nova-Org/novacode/pull/5523) [`5610aca`](https://github.com/Nova-Org/novacode/commit/5610aca37c401fd5958b548cb8eab6013779a3ed) Thanks [@abdulrahimpds](https://github.com/abdulrahimpds)! - Fix: Persist total API cost after message deletion
 
-- [#5926](https://github.com/Kilo-Org/kilocode/pull/5926) [`1ca21c8`](https://github.com/Kilo-Org/kilocode/commit/1ca21c8fd7650628da364bd878c3277e229c3b75) Thanks [@alex-alecu](https://github.com/alex-alecu)! - Review mode now offers one-click suggestions to apply fixes, switching to Code, Debug, Architect, or Orchestrator mode based on the review findings
+- [#5926](https://github.com/Nova-Org/novacode/pull/5926) [`1ca21c8`](https://github.com/Nova-Org/novacode/commit/1ca21c8fd7650628da364bd878c3277e229c3b75) Thanks [@alex-alecu](https://github.com/alex-alecu)! - Review mode now offers one-click suggestions to apply fixes, switching to Code, Debug, Architect, or Orchestrator mode based on the review findings
 
-- [#5897](https://github.com/Kilo-Org/kilocode/pull/5897) [`0a3fae1`](https://github.com/Kilo-Org/kilocode/commit/0a3fae1ac8c826536c046816def724b806c8a760) Thanks [@evanjacobson](https://github.com/evanjacobson)! - fix: prevent MCP servers from restarting on every settings file re-read
+- [#5897](https://github.com/Nova-Org/novacode/pull/5897) [`0a3fae1`](https://github.com/Nova-Org/novacode/commit/0a3fae1ac8c826536c046816def724b806c8a760) Thanks [@evanjacobson](https://github.com/evanjacobson)! - fix: prevent MCP servers from restarting on every settings file re-read
 
-- [#5150](https://github.com/Kilo-Org/kilocode/pull/5150) [`101b672`](https://github.com/Kilo-Org/kilocode/commit/101b672509c01b3a9756c2bf4e61f5d04c7307d6) Thanks [@hdcodedev](https://github.com/hdcodedev)! - fix: prevent duplicate tool_use/tool_result IDs in conversation history (#4482)
+- [#5150](https://github.com/Nova-Org/novacode/pull/5150) [`101b672`](https://github.com/Nova-Org/novacode/commit/101b672509c01b3a9756c2bf4e61f5d04c7307d6) Thanks [@hdcodedev](https://github.com/hdcodedev)! - fix: prevent duplicate tool_use/tool_result IDs in conversation history (#4482)
 
-- [#5896](https://github.com/Kilo-Org/kilocode/pull/5896) [`d7fc4cb`](https://github.com/Kilo-Org/kilocode/commit/d7fc4cbbf16b3ce76b01434bc5cc2d7af26c54b3) Thanks [@evanjacobson](https://github.com/evanjacobson)! - fixed falsy provider settings leak between profiles when switching
+- [#5896](https://github.com/Nova-Org/novacode/pull/5896) [`d7fc4cb`](https://github.com/Nova-Org/novacode/commit/d7fc4cbbf16b3ce76b01434bc5cc2d7af26c54b3) Thanks [@evanjacobson](https://github.com/evanjacobson)! - fixed falsy provider settings leak between profiles when switching
 
-- [#5149](https://github.com/Kilo-Org/kilocode/pull/5149) [`d39b51c`](https://github.com/Kilo-Org/kilocode/commit/d39b51cc8a8465e749ba424309dda8eebe14ea10) Thanks [@dacsang97](https://github.com/dacsang97)! - Enhance Anthropic extended thinking compatibility
+- [#5149](https://github.com/Nova-Org/novacode/pull/5149) [`d39b51c`](https://github.com/Nova-Org/novacode/commit/d39b51cc8a8465e749ba424309dda8eebe14ea10) Thanks [@dacsang97](https://github.com/dacsang97)! - Enhance Anthropic extended thinking compatibility
 
-- [#5816](https://github.com/Kilo-Org/kilocode/pull/5816) [`e33a2ef`](https://github.com/Kilo-Org/kilocode/commit/e33a2ef4ae339deb52f4cfe8b3acd68ca4103345) Thanks [@evanjacobson](https://github.com/evanjacobson)! - Fix tool use failure for providers returning numeric tool call IDs (e.g. MiniMax) by coercing ID to string in the shared stream parser
+- [#5816](https://github.com/Nova-Org/novacode/pull/5816) [`e33a2ef`](https://github.com/Nova-Org/novacode/commit/e33a2ef4ae339deb52f4cfe8b3acd68ca4103345) Thanks [@evanjacobson](https://github.com/evanjacobson)! - Fix tool use failure for providers returning numeric tool call IDs (e.g. MiniMax) by coercing ID to string in the shared stream parser
 
-- [#5576](https://github.com/Kilo-Org/kilocode/pull/5576) [`b67879e`](https://github.com/Kilo-Org/kilocode/commit/b67879edaa29976c9312b372ecc62f3f5d076d62) Thanks [@Patel230](https://github.com/Patel230)! - fix: improve symlink handling in skills directory
+- [#5576](https://github.com/Nova-Org/novacode/pull/5576) [`b67879e`](https://github.com/Nova-Org/novacode/commit/b67879edaa29976c9312b372ecc62f3f5d076d62) Thanks [@Patel230](https://github.com/Patel230)! - fix: improve symlink handling in skills directory
 
-- [#5900](https://github.com/Kilo-Org/kilocode/pull/5900) [`2f47a5f`](https://github.com/Kilo-Org/kilocode/commit/2f47a5f781ac2fc2f319af48f91c35aa740fd739) Thanks [@evanjacobson](https://github.com/evanjacobson)! - prevent abort listener memory leak in attemptApiRequest
+- [#5900](https://github.com/Nova-Org/novacode/pull/5900) [`2f47a5f`](https://github.com/Nova-Org/novacode/commit/2f47a5f781ac2fc2f319af48f91c35aa740fd739) Thanks [@evanjacobson](https://github.com/evanjacobson)! - prevent abort listener memory leak in attemptApiRequest
 
-- [#5459](https://github.com/Kilo-Org/kilocode/pull/5459) [`4f2a7da`](https://github.com/Kilo-Org/kilocode/commit/4f2a7dafa19f2ed2f4f870522bef2fe855821276) Thanks [@Schrolli91](https://github.com/Schrolli91)! - Implement better formatting for low cost values
+- [#5459](https://github.com/Nova-Org/novacode/pull/5459) [`4f2a7da`](https://github.com/Nova-Org/novacode/commit/4f2a7dafa19f2ed2f4f870522bef2fe855821276) Thanks [@Schrolli91](https://github.com/Schrolli91)! - Implement better formatting for low cost values
 
-- [#5831](https://github.com/Kilo-Org/kilocode/pull/5831) [`f8f8708`](https://github.com/Kilo-Org/kilocode/commit/f8f8708a08776bb855141529fe113464f451706b) Thanks [@Neonsy](https://github.com/Neonsy)! - Fixed ZenMux context window detection to prevent erroneous context-condensing loops.
+- [#5831](https://github.com/Nova-Org/novacode/pull/5831) [`f8f8708`](https://github.com/Nova-Org/novacode/commit/f8f8708a08776bb855141529fe113464f451706b) Thanks [@Neonsy](https://github.com/Neonsy)! - Fixed ZenMux context window detection to prevent erroneous context-condensing loops.
 
-- [#5831](https://github.com/Kilo-Org/kilocode/pull/5831) [`26e4e1a`](https://github.com/Kilo-Org/kilocode/commit/26e4e1a2bb0b13042aa582cdeb3586e152c6482b) Thanks [@Neonsy](https://github.com/Neonsy)! - Fixed ZenMux tool-calling reliability to avoid repeated "tool not used" loops and preserve transformed request messages.
+- [#5831](https://github.com/Nova-Org/novacode/pull/5831) [`26e4e1a`](https://github.com/Nova-Org/novacode/commit/26e4e1a2bb0b13042aa582cdeb3586e152c6482b) Thanks [@Neonsy](https://github.com/Neonsy)! - Fixed ZenMux tool-calling reliability to avoid repeated "tool not used" loops and preserve transformed request messages.
 
 ## 5.7.0
 
 ### Minor Changes
 
-- [#4768](https://github.com/Kilo-Org/kilocode/pull/4768) [`626f18a`](https://github.com/Kilo-Org/kilocode/commit/626f18a91fde30b9a303708b3c42897aa91bcd98) Thanks [@hsp-sz](https://github.com/hsp-sz)! - feat: add Zenmux provider
+- [#4768](https://github.com/Nova-Org/novacode/pull/4768) [`626f18a`](https://github.com/Nova-Org/novacode/commit/626f18a91fde30b9a303708b3c42897aa91bcd98) Thanks [@hsp-sz](https://github.com/hsp-sz)! - feat: add Zenmux provider
 
 ### Patch Changes
 
-- [#4714](https://github.com/Kilo-Org/kilocode/pull/4714) [`69b36b5`](https://github.com/Kilo-Org/kilocode/commit/69b36b537d5a5f6817dbc60567623ffcdfac9acf) Thanks [@otterDeveloper](https://github.com/otterDeveloper)! - feat (fireworks.ai): add minimax 2.1, glm 4.7, updated other models
+- [#4714](https://github.com/Nova-Org/novacode/pull/4714) [`69b36b5`](https://github.com/Nova-Org/novacode/commit/69b36b537d5a5f6817dbc60567623ffcdfac9acf) Thanks [@otterDeveloper](https://github.com/otterDeveloper)! - feat (fireworks.ai): add minimax 2.1, glm 4.7, updated other models
 
-- [#4926](https://github.com/Kilo-Org/kilocode/pull/4926) [`079dffd`](https://github.com/Kilo-Org/kilocode/commit/079dffd17e2612ac22f5aaf9430f18363088c4cd) Thanks [@YuriNachos](https://github.com/YuriNachos)! - fix: disable zsh history expansion (#4926)
+- [#4926](https://github.com/Nova-Org/novacode/pull/4926) [`079dffd`](https://github.com/Nova-Org/novacode/commit/079dffd17e2612ac22f5aaf9430f18363088c4cd) Thanks [@YuriNachos](https://github.com/YuriNachos)! - fix: disable zsh history expansion (#4926)
 
-- [#5162](https://github.com/Kilo-Org/kilocode/pull/5162) [`cad3c68`](https://github.com/Kilo-Org/kilocode/commit/cad3c688dc2493ef7a750fc47c60db9507da4a9d) Thanks [@hdcodedev](https://github.com/hdcodedev)! - Fix attached images being lost when editing a message with checkpoint
+- [#5162](https://github.com/Nova-Org/novacode/pull/5162) [`cad3c68`](https://github.com/Nova-Org/novacode/commit/cad3c688dc2493ef7a750fc47c60db9507da4a9d) Thanks [@hdcodedev](https://github.com/hdcodedev)! - Fix attached images being lost when editing a message with checkpoint
 
     When editing a message that has a checkpoint, the images attached to the edited message were not being included in the `editMessageConfirm` webview message. This caused images to be silently dropped and not sent to the backend.
 
@@ -152,173 +160,170 @@
 
     Fixes #3489
 
-- [#5139](https://github.com/Kilo-Org/kilocode/pull/5139) [`932c692`](https://github.com/Kilo-Org/kilocode/commit/932c692b2f35e7bd4ffa59f74640ab27e984ef2c) Thanks [@naga-k](https://github.com/naga-k)! - Prevent sending thinkingLevel to unsupporting Gemini models
+- [#5139](https://github.com/Nova-Org/novacode/pull/5139) [`932c692`](https://github.com/Nova-Org/novacode/commit/932c692b2f35e7bd4ffa59f74640ab27e984ef2c) Thanks [@naga-k](https://github.com/naga-k)! - Prevent sending thinkingLevel to unsupporting Gemini models
 
-- [#4945](https://github.com/Kilo-Org/kilocode/pull/4945) [`43bc7ac`](https://github.com/Kilo-Org/kilocode/commit/43bc7acc815d81ba0f775c9e2d7965336c0feb50) Thanks [@CaiDingxian](https://github.com/CaiDingxian)! - feat: add chars count to ListFilesTool
+- [#4945](https://github.com/Nova-Org/novacode/pull/4945) [`43bc7ac`](https://github.com/Nova-Org/novacode/commit/43bc7acc815d81ba0f775c9e2d7965336c0feb50) Thanks [@CaiDingxian](https://github.com/CaiDingxian)! - feat: add chars count to ListFilesTool
 
-- [#5805](https://github.com/Kilo-Org/kilocode/pull/5805) [`918f767`](https://github.com/Kilo-Org/kilocode/commit/918f767136cb073a71767d76708da40e25c03f06) Thanks [@Neonsy](https://github.com/Neonsy)! - Add support for GLM 5 and set Z.ai default to `glm-5` and align Z.ai API line model selection in VS Code and webview settings
+- [#5805](https://github.com/Nova-Org/novacode/pull/5805) [`918f767`](https://github.com/Nova-Org/novacode/commit/918f767136cb073a71767d76708da40e25c03f06) Thanks [@Neonsy](https://github.com/Neonsy)! - Add support for GLM 5 and set Z.ai default to `glm-5` and align Z.ai API line model selection in VS Code and webview settings
 
 ## 5.6.0
 
 ### Minor Changes
 
-- [#5040](https://github.com/Kilo-Org/kilocode/pull/5040) [`abe3047`](https://github.com/Kilo-Org/kilocode/commit/abe30473feffb84e885fc8abd5595033fe8b5431) Thanks [@luthraansh](https://github.com/luthraansh)! - Added Corethink as a new AI provider
+- [#5040](https://github.com/Nova-Org/novacode/pull/5040) [`abe3047`](https://github.com/Nova-Org/novacode/commit/abe30473feffb84e885fc8abd5595033fe8b5431) Thanks [@luthraansh](https://github.com/luthraansh)! - Added Corethink as a new AI provider
 
 ### Patch Changes
 
-- [#5749](https://github.com/Kilo-Org/kilocode/pull/5749) [`b2fa0a9`](https://github.com/Kilo-Org/kilocode/commit/b2fa0a9b239a396feee39d14eb60eafb088c0ed4) Thanks [@skaldamramra](https://github.com/skaldamramra)! - Add Slovak (sk) language translation for Kilo Code extension and UI
+- [#5749](https://github.com/Nova-Org/novacode/pull/5749) [`b2fa0a9`](https://github.com/Nova-Org/novacode/commit/b2fa0a9b239a396feee39d14eb60eafb088c0ed4) Thanks [@skaldamramra](https://github.com/skaldamramra)! - Add Slovak (sk) language translation for Nova Code extension and UI
 
-- [#5681](https://github.com/Kilo-Org/kilocode/pull/5681) [`b5ef707`](https://github.com/Kilo-Org/kilocode/commit/b5ef70717068a791da5c3b3068eadb8e189ff484) Thanks [@Drilmo](https://github.com/Drilmo)! - fix(agent-manager): Fix double scrollbar in mode selector dropdowns
+- [#5681](https://github.com/Nova-Org/novacode/pull/5681) [`b5ef707`](https://github.com/Nova-Org/novacode/commit/b5ef70717068a791da5c3b3068eadb8e189ff484) Thanks [@Drilmo](https://github.com/Drilmo)! - fix(agent-manager): Fix double scrollbar in mode selector dropdowns
 
-- [#5722](https://github.com/Kilo-Org/kilocode/pull/5722) [`f7cf4fd`](https://github.com/Kilo-Org/kilocode/commit/f7cf4fd5002b697f1e41e744b01f096e57666acf) Thanks [@Neonsy](https://github.com/Neonsy)! - Improve Chutes Kimi reliability by preventing terminated-stream retry loops and handling tool/reasoning chunks more safely.
+- [#5722](https://github.com/Nova-Org/novacode/pull/5722) [`f7cf4fd`](https://github.com/Nova-Org/novacode/commit/f7cf4fd5002b697f1e41e744b01f096e57666acf) Thanks [@Neonsy](https://github.com/Neonsy)! - Improve Chutes Kimi reliability by preventing terminated-stream retry loops and handling tool/reasoning chunks more safely.
 
-- [#5747](https://github.com/Kilo-Org/kilocode/pull/5747) [`95be119`](https://github.com/Kilo-Org/kilocode/commit/95be1193449184869e49d44b7fe9f09e1620b3ce) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Fix JetBrains build failure by adding missing vsix dependency for build pipeline
+- [#5747](https://github.com/Nova-Org/novacode/pull/5747) [`95be119`](https://github.com/Nova-Org/novacode/commit/95be1193449184869e49d44b7fe9f09e1620b3ce) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Fix JetBrains build failure by adding missing vsix dependency for build pipeline
 
-- [#5733](https://github.com/Kilo-Org/kilocode/pull/5733) [`1b5c4f4`](https://github.com/Kilo-Org/kilocode/commit/1b5c4f4fab28f03b81a9bdf3cd789b1425108765) Thanks [@krisztian-gajdar](https://github.com/krisztian-gajdar)! - Show loading spinner immediately when opening review scope dialog while scope information is being computed, improving perceived performance for repositories with many changes
+- [#5733](https://github.com/Nova-Org/novacode/pull/5733) [`1b5c4f4`](https://github.com/Nova-Org/novacode/commit/1b5c4f4fab28f03b81a9bdf3cd789b1425108765) Thanks [@krisztian-gajdar](https://github.com/krisztian-gajdar)! - Show loading spinner immediately when opening review scope dialog while scope information is being computed, improving perceived performance for repositories with many changes
 
-- [#5699](https://github.com/Kilo-Org/kilocode/pull/5699) [`e560e47`](https://github.com/Kilo-Org/kilocode/commit/e560e47e39f605f78a6d18fdbfc0dd680ceb5557) Thanks [@Patel230](https://github.com/Patel230)! - Fix unreadable text and poor contrast issues in Agent Manager
+- [#5699](https://github.com/Nova-Org/novacode/pull/5699) [`e560e47`](https://github.com/Nova-Org/novacode/commit/e560e47e39f605f78a6d18fdbfc0dd680ceb5557) Thanks [@Patel230](https://github.com/Patel230)! - Fix unreadable text and poor contrast issues in Agent Manager
 
-- [#5722](https://github.com/Kilo-Org/kilocode/pull/5722) [`a834092`](https://github.com/Kilo-Org/kilocode/commit/a8340925c72e9ee0494e1bffd47dbc1aaddc1c8e) Thanks [@Neonsy](https://github.com/Neonsy)! - Fixed Moonshot Kimi tool-calling and thinking-mode behavior for `kimi-k2.5` and `kimi-for-coding`.
+- [#5722](https://github.com/Nova-Org/novacode/pull/5722) [`a834092`](https://github.com/Nova-Org/novacode/commit/a8340925c72e9ee0494e1bffd47dbc1aaddc1c8e) Thanks [@Neonsy](https://github.com/Neonsy)! - Fixed Moonshot Kimi tool-calling and thinking-mode behavior for `kimi-k2.5` and `kimi-for-coding`.
 
-- [#4749](https://github.com/Kilo-Org/kilocode/pull/4749) [`ed70dad`](https://github.com/Kilo-Org/kilocode/commit/ed70dad320a80160dc793bf34f52b87d995285ff) Thanks [@lgrgic](https://github.com/lgrgic)! - Fix 'Delete' toggle button in Auto Approve settings
+- [#4749](https://github.com/Nova-Org/novacode/pull/4749) [`ed70dad`](https://github.com/Nova-Org/novacode/commit/ed70dad320a80160dc793bf34f52b87d995285ff) Thanks [@lgrgic](https://github.com/lgrgic)! - Fix 'Delete' toggle button in Auto Approve settings
 
-- [#5756](https://github.com/Kilo-Org/kilocode/pull/5756) [`5d9d4d1`](https://github.com/Kilo-Org/kilocode/commit/5d9d4d1c4a6236fccf7082ea9e8d83d95bbd207a) Thanks [@bernaferrari](https://github.com/bernaferrari)! - Remove duplicate "Kilo Code Marketplace" title in toolbar (thanks @bernaferrari!)
+- [#5756](https://github.com/Nova-Org/novacode/pull/5756) [`5d9d4d1`](https://github.com/Nova-Org/novacode/commit/5d9d4d1c4a6236fccf7082ea9e8d83d95bbd207a) Thanks [@bernaferrari](https://github.com/bernaferrari)! - Remove duplicate "Nova Code Marketplace" title in toolbar (thanks @bernaferrari!)
 
-- [#3807](https://github.com/Kilo-Org/kilocode/pull/3807) [`e37717e`](https://github.com/Kilo-Org/kilocode/commit/e37717ee2fad8efb53bea92752dd9ea25f79bbed) Thanks [@davidraedev](https://github.com/davidraedev)! - Hook embedding timeout into settings for ollama
+- [#3807](https://github.com/Nova-Org/novacode/pull/3807) [`e37717e`](https://github.com/Nova-Org/novacode/commit/e37717ee2fad8efb53bea92752dd9ea25f79bbed) Thanks [@davidraedev](https://github.com/davidraedev)! - Hook embedding timeout into settings for ollama
 
 ## 5.5.0
 
 ### Minor Changes
 
-- [#4890](https://github.com/Kilo-Org/kilocode/pull/4890) [`535e3d1`](https://github.com/Kilo-Org/kilocode/commit/535e3d1751255487b4a0217fbae6e7b357b85a56) Thanks [@Drilmo](https://github.com/Drilmo)! - feat(agent-manager): add YOLO mode toggle and session rename
+- [#4890](https://github.com/Nova-Org/novacode/pull/4890) [`535e3d1`](https://github.com/Nova-Org/novacode/commit/535e3d1751255487b4a0217fbae6e7b357b85a56) Thanks [@Drilmo](https://github.com/Drilmo)! - feat(agent-manager): add YOLO mode toggle and session rename
 
     **New Features:**
-
     - Add YOLO mode toggle button in new agent form to enable/disable auto-approval of tools
     - Add YOLO mode indicator (⚡) in session header and sidebar for sessions running in YOLO mode
     - Add inline session rename - click on session title to edit
 
     **Technical Details:**
-
     - `yoloMode` maps to `autoApprove` config in agent-runtime
     - Added translations for all 22 supported locales
 
 ### Patch Changes
 
-- [#5744](https://github.com/Kilo-Org/kilocode/pull/5744) [`870cdd5`](https://github.com/Kilo-Org/kilocode/commit/870cdd57e7b096caca536ca0aa0da393a68eb730) Thanks [@fstanis](https://github.com/fstanis)! - Fix Opus 4.6 model name
+- [#5744](https://github.com/Nova-Org/novacode/pull/5744) [`870cdd5`](https://github.com/Nova-Org/novacode/commit/870cdd57e7b096caca536ca0aa0da393a68eb730) Thanks [@fstanis](https://github.com/fstanis)! - Fix Opus 4.6 model name
 
-- [#5767](https://github.com/Kilo-Org/kilocode/pull/5767) [`57daae1`](https://github.com/Kilo-Org/kilocode/commit/57daae1c3765bd1c37ee5791cb465edc7bd9a861) Thanks [@kiloconnect](https://github.com/apps/kiloconnect)! - Update Discord link in docs footer to use kilo.ai/discord
+- [#5767](https://github.com/Nova-Org/novacode/pull/5767) [`57daae1`](https://github.com/Nova-Org/novacode/commit/57daae1c3765bd1c37ee5791cb465edc7bd9a861) Thanks [@novaconnect](https://github.com/apps/novaconnect)! - Update Discord link in docs footer to use nova.ai/discord
 
-- [#5758](https://github.com/Kilo-Org/kilocode/pull/5758) [`25f0043`](https://github.com/Kilo-Org/kilocode/commit/25f0043f66248cb12c1c353c9cd9935a0d2d9d60) Thanks [@markijbema](https://github.com/markijbema)! - Minor improvement of auto-execute commands with input redirection
+- [#5758](https://github.com/Nova-Org/novacode/pull/5758) [`25f0043`](https://github.com/Nova-Org/novacode/commit/25f0043f66248cb12c1c353c9cd9935a0d2d9d60) Thanks [@markijbema](https://github.com/markijbema)! - Minor improvement of auto-execute commands with input redirection
 
 ## 5.4.1
 
 ### Patch Changes
 
-- [#5695](https://github.com/Kilo-Org/kilocode/pull/5695) [`8097ad6`](https://github.com/Kilo-Org/kilocode/commit/8097ad63b455dca2224f2811af69a0333a43fd79) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add support for GPT 5.3 codex in OpenAI Codex provider
+- [#5695](https://github.com/Nova-Org/novacode/pull/5695) [`8097ad6`](https://github.com/Nova-Org/novacode/commit/8097ad63b455dca2224f2811af69a0333a43fd79) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add support for GPT 5.3 codex in OpenAI Codex provider
 
-- [#5584](https://github.com/Kilo-Org/kilocode/pull/5584) [`bd34af4`](https://github.com/Kilo-Org/kilocode/commit/bd34af4170ec3146f1c9c8ca8d8df28502b4b1fa) Thanks [@Neonsy](https://github.com/Neonsy)! - Add a favorited-task checkbox to batch delete in task history.
+- [#5584](https://github.com/Nova-Org/novacode/pull/5584) [`bd34af4`](https://github.com/Nova-Org/novacode/commit/bd34af4170ec3146f1c9c8ca8d8df28502b4b1fa) Thanks [@Neonsy](https://github.com/Neonsy)! - Add a favorited-task checkbox to batch delete in task history.
 
-- [#4770](https://github.com/Kilo-Org/kilocode/pull/4770) [`abaf633`](https://github.com/Kilo-Org/kilocode/commit/abaf6334f22d14496e38151c329887346525f090) Thanks [@JustinReyes28](https://github.com/JustinReyes28)! - feat: Add new "devstral-2512" Mistral model configuration
+- [#4770](https://github.com/Nova-Org/novacode/pull/4770) [`abaf633`](https://github.com/Nova-Org/novacode/commit/abaf6334f22d14496e38151c329887346525f090) Thanks [@JustinReyes28](https://github.com/JustinReyes28)! - feat: Add new "devstral-2512" Mistral model configuration
 
 ## 5.4.0
 
 ### Minor Changes
 
-- [#4096](https://github.com/Kilo-Org/kilocode/pull/4096) [`4eb0646`](https://github.com/Kilo-Org/kilocode/commit/4eb06462f78ab7446b319e1736fa837e86e3f1df) Thanks [@OlivierBarbier](https://github.com/OlivierBarbier)! - Fix: Importing a configuration file blocks the configuration of provider parameters #2349
+- [#4096](https://github.com/Nova-Org/novacode/pull/4096) [`4eb0646`](https://github.com/Nova-Org/novacode/commit/4eb06462f78ab7446b319e1736fa837e86e3f1df) Thanks [@OlivierBarbier](https://github.com/OlivierBarbier)! - Fix: Importing a configuration file blocks the configuration of provider parameters #2349
 
 ### Patch Changes
 
-- [#5686](https://github.com/Kilo-Org/kilocode/pull/5686) [`e6c26b7`](https://github.com/Kilo-Org/kilocode/commit/e6c26b7e8e468a565017fb05958cd4814d69daa1) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Add Claude Opus 4.6 model with adaptive thinking support
+- [#5686](https://github.com/Nova-Org/novacode/pull/5686) [`e6c26b7`](https://github.com/Nova-Org/novacode/commit/e6c26b7e8e468a565017fb05958cd4814d69daa1) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Add Claude Opus 4.6 model with adaptive thinking support
 
-- [#4021](https://github.com/Kilo-Org/kilocode/pull/4021) [`b8a6c4e`](https://github.com/Kilo-Org/kilocode/commit/b8a6c4e6b4eab9397efbbaa04202f92816e5afd4) Thanks [@In-line](https://github.com/In-line)! - Add React Compiler integration to improve UI responsiveness
+- [#4021](https://github.com/Nova-Org/novacode/pull/4021) [`b8a6c4e`](https://github.com/Nova-Org/novacode/commit/b8a6c4e6b4eab9397efbbaa04202f92816e5afd4) Thanks [@In-line](https://github.com/In-line)! - Add React Compiler integration to improve UI responsiveness
 
 ## 5.3.0
 
 ### Minor Changes
 
-- [#5649](https://github.com/Kilo-Org/kilocode/pull/5649) [`6fbb740`](https://github.com/Kilo-Org/kilocode/commit/6fbb74084f4090d42ad583dd6ce62c2d3f7826f2) Thanks [@iscekic](https://github.com/iscekic)! - send x-kilocode-mode header
+- [#5649](https://github.com/Nova-Org/novacode/pull/5649) [`6fbb740`](https://github.com/Nova-Org/novacode/commit/6fbb74084f4090d42ad583dd6ce62c2d3f7826f2) Thanks [@iscekic](https://github.com/iscekic)! - send x-novacode-mode header
 
-- [#5531](https://github.com/Kilo-Org/kilocode/pull/5531) [`66dbaf2`](https://github.com/Kilo-Org/kilocode/commit/66dbaf2dac3f0d1163b7a9409805d32a9a80af1c) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Add new welcome screen for improved onboarding
+- [#5531](https://github.com/Nova-Org/novacode/pull/5531) [`66dbaf2`](https://github.com/Nova-Org/novacode/commit/66dbaf2dac3f0d1163b7a9409805d32a9a80af1c) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Add new welcome screen for improved onboarding
 
 ### Patch Changes
 
-- [#5582](https://github.com/Kilo-Org/kilocode/pull/5582) [`dc669ab`](https://github.com/Kilo-Org/kilocode/commit/dc669ab484a3d015cea1cadb57271b58a23ef796) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Use brand-colored Kilo Code icons throughout the extension for better visibility
+- [#5582](https://github.com/Nova-Org/novacode/pull/5582) [`dc669ab`](https://github.com/Nova-Org/novacode/commit/dc669ab484a3d015cea1cadb57271b58a23ef796) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Use brand-colored Nova Code icons throughout the extension for better visibility
 
-- [#5616](https://github.com/Kilo-Org/kilocode/pull/5616) [`9e139f5`](https://github.com/Kilo-Org/kilocode/commit/9e139f50bc52913fa7e42d3ba4c9090263a14f0b) Thanks [@EloiRamos](https://github.com/EloiRamos)! - fix(ui): prevent TypeError when trimming input during model switching
+- [#5616](https://github.com/Nova-Org/novacode/pull/5616) [`9e139f5`](https://github.com/Nova-Org/novacode/commit/9e139f50bc52913fa7e42d3ba4c9090263a14f0b) Thanks [@EloiRamos](https://github.com/EloiRamos)! - fix(ui): prevent TypeError when trimming input during model switching
 
-- [#2792](https://github.com/Kilo-Org/kilocode/pull/2792) [`907fb53`](https://github.com/Kilo-Org/kilocode/commit/907fb53aca1f70b1e3e2f91fbb3bcbdc6b514a48) Thanks [@Honyii](https://github.com/Honyii)! - Added CONTRIBUTING.md file for onboarding new contributors
+- [#2792](https://github.com/Nova-Org/novacode/pull/2792) [`907fb53`](https://github.com/Nova-Org/novacode/commit/907fb53aca1f70b1e3e2f91fbb3bcbdc6b514a48) Thanks [@Honyii](https://github.com/Honyii)! - Added CONTRIBUTING.md file for onboarding new contributors
 
-- [#5638](https://github.com/Kilo-Org/kilocode/pull/5638) [`a5b9106`](https://github.com/Kilo-Org/kilocode/commit/a5b9106e6cebc1a63c1ef5fa507cfaab65aa8ebc) Thanks [@Drilmo](https://github.com/Drilmo)! - fix(agent-manager): sync messages when panel is reopened
+- [#5638](https://github.com/Nova-Org/novacode/pull/5638) [`a5b9106`](https://github.com/Nova-Org/novacode/commit/a5b9106e6cebc1a63c1ef5fa507cfaab65aa8ebc) Thanks [@Drilmo](https://github.com/Drilmo)! - fix(agent-manager): sync messages when panel is reopened
 
     Fixed a bug where closing and reopening the Agent Manager panel would show "Waiting for agent response..." instead of the conversation messages.
 
-- [#5644](https://github.com/Kilo-Org/kilocode/pull/5644) [`e3f353f`](https://github.com/Kilo-Org/kilocode/commit/e3f353f596288b9b8e60b00fa88e60f179160c9a) Thanks [@bernaferrari](https://github.com/bernaferrari)! - Fix contrast on "ideas" intro screen
+- [#5644](https://github.com/Nova-Org/novacode/pull/5644) [`e3f353f`](https://github.com/Nova-Org/novacode/commit/e3f353f596288b9b8e60b00fa88e60f179160c9a) Thanks [@bernaferrari](https://github.com/bernaferrari)! - Fix contrast on "ideas" intro screen
 
-- [#5583](https://github.com/Kilo-Org/kilocode/pull/5583) [`a23c936`](https://github.com/Kilo-Org/kilocode/commit/a23c9361a5a15cf7bd59efd9c8ea9987e2ec82cc) Thanks [@crazyrabbit0](https://github.com/crazyrabbit0)! - Fix double scroll bar in ModelSelector and KiloProfileSelector by increasing max-height.
+- [#5583](https://github.com/Nova-Org/novacode/pull/5583) [`a23c936`](https://github.com/Nova-Org/novacode/commit/a23c9361a5a15cf7bd59efd9c8ea9987e2ec82cc) Thanks [@crazyrabbit0](https://github.com/crazyrabbit0)! - Fix double scroll bar in ModelSelector and NovaProfileSelector by increasing max-height.
 
-- [#5567](https://github.com/Kilo-Org/kilocode/pull/5567) [`9729ab2`](https://github.com/Kilo-Org/kilocode/commit/9729ab2c808a69fadbb8c095e5a626fa75e42859) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Updated chat UI theme to use muted, theme-aware colors for Checkpoint, Thinking, and user message styling
+- [#5567](https://github.com/Nova-Org/novacode/pull/5567) [`9729ab2`](https://github.com/Nova-Org/novacode/commit/9729ab2c808a69fadbb8c095e5a626fa75e42859) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Updated chat UI theme to use muted, theme-aware colors for Checkpoint, Thinking, and user message styling
 
-- [#5577](https://github.com/Kilo-Org/kilocode/pull/5577) [`a57f9ac`](https://github.com/Kilo-Org/kilocode/commit/a57f9acb2c07b0888fcfa566c2d345879f890941) Thanks [@Patel230](https://github.com/Patel230)! - fix: allow Ollama models without tool support for autocomplete
+- [#5577](https://github.com/Nova-Org/novacode/pull/5577) [`a57f9ac`](https://github.com/Nova-Org/novacode/commit/a57f9acb2c07b0888fcfa566c2d345879f890941) Thanks [@Patel230](https://github.com/Patel230)! - fix: allow Ollama models without tool support for autocomplete
 
-- [#5628](https://github.com/Kilo-Org/kilocode/pull/5628) [`84c6db2`](https://github.com/Kilo-Org/kilocode/commit/84c6db2ff906b6d18625dc0de21a77a0e573f4ac) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Prevent chat auto-scroll from jumping while you read older messages.
+- [#5628](https://github.com/Nova-Org/novacode/pull/5628) [`84c6db2`](https://github.com/Nova-Org/novacode/commit/84c6db2ff906b6d18625dc0de21a77a0e573f4ac) Thanks [@Githubguy132010](https://github.com/Githubguy132010)! - Prevent chat auto-scroll from jumping while you read older messages.
 
-- [#5214](https://github.com/Kilo-Org/kilocode/pull/5214) [`28a46d1`](https://github.com/Kilo-Org/kilocode/commit/28a46d17fe91f13ec0687bb6834b31e2ec454687) Thanks [@kiloconnect](https://github.com/apps/kiloconnect)! - Add GLM-4.7 Flash model to recommended models list for Z.ai provider
+- [#5214](https://github.com/Nova-Org/novacode/pull/5214) [`28a46d1`](https://github.com/Nova-Org/novacode/commit/28a46d17fe91f13ec0687bb6834b31e2ec454687) Thanks [@novaconnect](https://github.com/apps/novaconnect)! - Add GLM-4.7 Flash model to recommended models list for Z.ai provider
 
-- [#5662](https://github.com/Kilo-Org/kilocode/pull/5662) [`228745b`](https://github.com/Kilo-Org/kilocode/commit/228745b4159cd28b7a8fb8d1db1b89e9beb49539) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add improved support for Kimi 2.5 reasoning through AI SDK
+- [#5662](https://github.com/Nova-Org/novacode/pull/5662) [`228745b`](https://github.com/Nova-Org/novacode/commit/228745b4159cd28b7a8fb8d1db1b89e9beb49539) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add improved support for Kimi 2.5 reasoning through AI SDK
 
 ## 5.2.2
 
 ### Patch Changes
 
-- [#5497](https://github.com/Kilo-Org/kilocode/pull/5497) [`95f9214`](https://github.com/Kilo-Org/kilocode/commit/95f92143d254741e6e0628f43ad90a3464fa7a09) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Show sign in prompt when trying paid model when not logged in
+- [#5497](https://github.com/Nova-Org/novacode/pull/5497) [`95f9214`](https://github.com/Nova-Org/novacode/commit/95f92143d254741e6e0628f43ad90a3464fa7a09) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Show sign in prompt when trying paid model when not logged in
 
-- [#5529](https://github.com/Kilo-Org/kilocode/pull/5529) [`1fe7b92`](https://github.com/Kilo-Org/kilocode/commit/1fe7b929e1c218614b9ae71270b304ab47dbf894) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Streamline getting started view: move logo to top, reduce suggestions to 2, remove footer hint text
+- [#5529](https://github.com/Nova-Org/novacode/pull/5529) [`1fe7b92`](https://github.com/Nova-Org/novacode/commit/1fe7b929e1c218614b9ae71270b304ab47dbf894) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Streamline getting started view: move logo to top, reduce suggestions to 2, remove footer hint text
 
 ## 5.2.1
 
 ### Patch Changes
 
-- [#5501](https://github.com/Kilo-Org/kilocode/pull/5501) [`cecefc1`](https://github.com/Kilo-Org/kilocode/commit/cecefc1dd660100631eecf8517f2c0c918f6cdb3) Thanks [@Neonsy](https://github.com/Neonsy)! - Adding Kimi K2.5
+- [#5501](https://github.com/Nova-Org/novacode/pull/5501) [`cecefc1`](https://github.com/Nova-Org/novacode/commit/cecefc1dd660100631eecf8517f2c0c918f6cdb3) Thanks [@Neonsy](https://github.com/Neonsy)! - Adding Kimi K2.5
 
 ## 5.2.0
 
 ### Minor Changes
 
-- [#5477](https://github.com/Kilo-Org/kilocode/pull/5477) [`59a792e`](https://github.com/Kilo-Org/kilocode/commit/59a792eeb461497fe2968ca17e2858389c55894a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improve idea box during onboarding experience
+- [#5477](https://github.com/Nova-Org/novacode/pull/5477) [`59a792e`](https://github.com/Nova-Org/novacode/commit/59a792eeb461497fe2968ca17e2858389c55894a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improve idea box during onboarding experience
 
 ### Patch Changes
 
-- [#5503](https://github.com/Kilo-Org/kilocode/pull/5503) [`e53f086`](https://github.com/Kilo-Org/kilocode/commit/e53f0865d32296cb5e4db5f853466f5fa7671371) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Fix mode selection after anonymous usage
+- [#5503](https://github.com/Nova-Org/novacode/pull/5503) [`e53f086`](https://github.com/Nova-Org/novacode/commit/e53f0865d32296cb5e4db5f853466f5fa7671371) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Fix mode selection after anonymous usage
 
-- [#5426](https://github.com/Kilo-Org/kilocode/pull/5426) [`56d086b`](https://github.com/Kilo-Org/kilocode/commit/56d086b4853abfeebff6b1afb6c8d0431c232542) Thanks [@lambertjosh](https://github.com/lambertjosh)! - OpenAI Codex: Add ChatGPT subscription usage limits dashboard
+- [#5426](https://github.com/Nova-Org/novacode/pull/5426) [`56d086b`](https://github.com/Nova-Org/novacode/commit/56d086b4853abfeebff6b1afb6c8d0431c232542) Thanks [@lambertjosh](https://github.com/lambertjosh)! - OpenAI Codex: Add ChatGPT subscription usage limits dashboard
 
-- [#4947](https://github.com/Kilo-Org/kilocode/pull/4947) [`53080fd`](https://github.com/Kilo-Org/kilocode/commit/53080fddfc62a171ebae09fe38629aec8b0e6098) Thanks [@CaiDingxian](https://github.com/CaiDingxian)! - feat(moonshot): add new Kimi models and coding API endpoint
+- [#4947](https://github.com/Nova-Org/novacode/pull/4947) [`53080fd`](https://github.com/Nova-Org/novacode/commit/53080fddfc62a171ebae09fe38629aec8b0e6098) Thanks [@CaiDingxian](https://github.com/CaiDingxian)! - feat(moonshot): add new Kimi models and coding API endpoint
 
-- [#5451](https://github.com/Kilo-Org/kilocode/pull/5451) [`af25644`](https://github.com/Kilo-Org/kilocode/commit/af25644f8482bd1a10e6645ed3061421ac23045e) Thanks [@kiloconnect](https://github.com/apps/kiloconnect)! - Updated welcome screen model names in all translations
+- [#5451](https://github.com/Nova-Org/novacode/pull/5451) [`af25644`](https://github.com/Nova-Org/novacode/commit/af25644f8482bd1a10e6645ed3061421ac23045e) Thanks [@novaconnect](https://github.com/apps/novaconnect)! - Updated welcome screen model names in all translations
 
 ## 5.1.0
 
 ### Minor Changes
 
-- [`8140071`](https://github.com/Kilo-Org/kilocode/commit/8140071cf0235906d06e14034372af5941b0b9cc) Thanks [@markijbema](https://github.com/markijbema)! - New users can now start using Kilo Code immediately without any configuration - a default Kilo Code Gateway profile with a free model is automatically set up on first launch
+- [`8140071`](https://github.com/Nova-Org/novacode/commit/8140071cf0235906d06e14034372af5941b0b9cc) Thanks [@markijbema](https://github.com/markijbema)! - New users can now start using Nova Code immediately without any configuration - a default Nova Code Gateway profile with a free model is automatically set up on first launch
 
-- [#5288](https://github.com/Kilo-Org/kilocode/pull/5288) [`016ea49`](https://github.com/Kilo-Org/kilocode/commit/016ea49a3a875a8e60c846b314a7040852701262) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Remove Gemini CLI provider support.
+- [#5288](https://github.com/Nova-Org/novacode/pull/5288) [`016ea49`](https://github.com/Nova-Org/novacode/commit/016ea49a3a875a8e60c846b314a7040852701262) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Remove Gemini CLI provider support.
 
 ### Patch Changes
 
-- [#5420](https://github.com/Kilo-Org/kilocode/pull/5420) [`ebcfca8`](https://github.com/Kilo-Org/kilocode/commit/ebcfca8ea1dd3aad87e3a2598370208a1daaddc6) Thanks [@pedroheyerdahl](https://github.com/pedroheyerdahl)! - Improved Portuguese (Brazil) translation
+- [#5420](https://github.com/Nova-Org/novacode/pull/5420) [`ebcfca8`](https://github.com/Nova-Org/novacode/commit/ebcfca8ea1dd3aad87e3a2598370208a1daaddc6) Thanks [@pedroheyerdahl](https://github.com/pedroheyerdahl)! - Improved Portuguese (Brazil) translation
 
 ## 5.0.0
 
 ### Major Changes
 
-- [#5400](https://github.com/Kilo-Org/kilocode/pull/5400) [`5a49128`](https://github.com/Kilo-Org/kilocode/commit/5a49128a570f1725b705b2da7b19486649e526ed) Thanks [@Sureshkumars](https://github.com/Sureshkumars)! - Add Local review mode
+- [#5400](https://github.com/Nova-Org/novacode/pull/5400) [`5a49128`](https://github.com/Nova-Org/novacode/commit/5a49128a570f1725b705b2da7b19486649e526ed) Thanks [@Sureshkumars](https://github.com/Sureshkumars)! - Add Local review mode
 
 ### Minor Changes
 
-- [#5234](https://github.com/Kilo-Org/kilocode/pull/5234) [`796e188`](https://github.com/Kilo-Org/kilocode/commit/796e188f6213f8093e3e6cadd5b019d55993f948) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.39.0-v3.41.2
-
+- [#5234](https://github.com/Nova-Org/novacode/pull/5234) [`796e188`](https://github.com/Nova-Org/novacode/commit/796e188f6213f8093e3e6cadd5b019d55993f948) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.39.0-v3.41.2
     - Add button to open markdown in VSCode preview for easier reading of formatted content (PR #10773 by @brunobergher)
     - Fix: Add openai-codex to providers that don't require an API key (PR #10786 by @roomote)
     - Fix: Detect Gemini models with space-separated names for proper thought signature injection in LiteLLM (PR #10787 by @daniel-lxs)
@@ -380,71 +385,69 @@
 
 ### Patch Changes
 
-- [#5354](https://github.com/Kilo-Org/kilocode/pull/5354) [`7156a35`](https://github.com/Kilo-Org/kilocode/commit/7156a35649d97a10694229a8a89fd10c5a9f9607) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Fixed broken image display in Agent Manager message list. Images pasted or attached to messages now render correctly as thumbnails in both user feedback messages and queued messages.
+- [#5354](https://github.com/Nova-Org/novacode/pull/5354) [`7156a35`](https://github.com/Nova-Org/novacode/commit/7156a35649d97a10694229a8a89fd10c5a9f9607) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Fixed broken image display in Agent Manager message list. Images pasted or attached to messages now render correctly as thumbnails in both user feedback messages and queued messages.
 
-- [#5373](https://github.com/Kilo-Org/kilocode/pull/5373) [`cb41705`](https://github.com/Kilo-Org/kilocode/commit/cb41705691d4be7dc915d9d2f42fbcfaa033d9a8) Thanks [@sebastiand-cerebras](https://github.com/sebastiand-cerebras)! - Set default temperature to 1.0 for Cerebras zai-glm-4.7 model
+- [#5373](https://github.com/Nova-Org/novacode/pull/5373) [`cb41705`](https://github.com/Nova-Org/novacode/commit/cb41705691d4be7dc915d9d2f42fbcfaa033d9a8) Thanks [@sebastiand-cerebras](https://github.com/sebastiand-cerebras)! - Set default temperature to 1.0 for Cerebras zai-glm-4.7 model
 
-- [#5402](https://github.com/Kilo-Org/kilocode/pull/5402) [`930931e`](https://github.com/Kilo-Org/kilocode/commit/930931eefe2d5da11ef1b98dc2f8145cb26feb2f) Thanks [@PeterDaveHello](https://github.com/PeterDaveHello)! - Improve zh-TW translations
+- [#5402](https://github.com/Nova-Org/novacode/pull/5402) [`930931e`](https://github.com/Nova-Org/novacode/commit/930931eefe2d5da11ef1b98dc2f8145cb26feb2f) Thanks [@PeterDaveHello](https://github.com/PeterDaveHello)! - Improve zh-TW translations
 
-- [#5407](https://github.com/Kilo-Org/kilocode/pull/5407) [`77cfa54`](https://github.com/Kilo-Org/kilocode/commit/77cfa54e05dbd57d8c2e333da67b1b049bdebdf8) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add native tool calling support to Nano-GPT provider
+- [#5407](https://github.com/Nova-Org/novacode/pull/5407) [`77cfa54`](https://github.com/Nova-Org/novacode/commit/77cfa54e05dbd57d8c2e333da67b1b049bdebdf8) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add native tool calling support to Nano-GPT provider
 
-- [#5396](https://github.com/Kilo-Org/kilocode/pull/5396) [`fdae881`](https://github.com/Kilo-Org/kilocode/commit/fdae881bfb3483066117db54bb85c7497d4bff5f) Thanks [@markijbema](https://github.com/markijbema)! - Revert "Using Kilo for work?" button in low credit warning, restore free models link
+- [#5396](https://github.com/Nova-Org/novacode/pull/5396) [`fdae881`](https://github.com/Nova-Org/novacode/commit/fdae881bfb3483066117db54bb85c7497d4bff5f) Thanks [@markijbema](https://github.com/markijbema)! - Revert "Using Nova for work?" button in low credit warning, restore free models link
 
-- [#5364](https://github.com/Kilo-Org/kilocode/pull/5364) [`5e8ed35`](https://github.com/Kilo-Org/kilocode/commit/5e8ed3526110f6868b8b8af203eb3e733493a387) Thanks [@huangdaxianer](https://github.com/huangdaxianer)! - Removed forced context compression for volces.com
+- [#5364](https://github.com/Nova-Org/novacode/pull/5364) [`5e8ed35`](https://github.com/Nova-Org/novacode/commit/5e8ed3526110f6868b8b8af203eb3e733493a387) Thanks [@huangdaxianer](https://github.com/huangdaxianer)! - Removed forced context compression for volces.com
 
 ## 4.153.0
 
 ### Minor Changes
 
-- [#5330](https://github.com/Kilo-Org/kilocode/pull/5330) [`957df89`](https://github.com/Kilo-Org/kilocode/commit/957df89a92d951c409952e16948694488abce474) Thanks [@qbiecom](https://github.com/qbiecom)! - Added OpenAI Compatible (Responses) provider
+- [#5330](https://github.com/Nova-Org/novacode/pull/5330) [`957df89`](https://github.com/Nova-Org/novacode/commit/957df89a92d951c409952e16948694488abce474) Thanks [@qbiecom](https://github.com/qbiecom)! - Added OpenAI Compatible (Responses) provider
 
 ### Patch Changes
 
-- [#5337](https://github.com/Kilo-Org/kilocode/pull/5337) [`fbe1e77`](https://github.com/Kilo-Org/kilocode/commit/fbe1e77e56e27d075f93a32006abf2fef9ee08e2) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Increased Agent Manager initial prompt input size for easier editing of longer prompts
+- [#5337](https://github.com/Nova-Org/novacode/pull/5337) [`fbe1e77`](https://github.com/Nova-Org/novacode/commit/fbe1e77e56e27d075f93a32006abf2fef9ee08e2) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Increased Agent Manager initial prompt input size for easier editing of longer prompts
 
-- [#5340](https://github.com/Kilo-Org/kilocode/pull/5340) [`1e7e7ef`](https://github.com/Kilo-Org/kilocode/commit/1e7e7efd42d5a735442ceb55e321271057735f7b) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Fixed CLI file duplication bug where content was written twice when creating or editing files
+- [#5340](https://github.com/Nova-Org/novacode/pull/5340) [`1e7e7ef`](https://github.com/Nova-Org/novacode/commit/1e7e7efd42d5a735442ceb55e321271057735f7b) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Fixed CLI file duplication bug where content was written twice when creating or editing files
 
 ## 4.152.0
 
 ### Minor Changes
 
-- [#5211](https://github.com/Kilo-Org/kilocode/pull/5211) [`a94f8f0`](https://github.com/Kilo-Org/kilocode/commit/a94f8f06c561027158356858bf6642927794b2a9) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Add mode selection to Agent Manager for CLI sessions
-
+- [#5211](https://github.com/Nova-Org/novacode/pull/5211) [`a94f8f0`](https://github.com/Nova-Org/novacode/commit/a94f8f06c561027158356858bf6642927794b2a9) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Add mode selection to Agent Manager for CLI sessions
     - Mode selector in new agent form allows selecting mode (code, architect, debug, etc.) when starting sessions
     - Mode selector in session header allows switching modes during running sessions via CLI JSON-IO API
     - Modes are fetched from extension and synced with CLI sessions
     - Model selector moved below textarea in new agent form for better layout
 
-- [#5264](https://github.com/Kilo-Org/kilocode/pull/5264) [`61af1e7`](https://github.com/Kilo-Org/kilocode/commit/61af1e74c24e8a2af99b218da69d51b3000d2f0f) Thanks [@markijbema](https://github.com/markijbema)! - Centralize Agent behaviour settings by removing the top bar MCP button and moving Mode, MCP, Rules, and Workflows configuration into the Agent Behaviour area.
+- [#5264](https://github.com/Nova-Org/novacode/pull/5264) [`61af1e7`](https://github.com/Nova-Org/novacode/commit/61af1e74c24e8a2af99b218da69d51b3000d2f0f) Thanks [@markijbema](https://github.com/markijbema)! - Centralize Agent behaviour settings by removing the top bar MCP button and moving Mode, MCP, Rules, and Workflows configuration into the Agent Behaviour area.
 
 ### Patch Changes
 
-- [#5312](https://github.com/Kilo-Org/kilocode/pull/5312) [`322d891`](https://github.com/Kilo-Org/kilocode/commit/322d891c5461deada1cc1c5057bde5cf7eb774d1) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Add loading spinner to agent manager API request messages
+- [#5312](https://github.com/Nova-Org/novacode/pull/5312) [`322d891`](https://github.com/Nova-Org/novacode/commit/322d891c5461deada1cc1c5057bde5cf7eb774d1) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Add loading spinner to agent manager API request messages
 
-- [#5233](https://github.com/Kilo-Org/kilocode/pull/5233) [`86bcfee`](https://github.com/Kilo-Org/kilocode/commit/86bcfee20a672d9e06a86b86c7d7cec28d0a8913) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Add session persistence for Agent Manager worktrees
+- [#5233](https://github.com/Nova-Org/novacode/pull/5233) [`86bcfee`](https://github.com/Nova-Org/novacode/commit/86bcfee20a672d9e06a86b86c7d7cec28d0a8913) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Add session persistence for Agent Manager worktrees
 
-- [#5313](https://github.com/Kilo-Org/kilocode/pull/5313) [`c882b95`](https://github.com/Kilo-Org/kilocode/commit/c882b9558c39abffbdced575939be7b2125be0e2) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Fixed agent-manager mode creating `.kilocode-agent` directory in user workspaces. Agent storage now uses OS temp directory instead, keeping workspaces clean.
+- [#5313](https://github.com/Nova-Org/novacode/pull/5313) [`c882b95`](https://github.com/Nova-Org/novacode/commit/c882b9558c39abffbdced575939be7b2125be0e2) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Fixed agent-manager mode creating `.novacode-agent` directory in user workspaces. Agent storage now uses OS temp directory instead, keeping workspaces clean.
 
-- [#5315](https://github.com/Kilo-Org/kilocode/pull/5315) [`f0a9036`](https://github.com/Kilo-Org/kilocode/commit/f0a9036b766ab8a0b1158be804bdeb256f476596) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Fix model selection not showing in resumed sessions in Agent Manager
+- [#5315](https://github.com/Nova-Org/novacode/pull/5315) [`f0a9036`](https://github.com/Nova-Org/novacode/commit/f0a9036b766ab8a0b1158be804bdeb256f476596) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Fix model selection not showing in resumed sessions in Agent Manager
 
-- [#5232](https://github.com/Kilo-Org/kilocode/pull/5232) [`cc04a57`](https://github.com/Kilo-Org/kilocode/commit/cc04a5719ca5b457e38b7bacdab2c6dac92cf297) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Fix parallel mode completion messaging when commits fail.
+- [#5232](https://github.com/Nova-Org/novacode/pull/5232) [`cc04a57`](https://github.com/Nova-Org/novacode/commit/cc04a5719ca5b457e38b7bacdab2c6dac92cf297) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Fix parallel mode completion messaging when commits fail.
 
-- [#5151](https://github.com/Kilo-Org/kilocode/pull/5151) [`5565a7c`](https://github.com/Kilo-Org/kilocode/commit/5565a7c15544630b11297f40f4e948588943b893) Thanks [@Senneseph](https://github.com/Senneseph)! - Fix: Check that `model_info` field exists before attempting to call Object.keys() on it.
+- [#5151](https://github.com/Nova-Org/novacode/pull/5151) [`5565a7c`](https://github.com/Nova-Org/novacode/commit/5565a7c15544630b11297f40f4e948588943b893) Thanks [@Senneseph](https://github.com/Senneseph)! - Fix: Check that `model_info` field exists before attempting to call Object.keys() on it.
 
-- [#5314](https://github.com/Kilo-Org/kilocode/pull/5314) [`f202bd5`](https://github.com/Kilo-Org/kilocode/commit/f202bd55756a0382dc6abb619ddbb1e7451343b5) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Display reasoning as collapsible block in Agent Manager instead of plain text
+- [#5314](https://github.com/Nova-Org/novacode/pull/5314) [`f202bd5`](https://github.com/Nova-Org/novacode/commit/f202bd55756a0382dc6abb619ddbb1e7451343b5) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Display reasoning as collapsible block in Agent Manager instead of plain text
 
-- [#5287](https://github.com/Kilo-Org/kilocode/pull/5287) [`4662b02`](https://github.com/Kilo-Org/kilocode/commit/4662b02f0a8fa2b5cb95120c6c1ef7984508d0f3) Thanks [@markijbema](https://github.com/markijbema)! - Add Skills tab to Agent Behaviour settings for viewing and managing installed skills
+- [#5287](https://github.com/Nova-Org/novacode/pull/5287) [`4662b02`](https://github.com/Nova-Org/novacode/commit/4662b02f0a8fa2b5cb95120c6c1ef7984508d0f3) Thanks [@markijbema](https://github.com/markijbema)! - Add Skills tab to Agent Behaviour settings for viewing and managing installed skills
 
-- [#5297](https://github.com/Kilo-Org/kilocode/pull/5297) [`f6badf7`](https://github.com/Kilo-Org/kilocode/commit/f6badf709982890fca245b1e079d041efddbfc26) Thanks [@jrf0110](https://github.com/jrf0110)! - feat(mcp): implement oauth 2.1 authorization for http transports
+- [#5297](https://github.com/Nova-Org/novacode/pull/5297) [`f6badf7`](https://github.com/Nova-Org/novacode/commit/f6badf709982890fca245b1e079d041efddbfc26) Thanks [@jrf0110](https://github.com/jrf0110)! - feat(mcp): implement oauth 2.1 authorization for http transports
 
-- [#5254](https://github.com/Kilo-Org/kilocode/pull/5254) [`9348a3d`](https://github.com/Kilo-Org/kilocode/commit/9348a3d33d68ff61340e90a2647c1026752ea66a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Force tool use when using Haiku with the Anthropic provider
+- [#5254](https://github.com/Nova-Org/novacode/pull/5254) [`9348a3d`](https://github.com/Nova-Org/novacode/commit/9348a3d33d68ff61340e90a2647c1026752ea66a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Force tool use when using Haiku with the Anthropic provider
 
 ## 4.151.0
 
 ### Minor Changes
 
-- [#5270](https://github.com/Kilo-Org/kilocode/pull/5270) [`6839f7c`](https://github.com/Kilo-Org/kilocode/commit/6839f7c76438b159873c5c88523324515809b8a0) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add support for OpenAI Codex subscriptions (thanks Roo)
-
+- [#5270](https://github.com/Nova-Org/novacode/pull/5270) [`6839f7c`](https://github.com/Nova-Org/novacode/commit/6839f7c76438b159873c5c88523324515809b8a0) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add support for OpenAI Codex subscriptions (thanks Roo)
     - Fix: Reset invalid model selection when using OpenAI Codex provider (PR #10777 by @hannesrudolph)
     - Add OpenAI - ChatGPT Plus/Pro Provider that gives subscription-based access to Codex models without per-token costs (PR #10736 by @hannesrudolph)
 
@@ -452,28 +455,27 @@
 
 ### Minor Changes
 
-- [#5239](https://github.com/Kilo-Org/kilocode/pull/5239) [`ff1500d`](https://github.com/Kilo-Org/kilocode/commit/ff1500d75f4cefee6b7fd7fd1e126339b147255d) Thanks [@markijbema](https://github.com/markijbema)! - Added Skills Marketplace tab alongside existing MCP and Modes marketplace tabs
+- [#5239](https://github.com/Nova-Org/novacode/pull/5239) [`ff1500d`](https://github.com/Nova-Org/novacode/commit/ff1500d75f4cefee6b7fd7fd1e126339b147255d) Thanks [@markijbema](https://github.com/markijbema)! - Added Skills Marketplace tab alongside existing MCP and Modes marketplace tabs
 
 ### Patch Changes
 
-- [#5193](https://github.com/Kilo-Org/kilocode/pull/5193) [`ff3cbe5`](https://github.com/Kilo-Org/kilocode/commit/ff3cbe521bbcccfc18a7b37cd69a190c0291badb) Thanks [@mayef](https://github.com/mayef)! - Fix Cerebras provider to ensure all tools have consistent strict mode values
+- [#5193](https://github.com/Nova-Org/novacode/pull/5193) [`ff3cbe5`](https://github.com/Nova-Org/novacode/commit/ff3cbe521bbcccfc18a7b37cd69a190c0291badb) Thanks [@mayef](https://github.com/mayef)! - Fix Cerebras provider to ensure all tools have consistent strict mode values
 
-- [#5208](https://github.com/Kilo-Org/kilocode/pull/5208) [`f770cec`](https://github.com/Kilo-Org/kilocode/commit/f770cecf01d037ed9da31114603940f2a66a145a) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Fix terminal button showing "Session not found" for remote sessions in Agent Manager
+- [#5208](https://github.com/Nova-Org/novacode/pull/5208) [`f770cec`](https://github.com/Nova-Org/novacode/commit/f770cecf01d037ed9da31114603940f2a66a145a) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Fix terminal button showing "Session not found" for remote sessions in Agent Manager
 
-- [#5213](https://github.com/Kilo-Org/kilocode/pull/5213) [`553fc58`](https://github.com/Kilo-Org/kilocode/commit/553fc58293a73b62793ca9e05921bf6e413e0c85) Thanks [@jrf0110](https://github.com/jrf0110)! - Add AI Attribution line tracking to the EditFileTool
+- [#5213](https://github.com/Nova-Org/novacode/pull/5213) [`553fc58`](https://github.com/Nova-Org/novacode/commit/553fc58293a73b62793ca9e05921bf6e413e0c85) Thanks [@jrf0110](https://github.com/jrf0110)! - Add AI Attribution line tracking to the EditFileTool
 
-- [#5240](https://github.com/Kilo-Org/kilocode/pull/5240) [`6d297fb`](https://github.com/Kilo-Org/kilocode/commit/6d297fb8fe1d33aa58b941a0bb903c1847996407) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains - Fix Autocomplete
+- [#5240](https://github.com/Nova-Org/novacode/pull/5240) [`6d297fb`](https://github.com/Nova-Org/novacode/commit/6d297fb8fe1d33aa58b941a0bb903c1847996407) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains - Fix Autocomplete
 
-- [#5044](https://github.com/Kilo-Org/kilocode/pull/5044) [`2ee6e82`](https://github.com/Kilo-Org/kilocode/commit/2ee6e822b6d7fabb2d136dd03117c469b00ee51d) Thanks [@jrf0110](https://github.com/jrf0110)! - Add GitHub-style diff stats display to task header showing lines added/removed in real-time
+- [#5044](https://github.com/Nova-Org/novacode/pull/5044) [`2ee6e82`](https://github.com/Nova-Org/novacode/commit/2ee6e822b6d7fabb2d136dd03117c469b00ee51d) Thanks [@jrf0110](https://github.com/jrf0110)! - Add GitHub-style diff stats display to task header showing lines added/removed in real-time
 
-- [#5228](https://github.com/Kilo-Org/kilocode/pull/5228) [`b834a25`](https://github.com/Kilo-Org/kilocode/commit/b834a25ea075fac7b95762e2355cf04d05d2633e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fallbacks are now allowed when selecting a specific OpenRouter provider
+- [#5228](https://github.com/Nova-Org/novacode/pull/5228) [`b834a25`](https://github.com/Nova-Org/novacode/commit/b834a25ea075fac7b95762e2355cf04d05d2633e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fallbacks are now allowed when selecting a specific OpenRouter provider
 
 ## 4.149.0
 
 ### Minor Changes
 
-- [#5176](https://github.com/Kilo-Org/kilocode/pull/5176) [`6765832`](https://github.com/Kilo-Org/kilocode/commit/676583256cb405ef8fb8008f313bfe4a090e9ba0) Thanks [@Drilmo](https://github.com/Drilmo)! - Add image support to Agent Manager
-
+- [#5176](https://github.com/Nova-Org/novacode/pull/5176) [`6765832`](https://github.com/Nova-Org/novacode/commit/676583256cb405ef8fb8008f313bfe4a090e9ba0) Thanks [@Drilmo](https://github.com/Drilmo)! - Add image support to Agent Manager
     - Paste images from clipboard (Ctrl/Cmd+V) or select via file browser button
     - Works in new agent prompts, follow-up messages, and resumed sessions
     - Support for PNG, JPEG, WebP, and GIF formats (up to 4 images per message)
@@ -483,76 +485,73 @@
 
 ### Patch Changes
 
-- [#5179](https://github.com/Kilo-Org/kilocode/pull/5179) [`aff6137`](https://github.com/Kilo-Org/kilocode/commit/aff613714afe752fffba01ed5958d6123426b69c) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Fix duplicate tool_result blocks when users approve tool execution with feedback text
+- [#5179](https://github.com/Nova-Org/novacode/pull/5179) [`aff6137`](https://github.com/Nova-Org/novacode/commit/aff613714afe752fffba01ed5958d6123426b69c) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Fix duplicate tool_result blocks when users approve tool execution with feedback text
 
     Cherry-picked from upstream Roo-Code:
-
     - [#10466](https://github.com/RooCodeInc/Roo-Code/pull/10466) - Add explicit deduplication (thanks @daniel-lxs)
     - [#10519](https://github.com/RooCodeInc/Roo-Code/pull/10519) - Merge approval feedback into tool result (thanks @daniel-lxs)
 
-- [#5200](https://github.com/Kilo-Org/kilocode/pull/5200) [`495e5ff`](https://github.com/Kilo-Org/kilocode/commit/495e5ffad395fa49626a2e4992e82c690f0be8c7) Thanks [@catrielmuller](https://github.com/catrielmuller)! - - Fixed webview flickering in JetBrains plugin for smoother UI rendering
-
+- [#5200](https://github.com/Nova-Org/novacode/pull/5200) [`495e5ff`](https://github.com/Nova-Org/novacode/commit/495e5ffad395fa49626a2e4992e82c690f0be8c7) Thanks [@catrielmuller](https://github.com/catrielmuller)! - - Fixed webview flickering in JetBrains plugin for smoother UI rendering
     - Improved thread management in JetBrains plugin to prevent UI freezes
 
-- [#5194](https://github.com/Kilo-Org/kilocode/pull/5194) [`fe6c025`](https://github.com/Kilo-Org/kilocode/commit/fe6c02510bd969eb3f7212804bd330beaa9fc4cb) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved the reliability of the read_file tool when using Claude models
+- [#5194](https://github.com/Nova-Org/novacode/pull/5194) [`fe6c025`](https://github.com/Nova-Org/novacode/commit/fe6c02510bd969eb3f7212804bd330beaa9fc4cb) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved the reliability of the read_file tool when using Claude models
 
-- [#5078](https://github.com/Kilo-Org/kilocode/pull/5078) [`d4cc35d`](https://github.com/Kilo-Org/kilocode/commit/d4cc35ddb86ef9d0165e4d61323fa9a0920f2ba7) Thanks [@markijbema](https://github.com/markijbema)! - Remove clipboard reading from chat autocomplete
+- [#5078](https://github.com/Nova-Org/novacode/pull/5078) [`d4cc35d`](https://github.com/Nova-Org/novacode/commit/d4cc35ddb86ef9d0165e4d61323fa9a0920f2ba7) Thanks [@markijbema](https://github.com/markijbema)! - Remove clipboard reading from chat autocomplete
 
-- Updated dependencies [[`6765832`](https://github.com/Kilo-Org/kilocode/commit/676583256cb405ef8fb8008f313bfe4a090e9ba0), [`cdc3e2e`](https://github.com/Kilo-Org/kilocode/commit/cdc3e2ea32ced833b9d1d1983a4252eda3c0fdf1)]:
-    - @kilocode/core-schemas@0.0.2
+- Updated dependencies [[`6765832`](https://github.com/Nova-Org/novacode/commit/676583256cb405ef8fb8008f313bfe4a090e9ba0), [`cdc3e2e`](https://github.com/Nova-Org/novacode/commit/cdc3e2ea32ced833b9d1d1983a4252eda3c0fdf1)]:
+    - @novacode/core-schemas@0.0.2
 
 ## 4.148.1
 
 ### Patch Changes
 
-- [#5138](https://github.com/Kilo-Org/kilocode/pull/5138) [`e5d08e5`](https://github.com/Kilo-Org/kilocode/commit/e5d08e5464ee85a50cbded2af5a2d0bd3a5390e2) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - fix: prevent duplicate tool_result blocks causing API errors (thanks @daniel-lxs)
+- [#5138](https://github.com/Nova-Org/novacode/pull/5138) [`e5d08e5`](https://github.com/Nova-Org/novacode/commit/e5d08e5464ee85a50cbded2af5a2d0bd3a5390e2) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - fix: prevent duplicate tool_result blocks causing API errors (thanks @daniel-lxs)
 
-- [#5118](https://github.com/Kilo-Org/kilocode/pull/5118) [`9ff3a91`](https://github.com/Kilo-Org/kilocode/commit/9ff3a919ecc9430c8c6c71659cfe1fa734d92877) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Fix model search matching for free tags.
+- [#5118](https://github.com/Nova-Org/novacode/pull/5118) [`9ff3a91`](https://github.com/Nova-Org/novacode/commit/9ff3a919ecc9430c8c6c71659cfe1fa734d92877) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Fix model search matching for free tags.
 
 ## 4.148.0
 
 ### Minor Changes
 
-- [#4903](https://github.com/Kilo-Org/kilocode/pull/4903) [`db67550`](https://github.com/Kilo-Org/kilocode/commit/db6755024b651ec8401e90935a8185f3c9a145c8) Thanks [@eliasto](https://github.com/eliasto)! - feat(ovhcloud): Add native function calling support
+- [#4903](https://github.com/Nova-Org/novacode/pull/4903) [`db67550`](https://github.com/Nova-Org/novacode/commit/db6755024b651ec8401e90935a8185f3c9a145c8) Thanks [@eliasto](https://github.com/eliasto)! - feat(ovhcloud): Add native function calling support
 
 ### Patch Changes
 
-- [#5073](https://github.com/Kilo-Org/kilocode/pull/5073) [`ab88311`](https://github.com/Kilo-Org/kilocode/commit/ab883117517b2037e23ab67c68874846be3e5c7c) Thanks [@jrf0110](https://github.com/jrf0110)! - Supports AI Attribution and code formatters format on save. Previously, the AI attribution service would not account for the fact that after saving, the AI generated code would completely change based on the user's configured formatter. This change fixes the issue by using the formatted result for attribution.
+- [#5073](https://github.com/Nova-Org/novacode/pull/5073) [`ab88311`](https://github.com/Nova-Org/novacode/commit/ab883117517b2037e23ab67c68874846be3e5c7c) Thanks [@jrf0110](https://github.com/jrf0110)! - Supports AI Attribution and code formatters format on save. Previously, the AI attribution service would not account for the fact that after saving, the AI generated code would completely change based on the user's configured formatter. This change fixes the issue by using the formatted result for attribution.
 
-- [#5106](https://github.com/Kilo-Org/kilocode/pull/5106) [`a55d1a5`](https://github.com/Kilo-Org/kilocode/commit/a55d1a58a6d127d8649baa95c1a526e119b984fe) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Fix slow CLI termination when pressing Ctrl+C during prompt selection
+- [#5106](https://github.com/Nova-Org/novacode/pull/5106) [`a55d1a5`](https://github.com/Nova-Org/novacode/commit/a55d1a58a6d127d8649baa95c1a526e119b984fe) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Fix slow CLI termination when pressing Ctrl+C during prompt selection
 
     MCP server connection cleanup now uses fire-and-forget pattern for transport.close() and client.close() calls, which could previously block for 2+ seconds if MCP servers were unresponsive. This ensures fast exit behavior when the user wants to quit quickly.
 
-- [#5102](https://github.com/Kilo-Org/kilocode/pull/5102) [`7a528c4`](https://github.com/Kilo-Org/kilocode/commit/7a528c42e1de49336b914ca0cbd58057a16259ad) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Partial reads are now allowed by default, prevent the context to grow too quickly.
+- [#5102](https://github.com/Nova-Org/novacode/pull/5102) [`7a528c4`](https://github.com/Nova-Org/novacode/commit/7a528c42e1de49336b914ca0cbd58057a16259ad) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Partial reads are now allowed by default, prevent the context to grow too quickly.
 
-- Updated dependencies [[`b2e2630`](https://github.com/Kilo-Org/kilocode/commit/b2e26304e562e516383fbf95a3fdc668d88e1487)]:
-    - @kilocode/core-schemas@0.0.1
+- Updated dependencies [[`b2e2630`](https://github.com/Nova-Org/novacode/commit/b2e26304e562e516383fbf95a3fdc668d88e1487)]:
+    - @novacode/core-schemas@0.0.1
 
 ## 4.147.0
 
 ### Minor Changes
 
-- [#5023](https://github.com/Kilo-Org/kilocode/pull/5023) [`879bd5d`](https://github.com/Kilo-Org/kilocode/commit/879bd5d6aa8d8e422cf0711ab2729abec10ee511) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Agent Manager now lets you choose which AI model to use when starting a new session. Your model selection is remembered across panel reopens, and active sessions display the model being used.
+- [#5023](https://github.com/Nova-Org/novacode/pull/5023) [`879bd5d`](https://github.com/Nova-Org/novacode/commit/879bd5d6aa8d8e422cf0711ab2729abec10ee511) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Agent Manager now lets you choose which AI model to use when starting a new session. Your model selection is remembered across panel reopens, and active sessions display the model being used.
 
 ### Patch Changes
 
-- [#5060](https://github.com/Kilo-Org/kilocode/pull/5060) [`ce99875`](https://github.com/Kilo-Org/kilocode/commit/ce998755310094117d687cc271e117005a46cd90) Thanks [@DoubleDoubleBonus](https://github.com/DoubleDoubleBonus)! - Add OpenAI Native model option gpt-5.2-codex.
+- [#5060](https://github.com/Nova-Org/novacode/pull/5060) [`ce99875`](https://github.com/Nova-Org/novacode/commit/ce998755310094117d687cc271e117005a46cd90) Thanks [@DoubleDoubleBonus](https://github.com/DoubleDoubleBonus)! - Add OpenAI Native model option gpt-5.2-codex.
 
-- [#4686](https://github.com/Kilo-Org/kilocode/pull/4686) [`2bd899e`](https://github.com/Kilo-Org/kilocode/commit/2bd899eede90bc1e11b32cce55dd52f3e7ac9323) Thanks [@Ashwinhegde19](https://github.com/Ashwinhegde19)! - Fix BrowserSessionRow crash on non-string inputs
+- [#4686](https://github.com/Nova-Org/novacode/pull/4686) [`2bd899e`](https://github.com/Nova-Org/novacode/commit/2bd899eede90bc1e11b32cce55dd52f3e7ac9323) Thanks [@Ashwinhegde19](https://github.com/Ashwinhegde19)! - Fix BrowserSessionRow crash on non-string inputs
 
-- [#4381](https://github.com/Kilo-Org/kilocode/pull/4381) [`e37b839`](https://github.com/Kilo-Org/kilocode/commit/e37b8397bcd1f8bd8742e29b1af8edabc5ddf9db) Thanks [@inj-src](https://github.com/inj-src)! - fix: better chat view by limiting the maximum width
+- [#4381](https://github.com/Nova-Org/novacode/pull/4381) [`e37b839`](https://github.com/Nova-Org/novacode/commit/e37b8397bcd1f8bd8742e29b1af8edabc5ddf9db) Thanks [@inj-src](https://github.com/inj-src)! - fix: better chat view by limiting the maximum width
 
-- [#5028](https://github.com/Kilo-Org/kilocode/pull/5028) [`885a54a`](https://github.com/Kilo-Org/kilocode/commit/885a54aae6c43620c431eeb055794f00f2dada0b) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Visual Studio Code's telemetry setting is now respected
+- [#5028](https://github.com/Nova-Org/novacode/pull/5028) [`885a54a`](https://github.com/Nova-Org/novacode/commit/885a54aae6c43620c431eeb055794f00f2dada0b) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Visual Studio Code's telemetry setting is now respected
 
-- [#4406](https://github.com/Kilo-Org/kilocode/pull/4406) [`7dd14bd`](https://github.com/Kilo-Org/kilocode/commit/7dd14bd35c7aa82bdcbe179a6b1141735778b5a2) Thanks [@Secsys-FDU](https://github.com/Secsys-FDU)! - fix: block Windows CMD injection vectors in auto-approved commands
+- [#4406](https://github.com/Nova-Org/novacode/pull/4406) [`7dd14bd`](https://github.com/Nova-Org/novacode/commit/7dd14bd35c7aa82bdcbe179a6b1141735778b5a2) Thanks [@Secsys-FDU](https://github.com/Secsys-FDU)! - fix: block Windows CMD injection vectors in auto-approved commands
 
 ## 4.146.0
 
 ### Minor Changes
 
-- [#4865](https://github.com/Kilo-Org/kilocode/pull/4865) [`d9e65fe`](https://github.com/Kilo-Org/kilocode/commit/d9e65fe1027943a51cfc1dd97c2eed86ed104748) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.36.7-v3.38.3
-
-    - Feat: Add option in Context settings to recursively load `.kilocode/rules` and `AGENTS.md` from subdirectories (PR #10446 by @mrubens)
+- [#4865](https://github.com/Nova-Org/novacode/pull/4865) [`d9e65fe`](https://github.com/Nova-Org/novacode/commit/d9e65fe1027943a51cfc1dd97c2eed86ed104748) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.36.7-v3.38.3
+    - Feat: Add option in Context settings to recursively load `.novacode/rules` and `AGENTS.md` from subdirectories (PR #10446 by @mrubens)
     - Fix: Stop frequent Claude Code sign-ins by hardening OAuth refresh token handling (PR #10410 by @hannesrudolph)
     - Fix: Add `maxConcurrentFileReads` limit to native `read_file` tool schema (PR #10449 by @app/roomote)
     - Fix: Add type check for `lastMessage.text` in TTS useEffect to prevent runtime errors (PR #10431 by @app/roomote)
@@ -637,25 +636,25 @@
 
 ### Patch Changes
 
-- [#4950](https://github.com/Kilo-Org/kilocode/pull/4950) [`4b31180`](https://github.com/Kilo-Org/kilocode/commit/4b311806d571e115a6f6ab30d910e0bd39cc317b) Thanks [@markijbema](https://github.com/markijbema)! - Fix chat autocomplete to only show suggestions when textarea has focus, text hasn't changed, and clear suggestions on paste
+- [#4950](https://github.com/Nova-Org/novacode/pull/4950) [`4b31180`](https://github.com/Nova-Org/novacode/commit/4b311806d571e115a6f6ab30d910e0bd39cc317b) Thanks [@markijbema](https://github.com/markijbema)! - Fix chat autocomplete to only show suggestions when textarea has focus, text hasn't changed, and clear suggestions on paste
 
-- [#4995](https://github.com/Kilo-Org/kilocode/pull/4995) [`95e9b6d`](https://github.com/Kilo-Org/kilocode/commit/95e9b6d234681d34f3903715de1ceba67e745516) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - fix: use correct api url for some endpoints
+- [#4995](https://github.com/Nova-Org/novacode/pull/4995) [`95e9b6d`](https://github.com/Nova-Org/novacode/commit/95e9b6d234681d34f3903715de1ceba67e745516) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - fix: use correct api url for some endpoints
 
-- [#5008](https://github.com/Kilo-Org/kilocode/pull/5008) [`a86cd0c`](https://github.com/Kilo-Org/kilocode/commit/a86cd0c96a0aa0be112ccc5ee957ed3593caf2e8) Thanks [@markijbema](https://github.com/markijbema)! - Minor improvement to markdown autocomplete suggestions
+- [#5008](https://github.com/Nova-Org/novacode/pull/5008) [`a86cd0c`](https://github.com/Nova-Org/novacode/commit/a86cd0c96a0aa0be112ccc5ee957ed3593caf2e8) Thanks [@markijbema](https://github.com/markijbema)! - Minor improvement to markdown autocomplete suggestions
 
-- [#4445](https://github.com/Kilo-Org/kilocode/pull/4445) [`91f9aa3`](https://github.com/Kilo-Org/kilocode/commit/91f9aa34d9f98e85c1500e204b8b576f82c9d606) Thanks [@chriscool](https://github.com/chriscool)! - fix: configure husky hooks for reliable execution
+- [#4445](https://github.com/Nova-Org/novacode/pull/4445) [`91f9aa3`](https://github.com/Nova-Org/novacode/commit/91f9aa34d9f98e85c1500e204b8b576f82c9d606) Thanks [@chriscool](https://github.com/chriscool)! - fix: configure husky hooks for reliable execution
 
 ## 4.145.0
 
 ### Minor Changes
 
-- [#4955](https://github.com/Kilo-Org/kilocode/pull/4955) [`8789f84`](https://github.com/Kilo-Org/kilocode/commit/8789f84e7d652185fce1767dcc29893080c7da87) Thanks [@iscekic](https://github.com/iscekic)! - add /condense and /compact commands
+- [#4955](https://github.com/Nova-Org/novacode/pull/4955) [`8789f84`](https://github.com/Nova-Org/novacode/commit/8789f84e7d652185fce1767dcc29893080c7da87) Thanks [@iscekic](https://github.com/iscekic)! - add /condense and /compact commands
 
 ### Patch Changes
 
-- [#4876](https://github.com/Kilo-Org/kilocode/pull/4876) [`7010f60`](https://github.com/Kilo-Org/kilocode/commit/7010f60bec33b5e1cdeff4a5bc2ad3c638e584cc) Thanks [@markijbema](https://github.com/markijbema)! - Autocomplete: Show entire suggestion when first line has no word characters
+- [#4876](https://github.com/Nova-Org/novacode/pull/4876) [`7010f60`](https://github.com/Nova-Org/novacode/commit/7010f60bec33b5e1cdeff4a5bc2ad3c638e584cc) Thanks [@markijbema](https://github.com/markijbema)! - Autocomplete: Show entire suggestion when first line has no word characters
 
-- [#4183](https://github.com/Kilo-Org/kilocode/pull/4183) [`de30ffa`](https://github.com/Kilo-Org/kilocode/commit/de30ffa307c2bf0ad72eec67782b67725172f71f) Thanks [@sebastiand-cerebras](https://github.com/sebastiand-cerebras)! - fix(cerebras): use conservative max_tokens and add integration header
+- [#4183](https://github.com/Nova-Org/novacode/pull/4183) [`de30ffa`](https://github.com/Nova-Org/novacode/commit/de30ffa307c2bf0ad72eec67782b67725172f71f) Thanks [@sebastiand-cerebras](https://github.com/sebastiand-cerebras)! - fix(cerebras): use conservative max_tokens and add integration header
 
     **Conservative max_tokens:**
     Cerebras rate limiter estimates token consumption using max_completion_tokens upfront rather than actual usage. When agentic tools automatically set this to the model maximum (e.g., 64K), users exhaust their quota prematurely and get rate-limited despite minimal actual token consumption.
@@ -663,47 +662,46 @@
     This fix uses a conservative default of 8K tokens instead of the model maximum. This is sufficient for most agentic tool use while preserving rate limit headroom.
 
     **Integration header:**
-    Added `X-Cerebras-3rd-Party-Integration: kilocode` header to all Cerebras API requests for tracking and analytics.
+    Added `X-Cerebras-3rd-Party-Integration: novacode` header to all Cerebras API requests for tracking and analytics.
 
-- [#4856](https://github.com/Kilo-Org/kilocode/pull/4856) [`100462e`](https://github.com/Kilo-Org/kilocode/commit/100462e956f7f7799525ebddb7d10050435047da) Thanks [@markijbema](https://github.com/markijbema)! - Improve autocomplete tooltip messaging when there's no balance
+- [#4856](https://github.com/Nova-Org/novacode/pull/4856) [`100462e`](https://github.com/Nova-Org/novacode/commit/100462e956f7f7799525ebddb7d10050435047da) Thanks [@markijbema](https://github.com/markijbema)! - Improve autocomplete tooltip messaging when there's no balance
 
-    When a user has a Kilo Code account with no credits, the autocomplete status bar now shows a helpful message explaining that they need to add credits to use autocomplete, rather than just showing a generic token error.
+    When a user has a Nova Code account with no credits, the autocomplete status bar now shows a helpful message explaining that they need to add credits to use autocomplete, rather than just showing a generic token error.
 
-- [#4793](https://github.com/Kilo-Org/kilocode/pull/4793) [`4fff873`](https://github.com/Kilo-Org/kilocode/commit/4fff873a4b28fa66afbcf837358bcd584665a8be) Thanks [@mcowger](https://github.com/mcowger)! - Restore various providers to modelCache endpoint to fix outdated entries.
+- [#4793](https://github.com/Nova-Org/novacode/pull/4793) [`4fff873`](https://github.com/Nova-Org/novacode/commit/4fff873a4b28fa66afbcf837358bcd584665a8be) Thanks [@mcowger](https://github.com/mcowger)! - Restore various providers to modelCache endpoint to fix outdated entries.
 
 ## 4.144.0
 
 ### Minor Changes
 
-- [#4888](https://github.com/Kilo-Org/kilocode/pull/4888) [`334328d`](https://github.com/Kilo-Org/kilocode/commit/334328de5fa1825726b07be5d587550de2c52d91) Thanks [@hassoncs](https://github.com/hassoncs)! - Show notifications when skills are added or removed from the project or global config
+- [#4888](https://github.com/Nova-Org/novacode/pull/4888) [`334328d`](https://github.com/Nova-Org/novacode/commit/334328de5fa1825726b07be5d587550de2c52d91) Thanks [@hassoncs](https://github.com/hassoncs)! - Show notifications when skills are added or removed from the project or global config
 
 ### Patch Changes
 
-- [#4880](https://github.com/Kilo-Org/kilocode/pull/4880) [`909bca7`](https://github.com/Kilo-Org/kilocode/commit/909bca7665b91753c3a9fd0435b13f1c91bcb2f2) Thanks [@markijbema](https://github.com/markijbema)! - Fixed that some tasks in task history were red
+- [#4880](https://github.com/Nova-Org/novacode/pull/4880) [`909bca7`](https://github.com/Nova-Org/novacode/commit/909bca7665b91753c3a9fd0435b13f1c91bcb2f2) Thanks [@markijbema](https://github.com/markijbema)! - Fixed that some tasks in task history were red
 
-- [#4862](https://github.com/Kilo-Org/kilocode/pull/4862) [`10ce725`](https://github.com/Kilo-Org/kilocode/commit/10ce72547d207b4f03538ebb3dc525d5bd92727d) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Add Kilo icon to editor toolbar for quick access to open Kilo from any context
+- [#4862](https://github.com/Nova-Org/novacode/pull/4862) [`10ce725`](https://github.com/Nova-Org/novacode/commit/10ce72547d207b4f03538ebb3dc525d5bd92727d) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Add Nova icon to editor toolbar for quick access to open Nova from any context
 
-- [#4940](https://github.com/Kilo-Org/kilocode/pull/4940) [`9809864`](https://github.com/Kilo-Org/kilocode/commit/9809864ce51474c29b0db2635a19a92520a2f1f1) Thanks [@Drilmo](https://github.com/Drilmo)! - Add KILOCODE_DEV_CLI_PATH support for easier extension + CLI development workflow
+- [#4940](https://github.com/Nova-Org/novacode/pull/4940) [`9809864`](https://github.com/Nova-Org/novacode/commit/9809864ce51474c29b0db2635a19a92520a2f1f1) Thanks [@Drilmo](https://github.com/Drilmo)! - Add NOVACODE_DEV_CLI_PATH support for easier extension + CLI development workflow
 
-- [#4899](https://github.com/Kilo-Org/kilocode/pull/4899) [`7a58919`](https://github.com/Kilo-Org/kilocode/commit/7a58919c7e4e12e0c954031081e12745419bf8b9) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Disable ask_followup_question tool when yolo mode is enabled to prevent the agent from asking itself questions and auto-answering them. Applied to:
-
+- [#4899](https://github.com/Nova-Org/novacode/pull/4899) [`7a58919`](https://github.com/Nova-Org/novacode/commit/7a58919c7e4e12e0c954031081e12745419bf8b9) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Disable ask_followup_question tool when yolo mode is enabled to prevent the agent from asking itself questions and auto-answering them. Applied to:
     - XML tool descriptions (system prompt)
     - Native tool filtering
     - Tool execution (returns error message if model still tries to use the tool from conversation history)
 
-- [#4863](https://github.com/Kilo-Org/kilocode/pull/4863) [`c65b798`](https://github.com/Kilo-Org/kilocode/commit/c65b798d99cd07bae2312d284663cd298a1b3f9e) Thanks [@hassoncs](https://github.com/hassoncs)! - Allow users to pick an input device for Speech-to-Text input
+- [#4863](https://github.com/Nova-Org/novacode/pull/4863) [`c65b798`](https://github.com/Nova-Org/novacode/commit/c65b798d99cd07bae2312d284663cd298a1b3f9e) Thanks [@hassoncs](https://github.com/hassoncs)! - Allow users to pick an input device for Speech-to-Text input
 
-- [#4892](https://github.com/Kilo-Org/kilocode/pull/4892) [`b37c944`](https://github.com/Kilo-Org/kilocode/commit/b37c944a8bea644660b6f2c4400d0b47cbdee979) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Fix Agent Manager session disappearing immediately after starting due to gitUrl race condition
+- [#4892](https://github.com/Nova-Org/novacode/pull/4892) [`b37c944`](https://github.com/Nova-Org/novacode/commit/b37c944a8bea644660b6f2c4400d0b47cbdee979) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Fix Agent Manager session disappearing immediately after starting due to gitUrl race condition
 
-- [#4898](https://github.com/Kilo-Org/kilocode/pull/4898) [`14b22b6`](https://github.com/Kilo-Org/kilocode/commit/14b22b6b9b947ceab6418d6e43962b5535adad1e) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Fix session becoming non-interactable after clicking "Finish to Branch" button. The session now remains active so users can continue working after committing changes.
+- [#4898](https://github.com/Nova-Org/novacode/pull/4898) [`14b22b6`](https://github.com/Nova-Org/novacode/commit/14b22b6b9b947ceab6418d6e43962b5535adad1e) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Fix session becoming non-interactable after clicking "Finish to Branch" button. The session now remains active so users can continue working after committing changes.
 
-- [#4835](https://github.com/Kilo-Org/kilocode/pull/4835) [`d55c093`](https://github.com/Kilo-Org/kilocode/commit/d55c093797c4a816a86ee5ee000f32a98f28199b) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Add section headers to model selection dropdowns for "Recommended models" and "All models"
+- [#4835](https://github.com/Nova-Org/novacode/pull/4835) [`d55c093`](https://github.com/Nova-Org/novacode/commit/d55c093797c4a816a86ee5ee000f32a98f28199b) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Add section headers to model selection dropdowns for "Recommended models" and "All models"
 
-- [#4891](https://github.com/Kilo-Org/kilocode/pull/4891) [`20f1a16`](https://github.com/Kilo-Org/kilocode/commit/20f1a16e2ed37bd79332bac8ea1358b01c4acbc0) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix: prevent double display of MCP marketplace section in settings view
+- [#4891](https://github.com/Nova-Org/novacode/pull/4891) [`20f1a16`](https://github.com/Nova-Org/novacode/commit/20f1a16e2ed37bd79332bac8ea1358b01c4acbc0) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix: prevent double display of MCP marketplace section in settings view
 
-- [#4873](https://github.com/Kilo-Org/kilocode/pull/4873) [`72ed20b`](https://github.com/Kilo-Org/kilocode/commit/72ed20b686f28062fb795beb44377a993bb40a7b) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improve support for VSCode's HTTP proxy settings
+- [#4873](https://github.com/Nova-Org/novacode/pull/4873) [`72ed20b`](https://github.com/Nova-Org/novacode/commit/72ed20b686f28062fb795beb44377a993bb40a7b) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improve support for VSCode's HTTP proxy settings
 
-- [#4901](https://github.com/Kilo-Org/kilocode/pull/4901) [`140bbf7`](https://github.com/Kilo-Org/kilocode/commit/140bbf7630a81591b18cc60a989690142e6b6039) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Agent Manager: Parallel mode no longer modifies .gitignore
+- [#4901](https://github.com/Nova-Org/novacode/pull/4901) [`140bbf7`](https://github.com/Nova-Org/novacode/commit/140bbf7630a81591b18cc60a989690142e6b6039) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Agent Manager: Parallel mode no longer modifies .gitignore
 
     Worktree exclusion rules are now written to `.git/info/exclude` instead, avoiding changes to tracked files in your repository.
 
@@ -711,174 +709,170 @@
 
 ### Patch Changes
 
-- [#4833](https://github.com/Kilo-Org/kilocode/pull/4833) [`2c7cd08`](https://github.com/Kilo-Org/kilocode/commit/2c7cd084bf4707eedda61fed554cf15fcc8b065b) Thanks [@sebastiand-cerebras](https://github.com/sebastiand-cerebras)! - Add `zai-glm-4.7` to Cerebras models
+- [#4833](https://github.com/Nova-Org/novacode/pull/4833) [`2c7cd08`](https://github.com/Nova-Org/novacode/commit/2c7cd084bf4707eedda61fed554cf15fcc8b065b) Thanks [@sebastiand-cerebras](https://github.com/sebastiand-cerebras)! - Add `zai-glm-4.7` to Cerebras models
 
-- [#4853](https://github.com/Kilo-Org/kilocode/pull/4853) [`435c879`](https://github.com/Kilo-Org/kilocode/commit/435c879a29d55b75f5f6ffe7bf14854630e085cb) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved prompt caching when using Anthropic models on OpenRouter with native tool calling
+- [#4853](https://github.com/Nova-Org/novacode/pull/4853) [`435c879`](https://github.com/Nova-Org/novacode/commit/435c879a29d55b75f5f6ffe7bf14854630e085cb) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved prompt caching when using Anthropic models on OpenRouter with native tool calling
 
-- [#4859](https://github.com/Kilo-Org/kilocode/pull/4859) [`35fb2ad`](https://github.com/Kilo-Org/kilocode/commit/35fb2adc65dfb1e71e28f7368f96765062c43579) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Fix Architect mode unnecessarily switching to Code mode to edit markdown files
+- [#4859](https://github.com/Nova-Org/novacode/pull/4859) [`35fb2ad`](https://github.com/Nova-Org/novacode/commit/35fb2adc65dfb1e71e28f7368f96765062c43579) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Fix Architect mode unnecessarily switching to Code mode to edit markdown files
 
-- [#4829](https://github.com/Kilo-Org/kilocode/pull/4829) [`4e09e36`](https://github.com/Kilo-Org/kilocode/commit/4e09e36bba165a2ab6f5e07f71a420faa49ea3ec) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Fix browser action results displaying raw base64 screenshot data as hexadecimal garbage
+- [#4829](https://github.com/Nova-Org/novacode/pull/4829) [`4e09e36`](https://github.com/Nova-Org/novacode/commit/4e09e36bba165a2ab6f5e07f71a420faa49ea3ec) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Fix browser action results displaying raw base64 screenshot data as hexadecimal garbage
 
 ## 4.143.1
 
 ### Patch Changes
 
-- [#4832](https://github.com/Kilo-Org/kilocode/pull/4832) [`22a4ebf`](https://github.com/Kilo-Org/kilocode/commit/22a4ebfcd9f885b6ef9979dc6830226db9a4f397) Thanks [@Drilmo](https://github.com/Drilmo)! - Support Cmd+V for pasting images on macOS in VSCode terminal
-
+- [#4832](https://github.com/Nova-Org/novacode/pull/4832) [`22a4ebf`](https://github.com/Nova-Org/novacode/commit/22a4ebfcd9f885b6ef9979dc6830226db9a4f397) Thanks [@Drilmo](https://github.com/Drilmo)! - Support Cmd+V for pasting images on macOS in VSCode terminal
     - Detect empty bracketed paste (when clipboard contains image instead of text)
     - Trigger clipboard image check on empty paste or paste timeout
     - Add Cmd+V (meta key) support alongside Ctrl+V for image paste
 
-- [#3856](https://github.com/Kilo-Org/kilocode/pull/3856) [`91e0a17`](https://github.com/Kilo-Org/kilocode/commit/91e0a1788963b8be50c58881f11ded96516ab163) Thanks [@markijbema](https://github.com/markijbema)! - Faster autocomplete when using the Mistral provider
+- [#3856](https://github.com/Nova-Org/novacode/pull/3856) [`91e0a17`](https://github.com/Nova-Org/novacode/commit/91e0a1788963b8be50c58881f11ded96516ab163) Thanks [@markijbema](https://github.com/markijbema)! - Faster autocomplete when using the Mistral provider
 
-- [#4839](https://github.com/Kilo-Org/kilocode/pull/4839) [`abaada6`](https://github.com/Kilo-Org/kilocode/commit/abaada6b7ced6d3f4e37e69441e722e453289b81) Thanks [@markijbema](https://github.com/markijbema)! - Enable autocomplete by default in the JetBrains extension
+- [#4839](https://github.com/Nova-Org/novacode/pull/4839) [`abaada6`](https://github.com/Nova-Org/novacode/commit/abaada6b7ced6d3f4e37e69441e722e453289b81) Thanks [@markijbema](https://github.com/markijbema)! - Enable autocomplete by default in the JetBrains extension
 
-- [#4831](https://github.com/Kilo-Org/kilocode/pull/4831) [`a9cbb2c`](https://github.com/Kilo-Org/kilocode/commit/a9cbb2cebd75e0c675dc3b55e7a1653ccb93921b) Thanks [@Drilmo](https://github.com/Drilmo)! - Fix paste truncation in VSCode terminal
-
+- [#4831](https://github.com/Nova-Org/novacode/pull/4831) [`a9cbb2c`](https://github.com/Nova-Org/novacode/commit/a9cbb2cebd75e0c675dc3b55e7a1653ccb93921b) Thanks [@Drilmo](https://github.com/Drilmo)! - Fix paste truncation in VSCode terminal
     - Prevent React StrictMode cleanup from interrupting paste operations
     - Remove `completePaste()` and `clearBuffers()` from useEffect cleanup
     - Paste buffer refs now persist across React re-mounts and flush properly when paste end marker is received
 
-- [#4847](https://github.com/Kilo-Org/kilocode/pull/4847) [`8ee812a`](https://github.com/Kilo-Org/kilocode/commit/8ee812a18da5da691bf76ee5c5d9d94cfb678f25) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Disable structured outputs for Anthropic models, because the tool schema doesn't yet support it
+- [#4847](https://github.com/Nova-Org/novacode/pull/4847) [`8ee812a`](https://github.com/Nova-Org/novacode/commit/8ee812a18da5da691bf76ee5c5d9d94cfb678f25) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Disable structured outputs for Anthropic models, because the tool schema doesn't yet support it
 
-- [#4843](https://github.com/Kilo-Org/kilocode/pull/4843) [`0e3520a`](https://github.com/Kilo-Org/kilocode/commit/0e3520a0aa9a74f7a28af1f820558d2343fd4fba) Thanks [@markijbema](https://github.com/markijbema)! - Filter unhelpful suggestions in chat autocomplete
+- [#4843](https://github.com/Nova-Org/novacode/pull/4843) [`0e3520a`](https://github.com/Nova-Org/novacode/commit/0e3520a0aa9a74f7a28af1f820558d2343fd4fba) Thanks [@markijbema](https://github.com/markijbema)! - Filter unhelpful suggestions in chat autocomplete
 
 ## 4.143.0
 
 ### Minor Changes
 
-- [#4643](https://github.com/Kilo-Org/kilocode/pull/4643) [`bf89c48`](https://github.com/Kilo-Org/kilocode/commit/bf89c4849342d9c0f3cfa335d65e98980d869e36) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Migrate worktree creation from CLI to extension for parallel mode sessions
+- [#4643](https://github.com/Nova-Org/novacode/pull/4643) [`bf89c48`](https://github.com/Nova-Org/novacode/commit/bf89c4849342d9c0f3cfa335d65e98980d869e36) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Migrate worktree creation from CLI to extension for parallel mode sessions
 
 ### Patch Changes
 
-- [#4804](https://github.com/Kilo-Org/kilocode/pull/4804) [`e83c30a`](https://github.com/Kilo-Org/kilocode/commit/e83c30a4160309c45bcfedf60faad3eedff0549e) Thanks [@kiloconnect](https://github.com/apps/kiloconnect)! - Add comprehensive AGENTS.md documentation page to Agent Behavior section
+- [#4804](https://github.com/Nova-Org/novacode/pull/4804) [`e83c30a`](https://github.com/Nova-Org/novacode/commit/e83c30a4160309c45bcfedf60faad3eedff0549e) Thanks [@novaconnect](https://github.com/apps/novaconnect)! - Add comprehensive AGENTS.md documentation page to Agent Behavior section
 
-- [#4810](https://github.com/Kilo-Org/kilocode/pull/4810) [`2d8f5b4`](https://github.com/Kilo-Org/kilocode/commit/2d8f5b4f823750d22701d962ba27885b01f78acb) Thanks [@kiloconnect](https://github.com/apps/kiloconnect)! - Add `--append-system-prompt` CLI option to append custom instructions to the system prompt
+- [#4810](https://github.com/Nova-Org/novacode/pull/4810) [`2d8f5b4`](https://github.com/Nova-Org/novacode/commit/2d8f5b4f823750d22701d962ba27885b01f78acb) Thanks [@novaconnect](https://github.com/apps/novaconnect)! - Add `--append-system-prompt` CLI option to append custom instructions to the system prompt
 
-- [#4808](https://github.com/Kilo-Org/kilocode/pull/4808) [`3253a5f`](https://github.com/Kilo-Org/kilocode/commit/3253a5f0a9ef3db176b0cc027a9a0f246faa27e6) Thanks [@markijbema](https://github.com/markijbema)! - Rename and reorganize autocomplete settings to use more familiar terminology
+- [#4808](https://github.com/Nova-Org/novacode/pull/4808) [`3253a5f`](https://github.com/Nova-Org/novacode/commit/3253a5f0a9ef3db176b0cc027a9a0f246faa27e6) Thanks [@markijbema](https://github.com/markijbema)! - Rename and reorganize autocomplete settings to use more familiar terminology
 
-- [#4815](https://github.com/Kilo-Org/kilocode/pull/4815) [`1530050`](https://github.com/Kilo-Org/kilocode/commit/15300507c8febd2096282e97148e39a0bfda9e23) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Allow null for tool arguments
+- [#4815](https://github.com/Nova-Org/novacode/pull/4815) [`1530050`](https://github.com/Nova-Org/novacode/commit/15300507c8febd2096282e97148e39a0bfda9e23) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Allow null for tool arguments
 
 ## 4.142.0
 
 ### Minor Changes
 
-- [#4587](https://github.com/Kilo-Org/kilocode/pull/4587) [`d1c35c5`](https://github.com/Kilo-Org/kilocode/commit/d1c35c54c253b22a264ee4ce90fd25f5d93343da) Thanks [@hassoncs](https://github.com/hassoncs)! - Improve the initial setup experience for the speech-to-text feature by adding an inline setup tooltip
+- [#4587](https://github.com/Nova-Org/novacode/pull/4587) [`d1c35c5`](https://github.com/Nova-Org/novacode/commit/d1c35c54c253b22a264ee4ce90fd25f5d93343da) Thanks [@hassoncs](https://github.com/hassoncs)! - Improve the initial setup experience for the speech-to-text feature by adding an inline setup tooltip
 
 ### Patch Changes
 
-- [#4785](https://github.com/Kilo-Org/kilocode/pull/4785) [`acc529e`](https://github.com/Kilo-Org/kilocode/commit/acc529e884be601d635ad9e714a0f3b2a4e9b639) Thanks [@markijbema](https://github.com/markijbema)! - Removed the cmd-i (quick inline task) functionality, as cmd-k-a (add to context) is now equivalent
+- [#4785](https://github.com/Nova-Org/novacode/pull/4785) [`acc529e`](https://github.com/Nova-Org/novacode/commit/acc529e884be601d635ad9e714a0f3b2a4e9b639) Thanks [@markijbema](https://github.com/markijbema)! - Removed the cmd-i (quick inline task) functionality, as cmd-k-a (add to context) is now equivalent
 
-- [#4765](https://github.com/Kilo-Org/kilocode/pull/4765) [`725b0bc`](https://github.com/Kilo-Org/kilocode/commit/725b0bc56d1262b9e847861db86a3609c40479d9) Thanks [@Drilmo](https://github.com/Drilmo)! - Fixed exit prompt showing "Cmd+C" instead of "Ctrl+C" on Mac. Ctrl+C is the universal terminal interrupt signal on all platforms.
+- [#4765](https://github.com/Nova-Org/novacode/pull/4765) [`725b0bc`](https://github.com/Nova-Org/novacode/commit/725b0bc56d1262b9e847861db86a3609c40479d9) Thanks [@Drilmo](https://github.com/Drilmo)! - Fixed exit prompt showing "Cmd+C" instead of "Ctrl+C" on Mac. Ctrl+C is the universal terminal interrupt signal on all platforms.
 
-- [#4787](https://github.com/Kilo-Org/kilocode/pull/4787) [`84033fa`](https://github.com/Kilo-Org/kilocode/commit/84033fa3015a757b358cc4799308b8209646ec5e) Thanks [@markijbema](https://github.com/markijbema)! - Keep config screen in sync with whether chat autocomplete is enabled
+- [#4787](https://github.com/Nova-Org/novacode/pull/4787) [`84033fa`](https://github.com/Nova-Org/novacode/commit/84033fa3015a757b358cc4799308b8209646ec5e) Thanks [@markijbema](https://github.com/markijbema)! - Keep config screen in sync with whether chat autocomplete is enabled
 
-- [#4800](https://github.com/Kilo-Org/kilocode/pull/4800) [`c089dc2`](https://github.com/Kilo-Org/kilocode/commit/c089dc2351daefe7690adf1a3f01cc8b82a27409) Thanks [@hassoncs](https://github.com/hassoncs)! - Add fuzzy matching to / commands
+- [#4800](https://github.com/Nova-Org/novacode/pull/4800) [`c089dc2`](https://github.com/Nova-Org/novacode/commit/c089dc2351daefe7690adf1a3f01cc8b82a27409) Thanks [@hassoncs](https://github.com/hassoncs)! - Add fuzzy matching to / commands
 
 ## 4.141.2
 
 ### Patch Changes
 
-- [#4747](https://github.com/Kilo-Org/kilocode/pull/4747) [`e4f9e65`](https://github.com/Kilo-Org/kilocode/commit/e4f9e65e130d0ef34cbf110b64b44f2156d0a425) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed no checkpoint being created before a file is edited
+- [#4747](https://github.com/Nova-Org/novacode/pull/4747) [`e4f9e65`](https://github.com/Nova-Org/novacode/commit/e4f9e65e130d0ef34cbf110b64b44f2156d0a425) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed no checkpoint being created before a file is edited
 
-- [#4754](https://github.com/Kilo-Org/kilocode/pull/4754) [`d936b50`](https://github.com/Kilo-Org/kilocode/commit/d936b50f6c28592a910c83c52433eb59aa019cf5) Thanks [@keeganwitt](https://github.com/keeganwitt)! - Added ability to use Codestral for autocomplete from HuggingFace, LiteLLM, LM Studio and Ollama
+- [#4754](https://github.com/Nova-Org/novacode/pull/4754) [`d936b50`](https://github.com/Nova-Org/novacode/commit/d936b50f6c28592a910c83c52433eb59aa019cf5) Thanks [@keeganwitt](https://github.com/keeganwitt)! - Added ability to use Codestral for autocomplete from HuggingFace, LiteLLM, LM Studio and Ollama
 
 ## 4.141.1
 
 ### Patch Changes
 
-- [#4736](https://github.com/Kilo-Org/kilocode/pull/4736) [`c7bd7b7`](https://github.com/Kilo-Org/kilocode/commit/c7bd7b7ad385d32e114f75dfffa6d5d4168ca073) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Skip VSCode-specific diagnostic operations in CLI mode for improved performance
+- [#4736](https://github.com/Nova-Org/novacode/pull/4736) [`c7bd7b7`](https://github.com/Nova-Org/novacode/commit/c7bd7b7ad385d32e114f75dfffa6d5d4168ca073) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Skip VSCode-specific diagnostic operations in CLI mode for improved performance
 
-- [#4725](https://github.com/Kilo-Org/kilocode/pull/4725) [`2dcce20`](https://github.com/Kilo-Org/kilocode/commit/2dcce2020b645b8c839a763d4ec97a03f8811aef) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Prevent empty checkpoints from being created on every tool use
+- [#4725](https://github.com/Nova-Org/novacode/pull/4725) [`2dcce20`](https://github.com/Nova-Org/novacode/commit/2dcce2020b645b8c839a763d4ec97a03f8811aef) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Prevent empty checkpoints from being created on every tool use
 
-- [#4723](https://github.com/Kilo-Org/kilocode/pull/4723) [`b9d0d16`](https://github.com/Kilo-Org/kilocode/commit/b9d0d164bd5a3feaab000a040fb9a04f4cd65f77) Thanks [@kiloconnect](https://github.com/apps/kiloconnect)! - Enable chat autocomplete by default
+- [#4723](https://github.com/Nova-Org/novacode/pull/4723) [`b9d0d16`](https://github.com/Nova-Org/novacode/commit/b9d0d164bd5a3feaab000a040fb9a04f4cd65f77) Thanks [@novaconnect](https://github.com/apps/novaconnect)! - Enable chat autocomplete by default
 
-- [#4681](https://github.com/Kilo-Org/kilocode/pull/4681) [`2be56b8`](https://github.com/Kilo-Org/kilocode/commit/2be56b8b09a0cab177adf18c8dd8998f6362cc2d) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains IDEs - Improve intialization process
+- [#4681](https://github.com/Nova-Org/novacode/pull/4681) [`2be56b8`](https://github.com/Nova-Org/novacode/commit/2be56b8b09a0cab177adf18c8dd8998f6362cc2d) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains IDEs - Improve intialization process
 
 ## 4.141.0
 
 ### Minor Changes
 
-- [#4702](https://github.com/Kilo-Org/kilocode/pull/4702) [`b84a66f`](https://github.com/Kilo-Org/kilocode/commit/b84a66f5923cf2600a6d5c8e2b5fd49759406696) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add support for skills
+- [#4702](https://github.com/Nova-Org/novacode/pull/4702) [`b84a66f`](https://github.com/Nova-Org/novacode/commit/b84a66f5923cf2600a6d5c8e2b5fd49759406696) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add support for skills
 
 ### Patch Changes
 
-- [#4710](https://github.com/Kilo-Org/kilocode/pull/4710) [`c128319`](https://github.com/Kilo-Org/kilocode/commit/c1283192df1b0e59fef8b9ab2d3442bf4a07abde) Thanks [@sebastiand-cerebras](https://github.com/sebastiand-cerebras)! - Update Cerebras maxTokens from 8192 to 16384 for all models
+- [#4710](https://github.com/Nova-Org/novacode/pull/4710) [`c128319`](https://github.com/Nova-Org/novacode/commit/c1283192df1b0e59fef8b9ab2d3442bf4a07abde) Thanks [@sebastiand-cerebras](https://github.com/sebastiand-cerebras)! - Update Cerebras maxTokens from 8192 to 16384 for all models
 
-- [#4718](https://github.com/Kilo-Org/kilocode/pull/4718) [`9a465b0`](https://github.com/Kilo-Org/kilocode/commit/9a465b06fe401f70dd166fb5b320a8070f07c727) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Fix terminal scroll-flicker in CLI by disabling streaming output and enabling Ink incremental rendering
+- [#4718](https://github.com/Nova-Org/novacode/pull/4718) [`9a465b0`](https://github.com/Nova-Org/novacode/commit/9a465b06fe401f70dd166fb5b320a8070f07c727) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Fix terminal scroll-flicker in CLI by disabling streaming output and enabling Ink incremental rendering
 
-- [#4719](https://github.com/Kilo-Org/kilocode/pull/4719) [`57b0873`](https://github.com/Kilo-Org/kilocode/commit/57b08737788cd504954563d46eb1e6323d619301) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Confirm before exiting the CLI on Ctrl+C/Cmd+C.
+- [#4719](https://github.com/Nova-Org/novacode/pull/4719) [`57b0873`](https://github.com/Nova-Org/novacode/commit/57b08737788cd504954563d46eb1e6323d619301) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Confirm before exiting the CLI on Ctrl+C/Cmd+C.
 
 ## 4.140.3
 
 ### Patch Changes
 
-- [#4648](https://github.com/Kilo-Org/kilocode/pull/4648) [`4710d11`](https://github.com/Kilo-Org/kilocode/commit/4710d119ba6ead7f0198c22ae4e902478a63867e) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Fix Agent Manager multi-version sessions to wait for pending CLI processes so terminals are available per worktree.
+- [#4648](https://github.com/Nova-Org/novacode/pull/4648) [`4710d11`](https://github.com/Nova-Org/novacode/commit/4710d119ba6ead7f0198c22ae4e902478a63867e) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Fix Agent Manager multi-version sessions to wait for pending CLI processes so terminals are available per worktree.
 
-- [#4658](https://github.com/Kilo-Org/kilocode/pull/4658) [`e189583`](https://github.com/Kilo-Org/kilocode/commit/e1895837b7dde1b8302f3d3eb49dad2b417fc1bb) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Improve Agent Manager telemetry
+- [#4658](https://github.com/Nova-Org/novacode/pull/4658) [`e189583`](https://github.com/Nova-Org/novacode/commit/e1895837b7dde1b8302f3d3eb49dad2b417fc1bb) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Improve Agent Manager telemetry
 
-- [#4647](https://github.com/Kilo-Org/kilocode/pull/4647) [`c1a0692`](https://github.com/Kilo-Org/kilocode/commit/c1a06926e838af15e4be27a476ea3e35be430551) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - fix: reduce GPU usage in Agent Manager with message virtualization
+- [#4647](https://github.com/Nova-Org/novacode/pull/4647) [`c1a0692`](https://github.com/Nova-Org/novacode/commit/c1a06926e838af15e4be27a476ea3e35be430551) Thanks [@marius-novacode](https://github.com/marius-novacode)! - fix: reduce GPU usage in Agent Manager with message virtualization
 
-- [#4693](https://github.com/Kilo-Org/kilocode/pull/4693) [`eb5e835`](https://github.com/Kilo-Org/kilocode/commit/eb5e835be3f3c5a7cf5f7cc4baec87bfade6e2b2) Thanks [@keeganwitt](https://github.com/keeganwitt)! - Add Requesty Codestral to autocomplete provider models
+- [#4693](https://github.com/Nova-Org/novacode/pull/4693) [`eb5e835`](https://github.com/Nova-Org/novacode/commit/eb5e835be3f3c5a7cf5f7cc4baec87bfade6e2b2) Thanks [@keeganwitt](https://github.com/keeganwitt)! - Add Requesty Codestral to autocomplete provider models
 
-- [#4659](https://github.com/Kilo-Org/kilocode/pull/4659) [`fa42cfa`](https://github.com/Kilo-Org/kilocode/commit/fa42cfaa7b77a7f410c26eaf3810808cf3631ced) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Fix Agent Manager CLI detection and Windows spawn by sanitizing shell output and running .cmd via cmd.exe.
+- [#4659](https://github.com/Nova-Org/novacode/pull/4659) [`fa42cfa`](https://github.com/Nova-Org/novacode/commit/fa42cfaa7b77a7f410c26eaf3810808cf3631ced) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Fix Agent Manager CLI detection and Windows spawn by sanitizing shell output and running .cmd via cmd.exe.
 
-- [#4692](https://github.com/Kilo-Org/kilocode/pull/4692) [`1401220`](https://github.com/Kilo-Org/kilocode/commit/140122089a4de591c80573306ce81cd49091b510) Thanks [@mcowger](https://github.com/mcowger)! - Fix loss of Synthetic auto model refresh
+- [#4692](https://github.com/Nova-Org/novacode/pull/4692) [`1401220`](https://github.com/Nova-Org/novacode/commit/140122089a4de591c80573306ce81cd49091b510) Thanks [@mcowger](https://github.com/mcowger)! - Fix loss of Synthetic auto model refresh
 
 ## 4.140.2
 
 ### Patch Changes
 
-- [#4628](https://github.com/Kilo-Org/kilocode/pull/4628) [`ab0085e`](https://github.com/Kilo-Org/kilocode/commit/ab0085ea0ba6226f6adce508965302b101f60233) Thanks [@kiloconnect](https://github.com/apps/kiloconnect)! - Add GLM-4.7 model support to Z.ai provider
+- [#4628](https://github.com/Nova-Org/novacode/pull/4628) [`ab0085e`](https://github.com/Nova-Org/novacode/commit/ab0085ea0ba6226f6adce508965302b101f60233) Thanks [@novaconnect](https://github.com/apps/novaconnect)! - Add GLM-4.7 model support to Z.ai provider
 
-- [#4622](https://github.com/Kilo-Org/kilocode/pull/4622) [`25de94b`](https://github.com/Kilo-Org/kilocode/commit/25de94b22fc103ebb9747433444f3fef9a7eeeb8) Thanks [@alvinward](https://github.com/alvinward)! - Added model selection support below prompt for Z.ai
+- [#4622](https://github.com/Nova-Org/novacode/pull/4622) [`25de94b`](https://github.com/Nova-Org/novacode/commit/25de94b22fc103ebb9747433444f3fef9a7eeeb8) Thanks [@alvinward](https://github.com/alvinward)! - Added model selection support below prompt for Z.ai
 
-- [#4637](https://github.com/Kilo-Org/kilocode/pull/4637) [`b47994f`](https://github.com/Kilo-Org/kilocode/commit/b47994f0b6186490230c7eac01c5b9b75146d47a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add MiniMax-M2.1 model for MiniMax provider
+- [#4637](https://github.com/Nova-Org/novacode/pull/4637) [`b47994f`](https://github.com/Nova-Org/novacode/commit/b47994f0b6186490230c7eac01c5b9b75146d47a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add MiniMax-M2.1 model for MiniMax provider
 
 ## 4.140.1
 
 ### Patch Changes
 
-- [#4615](https://github.com/Kilo-Org/kilocode/pull/4615) [`6909640`](https://github.com/Kilo-Org/kilocode/commit/690964040770cd21248e1bea964c995d8620d8e8) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Add Agent Manager terminal switching so existing session terminals are revealed when changing sessions.
+- [#4615](https://github.com/Nova-Org/novacode/pull/4615) [`6909640`](https://github.com/Nova-Org/novacode/commit/690964040770cd21248e1bea964c995d8620d8e8) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Add Agent Manager terminal switching so existing session terminals are revealed when changing sessions.
 
-- [#4586](https://github.com/Kilo-Org/kilocode/pull/4586) [`a3988cd`](https://github.com/Kilo-Org/kilocode/commit/a3988cd201f21f7b7616d68cb2bb2c0387dd91c2) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Fix Agent Manager failing to start on macOS when launched from Finder/Spotlight
+- [#4586](https://github.com/Nova-Org/novacode/pull/4586) [`a3988cd`](https://github.com/Nova-Org/novacode/commit/a3988cd201f21f7b7616d68cb2bb2c0387dd91c2) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Fix Agent Manager failing to start on macOS when launched from Finder/Spotlight
 
-- [#4561](https://github.com/Kilo-Org/kilocode/pull/4561) [`3c18860`](https://github.com/Kilo-Org/kilocode/commit/3c188603cc4d8375be4abf6e1bb9217b64e9cd2b) Thanks [@jrf0110](https://github.com/jrf0110)! - Introduces AI contribution tracking so users can better understand agentic coding impact
+- [#4561](https://github.com/Nova-Org/novacode/pull/4561) [`3c18860`](https://github.com/Nova-Org/novacode/commit/3c188603cc4d8375be4abf6e1bb9217b64e9cd2b) Thanks [@jrf0110](https://github.com/jrf0110)! - Introduces AI contribution tracking so users can better understand agentic coding impact
 
-- [#4526](https://github.com/Kilo-Org/kilocode/pull/4526) [`10b4d6c`](https://github.com/Kilo-Org/kilocode/commit/10b4d6c02f5b310dd6e44204fa40675ca4d3d99b) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Reduce the incidence of read_file errors when using Claude models.
+- [#4526](https://github.com/Nova-Org/novacode/pull/4526) [`10b4d6c`](https://github.com/Nova-Org/novacode/commit/10b4d6c02f5b310dd6e44204fa40675ca4d3d99b) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Reduce the incidence of read_file errors when using Claude models.
 
-- [#4560](https://github.com/Kilo-Org/kilocode/pull/4560) [`5bdfe6b`](https://github.com/Kilo-Org/kilocode/commit/5bdfe6b9b68acf345e302791c15291c05a043204) Thanks [@crazyrabbit0](https://github.com/crazyrabbit0)! - chore: update Gemini Cli models and metadata
-
+- [#4560](https://github.com/Nova-Org/novacode/pull/4560) [`5bdfe6b`](https://github.com/Nova-Org/novacode/commit/5bdfe6b9b68acf345e302791c15291c05a043204) Thanks [@crazyrabbit0](https://github.com/crazyrabbit0)! - chore: update Gemini Cli models and metadata
     - Added gemini-3-flash-preview model configuration.
     - Updated maxThinkingTokens for gemini-3-pro-preview to 32,768.
     - Reordered model definitions to prioritize newer versions.
 
-- [#4596](https://github.com/Kilo-Org/kilocode/pull/4596) [`1c33884`](https://github.com/Kilo-Org/kilocode/commit/1c3388442bd9a06dcb8aed29431c138726dbedc8) Thanks [@hank9999](https://github.com/hank9999)! - Fix duplicate tool use in Anthropic
+- [#4596](https://github.com/Nova-Org/novacode/pull/4596) [`1c33884`](https://github.com/Nova-Org/novacode/commit/1c3388442bd9a06dcb8aed29431c138726dbedc8) Thanks [@hank9999](https://github.com/hank9999)! - Fix duplicate tool use in Anthropic
 
-- [#4620](https://github.com/Kilo-Org/kilocode/pull/4620) [`ae6818b`](https://github.com/Kilo-Org/kilocode/commit/ae6818b5ea2d5504f9ee5eff9bdd963d9d82c51e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix duplictate tool call processing in Chutes, DeepInfra, LiteLLM and xAI providers.
+- [#4620](https://github.com/Nova-Org/novacode/pull/4620) [`ae6818b`](https://github.com/Nova-Org/novacode/commit/ae6818b5ea2d5504f9ee5eff9bdd963d9d82c51e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix duplictate tool call processing in Chutes, DeepInfra, LiteLLM and xAI providers.
 
-- [#4597](https://github.com/Kilo-Org/kilocode/pull/4597) [`e2bb5c1`](https://github.com/Kilo-Org/kilocode/commit/e2bb5c1891b6319954b46fcca3b35807fc1f8f90) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Fix Agent Manager not showing error when CLI is misconfigured. When the CLI exits with a configuration error (e.g., missing kilocodeToken), the extension now detects this and shows an error popup with options to run `kilocode auth` or `kilocode config`.
+- [#4597](https://github.com/Nova-Org/novacode/pull/4597) [`e2bb5c1`](https://github.com/Nova-Org/novacode/commit/e2bb5c1891b6319954b46fcca3b35807fc1f8f90) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Fix Agent Manager not showing error when CLI is misconfigured. When the CLI exits with a configuration error (e.g., missing novacodeToken), the extension now detects this and shows an error popup with options to run `novacode auth` or `novacode config`.
 
-- [#4590](https://github.com/Kilo-Org/kilocode/pull/4590) [`f2cc065`](https://github.com/Kilo-Org/kilocode/commit/f2cc0657870ae77a5720a872c9cd11b8315799b7) Thanks [@kiloconnect](https://github.com/apps/kiloconnect)! - feat: add session_title_generated event emission to CLI
+- [#4590](https://github.com/Nova-Org/novacode/pull/4590) [`f2cc065`](https://github.com/Nova-Org/novacode/commit/f2cc0657870ae77a5720a872c9cd11b8315799b7) Thanks [@novaconnect](https://github.com/apps/novaconnect)! - feat: add session_title_generated event emission to CLI
 
-- [#4523](https://github.com/Kilo-Org/kilocode/pull/4523) [`e259b04`](https://github.com/Kilo-Org/kilocode/commit/e259b04037c71a9bdd9e53c174b70a975e772833) Thanks [@markijbema](https://github.com/markijbema)! - Add chat autocomplete telemetry
+- [#4523](https://github.com/Nova-Org/novacode/pull/4523) [`e259b04`](https://github.com/Nova-Org/novacode/commit/e259b04037c71a9bdd9e53c174b70a975e772833) Thanks [@markijbema](https://github.com/markijbema)! - Add chat autocomplete telemetry
 
-- [#4582](https://github.com/Kilo-Org/kilocode/pull/4582) [`3de2547`](https://github.com/Kilo-Org/kilocode/commit/3de254757049d08d3c0c100768acc564d6de4888) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains - Autocomplete Telemetry
+- [#4582](https://github.com/Nova-Org/novacode/pull/4582) [`3de2547`](https://github.com/Nova-Org/novacode/commit/3de254757049d08d3c0c100768acc564d6de4888) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains - Autocomplete Telemetry
 
-- [#4488](https://github.com/Kilo-Org/kilocode/pull/4488) [`f7c3715`](https://github.com/Kilo-Org/kilocode/commit/f7c3715b4b7fea9fcd363d12bfb9467e9f169729) Thanks [@lifesized](https://github.com/lifesized)! - fix(ollama): fix model not found error and context window display
+- [#4488](https://github.com/Nova-Org/novacode/pull/4488) [`f7c3715`](https://github.com/Nova-Org/novacode/commit/f7c3715b4b7fea9fcd363d12bfb9467e9f169729) Thanks [@lifesized](https://github.com/lifesized)! - fix(ollama): fix model not found error and context window display
 
 ## 4.140.0
 
 ### Minor Changes
 
-- [#4538](https://github.com/Kilo-Org/kilocode/pull/4538) [`459b95c`](https://github.com/Kilo-Org/kilocode/commit/459b95cbf78de10fce597e3467120e52020d1114) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Added gemini-3-flash-preview model
+- [#4538](https://github.com/Nova-Org/novacode/pull/4538) [`459b95c`](https://github.com/Nova-Org/novacode/commit/459b95cbf78de10fce597e3467120e52020d1114) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Added gemini-3-flash-preview model
 
 ### Patch Changes
 
-- [#4530](https://github.com/Kilo-Org/kilocode/pull/4530) [`782347e`](https://github.com/Kilo-Org/kilocode/commit/782347e9ed6cbaf42c88285cb8576801cd178d96) Thanks [@alvinward](https://github.com/alvinward)! - Add GLM-4.6V model support for z.ai provider
+- [#4530](https://github.com/Nova-Org/novacode/pull/4530) [`782347e`](https://github.com/Nova-Org/novacode/commit/782347e9ed6cbaf42c88285cb8576801cd178d96) Thanks [@alvinward](https://github.com/alvinward)! - Add GLM-4.6V model support for z.ai provider
 
-- [#4509](https://github.com/Kilo-Org/kilocode/pull/4509) [`8a9fddd`](https://github.com/Kilo-Org/kilocode/commit/8a9fddd8311633c3085516ab6255bb027aff81d6) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.36.6
-
+- [#4509](https://github.com/Nova-Org/novacode/pull/4509) [`8a9fddd`](https://github.com/Nova-Org/novacode/commit/8a9fddd8311633c3085516ab6255bb027aff81d6) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.36.6
     - Add tool alias support for model-specific tool customization, allowing users to configure how tools are presented to different AI models (PR #9989 by @daniel-lxs)
     - Sanitize MCP server and tool names for API compatibility, ensuring special characters don't cause issues with API calls (PR #10054 by @daniel-lxs)
     - Improve auto-approve timer visibility in follow-up suggestions for better user awareness of pending actions (PR #10048 by @brunobergher)
@@ -933,100 +927,99 @@
     - Refactor: Consolidate ThinkingBudget components and fix disable handling (PR #9930 by @hannesrudolph)
     - Forbid time estimates in architect mode for more focused planning (PR #9931 by @app/roomote
 
-- [#4568](https://github.com/Kilo-Org/kilocode/pull/4568) [`b1702cd`](https://github.com/Kilo-Org/kilocode/commit/b1702cd1c3119a89c96edf23c388b84135b8cbd3) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Remove redundant "New Agent" and "Refresh messages" buttons from agent manager session detail header.
+- [#4568](https://github.com/Nova-Org/novacode/pull/4568) [`b1702cd`](https://github.com/Nova-Org/novacode/commit/b1702cd1c3119a89c96edf23c388b84135b8cbd3) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Remove redundant "New Agent" and "Refresh messages" buttons from agent manager session detail header.
 
-- [#4228](https://github.com/Kilo-Org/kilocode/pull/4228) [`a128228`](https://github.com/Kilo-Org/kilocode/commit/a128228b3649924ad1fd88d040a79c6963a250bd) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Change the default value of auto-approval for reading outside workspace to false
+- [#4228](https://github.com/Nova-Org/novacode/pull/4228) [`a128228`](https://github.com/Nova-Org/novacode/commit/a128228b3649924ad1fd88d040a79c6963a250bd) Thanks [@lambertjosh](https://github.com/lambertjosh)! - Change the default value of auto-approval for reading outside workspace to false
 
 ## 4.139.0
 
 ### Minor Changes
 
-- [#4481](https://github.com/Kilo-Org/kilocode/pull/4481) [`61c951c`](https://github.com/Kilo-Org/kilocode/commit/61c951c0ad11d60b07406338b6053cc5d1f01cac) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Improved command output rendering in Agent Manager with new CommandExecutionBlock component that displays terminal output with status indicators, collapsible output sections, and proper escape sequence handling.
+- [#4481](https://github.com/Nova-Org/novacode/pull/4481) [`61c951c`](https://github.com/Nova-Org/novacode/commit/61c951c0ad11d60b07406338b6053cc5d1f01cac) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Improved command output rendering in Agent Manager with new CommandExecutionBlock component that displays terminal output with status indicators, collapsible output sections, and proper escape sequence handling.
 
-- [#4483](https://github.com/Kilo-Org/kilocode/pull/4483) [`fd639ab`](https://github.com/Kilo-Org/kilocode/commit/fd639ab78aa4ab62ea2d120bd2844d1160b20067) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Add branch picker to Agent Manager for selecting base branch in worktree mode
+- [#4483](https://github.com/Nova-Org/novacode/pull/4483) [`fd639ab`](https://github.com/Nova-Org/novacode/commit/fd639ab78aa4ab62ea2d120bd2844d1160b20067) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Add branch picker to Agent Manager for selecting base branch in worktree mode
 
-- [#4539](https://github.com/Kilo-Org/kilocode/pull/4539) [`62a0241`](https://github.com/Kilo-Org/kilocode/commit/62a02418cafa23a733f92a9e14ba904552acdcc4) Thanks [@brianc](https://github.com/brianc)! - Improve managed indexer error handling & backoff.
+- [#4539](https://github.com/Nova-Org/novacode/pull/4539) [`62a0241`](https://github.com/Nova-Org/novacode/commit/62a02418cafa23a733f92a9e14ba904552acdcc4) Thanks [@brianc](https://github.com/brianc)! - Improve managed indexer error handling & backoff.
 
 ### Patch Changes
 
-- [#4512](https://github.com/Kilo-Org/kilocode/pull/4512) [`f979b56`](https://github.com/Kilo-Org/kilocode/commit/f979b56b6a631eeeb671caaca276316b63b5fb82) Thanks [@hassoncs](https://github.com/hassoncs)! - Add a tooltip explaining why speech-to-text may be unavailable
+- [#4512](https://github.com/Nova-Org/novacode/pull/4512) [`f979b56`](https://github.com/Nova-Org/novacode/commit/f979b56b6a631eeeb671caaca276316b63b5fb82) Thanks [@hassoncs](https://github.com/hassoncs)! - Add a tooltip explaining why speech-to-text may be unavailable
 
-- [#4424](https://github.com/Kilo-Org/kilocode/pull/4424) [`cd0cd88`](https://github.com/Kilo-Org/kilocode/commit/cd0cd8833f0e892cc2f1c96bb24ede6254cf12c9) Thanks [@markijbema](https://github.com/markijbema)! - Added a snooze for autocomplete in the settings
+- [#4424](https://github.com/Nova-Org/novacode/pull/4424) [`cd0cd88`](https://github.com/Nova-Org/novacode/commit/cd0cd8833f0e892cc2f1c96bb24ede6254cf12c9) Thanks [@markijbema](https://github.com/markijbema)! - Added a snooze for autocomplete in the settings
 
-- [#4519](https://github.com/Kilo-Org/kilocode/pull/4519) [`a9fd203`](https://github.com/Kilo-Org/kilocode/commit/a9fd2038ecb60fd799d164bcf1b2e4393302d15a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix text.startsWith is not a function crash
+- [#4519](https://github.com/Nova-Org/novacode/pull/4519) [`a9fd203`](https://github.com/Nova-Org/novacode/commit/a9fd2038ecb60fd799d164bcf1b2e4393302d15a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix text.startsWith is not a function crash
 
-- [#4536](https://github.com/Kilo-Org/kilocode/pull/4536) [`51f4774`](https://github.com/Kilo-Org/kilocode/commit/51f4774adcb90778826e00e9a50c45bb7bf11bc8) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix image generation handler not using Kilo Gateway properly
+- [#4536](https://github.com/Nova-Org/novacode/pull/4536) [`51f4774`](https://github.com/Nova-Org/novacode/commit/51f4774adcb90778826e00e9a50c45bb7bf11bc8) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix image generation handler not using Nova Gateway properly
 
-- [#4491](https://github.com/Kilo-Org/kilocode/pull/4491) [`823b86f`](https://github.com/Kilo-Org/kilocode/commit/823b86f196868f12efc60e5acb9b385d014bc644) Thanks [@markijbema](https://github.com/markijbema)! - Prevent autocomplete from showing suggestions duplicating the previous or next line
+- [#4491](https://github.com/Nova-Org/novacode/pull/4491) [`823b86f`](https://github.com/Nova-Org/novacode/commit/823b86f196868f12efc60e5acb9b385d014bc644) Thanks [@markijbema](https://github.com/markijbema)! - Prevent autocomplete from showing suggestions duplicating the previous or next line
 
-- [#4531](https://github.com/Kilo-Org/kilocode/pull/4531) [`9413d73`](https://github.com/Kilo-Org/kilocode/commit/9413d730814d88ac67c88e6eec9a66c2c701613e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix duplicate tool processing in OpenAI-compatible provider
+- [#4531](https://github.com/Nova-Org/novacode/pull/4531) [`9413d73`](https://github.com/Nova-Org/novacode/commit/9413d730814d88ac67c88e6eec9a66c2c701613e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix duplicate tool processing in OpenAI-compatible provider
 
-- [#4533](https://github.com/Kilo-Org/kilocode/pull/4533) [`20b2c29`](https://github.com/Kilo-Org/kilocode/commit/20b2c29140f401ac65d437e35c52b48329e5f52d) Thanks [@mcowger](https://github.com/mcowger)! - Add gemini-3-flash-preview model configuration to vertex models
+- [#4533](https://github.com/Nova-Org/novacode/pull/4533) [`20b2c29`](https://github.com/Nova-Org/novacode/commit/20b2c29140f401ac65d437e35c52b48329e5f52d) Thanks [@mcowger](https://github.com/mcowger)! - Add gemini-3-flash-preview model configuration to vertex models
 
-- [#4520](https://github.com/Kilo-Org/kilocode/pull/4520) [`8342fc4`](https://github.com/Kilo-Org/kilocode/commit/8342fc4fbdc2a83601c706e734ef3377ef114f98) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Normalize line endings in search and replace tool
+- [#4520](https://github.com/Nova-Org/novacode/pull/4520) [`8342fc4`](https://github.com/Nova-Org/novacode/commit/8342fc4fbdc2a83601c706e734ef3377ef114f98) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Normalize line endings in search and replace tool
 
 ## 4.138.0
 
 ### Minor Changes
 
-- [#4472](https://github.com/Kilo-Org/kilocode/pull/4472) [`d2e82a1`](https://github.com/Kilo-Org/kilocode/commit/d2e82a115afac0467787db63d51c696d08ee102d) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Interactive agent manager worktree sessions now start without auto-execution, allowing to manually click "Finish to Branch".
+- [#4472](https://github.com/Nova-Org/novacode/pull/4472) [`d2e82a1`](https://github.com/Nova-Org/novacode/commit/d2e82a115afac0467787db63d51c696d08ee102d) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Interactive agent manager worktree sessions now start without auto-execution, allowing to manually click "Finish to Branch".
 
-- [#4428](https://github.com/Kilo-Org/kilocode/pull/4428) [`8394da8`](https://github.com/Kilo-Org/kilocode/commit/8394da8715fae4eacf416301885eeee840456700) Thanks [@iscekic](https://github.com/iscekic)! - add parent session id when creating a session
+- [#4428](https://github.com/Nova-Org/novacode/pull/4428) [`8394da8`](https://github.com/Nova-Org/novacode/commit/8394da8715fae4eacf416301885eeee840456700) Thanks [@iscekic](https://github.com/iscekic)! - add parent session id when creating a session
 
 ### Patch Changes
 
-- [#4425](https://github.com/Kilo-Org/kilocode/pull/4425) [`6f70448`](https://github.com/Kilo-Org/kilocode/commit/6f70448300567b7ded997231b049346aa2718d92) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Share kilocode extension authentication directly with agent manager
+- [#4425](https://github.com/Nova-Org/novacode/pull/4425) [`6f70448`](https://github.com/Nova-Org/novacode/commit/6f70448300567b7ded997231b049346aa2718d92) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Share novacode extension authentication directly with agent manager
 
-- [#4475](https://github.com/Kilo-Org/kilocode/pull/4475) [`625561f`](https://github.com/Kilo-Org/kilocode/commit/625561f11669d6458729b01dcbe630a551ecfe04) Thanks [@jrf0110](https://github.com/jrf0110)! - Fixes issue on Windows where kilo code would spawn many cmd.exe windows.
+- [#4475](https://github.com/Nova-Org/novacode/pull/4475) [`625561f`](https://github.com/Nova-Org/novacode/commit/625561f11669d6458729b01dcbe630a551ecfe04) Thanks [@jrf0110](https://github.com/jrf0110)! - Fixes issue on Windows where nova code would spawn many cmd.exe windows.
 
-- [#4376](https://github.com/Kilo-Org/kilocode/pull/4376) [`3971db3`](https://github.com/Kilo-Org/kilocode/commit/3971db3215d7339514031e094e87e9c889c9372d) Thanks [@sebastiand-cerebras](https://github.com/sebastiand-cerebras)! - Add Cerebras integration header with "kilocode" identifier to all API requests.
+- [#4376](https://github.com/Nova-Org/novacode/pull/4376) [`3971db3`](https://github.com/Nova-Org/novacode/commit/3971db3215d7339514031e094e87e9c889c9372d) Thanks [@sebastiand-cerebras](https://github.com/sebastiand-cerebras)! - Add Cerebras integration header with "novacode" identifier to all API requests.
 
-- [#4447](https://github.com/Kilo-Org/kilocode/pull/4447) [`0022305`](https://github.com/Kilo-Org/kilocode/commit/0022305558d71957aeb7468a0e8e3ed829997f93) Thanks [@EamonNerbonne](https://github.com/EamonNerbonne)! - Provide a few tips for when an LLM gets stuck in a loop
+- [#4447](https://github.com/Nova-Org/novacode/pull/4447) [`0022305`](https://github.com/Nova-Org/novacode/commit/0022305558d71957aeb7468a0e8e3ed829997f93) Thanks [@EamonNerbonne](https://github.com/EamonNerbonne)! - Provide a few tips for when an LLM gets stuck in a loop
 
-- [#4456](https://github.com/Kilo-Org/kilocode/pull/4456) [`85a2e31`](https://github.com/Kilo-Org/kilocode/commit/85a2e31a331157f27bfe1c9823e3326ae58779c6) Thanks [@iscekic](https://github.com/iscekic)! - correctly handle deleted tasks
+- [#4456](https://github.com/Nova-Org/novacode/pull/4456) [`85a2e31`](https://github.com/Nova-Org/novacode/commit/85a2e31a331157f27bfe1c9823e3326ae58779c6) Thanks [@iscekic](https://github.com/iscekic)! - correctly handle deleted tasks
 
-- [#4476](https://github.com/Kilo-Org/kilocode/pull/4476) [`ea9413d`](https://github.com/Kilo-Org/kilocode/commit/ea9413d4fb01846b1aeb872652c92fa8e844d35f) Thanks [@hassoncs](https://github.com/hassoncs)! - Remove check for ffmpeg if the STT experiment is disabled
+- [#4476](https://github.com/Nova-Org/novacode/pull/4476) [`ea9413d`](https://github.com/Nova-Org/novacode/commit/ea9413d4fb01846b1aeb872652c92fa8e844d35f) Thanks [@hassoncs](https://github.com/hassoncs)! - Remove check for ffmpeg if the STT experiment is disabled
 
 ## 4.137.0
 
 ### Minor Changes
 
-- [#4394](https://github.com/Kilo-Org/kilocode/pull/4394) [`01b968b`](https://github.com/Kilo-Org/kilocode/commit/01b968ba4635a162c787169bffe1809fc1ab973a) Thanks [@hassoncs](https://github.com/hassoncs)! - Add Speech-To-Text experiment for the chat input powered by ffmpeg and the OpenAI Whisper API
+- [#4394](https://github.com/Nova-Org/novacode/pull/4394) [`01b968b`](https://github.com/Nova-Org/novacode/commit/01b968ba4635a162c787169bffe1809fc1ab973a) Thanks [@hassoncs](https://github.com/hassoncs)! - Add Speech-To-Text experiment for the chat input powered by ffmpeg and the OpenAI Whisper API
 
-- [#4388](https://github.com/Kilo-Org/kilocode/pull/4388) [`af93318`](https://github.com/Kilo-Org/kilocode/commit/af93318e3648c235721ba58fe9caab9429608241) Thanks [@iscekic](https://github.com/iscekic)! - send org id and last mode with session data
+- [#4388](https://github.com/Nova-Org/novacode/pull/4388) [`af93318`](https://github.com/Nova-Org/novacode/commit/af93318e3648c235721ba58fe9caab9429608241) Thanks [@iscekic](https://github.com/iscekic)! - send org id and last mode with session data
 
 ### Patch Changes
 
-- [#4412](https://github.com/Kilo-Org/kilocode/pull/4412) [`d56879c`](https://github.com/Kilo-Org/kilocode/commit/d56879c58f65c8da1419c9840816720279bec4e6) Thanks [@quantizoor](https://github.com/quantizoor)! - Added support for xhigh reasoning effort
+- [#4412](https://github.com/Nova-Org/novacode/pull/4412) [`d56879c`](https://github.com/Nova-Org/novacode/commit/d56879c58f65c8da1419c9840816720279bec4e6) Thanks [@quantizoor](https://github.com/quantizoor)! - Added support for xhigh reasoning effort
 
-- [#4415](https://github.com/Kilo-Org/kilocode/pull/4415) [`5e670d1`](https://github.com/Kilo-Org/kilocode/commit/5e670d14047054a2f92a9057391286402076b5a5) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix: bottom controls no longer overlap with create mode button
+- [#4415](https://github.com/Nova-Org/novacode/pull/4415) [`5e670d1`](https://github.com/Nova-Org/novacode/commit/5e670d14047054a2f92a9057391286402076b5a5) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix: bottom controls no longer overlap with create mode button
 
-- [#4416](https://github.com/Kilo-Org/kilocode/pull/4416) [`026da65`](https://github.com/Kilo-Org/kilocode/commit/026da65fdb9f16d23216197412e06ca2ed208639) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - fix: resolve AbortSignal memory leak in CLI (MaxListenersExceededWarning)
+- [#4416](https://github.com/Nova-Org/novacode/pull/4416) [`026da65`](https://github.com/Nova-Org/novacode/commit/026da65fdb9f16d23216197412e06ca2ed208639) Thanks [@marius-novacode](https://github.com/marius-novacode)! - fix: resolve AbortSignal memory leak in CLI (MaxListenersExceededWarning)
 
-- [#4392](https://github.com/Kilo-Org/kilocode/pull/4392) [`73681e9`](https://github.com/Kilo-Org/kilocode/commit/73681e9002af4c5aa3fec3bc2a86e8008dc926af) Thanks [@markijbema](https://github.com/markijbema)! - Split autocomplete suggestion in current line and next lines in most cases
+- [#4392](https://github.com/Nova-Org/novacode/pull/4392) [`73681e9`](https://github.com/Nova-Org/novacode/commit/73681e9002af4c5aa3fec3bc2a86e8008dc926af) Thanks [@markijbema](https://github.com/markijbema)! - Split autocomplete suggestion in current line and next lines in most cases
 
-- [#4426](https://github.com/Kilo-Org/kilocode/pull/4426) [`fdc0c0a`](https://github.com/Kilo-Org/kilocode/commit/fdc0c0a07d49c4726997121ad540d6c855965e7b) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix API request errors with MCP functions incompatible with OpenAI strict mode
+- [#4426](https://github.com/Nova-Org/novacode/pull/4426) [`fdc0c0a`](https://github.com/Nova-Org/novacode/commit/fdc0c0a07d49c4726997121ad540d6c855965e7b) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix API request errors with MCP functions incompatible with OpenAI strict mode
 
-- [#4373](https://github.com/Kilo-Org/kilocode/pull/4373) [`a80ec02`](https://github.com/Kilo-Org/kilocode/commit/a80ec02db75c061163100ce91d099f4fd3846a99) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Handle different cli authentication errors when using agent manager
+- [#4373](https://github.com/Nova-Org/novacode/pull/4373) [`a80ec02`](https://github.com/Nova-Org/novacode/commit/a80ec02db75c061163100ce91d099f4fd3846a99) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Handle different cli authentication errors when using agent manager
 
 ## 4.136.0
 
 ### Minor Changes
 
-- [#4380](https://github.com/Kilo-Org/kilocode/pull/4380) [`802cc70`](https://github.com/Kilo-Org/kilocode/commit/802cc700a6ef4bc2f7537a4cfff1663da01982c3) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Add multi-version feature to Agent Manager - launch 1-4 parallel agents in parallel on git worktrees
+- [#4380](https://github.com/Nova-Org/novacode/pull/4380) [`802cc70`](https://github.com/Nova-Org/novacode/commit/802cc700a6ef4bc2f7537a4cfff1663da01982c3) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Add multi-version feature to Agent Manager - launch 1-4 parallel agents in parallel on git worktrees
 
 ### Patch Changes
 
-- [#4396](https://github.com/Kilo-Org/kilocode/pull/4396) [`b2a75e6`](https://github.com/Kilo-Org/kilocode/commit/b2a75e6013c6ec1f01a3e735c51b355a5e1e0308) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add support for GPT-5.2
+- [#4396](https://github.com/Nova-Org/novacode/pull/4396) [`b2a75e6`](https://github.com/Nova-Org/novacode/commit/b2a75e6013c6ec1f01a3e735c51b355a5e1e0308) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add support for GPT-5.2
 
 ## 4.135.0
 
 ### Minor Changes
 
-- [#4326](https://github.com/Kilo-Org/kilocode/pull/4326) [`6d62090`](https://github.com/Kilo-Org/kilocode/commit/6d620905dfc6d8419bdbc9ffcad54109057e709e) Thanks [@iscekic](https://github.com/iscekic)! - improve session sync mechanism (event based instead of timer)
+- [#4326](https://github.com/Nova-Org/novacode/pull/4326) [`6d62090`](https://github.com/Nova-Org/novacode/commit/6d620905dfc6d8419bdbc9ffcad54109057e709e) Thanks [@iscekic](https://github.com/iscekic)! - improve session sync mechanism (event based instead of timer)
 
-- [#4333](https://github.com/Kilo-Org/kilocode/pull/4333) [`0093fd1`](https://github.com/Kilo-Org/kilocode/commit/0093fd15e1a3baa80a872bc8889c5e219684004c) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.36.2
-
+- [#4333](https://github.com/Nova-Org/novacode/pull/4333) [`0093fd1`](https://github.com/Nova-Org/novacode/commit/0093fd15e1a3baa80a872bc8889c5e219684004c) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.36.2
     - Restrict GPT-5 tool set to apply_patch for improved compatibility (PR #9853 by @hannesrudolph)
     - Fix: Resolve Chutes provider model fetching issue (PR #9854 by @cte)
     - Add MessageManager layer for centralized history coordination, fixing message synchronization issues (PR #9842 by @hannesrudolph)
@@ -1081,100 +1074,98 @@
 
 ### Patch Changes
 
-- [#4379](https://github.com/Kilo-Org/kilocode/pull/4379) [`37b90be`](https://github.com/Kilo-Org/kilocode/commit/37b90be866111761dd90c3a0c8f179f5be16242c) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Add todo list UI to Agent Manager, displaying task progress above the chat input with a collapsible list view
+- [#4379](https://github.com/Nova-Org/novacode/pull/4379) [`37b90be`](https://github.com/Nova-Org/novacode/commit/37b90be866111761dd90c3a0c8f179f5be16242c) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Add todo list UI to Agent Manager, displaying task progress above the chat input with a collapsible list view
 
-- [#4266](https://github.com/Kilo-Org/kilocode/pull/4266) [`3ad7248`](https://github.com/Kilo-Org/kilocode/commit/3ad7248effa3b78f93b2f39c875735cd50b78d98) Thanks [@helloGitWorld-ctrl](https://github.com/helloGitWorld-ctrl)! - JetBrains - Improve multiproject conflicts
+- [#4266](https://github.com/Nova-Org/novacode/pull/4266) [`3ad7248`](https://github.com/Nova-Org/novacode/commit/3ad7248effa3b78f93b2f39c875735cd50b78d98) Thanks [@helloGitWorld-ctrl](https://github.com/helloGitWorld-ctrl)! - JetBrains - Improve multiproject conflicts
 
-- [#4366](https://github.com/Kilo-Org/kilocode/pull/4366) [`11c2f87`](https://github.com/Kilo-Org/kilocode/commit/11c2f870a82b39cbbb2d3e9bcdecc8bc13b44adb) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Agent Manager: remind first-time CLI installs to run `kilocode auth` after opening the install terminal, with translations.
+- [#4366](https://github.com/Nova-Org/novacode/pull/4366) [`11c2f87`](https://github.com/Nova-Org/novacode/commit/11c2f870a82b39cbbb2d3e9bcdecc8bc13b44adb) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Agent Manager: remind first-time CLI installs to run `novacode auth` after opening the install terminal, with translations.
 
-- [#4389](https://github.com/Kilo-Org/kilocode/pull/4389) [`ac3350e`](https://github.com/Kilo-Org/kilocode/commit/ac3350e3caff0c3c93e9f3808633d776855cefa8) Thanks [@iscekic](https://github.com/iscekic)! - fix share url handling
+- [#4389](https://github.com/Nova-Org/novacode/pull/4389) [`ac3350e`](https://github.com/Nova-Org/novacode/commit/ac3350e3caff0c3c93e9f3808633d776855cefa8) Thanks [@iscekic](https://github.com/iscekic)! - fix share url handling
 
-- [#4362](https://github.com/Kilo-Org/kilocode/pull/4362) [`d596a08`](https://github.com/Kilo-Org/kilocode/commit/d596a08d6fe5c1a719855616ba5f582407f6769a) Thanks [@iscekic](https://github.com/iscekic)! - extract an extension message handler for extension/cli reuse
+- [#4362](https://github.com/Nova-Org/novacode/pull/4362) [`d596a08`](https://github.com/Nova-Org/novacode/commit/d596a08d6fe5c1a719855616ba5f582407f6769a) Thanks [@iscekic](https://github.com/iscekic)! - extract an extension message handler for extension/cli reuse
 
-- [#4361](https://github.com/Kilo-Org/kilocode/pull/4361) [`24813e9`](https://github.com/Kilo-Org/kilocode/commit/24813e900e50bf63dbb553a951970467221ce73d) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix Kilo Auth flow
+- [#4361](https://github.com/Nova-Org/novacode/pull/4361) [`24813e9`](https://github.com/Nova-Org/novacode/commit/24813e900e50bf63dbb553a951970467221ce73d) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix Nova Auth flow
 
-- [#4374](https://github.com/Kilo-Org/kilocode/pull/4374) [`612e472`](https://github.com/Kilo-Org/kilocode/commit/612e47277d32eb4c481e15fa47c4216015597e88) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix styling issue on task headers
+- [#4374](https://github.com/Nova-Org/novacode/pull/4374) [`612e472`](https://github.com/Nova-Org/novacode/commit/612e47277d32eb4c481e15fa47c4216015597e88) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix styling issue on task headers
 
-- [#4308](https://github.com/Kilo-Org/kilocode/pull/4308) [`a9eab93`](https://github.com/Kilo-Org/kilocode/commit/a9eab931b11baf20e229dd328dd47557fa29fe49) Thanks [@markijbema](https://github.com/markijbema)! - Minor tuning to autocomplete
+- [#4308](https://github.com/Nova-Org/novacode/pull/4308) [`a9eab93`](https://github.com/Nova-Org/novacode/commit/a9eab931b11baf20e229dd328dd47557fa29fe49) Thanks [@markijbema](https://github.com/markijbema)! - Minor tuning to autocomplete
 
-- [#4375](https://github.com/Kilo-Org/kilocode/pull/4375) [`58c4096`](https://github.com/Kilo-Org/kilocode/commit/58c40964bb07135a0e9df29a253651a255ccffa2) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Agent Manager - Local CLI install for immutable environments
+- [#4375](https://github.com/Nova-Org/novacode/pull/4375) [`58c4096`](https://github.com/Nova-Org/novacode/commit/58c40964bb07135a0e9df29a253651a255ccffa2) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Agent Manager - Local CLI install for immutable environments
 
-- [#4369](https://github.com/Kilo-Org/kilocode/pull/4369) [`5195bd0`](https://github.com/Kilo-Org/kilocode/commit/5195bd00067d83474606dfca0df71abfed13566a) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Agent-Manager - Fix Chat Input scroll
+- [#4369](https://github.com/Nova-Org/novacode/pull/4369) [`5195bd0`](https://github.com/Nova-Org/novacode/commit/5195bd00067d83474606dfca0df71abfed13566a) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Agent-Manager - Fix Chat Input scroll
 
 ## 4.134.0
 
 ### Minor Changes
 
-- [#4330](https://github.com/Kilo-Org/kilocode/pull/4330) [`57dc5a9`](https://github.com/Kilo-Org/kilocode/commit/57dc5a9379b25eb2e1f9902486ff71db731a5aaf) Thanks [@catrielmuller](https://github.com/catrielmuller)! - JetBrains IDEs: Autocomplete is now available and can be enabled in Settings > Autocomplete.
+- [#4330](https://github.com/Nova-Org/novacode/pull/4330) [`57dc5a9`](https://github.com/Nova-Org/novacode/commit/57dc5a9379b25eb2e1f9902486ff71db731a5aaf) Thanks [@catrielmuller](https://github.com/catrielmuller)! - JetBrains IDEs: Autocomplete is now available and can be enabled in Settings > Autocomplete.
 
-- [#4178](https://github.com/Kilo-Org/kilocode/pull/4178) [`414282a`](https://github.com/Kilo-Org/kilocode/commit/414282a5a5c6cdfe528c3a7775bf07cd3e0739aa) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Added a new device authorization flow for Kilo Gateway that makes it easier to connect your editor to your Kilo account. Instead of manually copying API tokens, you can now:
-
+- [#4178](https://github.com/Nova-Org/novacode/pull/4178) [`414282a`](https://github.com/Nova-Org/novacode/commit/414282a5a5c6cdfe528c3a7775bf07cd3e0739aa) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Added a new device authorization flow for Nova Gateway that makes it easier to connect your editor to your Nova account. Instead of manually copying API tokens, you can now:
     - Scan a QR code with your phone or click to open the authorization page in your browser
     - Approve the connection from your browser
     - Automatically get authenticated without copying any tokens
 
     This streamlined workflow provides a more secure and user-friendly way to authenticate, similar to how you connect devices to services like Netflix or YouTube.
 
-- [#4334](https://github.com/Kilo-Org/kilocode/pull/4334) [`5bdab7c`](https://github.com/Kilo-Org/kilocode/commit/5bdab7caca867970a5ee7faccfb76e36e01c6471) Thanks [@brianc](https://github.com/brianc)! - Updated managed indexing gate logic to be able to roll it out to individuals instead of just organizations.
+- [#4334](https://github.com/Nova-Org/novacode/pull/4334) [`5bdab7c`](https://github.com/Nova-Org/novacode/commit/5bdab7caca867970a5ee7faccfb76e36e01c6471) Thanks [@brianc](https://github.com/brianc)! - Updated managed indexing gate logic to be able to roll it out to individuals instead of just organizations.
 
-- [#3999](https://github.com/Kilo-Org/kilocode/pull/3999) [`7f349d0`](https://github.com/Kilo-Org/kilocode/commit/7f349d04749f74a9b84de8cb68f44d8d8d71cbc5) Thanks [@hassoncs](https://github.com/hassoncs)! - Add Autocomplete support to the chat text box. It can be enabled/disabled using a new toggle in the autocomplete settings menu
+- [#3999](https://github.com/Nova-Org/novacode/pull/3999) [`7f349d0`](https://github.com/Nova-Org/novacode/commit/7f349d04749f74a9b84de8cb68f44d8d8d71cbc5) Thanks [@hassoncs](https://github.com/hassoncs)! - Add Autocomplete support to the chat text box. It can be enabled/disabled using a new toggle in the autocomplete settings menu
 
 ### Patch Changes
 
-- [#4327](https://github.com/Kilo-Org/kilocode/pull/4327) [`52fc352`](https://github.com/Kilo-Org/kilocode/commit/52fc3524151f30d3925408d30fd8af9265890b77) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - fix agent creation getting stuck when CLI doesn't respond with session_created event
+- [#4327](https://github.com/Nova-Org/novacode/pull/4327) [`52fc352`](https://github.com/Nova-Org/novacode/commit/52fc3524151f30d3925408d30fd8af9265890b77) Thanks [@marius-novacode](https://github.com/marius-novacode)! - fix agent creation getting stuck when CLI doesn't respond with session_created event
 
-- [#4182](https://github.com/Kilo-Org/kilocode/pull/4182) [`33c9eab`](https://github.com/Kilo-Org/kilocode/commit/33c9eabd2ef395e585f37542980e996054bf3fcb) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains - Fix open external urls
+- [#4182](https://github.com/Nova-Org/novacode/pull/4182) [`33c9eab`](https://github.com/Nova-Org/novacode/commit/33c9eabd2ef395e585f37542980e996054bf3fcb) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains - Fix open external urls
 
 ## 4.133.0
 
 ### Minor Changes
 
-- [#4317](https://github.com/Kilo-Org/kilocode/pull/4317) [`797c959`](https://github.com/Kilo-Org/kilocode/commit/797c9594a527f19e0d39b7402fb031cd9eb4e2a7) Thanks [@iscekic](https://github.com/iscekic)! - add session versioning
+- [#4317](https://github.com/Nova-Org/novacode/pull/4317) [`797c959`](https://github.com/Nova-Org/novacode/commit/797c9594a527f19e0d39b7402fb031cd9eb4e2a7) Thanks [@iscekic](https://github.com/iscekic)! - add session versioning
 
 ### Patch Changes
 
-- [#3571](https://github.com/Kilo-Org/kilocode/pull/3571) [`ea2702c`](https://github.com/Kilo-Org/kilocode/commit/ea2702c6f29e7ff2bfe55714716f72bb43cfbede) Thanks [@yadue](https://github.com/yadue)! - Add batch size and number of retries to the indexing options
+- [#3571](https://github.com/Nova-Org/novacode/pull/3571) [`ea2702c`](https://github.com/Nova-Org/novacode/commit/ea2702c6f29e7ff2bfe55714716f72bb43cfbede) Thanks [@yadue](https://github.com/yadue)! - Add batch size and number of retries to the indexing options
 
-- [#4310](https://github.com/Kilo-Org/kilocode/pull/4310) [`e5e6085`](https://github.com/Kilo-Org/kilocode/commit/e5e6085d1f9b4f142130eddd3eaddb52bd5cde17) Thanks [@iscekic](https://github.com/iscekic)! - check token before syncing session
+- [#4310](https://github.com/Nova-Org/novacode/pull/4310) [`e5e6085`](https://github.com/Nova-Org/novacode/commit/e5e6085d1f9b4f142130eddd3eaddb52bd5cde17) Thanks [@iscekic](https://github.com/iscekic)! - check token before syncing session
 
-- [#4272](https://github.com/Kilo-Org/kilocode/pull/4272) [`3ad35d9`](https://github.com/Kilo-Org/kilocode/commit/3ad35d94a5560ca1b87b2b393c6d064703c144d4) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix: reset state errors when clearing indexing state
+- [#4272](https://github.com/Nova-Org/novacode/pull/4272) [`3ad35d9`](https://github.com/Nova-Org/novacode/commit/3ad35d94a5560ca1b87b2b393c6d064703c144d4) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix: reset state errors when clearing indexing state
 
 ## 4.132.0
 
 ### Minor Changes
 
-- [#4305](https://github.com/Kilo-Org/kilocode/pull/4305) [`e7b0aa2`](https://github.com/Kilo-Org/kilocode/commit/e7b0aa2290cbffef7aeb66b8bbcbf2ca71bcdb28) Thanks [@marius-kilocode](https://github.com/marius-kilocode)! - Add Agent Manager for running multiple Kilo Code agents in parallel from a single panel.
+- [#4305](https://github.com/Nova-Org/novacode/pull/4305) [`e7b0aa2`](https://github.com/Nova-Org/novacode/commit/e7b0aa2290cbffef7aeb66b8bbcbf2ca71bcdb28) Thanks [@marius-novacode](https://github.com/marius-novacode)! - Add Agent Manager for running multiple Nova Code agents in parallel from a single panel.
 
 ### Patch Changes
 
-- [#4117](https://github.com/Kilo-Org/kilocode/pull/4117) [`2224b90`](https://github.com/Kilo-Org/kilocode/commit/2224b90019f9cc1efacd2e638902732fc6aade02) Thanks [@ShirleyRex](https://github.com/ShirleyRex)! - fix chat textarea autoscroll to keep caret visible
+- [#4117](https://github.com/Nova-Org/novacode/pull/4117) [`2224b90`](https://github.com/Nova-Org/novacode/commit/2224b90019f9cc1efacd2e638902732fc6aade02) Thanks [@ShirleyRex](https://github.com/ShirleyRex)! - fix chat textarea autoscroll to keep caret visible
 
-- [#4304](https://github.com/Kilo-Org/kilocode/pull/4304) [`8ca99f4`](https://github.com/Kilo-Org/kilocode/commit/8ca99f433810c188707c97ace90f5bbf82406d3c) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed an issue that caused the Kilo Gateway model list to never refresh
+- [#4304](https://github.com/Nova-Org/novacode/pull/4304) [`8ca99f4`](https://github.com/Nova-Org/novacode/commit/8ca99f433810c188707c97ace90f5bbf82406d3c) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed an issue that caused the Nova Gateway model list to never refresh
 
-- [#4288](https://github.com/Kilo-Org/kilocode/pull/4288) [`32efaf2`](https://github.com/Kilo-Org/kilocode/commit/32efaf2e79a5203cb85732316baa92d056b0c5a1) Thanks [@pandemicsyn](https://github.com/pandemicsyn)! - Begin emitting session_synced event
+- [#4288](https://github.com/Nova-Org/novacode/pull/4288) [`32efaf2`](https://github.com/Nova-Org/novacode/commit/32efaf2e79a5203cb85732316baa92d056b0c5a1) Thanks [@pandemicsyn](https://github.com/pandemicsyn)! - Begin emitting session_synced event
 
 ## 4.131.2
 
 ### Patch Changes
 
-- [#4281](https://github.com/Kilo-Org/kilocode/pull/4281) [`e0ed242`](https://github.com/Kilo-Org/kilocode/commit/e0ed24298b6dc33b8f1c52124b613503d85498aa) Thanks [@iscekic](https://github.com/iscekic)! - force release workflow run
+- [#4281](https://github.com/Nova-Org/novacode/pull/4281) [`e0ed242`](https://github.com/Nova-Org/novacode/commit/e0ed24298b6dc33b8f1c52124b613503d85498aa) Thanks [@iscekic](https://github.com/iscekic)! - force release workflow run
 
 ## 4.131.1
 
 ### Patch Changes
 
-- [#4278](https://github.com/Kilo-Org/kilocode/pull/4278) [`a389603`](https://github.com/Kilo-Org/kilocode/commit/a3896030e963d4c94200716035cce446e838be35) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix webview assets build
+- [#4278](https://github.com/Nova-Org/novacode/pull/4278) [`a389603`](https://github.com/Nova-Org/novacode/commit/a3896030e963d4c94200716035cce446e838be35) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix webview assets build
 
-- [#4275](https://github.com/Kilo-Org/kilocode/pull/4275) [`ce50373`](https://github.com/Kilo-Org/kilocode/commit/ce50373dd6ff4f011783e2f44dd41e6a9b77a8d3) Thanks [@iscekic](https://github.com/iscekic)! - use new endpoint for uploading session blobs via presigned r2 urls
+- [#4275](https://github.com/Nova-Org/novacode/pull/4275) [`ce50373`](https://github.com/Nova-Org/novacode/commit/ce50373dd6ff4f011783e2f44dd41e6a9b77a8d3) Thanks [@iscekic](https://github.com/iscekic)! - use new endpoint for uploading session blobs via presigned r2 urls
 
-- [#4270](https://github.com/Kilo-Org/kilocode/pull/4270) [`bdb7ed4`](https://github.com/Kilo-Org/kilocode/commit/bdb7ed4f2a148b297a21c39457fe13ddc38de3de) Thanks [@iscekic](https://github.com/iscekic)! - fix an issue where a session was duplicated instead of restored
+- [#4270](https://github.com/Nova-Org/novacode/pull/4270) [`bdb7ed4`](https://github.com/Nova-Org/novacode/commit/bdb7ed4f2a148b297a21c39457fe13ddc38de3de) Thanks [@iscekic](https://github.com/iscekic)! - fix an issue where a session was duplicated instead of restored
 
 ## 4.131.0
 
 ### Minor Changes
 
-- [#4083](https://github.com/Kilo-Org/kilocode/pull/4083) [`5696916`](https://github.com/Kilo-Org/kilocode/commit/5696916cb3e24175e3d48dff15d2609126d2c3d0) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.32.1-v3.34.7
-
+- [#4083](https://github.com/Nova-Org/novacode/pull/4083) [`5696916`](https://github.com/Nova-Org/novacode/commit/5696916cb3e24175e3d48dff15d2609126d2c3d0) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.32.1-v3.34.7
     - Enable native tool calling for Moonshot models (PR #9646 by @mrubens)
     - Fix: OpenRouter tool calls handling improvements (PR #9642 by @mrubens)
     - Fix: OpenRouter GPT-5 strict schema validation for read_file tool (PR #9633 by @daniel-lxs)
@@ -1263,90 +1254,89 @@
 
 ### Patch Changes
 
-- [#4211](https://github.com/Kilo-Org/kilocode/pull/4211) [`489b366`](https://github.com/Kilo-Org/kilocode/commit/489b3669c34f437dfd7c4b9a692cf7d84fff73a1) Thanks [@iscekic](https://github.com/iscekic)! - refactor session manager to better handle asynchronicity of file save events
+- [#4211](https://github.com/Nova-Org/novacode/pull/4211) [`489b366`](https://github.com/Nova-Org/novacode/commit/489b3669c34f437dfd7c4b9a692cf7d84fff73a1) Thanks [@iscekic](https://github.com/iscekic)! - refactor session manager to better handle asynchronicity of file save events
 
 ## 4.130.1
 
 ### Patch Changes
 
-- [#4222](https://github.com/Kilo-Org/kilocode/pull/4222) [`fffff4d`](https://github.com/Kilo-Org/kilocode/commit/fffff4d73ec8168443e06b9dc1cfcfebfdbf58fb) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix Jetbrains webview
+- [#4222](https://github.com/Nova-Org/novacode/pull/4222) [`fffff4d`](https://github.com/Nova-Org/novacode/commit/fffff4d73ec8168443e06b9dc1cfcfebfdbf58fb) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix Jetbrains webview
 
-- [#4176](https://github.com/Kilo-Org/kilocode/pull/4176) [`a71ee92`](https://github.com/Kilo-Org/kilocode/commit/a71ee92a8a35494a7693748951386c32e24b43ca) Thanks [@iscekic](https://github.com/iscekic)! - adds the /session show command
+- [#4176](https://github.com/Nova-Org/novacode/pull/4176) [`a71ee92`](https://github.com/Nova-Org/novacode/commit/a71ee92a8a35494a7693748951386c32e24b43ca) Thanks [@iscekic](https://github.com/iscekic)! - adds the /session show command
 
-- [#4227](https://github.com/Kilo-Org/kilocode/pull/4227) [`652ddda`](https://github.com/Kilo-Org/kilocode/commit/652ddda991e79ce8bcf4f9bf8af97b0c7a610bbc) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix VSCode webview assets
+- [#4227](https://github.com/Nova-Org/novacode/pull/4227) [`652ddda`](https://github.com/Nova-Org/novacode/commit/652ddda991e79ce8bcf4f9bf8af97b0c7a610bbc) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix VSCode webview assets
 
-- [#4204](https://github.com/Kilo-Org/kilocode/pull/4204) [`c200579`](https://github.com/Kilo-Org/kilocode/commit/c2005792b71ff8ea8d2e15286575294eb079066f) Thanks [@iscekic](https://github.com/iscekic)! - fixes session cleanup race conditions
+- [#4204](https://github.com/Nova-Org/novacode/pull/4204) [`c200579`](https://github.com/Nova-Org/novacode/commit/c2005792b71ff8ea8d2e15286575294eb079066f) Thanks [@iscekic](https://github.com/iscekic)! - fixes session cleanup race conditions
 
 ## 4.130.0
 
 ### Minor Changes
 
-- [#4131](https://github.com/Kilo-Org/kilocode/pull/4131) [`9a2ef51`](https://github.com/Kilo-Org/kilocode/commit/9a2ef512bb50143b6cff690f912f7fd8dcfa65b7) Thanks [@mcowger](https://github.com/mcowger)! - Fix tool parsing failure in write_to_file with JSON contents
+- [#4131](https://github.com/Nova-Org/novacode/pull/4131) [`9a2ef51`](https://github.com/Nova-Org/novacode/commit/9a2ef512bb50143b6cff690f912f7fd8dcfa65b7) Thanks [@mcowger](https://github.com/mcowger)! - Fix tool parsing failure in write_to_file with JSON contents
 
 ## 4.129.0
 
 ### Minor Changes
 
-- [#4171](https://github.com/Kilo-Org/kilocode/pull/4171) [`b4b086b`](https://github.com/Kilo-Org/kilocode/commit/b4b086b8520192685e6c262202ecd1863abf1af1) Thanks [@brianc](https://github.com/brianc)! - Fix: prevent crash-loop if ManagedIndexer fails to instantiate.
+- [#4171](https://github.com/Nova-Org/novacode/pull/4171) [`b4b086b`](https://github.com/Nova-Org/novacode/commit/b4b086b8520192685e6c262202ecd1863abf1af1) Thanks [@brianc](https://github.com/brianc)! - Fix: prevent crash-loop if ManagedIndexer fails to instantiate.
 
-- [#4145](https://github.com/Kilo-Org/kilocode/pull/4145) [`230bcec`](https://github.com/Kilo-Org/kilocode/commit/230bcec1cdb77bffad06c05aff1e33a908b077b8) Thanks [@iscekic](https://github.com/iscekic)! - add session sharing and forking
+- [#4145](https://github.com/Nova-Org/novacode/pull/4145) [`230bcec`](https://github.com/Nova-Org/novacode/commit/230bcec1cdb77bffad06c05aff1e33a908b077b8) Thanks [@iscekic](https://github.com/iscekic)! - add session sharing and forking
 
 ### Patch Changes
 
-- [#4145](https://github.com/Kilo-Org/kilocode/pull/4145) [`230bcec`](https://github.com/Kilo-Org/kilocode/commit/230bcec1cdb77bffad06c05aff1e33a908b077b8) Thanks [@iscekic](https://github.com/iscekic)! - update shared session url
+- [#4145](https://github.com/Nova-Org/novacode/pull/4145) [`230bcec`](https://github.com/Nova-Org/novacode/commit/230bcec1cdb77bffad06c05aff1e33a908b077b8) Thanks [@iscekic](https://github.com/iscekic)! - update shared session url
 
 ## 4.128.0
 
 ### Minor Changes
 
-- [#4165](https://github.com/Kilo-Org/kilocode/pull/4165) [`6e9ff79`](https://github.com/Kilo-Org/kilocode/commit/6e9ff7910ba1b51b1e460ce3c7d63e66d803cb70) Thanks [@EamonNerbonne](https://github.com/EamonNerbonne)! - Add separate "Delete" auto-approve option
+- [#4165](https://github.com/Nova-Org/novacode/pull/4165) [`6e9ff79`](https://github.com/Nova-Org/novacode/commit/6e9ff7910ba1b51b1e460ce3c7d63e66d803cb70) Thanks [@EamonNerbonne](https://github.com/EamonNerbonne)! - Add separate "Delete" auto-approve option
 
 ## 4.127.0
 
 ### Minor Changes
 
-- [#4129](https://github.com/Kilo-Org/kilocode/pull/4129) [`a2d5b29`](https://github.com/Kilo-Org/kilocode/commit/a2d5b29ce79853e6a98cb30b86af1844b6023833) Thanks [@brianc](https://github.com/brianc)! - Managed Code Indexing UI internals updated. Removed optionality in the UI, included link to backend management UI, and improved architecture for better incremental status and error reporting.
+- [#4129](https://github.com/Nova-Org/novacode/pull/4129) [`a2d5b29`](https://github.com/Nova-Org/novacode/commit/a2d5b29ce79853e6a98cb30b86af1844b6023833) Thanks [@brianc](https://github.com/brianc)! - Managed Code Indexing UI internals updated. Removed optionality in the UI, included link to backend management UI, and improved architecture for better incremental status and error reporting.
 
-- [#4066](https://github.com/Kilo-Org/kilocode/pull/4066) [`1831796`](https://github.com/Kilo-Org/kilocode/commit/18317963fbb5b02a1178f4579d5cb643cfbd531c) Thanks [@iscekic](https://github.com/iscekic)! - use shared session manager from extension folder
+- [#4066](https://github.com/Nova-Org/novacode/pull/4066) [`1831796`](https://github.com/Nova-Org/novacode/commit/18317963fbb5b02a1178f4579d5cb643cfbd531c) Thanks [@iscekic](https://github.com/iscekic)! - use shared session manager from extension folder
 
 ### Patch Changes
 
-- [#4128](https://github.com/Kilo-Org/kilocode/pull/4128) [`29fbec0`](https://github.com/Kilo-Org/kilocode/commit/29fbec0b6a9feb4bc79ba819a164b45ccec236bb) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix: show diff buttons after task completion
+- [#4128](https://github.com/Nova-Org/novacode/pull/4128) [`29fbec0`](https://github.com/Nova-Org/novacode/commit/29fbec0b6a9feb4bc79ba819a164b45ccec236bb) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix: show diff buttons after task completion
 
-- [#4120](https://github.com/Kilo-Org/kilocode/pull/4120) [`ebe1667`](https://github.com/Kilo-Org/kilocode/commit/ebe1667e8160a809a82f561627ce5494fa8808d3) Thanks [@iscekic](https://github.com/iscekic)! - increase session sync interval to 3s
+- [#4120](https://github.com/Nova-Org/novacode/pull/4120) [`ebe1667`](https://github.com/Nova-Org/novacode/commit/ebe1667e8160a809a82f561627ce5494fa8808d3) Thanks [@iscekic](https://github.com/iscekic)! - increase session sync interval to 3s
 
-- [#4071](https://github.com/Kilo-Org/kilocode/pull/4071) [`d5e89a1`](https://github.com/Kilo-Org/kilocode/commit/d5e89a141e8736902c6dcb2e8ab253cc8590abe7) Thanks [@inj-src](https://github.com/inj-src)! - Added support for Gemini 3 Pro Preview to Gemini CLI provider and removed deprecated models
+- [#4071](https://github.com/Nova-Org/novacode/pull/4071) [`d5e89a1`](https://github.com/Nova-Org/novacode/commit/d5e89a141e8736902c6dcb2e8ab253cc8590abe7) Thanks [@inj-src](https://github.com/inj-src)! - Added support for Gemini 3 Pro Preview to Gemini CLI provider and removed deprecated models
 
-- [#4137](https://github.com/Kilo-Org/kilocode/pull/4137) [`119e31b`](https://github.com/Kilo-Org/kilocode/commit/119e31b610f24621ae91731ce1596b6cded0ec24) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Slightly improved reliability of Opus with Claude Code
+- [#4137](https://github.com/Nova-Org/novacode/pull/4137) [`119e31b`](https://github.com/Nova-Org/novacode/commit/119e31b610f24621ae91731ce1596b6cded0ec24) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Slightly improved reliability of Opus with Claude Code
 
-- [#4149](https://github.com/Kilo-Org/kilocode/pull/4149) [`04497da`](https://github.com/Kilo-Org/kilocode/commit/04497dabeafffd7b1f1f8ab94e66198884c1390c) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix for double id's stored in profiles when activating a new profile and then adding a new one
+- [#4149](https://github.com/Nova-Org/novacode/pull/4149) [`04497da`](https://github.com/Nova-Org/novacode/commit/04497dabeafffd7b1f1f8ab94e66198884c1390c) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix for double id's stored in profiles when activating a new profile and then adding a new one
 
 ## 4.126.1
 
 ### Patch Changes
 
-- [#4114](https://github.com/Kilo-Org/kilocode/pull/4114) [`ac020d6`](https://github.com/Kilo-Org/kilocode/commit/ac020d600e5034ca025b71213aa64c5629cab219) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix profile editing when adjusting non-activated profile
+- [#4114](https://github.com/Nova-Org/novacode/pull/4114) [`ac020d6`](https://github.com/Nova-Org/novacode/commit/ac020d600e5034ca025b71213aa64c5629cab219) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix profile editing when adjusting non-activated profile
 
 ## 4.126.0
 
 ### Minor Changes
 
-- [#4026](https://github.com/Kilo-Org/kilocode/pull/4026) [`a44ec02`](https://github.com/Kilo-Org/kilocode/commit/a44ec024347d345f46bf01486a6913f0e1e5a8c2) Thanks [@quantizoor](https://github.com/quantizoor)! - Add possibility to specify Azure deployment name for Anthropic models
+- [#4026](https://github.com/Nova-Org/novacode/pull/4026) [`a44ec02`](https://github.com/Nova-Org/novacode/commit/a44ec024347d345f46bf01486a6913f0e1e5a8c2) Thanks [@quantizoor](https://github.com/quantizoor)! - Add possibility to specify Azure deployment name for Anthropic models
 
 ## 4.125.1
 
 ### Patch Changes
 
-- [#4057](https://github.com/Kilo-Org/kilocode/pull/4057) [`c2a7407`](https://github.com/Kilo-Org/kilocode/commit/c2a7407e8964c5fa8114d17ab5a6936b81c785ab) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Kilo Code sidebar no longer steals focus on startup when managed codebase indexing is active
+- [#4057](https://github.com/Nova-Org/novacode/pull/4057) [`c2a7407`](https://github.com/Nova-Org/novacode/commit/c2a7407e8964c5fa8114d17ab5a6936b81c785ab) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Nova Code sidebar no longer steals focus on startup when managed codebase indexing is active
 
 ## 4.125.0
 
 ### Minor Changes
 
-- [#2827](https://github.com/Kilo-Org/kilocode/pull/2827) [`c7793db`](https://github.com/Kilo-Org/kilocode/commit/c7793dbd44371431f68deb76863af5f0c21375f4) Thanks [@bea-leanix](https://github.com/bea-leanix)! - Added SAP AI Core provider
+- [#2827](https://github.com/Nova-Org/novacode/pull/2827) [`c7793db`](https://github.com/Nova-Org/novacode/commit/c7793dbd44371431f68deb76863af5f0c21375f4) Thanks [@bea-leanix](https://github.com/bea-leanix)! - Added SAP AI Core provider
 
-- [#3895](https://github.com/Kilo-Org/kilocode/pull/3895) [`f5d3459`](https://github.com/Kilo-Org/kilocode/commit/f5d34595f3a8c9436fb870b5f22bb8094db9f3c5) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.30.1-v3.32.0
-
+- [#3895](https://github.com/Nova-Org/novacode/pull/3895) [`f5d3459`](https://github.com/Nova-Org/novacode/commit/f5d34595f3a8c9436fb870b5f22bb8094db9f3c5) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.30.1-v3.32.0
     - Feature: Support for OpenAI Responses 24 hour prompt caching (PR #9259 by @hannesrudolph)
     - Fix: OpenAI Native encrypted_content handling and remove gpt-5-chat-latest verbosity flag (#9225 by @politsin, PR by @hannesrudolph)
     - Refactor: Rename sliding-window to context-management and truncateConversationIfNeeded to manageContext (thanks @hannesrudolph!)
@@ -1380,166 +1370,165 @@
     - Add file path tooltips with centralized PathTooltip component (#8278 by @da2ce7, PR by @daniel-lxs)
     - Fix: Correct OpenRouter Mistral model embedding dimension from 3072 to 1536 (thanks @daniel-lxs!)
 
-- [#3868](https://github.com/Kilo-Org/kilocode/pull/3868) [`cf6ed3e`](https://github.com/Kilo-Org/kilocode/commit/cf6ed3ed3bc7dfe0268121f3e68d422f3ffadfff) Thanks [@iscekic](https://github.com/iscekic)! - add sessions support
+- [#3868](https://github.com/Nova-Org/novacode/pull/3868) [`cf6ed3e`](https://github.com/Nova-Org/novacode/commit/cf6ed3ed3bc7dfe0268121f3e68d422f3ffadfff) Thanks [@iscekic](https://github.com/iscekic)! - add sessions support
 
 ### Patch Changes
 
-- [#4059](https://github.com/Kilo-Org/kilocode/pull/4059) [`d47a3d5`](https://github.com/Kilo-Org/kilocode/commit/d47a3d52dfbf669fdf50be53c416b060cd537e40) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix error on task resumption with some providers when native tool calls are enabled
+- [#4059](https://github.com/Nova-Org/novacode/pull/4059) [`d47a3d5`](https://github.com/Nova-Org/novacode/commit/d47a3d52dfbf669fdf50be53c416b060cd537e40) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix error on task resumption with some providers when native tool calls are enabled
 
-- [#3565](https://github.com/Kilo-Org/kilocode/pull/3565) [`4a05694`](https://github.com/Kilo-Org/kilocode/commit/4a05694ac84007397a2b99c826151d6383506001) Thanks [@marcus-v-rodrigues](https://github.com/marcus-v-rodrigues)! - Fix 403 error for Gemini CLI by removing 'default' project fallback
+- [#3565](https://github.com/Nova-Org/novacode/pull/3565) [`4a05694`](https://github.com/Nova-Org/novacode/commit/4a05694ac84007397a2b99c826151d6383506001) Thanks [@marcus-v-rodrigues](https://github.com/marcus-v-rodrigues)! - Fix 403 error for Gemini CLI by removing 'default' project fallback
 
-- [#2540](https://github.com/Kilo-Org/kilocode/pull/2540) [`591da2b`](https://github.com/Kilo-Org/kilocode/commit/591da2b8dae2d4c72c0663302e19dfe6e30b1617) Thanks [@gerardbalaoro](https://github.com/gerardbalaoro)! - Support for MCP servers in `.cursor/mcp.json`
+- [#2540](https://github.com/Nova-Org/novacode/pull/2540) [`591da2b`](https://github.com/Nova-Org/novacode/commit/591da2b8dae2d4c72c0663302e19dfe6e30b1617) Thanks [@gerardbalaoro](https://github.com/gerardbalaoro)! - Support for MCP servers in `.cursor/mcp.json`
 
-- [#2324](https://github.com/Kilo-Org/kilocode/pull/2324) [`ab9b94b`](https://github.com/Kilo-Org/kilocode/commit/ab9b94b0d593bccd222c5cbb7fdffe968d4c6a40) Thanks [@mikkihugo](https://github.com/mikkihugo)! - Add VS Code Settings Sync integration
+- [#2324](https://github.com/Nova-Org/novacode/pull/2324) [`ab9b94b`](https://github.com/Nova-Org/novacode/commit/ab9b94b0d593bccd222c5cbb7fdffe968d4c6a40) Thanks [@mikkihugo](https://github.com/mikkihugo)! - Add VS Code Settings Sync integration
 
-- [#3193](https://github.com/Kilo-Org/kilocode/pull/3193) [`6a895de`](https://github.com/Kilo-Org/kilocode/commit/6a895dec08d6afccb21dc431c021200f52c4c7cf) Thanks [@siulong](https://github.com/siulong)! - Fix rules folder path when deleting the rules
+- [#3193](https://github.com/Nova-Org/novacode/pull/3193) [`6a895de`](https://github.com/Nova-Org/novacode/commit/6a895dec08d6afccb21dc431c021200f52c4c7cf) Thanks [@siulong](https://github.com/siulong)! - Fix rules folder path when deleting the rules
 
-- [#3804](https://github.com/Kilo-Org/kilocode/pull/3804) [`5d4b38b`](https://github.com/Kilo-Org/kilocode/commit/5d4b38b67ed670da1de651de0491906a594174ac) Thanks [@skridlevsky](https://github.com/skridlevsky)! - fix(settings): codebase indexing toggle not persisting
+- [#3804](https://github.com/Nova-Org/novacode/pull/3804) [`5d4b38b`](https://github.com/Nova-Org/novacode/commit/5d4b38b67ed670da1de651de0491906a594174ac) Thanks [@skridlevsky](https://github.com/skridlevsky)! - fix(settings): codebase indexing toggle not persisting
 
-- [#3484](https://github.com/Kilo-Org/kilocode/pull/3484) [`ac01ae3`](https://github.com/Kilo-Org/kilocode/commit/ac01ae30e735502b6cb265f79ab6f82bf954fb52) Thanks [@mental-lab](https://github.com/mental-lab)! - Add warning for ANTHROPIC_API_KEY conflicts with Claude Code provider
+- [#3484](https://github.com/Nova-Org/novacode/pull/3484) [`ac01ae3`](https://github.com/Nova-Org/novacode/commit/ac01ae30e735502b6cb265f79ab6f82bf954fb52) Thanks [@mental-lab](https://github.com/mental-lab)! - Add warning for ANTHROPIC_API_KEY conflicts with Claude Code provider
 
-- [#3087](https://github.com/Kilo-Org/kilocode/pull/3087) [`ebab11b`](https://github.com/Kilo-Org/kilocode/commit/ebab11b033dd354c175a4027657446b745a82d96) Thanks [@jinhan1414](https://github.com/jinhan1414)! - Unify slash command parsing and expand mention detection
+- [#3087](https://github.com/Nova-Org/novacode/pull/3087) [`ebab11b`](https://github.com/Nova-Org/novacode/commit/ebab11b033dd354c175a4027657446b745a82d96) Thanks [@jinhan1414](https://github.com/jinhan1414)! - Unify slash command parsing and expand mention detection
 
 ## 4.124.0
 
 ### Minor Changes
 
-- [#2587](https://github.com/Kilo-Org/kilocode/pull/2587) [`f3de1e7`](https://github.com/Kilo-Org/kilocode/commit/f3de1e713c3a61fe04a30aa26e33ef7431ed63f4) Thanks [@NaccOll](https://github.com/NaccOll)! - Add LanceDB vector store support
+- [#2587](https://github.com/Nova-Org/novacode/pull/2587) [`f3de1e7`](https://github.com/Nova-Org/novacode/commit/f3de1e713c3a61fe04a30aa26e33ef7431ed63f4) Thanks [@NaccOll](https://github.com/NaccOll)! - Add LanceDB vector store support
 
 ### Patch Changes
 
-- [#4045](https://github.com/Kilo-Org/kilocode/pull/4045) [`b14afb1`](https://github.com/Kilo-Org/kilocode/commit/b14afb11363a62d45d1feb176d9b5054d75d43a9) Thanks [@eshurakov](https://github.com/eshurakov)! - Nano GPT provider support (by @b3nw)
+- [#4045](https://github.com/Nova-Org/novacode/pull/4045) [`b14afb1`](https://github.com/Nova-Org/novacode/commit/b14afb11363a62d45d1feb176d9b5054d75d43a9) Thanks [@eshurakov](https://github.com/eshurakov)! - Nano GPT provider support (by @b3nw)
 
-- [#4023](https://github.com/Kilo-Org/kilocode/pull/4023) [`5af4d01`](https://github.com/Kilo-Org/kilocode/commit/5af4d01b3e0d4467e8234c1c445d098c1f6756f2) Thanks [@markijbema](https://github.com/markijbema)! - Small redesign of the autocomplete statusbar/tooltip
+- [#4023](https://github.com/Nova-Org/novacode/pull/4023) [`5af4d01`](https://github.com/Nova-Org/novacode/commit/5af4d01b3e0d4467e8234c1c445d098c1f6756f2) Thanks [@markijbema](https://github.com/markijbema)! - Small redesign of the autocomplete statusbar/tooltip
 
 ## 4.123.0
 
 ### Minor Changes
 
-- [#3020](https://github.com/Kilo-Org/kilocode/pull/3020) [`147786c`](https://github.com/Kilo-Org/kilocode/commit/147786c81238c1adea9c2bddf649d0763dd449d2) Thanks [@CaiDingxian](https://github.com/CaiDingxian)! - Add independent provider setup for Fast Apply feature
+- [#3020](https://github.com/Nova-Org/novacode/pull/3020) [`147786c`](https://github.com/Nova-Org/novacode/commit/147786c81238c1adea9c2bddf649d0763dd449d2) Thanks [@CaiDingxian](https://github.com/CaiDingxian)! - Add independent provider setup for Fast Apply feature
 
 ### Patch Changes
 
-- [#4019](https://github.com/Kilo-Org/kilocode/pull/4019) [`f16c31b`](https://github.com/Kilo-Org/kilocode/commit/f16c31bf921a642e23d54fb2dfd768e07be8de71) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add Opus 4.5 to Claude Code provider
+- [#4019](https://github.com/Nova-Org/novacode/pull/4019) [`f16c31b`](https://github.com/Nova-Org/novacode/commit/f16c31bf921a642e23d54fb2dfd768e07be8de71) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add Opus 4.5 to Claude Code provider
 
-- [#3445](https://github.com/Kilo-Org/kilocode/pull/3445) [`8065f7a`](https://github.com/Kilo-Org/kilocode/commit/8065f7a44958ec2584ee591d7e936eacdfe73951) Thanks [@jeanduplessis](https://github.com/jeanduplessis)! - fix: apply file limit after .kilocodeignore filtering instead of before
+- [#3445](https://github.com/Nova-Org/novacode/pull/3445) [`8065f7a`](https://github.com/Nova-Org/novacode/commit/8065f7a44958ec2584ee591d7e936eacdfe73951) Thanks [@jeanduplessis](https://github.com/jeanduplessis)! - fix: apply file limit after .novacodeignore filtering instead of before
 
-- [#3988](https://github.com/Kilo-Org/kilocode/pull/3988) [`a169e6f`](https://github.com/Kilo-Org/kilocode/commit/a169e6fb0632f06b3271fdcb03d01d5ab7eebd69) Thanks [@dltechy](https://github.com/dltechy)! - Fix an issue where workflows are not working except as the initial prompt of a task
+- [#3988](https://github.com/Nova-Org/novacode/pull/3988) [`a169e6f`](https://github.com/Nova-Org/novacode/commit/a169e6fb0632f06b3271fdcb03d01d5ab7eebd69) Thanks [@dltechy](https://github.com/dltechy)! - Fix an issue where workflows are not working except as the initial prompt of a task
 
 ## 4.122.1
 
 ### Patch Changes
 
-- [#4000](https://github.com/Kilo-Org/kilocode/pull/4000) [`3ef2237`](https://github.com/Kilo-Org/kilocode/commit/3ef2237493f48ac212732a5b7d67eceb4af0d594) Thanks [@brianc](https://github.com/brianc)! - There was previously some debug log spam introduced for the Managed Indexing feature. This change removes those logs.
+- [#4000](https://github.com/Nova-Org/novacode/pull/4000) [`3ef2237`](https://github.com/Nova-Org/novacode/commit/3ef2237493f48ac212732a5b7d67eceb4af0d594) Thanks [@brianc](https://github.com/brianc)! - There was previously some debug log spam introduced for the Managed Indexing feature. This change removes those logs.
 
-- [#4005](https://github.com/Kilo-Org/kilocode/pull/4005) [`5aa56df`](https://github.com/Kilo-Org/kilocode/commit/5aa56df5123d33ba0ecadeabb3727b57974a842e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add Claude Opus 4.5 support, including verbosity controls for Kilo Gateway, OpenRouter and Anthropic providers
+- [#4005](https://github.com/Nova-Org/novacode/pull/4005) [`5aa56df`](https://github.com/Nova-Org/novacode/commit/5aa56df5123d33ba0ecadeabb3727b57974a842e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add Claude Opus 4.5 support, including verbosity controls for Nova Gateway, OpenRouter and Anthropic providers
 
 ## 4.122.0
 
 ### Minor Changes
 
-- [#3609](https://github.com/Kilo-Org/kilocode/pull/3609) [`65191fd`](https://github.com/Kilo-Org/kilocode/commit/65191fd671e3b4b376efe572b4e605dbf9d3a5d2) Thanks [@mcowger](https://github.com/mcowger)! - Synthetic provider to use updated models endpoint and dynamic fetcher
+- [#3609](https://github.com/Nova-Org/novacode/pull/3609) [`65191fd`](https://github.com/Nova-Org/novacode/commit/65191fd671e3b4b376efe572b4e605dbf9d3a5d2) Thanks [@mcowger](https://github.com/mcowger)! - Synthetic provider to use updated models endpoint and dynamic fetcher
 
-- [#3674](https://github.com/Kilo-Org/kilocode/pull/3674) [`cdd439a`](https://github.com/Kilo-Org/kilocode/commit/cdd439a098f0b1ccb75f8b8cad53a35494e6ab29) Thanks [@mental-lab](https://github.com/mental-lab)! - Kilo Code can now delete files and directories without using command line tools.
+- [#3674](https://github.com/Nova-Org/novacode/pull/3674) [`cdd439a`](https://github.com/Nova-Org/novacode/commit/cdd439a098f0b1ccb75f8b8cad53a35494e6ab29) Thanks [@mental-lab](https://github.com/mental-lab)! - Nova Code can now delete files and directories without using command line tools.
 
 ### Patch Changes
 
-- [#3925](https://github.com/Kilo-Org/kilocode/pull/3925) [`02abc84`](https://github.com/Kilo-Org/kilocode/commit/02abc84c41e4a12dd45ff15d003ce8fbb4a6bfed) Thanks [@jrf0110](https://github.com/jrf0110)! - Improve organization/managed indexing performance
+- [#3925](https://github.com/Nova-Org/novacode/pull/3925) [`02abc84`](https://github.com/Nova-Org/novacode/commit/02abc84c41e4a12dd45ff15d003ce8fbb4a6bfed) Thanks [@jrf0110](https://github.com/jrf0110)! - Improve organization/managed indexing performance
 
 ## 4.121.2
 
 ### Patch Changes
 
-- [#3951](https://github.com/Kilo-Org/kilocode/pull/3951) [`1f4f9bd`](https://github.com/Kilo-Org/kilocode/commit/1f4f9bdf739d5b0dec0fdef366c1d58b6d3ffbcb) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add Gemini 3 Pro Image Preview
+- [#3951](https://github.com/Nova-Org/novacode/pull/3951) [`1f4f9bd`](https://github.com/Nova-Org/novacode/commit/1f4f9bdf739d5b0dec0fdef366c1d58b6d3ffbcb) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add Gemini 3 Pro Image Preview
 
-- [#3879](https://github.com/Kilo-Org/kilocode/pull/3879) [`d07e192`](https://github.com/Kilo-Org/kilocode/commit/d07e1924fe5be984a630442cfcc8e3bd3a4879b1) Thanks [@Maosghoul](https://github.com/Maosghoul)! - Optimized MiniMax M2 interleaved thinking by merging environment details into tool results.
+- [#3879](https://github.com/Nova-Org/novacode/pull/3879) [`d07e192`](https://github.com/Nova-Org/novacode/commit/d07e1924fe5be984a630442cfcc8e3bd3a4879b1) Thanks [@Maosghoul](https://github.com/Maosghoul)! - Optimized MiniMax M2 interleaved thinking by merging environment details into tool results.
 
-- [#3939](https://github.com/Kilo-Org/kilocode/pull/3939) [`189aee3`](https://github.com/Kilo-Org/kilocode/commit/189aee3a36906857d1e6fb02c05081382e87bf4e) Thanks [@ajspetner](https://github.com/ajspetner)! - Added grok-4-1-fast-reasoning and grok-4-1-fast-non-reasoning models
+- [#3939](https://github.com/Nova-Org/novacode/pull/3939) [`189aee3`](https://github.com/Nova-Org/novacode/commit/189aee3a36906857d1e6fb02c05081382e87bf4e) Thanks [@ajspetner](https://github.com/ajspetner)! - Added grok-4-1-fast-reasoning and grok-4-1-fast-non-reasoning models
 
 ## [v4.121.1]
 
-- [#3601](https://github.com/Kilo-Org/kilocode/pull/3601) [`eaf1f5a`](https://github.com/Kilo-Org/kilocode/commit/eaf1f5ab7d2916c4845093d605e54301938d8383) Thanks [@hassoncs](https://github.com/hassoncs)! - Now items in the Chat context menu will not be auto selected if your cursor is already on the row when the items change
+- [#3601](https://github.com/Nova-Org/novacode/pull/3601) [`eaf1f5a`](https://github.com/Nova-Org/novacode/commit/eaf1f5ab7d2916c4845093d605e54301938d8383) Thanks [@hassoncs](https://github.com/hassoncs)! - Now items in the Chat context menu will not be auto selected if your cursor is already on the row when the items change
 
-- [#3915](https://github.com/Kilo-Org/kilocode/pull/3915) [`c096af9`](https://github.com/Kilo-Org/kilocode/commit/c096af99d3eb6d18a7faa1bf7234250802225645) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improve file edit success rates for non-Claude models with native tool calling
+- [#3915](https://github.com/Nova-Org/novacode/pull/3915) [`c096af9`](https://github.com/Nova-Org/novacode/commit/c096af99d3eb6d18a7faa1bf7234250802225645) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improve file edit success rates for non-Claude models with native tool calling
 
-- [#3912](https://github.com/Kilo-Org/kilocode/pull/3912) [`6036695`](https://github.com/Kilo-Org/kilocode/commit/60366955f4a7b73fe0c32c592a324ce2b6b07e30) Thanks [@markijbema](https://github.com/markijbema)! - Do not show browser window when closing the browser
+- [#3912](https://github.com/Nova-Org/novacode/pull/3912) [`6036695`](https://github.com/Nova-Org/novacode/commit/60366955f4a7b73fe0c32c592a324ce2b6b07e30) Thanks [@markijbema](https://github.com/markijbema)! - Do not show browser window when closing the browser
 
-- [#3911](https://github.com/Kilo-Org/kilocode/pull/3911) [`ae8f4c7`](https://github.com/Kilo-Org/kilocode/commit/ae8f4c7625168d64aab2e621516d47a15e874a0d) Thanks [@markijbema](https://github.com/markijbema)! - Fixed model search, now finds gemini again
+- [#3911](https://github.com/Nova-Org/novacode/pull/3911) [`ae8f4c7`](https://github.com/Nova-Org/novacode/commit/ae8f4c7625168d64aab2e621516d47a15e874a0d) Thanks [@markijbema](https://github.com/markijbema)! - Fixed model search, now finds gemini again
 
 ## [v4.121.0]
 
-- [#3886](https://github.com/Kilo-Org/kilocode/pull/3886) [`00e6fb5`](https://github.com/Kilo-Org/kilocode/commit/00e6fb59a42dcf827f7cfe72516052c561723cd0) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Improve XLSX support
+- [#3886](https://github.com/Nova-Org/novacode/pull/3886) [`00e6fb5`](https://github.com/Nova-Org/novacode/commit/00e6fb59a42dcf827f7cfe72516052c561723cd0) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Improve XLSX support
 
 ### Patch Changes
 
-- [#3872](https://github.com/Kilo-Org/kilocode/pull/3872) [`75509af`](https://github.com/Kilo-Org/kilocode/commit/75509af40f2daefda36c492fd87b5f40966ec835) Thanks [@ShivamB25](https://github.com/ShivamB25)! - Update default Gemini model to gemini-3-pro-preview
+- [#3872](https://github.com/Nova-Org/novacode/pull/3872) [`75509af`](https://github.com/Nova-Org/novacode/commit/75509af40f2daefda36c492fd87b5f40966ec835) Thanks [@ShivamB25](https://github.com/ShivamB25)! - Update default Gemini model to gemini-3-pro-preview
 
-- [#3878](https://github.com/Kilo-Org/kilocode/pull/3878) [`7b01fc8`](https://github.com/Kilo-Org/kilocode/commit/7b01fc880d76eb398c9cfca0c9a09478f69c3478) Thanks [@markijbema](https://github.com/markijbema)! - Fix manual configuration in welcome flow
+- [#3878](https://github.com/Nova-Org/novacode/pull/3878) [`7b01fc8`](https://github.com/Nova-Org/novacode/commit/7b01fc880d76eb398c9cfca0c9a09478f69c3478) Thanks [@markijbema](https://github.com/markijbema)! - Fix manual configuration in welcome flow
 
 ## [v4.120.0]
 
-- [#3778](https://github.com/Kilo-Org/kilocode/pull/3778) [`b9a9f70`](https://github.com/Kilo-Org/kilocode/commit/b9a9f70bc5963aa2a2d1cae4ef551c22b725a330) Thanks [@markijbema](https://github.com/markijbema)! - Made the dropdown searches more intuitive, search like vscode does
+- [#3778](https://github.com/Nova-Org/novacode/pull/3778) [`b9a9f70`](https://github.com/Nova-Org/novacode/commit/b9a9f70bc5963aa2a2d1cae4ef551c22b725a330) Thanks [@markijbema](https://github.com/markijbema)! - Made the dropdown searches more intuitive, search like vscode does
 
 ### Patch Changes
 
-- [#3867](https://github.com/Kilo-Org/kilocode/pull/3867) [`23b805b`](https://github.com/Kilo-Org/kilocode/commit/23b805b051d05d3610b9cadc9842f8d0345acf1e) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add Gemini 3 Pro Preview to Gemini and Vertex providers (thanks @Sn0wo2!)
+- [#3867](https://github.com/Nova-Org/novacode/pull/3867) [`23b805b`](https://github.com/Nova-Org/novacode/commit/23b805b051d05d3610b9cadc9842f8d0345acf1e) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add Gemini 3 Pro Preview to Gemini and Vertex providers (thanks @Sn0wo2!)
 
-- [#3832](https://github.com/Kilo-Org/kilocode/pull/3832) [`9d77cb1`](https://github.com/Kilo-Org/kilocode/commit/9d77cb1e62d277c2cd9a9d66373d582668e3dd09) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Reduced the incidence of unsuccessful edits with MiniMax M2
+- [#3832](https://github.com/Nova-Org/novacode/pull/3832) [`9d77cb1`](https://github.com/Nova-Org/novacode/commit/9d77cb1e62d277c2cd9a9d66373d582668e3dd09) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Reduced the incidence of unsuccessful edits with MiniMax M2
 
 ## [v4.119.6]
 
-- [#3836](https://github.com/Kilo-Org/kilocode/pull/3836) [`b5cf145`](https://github.com/Kilo-Org/kilocode/commit/b5cf145c1542af1f317a51fb4f55d79960aad711) Thanks [@mcowger](https://github.com/mcowger)! - Add GPT-5.1 models for OpenAI provider
+- [#3836](https://github.com/Nova-Org/novacode/pull/3836) [`b5cf145`](https://github.com/Nova-Org/novacode/commit/b5cf145c1542af1f317a51fb4f55d79960aad711) Thanks [@mcowger](https://github.com/mcowger)! - Add GPT-5.1 models for OpenAI provider
 
-- [#3732](https://github.com/Kilo-Org/kilocode/pull/3732) [`c75dd9f`](https://github.com/Kilo-Org/kilocode/commit/c75dd9f8d66b291259daa6ef2750168fe9727a70) Thanks [@markijbema](https://github.com/markijbema)! - When editting a profile is the settings, do not implicitly switch to that profile
+- [#3732](https://github.com/Nova-Org/novacode/pull/3732) [`c75dd9f`](https://github.com/Nova-Org/novacode/commit/c75dd9f8d66b291259daa6ef2750168fe9727a70) Thanks [@markijbema](https://github.com/markijbema)! - When editting a profile is the settings, do not implicitly switch to that profile
 
-- [#3793](https://github.com/Kilo-Org/kilocode/pull/3793) [`20f0b71`](https://github.com/Kilo-Org/kilocode/commit/20f0b71ba8009269651f617127c4e8fdbd486f20) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Default GPT 5.x Codex to JSON style tool calls
+- [#3793](https://github.com/Nova-Org/novacode/pull/3793) [`20f0b71`](https://github.com/Nova-Org/novacode/commit/20f0b71ba8009269651f617127c4e8fdbd486f20) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Default GPT 5.x Codex to JSON style tool calls
 
 ## [v4.119.5]
 
-- [#3794](https://github.com/Kilo-Org/kilocode/pull/3794) [`180998d`](https://github.com/Kilo-Org/kilocode/commit/180998d889e08258950ed1aa9eb220d9daf302e9) Thanks [@mcowger](https://github.com/mcowger)! - Fix LiteLLM Provider Config crash when uninitialized.
+- [#3794](https://github.com/Nova-Org/novacode/pull/3794) [`180998d`](https://github.com/Nova-Org/novacode/commit/180998d889e08258950ed1aa9eb220d9daf302e9) Thanks [@mcowger](https://github.com/mcowger)! - Fix LiteLLM Provider Config crash when uninitialized.
 
-- [#3792](https://github.com/Kilo-Org/kilocode/pull/3792) [`b8c85fe`](https://github.com/Kilo-Org/kilocode/commit/b8c85fed3c1060b724157523a7f1e03e59efbf54) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Prevent MiniMax provider from using ANTHROPIC_AUTH_TOKEN environment variable
+- [#3792](https://github.com/Nova-Org/novacode/pull/3792) [`b8c85fe`](https://github.com/Nova-Org/novacode/commit/b8c85fed3c1060b724157523a7f1e03e59efbf54) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Prevent MiniMax provider from using ANTHROPIC_AUTH_TOKEN environment variable
 
-- [#3801](https://github.com/Kilo-Org/kilocode/pull/3801) [`cfc1ab8`](https://github.com/Kilo-Org/kilocode/commit/cfc1ab8b22327cdf079a0191af8fdb988ad5efca) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Potential fix for hanging chat
+- [#3801](https://github.com/Nova-Org/novacode/pull/3801) [`cfc1ab8`](https://github.com/Nova-Org/novacode/commit/cfc1ab8b22327cdf079a0191af8fdb988ad5efca) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Potential fix for hanging chat
 
-- [#3613](https://github.com/Kilo-Org/kilocode/pull/3613) [`feda236`](https://github.com/Kilo-Org/kilocode/commit/feda2361b66a11cb2d5766dc2f0fd56e716de03e) Thanks [@mcowger](https://github.com/mcowger)! - Enable native tool calling for LiteLLM provider
+- [#3613](https://github.com/Nova-Org/novacode/pull/3613) [`feda236`](https://github.com/Nova-Org/novacode/commit/feda2361b66a11cb2d5766dc2f0fd56e716de03e) Thanks [@mcowger](https://github.com/mcowger)! - Enable native tool calling for LiteLLM provider
 
 ## [v4.119.4]
 
-- [#3788](https://github.com/Kilo-Org/kilocode/pull/3788) [`49131b7`](https://github.com/Kilo-Org/kilocode/commit/49131b78bef98e1a24b6bf9457e072c9acc1230f) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix hang when model wants to write JSON file with native tool calls enabled
+- [#3788](https://github.com/Nova-Org/novacode/pull/3788) [`49131b7`](https://github.com/Nova-Org/novacode/commit/49131b78bef98e1a24b6bf9457e072c9acc1230f) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix hang when model wants to write JSON file with native tool calls enabled
 
 ## [v4.119.3]
 
-- [#3766](https://github.com/Kilo-Org/kilocode/pull/3766) [`e2fb2a5`](https://github.com/Kilo-Org/kilocode/commit/e2fb2a57703c19b5ee9c10d6c35ccc68d3cdcfe7) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix Z.ai provider not working with JSON-style tool calls (thanks @mcowger for reporting)
+- [#3766](https://github.com/Nova-Org/novacode/pull/3766) [`e2fb2a5`](https://github.com/Nova-Org/novacode/commit/e2fb2a57703c19b5ee9c10d6c35ccc68d3cdcfe7) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix Z.ai provider not working with JSON-style tool calls (thanks @mcowger for reporting)
 
-- [#3768](https://github.com/Kilo-Org/kilocode/pull/3768) [`72476d5`](https://github.com/Kilo-Org/kilocode/commit/72476d53dfdca589070db67ab6d826e52374515f) Thanks [@iscekic](https://github.com/iscekic)! - preapprove codebase_search
+- [#3768](https://github.com/Nova-Org/novacode/pull/3768) [`72476d5`](https://github.com/Nova-Org/novacode/commit/72476d53dfdca589070db67ab6d826e52374515f) Thanks [@iscekic](https://github.com/iscekic)! - preapprove codebase_search
 
-- [#3750](https://github.com/Kilo-Org/kilocode/pull/3750) [`02832d7`](https://github.com/Kilo-Org/kilocode/commit/02832d70ab51b4bacd9608e8bdad271ccec9eddb) Thanks [@jrf0110](https://github.com/jrf0110)! - Fixes a bug where managed code indexing would not start due to mismatching org schemas.
+- [#3750](https://github.com/Nova-Org/novacode/pull/3750) [`02832d7`](https://github.com/Nova-Org/novacode/commit/02832d70ab51b4bacd9608e8bdad271ccec9eddb) Thanks [@jrf0110](https://github.com/jrf0110)! - Fixes a bug where managed code indexing would not start due to mismatching org schemas.
 
-- [#3772](https://github.com/Kilo-Org/kilocode/pull/3772) [`5c5d207`](https://github.com/Kilo-Org/kilocode/commit/5c5d207c586af1bb5e5a0d97146e1e0e64db181c) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Prevent duplicate tool results when native tool calling is enabled
+- [#3772](https://github.com/Nova-Org/novacode/pull/3772) [`5c5d207`](https://github.com/Nova-Org/novacode/commit/5c5d207c586af1bb5e5a0d97146e1e0e64db181c) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Prevent duplicate tool results when native tool calling is enabled
 
-- [#3754](https://github.com/Kilo-Org/kilocode/pull/3754) [`47b921b`](https://github.com/Kilo-Org/kilocode/commit/47b921b07768a1e6712b74c013222eac28ce0e6b) Thanks [@mcowger](https://github.com/mcowger)! - Synthetic provider now uses JSON tool calls by default
+- [#3754](https://github.com/Nova-Org/novacode/pull/3754) [`47b921b`](https://github.com/Nova-Org/novacode/commit/47b921b07768a1e6712b74c013222eac28ce0e6b) Thanks [@mcowger](https://github.com/mcowger)! - Synthetic provider now uses JSON tool calls by default
 
 ## [v4.119.2]
 
-- [#3740](https://github.com/Kilo-Org/kilocode/pull/3740) [`61c6c9a`](https://github.com/Kilo-Org/kilocode/commit/61c6c9abf2b81f2eedf29aec074c1028abdee0ad) Thanks [@jrf0110](https://github.com/jrf0110)! - Managed codebase indexing is a new experimental feature that should be disabled by default. It is disabled on the backend, but the extension defaults to true. This change disables the feature by default.
+- [#3740](https://github.com/Nova-Org/novacode/pull/3740) [`61c6c9a`](https://github.com/Nova-Org/novacode/commit/61c6c9abf2b81f2eedf29aec074c1028abdee0ad) Thanks [@jrf0110](https://github.com/jrf0110)! - Managed codebase indexing is a new experimental feature that should be disabled by default. It is disabled on the backend, but the extension defaults to true. This change disables the feature by default.
 
-- [#3711](https://github.com/Kilo-Org/kilocode/pull/3711) [`097b1e3`](https://github.com/Kilo-Org/kilocode/commit/097b1e3fbaf04c7859c6c07a5bbf64b911b50d55) Thanks [@CyberRookie-X](https://github.com/CyberRookie-X)! - Add doubao-seed-code model to Doubao provider
+- [#3711](https://github.com/Nova-Org/novacode/pull/3711) [`097b1e3`](https://github.com/Nova-Org/novacode/commit/097b1e3fbaf04c7859c6c07a5bbf64b911b50d55) Thanks [@CyberRookie-X](https://github.com/CyberRookie-X)! - Add doubao-seed-code model to Doubao provider
 
-- [#3734](https://github.com/Kilo-Org/kilocode/pull/3734) [`2a6c171`](https://github.com/Kilo-Org/kilocode/commit/2a6c171db108609f778e422cbd6b772ddcc55ad4) Thanks [@ctsstc](https://github.com/ctsstc)! - Add model Kimi K2 Thinking to Fireworks provider
+- [#3734](https://github.com/Nova-Org/novacode/pull/3734) [`2a6c171`](https://github.com/Nova-Org/novacode/commit/2a6c171db108609f778e422cbd6b772ddcc55ad4) Thanks [@ctsstc](https://github.com/ctsstc)! - Add model Kimi K2 Thinking to Fireworks provider
 
-- [#3724](https://github.com/Kilo-Org/kilocode/pull/3724) [`85731fb`](https://github.com/Kilo-Org/kilocode/commit/85731fb6c22cab6bbfccf0b11e42ddd3d7b72aa4) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix duplicated MiniMax settings
+- [#3724](https://github.com/Nova-Org/novacode/pull/3724) [`85731fb`](https://github.com/Nova-Org/novacode/commit/85731fb6c22cab6bbfccf0b11e42ddd3d7b72aa4) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix duplicated MiniMax settings
 
 ## [v4.119.1]
 
-- [#3479](https://github.com/Kilo-Org/kilocode/pull/3479) [`499bf1a`](https://github.com/Kilo-Org/kilocode/commit/499bf1a52dcbfbd4e3d5f96cee00d672fbda021c) Thanks [@jrf0110](https://github.com/jrf0110)! - Introduces the managed codebase indexing feature for Kilo Code Teams and Enterprise organizations. This feature is currently gated to internal customers only. Managed codebase indexing is a branch-aware indexing and search product that does not require any configuration (as opposed to the current codebase indexing feature which relies on a local qdrant instance and configurating an embedding provider).
+- [#3479](https://github.com/Nova-Org/novacode/pull/3479) [`499bf1a`](https://github.com/Nova-Org/novacode/commit/499bf1a52dcbfbd4e3d5f96cee00d672fbda021c) Thanks [@jrf0110](https://github.com/jrf0110)! - Introduces the managed codebase indexing feature for Nova Code Teams and Enterprise organizations. This feature is currently gated to internal customers only. Managed codebase indexing is a branch-aware indexing and search product that does not require any configuration (as opposed to the current codebase indexing feature which relies on a local qdrant instance and configurating an embedding provider).
 
-- [#3733](https://github.com/Kilo-Org/kilocode/pull/3733) [`5e1f809`](https://github.com/Kilo-Org/kilocode/commit/5e1f809a67d9e11402f422ed70f9b8bdf1717720) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Reduce failure rate of the apply diff tool when native tool calls are used
+- [#3733](https://github.com/Nova-Org/novacode/pull/3733) [`5e1f809`](https://github.com/Nova-Org/novacode/commit/5e1f809a67d9e11402f422ed70f9b8bdf1717720) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Reduce failure rate of the apply diff tool when native tool calls are used
 
 ## [v4.119.0]
 
-- [#3498](https://github.com/Kilo-Org/kilocode/pull/3498) [`10fe57d`](https://github.com/Kilo-Org/kilocode/commit/10fe57dab94217c80ed03835ed71162d8a64c91e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Include changes from Roo Code v3.29.0-v3.30.0
-
+- [#3498](https://github.com/Nova-Org/novacode/pull/3498) [`10fe57d`](https://github.com/Nova-Org/novacode/commit/10fe57dab94217c80ed03835ed71162d8a64c91e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Include changes from Roo Code v3.29.0-v3.30.0
     - Add token-budget based file reading with intelligent preview to avoid context overruns (thanks @daniel-lxs!)
     - Fix: Respect nested .gitignore files in search_files (#7921 by @hannesrudolph, PR by @daniel-lxs)
     - Fix: Preserve trailing newlines in stripLineNumbers for apply_diff (#8020 by @liyi3c, PR by @app/roomote)
@@ -1588,59 +1577,59 @@
     - Fix: Create new Requesty profile during OAuth (thanks @Thibault00!)
     - Fix: Cleanup terminal settings tab and change default terminal to inline (thanks @hannesrudolph!)
 
-- [#3643](https://github.com/Kilo-Org/kilocode/pull/3643) [`89d5135`](https://github.com/Kilo-Org/kilocode/commit/89d513569481ed1a6c1cfb5f7cd049dc8276a72c) Thanks [@iscekic](https://github.com/iscekic)! - add smart yolo mode
+- [#3643](https://github.com/Nova-Org/novacode/pull/3643) [`89d5135`](https://github.com/Nova-Org/novacode/commit/89d513569481ed1a6c1cfb5f7cd049dc8276a72c) Thanks [@iscekic](https://github.com/iscekic)! - add smart yolo mode
 
 ### Patch Changes
 
-- [#3659](https://github.com/Kilo-Org/kilocode/pull/3659) [`44732df`](https://github.com/Kilo-Org/kilocode/commit/44732dff31b4d3737203548ac4022eccfd21e354) Thanks [@Maosghoul](https://github.com/Maosghoul)! - MiniMax M2 now uses JSON-style tools by default
+- [#3659](https://github.com/Nova-Org/novacode/pull/3659) [`44732df`](https://github.com/Nova-Org/novacode/commit/44732dff31b4d3737203548ac4022eccfd21e354) Thanks [@Maosghoul](https://github.com/Maosghoul)! - MiniMax M2 now uses JSON-style tools by default
 
-- [#3653](https://github.com/Kilo-Org/kilocode/pull/3653) [`c79efb1`](https://github.com/Kilo-Org/kilocode/commit/c79efb1b19399ef0572d10829843732e08cd08e8) Thanks [@ctsstc](https://github.com/ctsstc)! - Added GLM 4.6 to Fireworks provider
+- [#3653](https://github.com/Nova-Org/novacode/pull/3653) [`c79efb1`](https://github.com/Nova-Org/novacode/commit/c79efb1b19399ef0572d10829843732e08cd08e8) Thanks [@ctsstc](https://github.com/ctsstc)! - Added GLM 4.6 to Fireworks provider
 
-- [#3693](https://github.com/Kilo-Org/kilocode/pull/3693) [`825e7c4`](https://github.com/Kilo-Org/kilocode/commit/825e7c41f9ceeb3abcc7b1fa68a586c9f1cad384) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix API error when returning from subtask with native tool calls enabled
+- [#3693](https://github.com/Nova-Org/novacode/pull/3693) [`825e7c4`](https://github.com/Nova-Org/novacode/commit/825e7c41f9ceeb3abcc7b1fa68a586c9f1cad384) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix API error when returning from subtask with native tool calls enabled
 
-- [#3680](https://github.com/Kilo-Org/kilocode/pull/3680) [`fc76487`](https://github.com/Kilo-Org/kilocode/commit/fc7648749bacc2f4e1b4988af3011b399b392027) Thanks [@markijbema](https://github.com/markijbema)! - Dont show autocomplete suggestions which aren't useful
+- [#3680](https://github.com/Nova-Org/novacode/pull/3680) [`fc76487`](https://github.com/Nova-Org/novacode/commit/fc7648749bacc2f4e1b4988af3011b399b392027) Thanks [@markijbema](https://github.com/markijbema)! - Dont show autocomplete suggestions which aren't useful
 
 ## [v4.118.0]
 
-- [#3638](https://github.com/Kilo-Org/kilocode/pull/3638) [`49e44fc`](https://github.com/Kilo-Org/kilocode/commit/49e44fc1c3c02648a534f737c6df0d7d4964810c) Thanks [@mcowger](https://github.com/mcowger)! - Enable Moonshot for native tool calling
+- [#3638](https://github.com/Nova-Org/novacode/pull/3638) [`49e44fc`](https://github.com/Nova-Org/novacode/commit/49e44fc1c3c02648a534f737c6df0d7d4964810c) Thanks [@mcowger](https://github.com/mcowger)! - Enable Moonshot for native tool calling
 
-- [#3295](https://github.com/Kilo-Org/kilocode/pull/3295) [`5a155a9`](https://github.com/Kilo-Org/kilocode/commit/5a155a9825e20f10bfc752baff37cd5de53980b2) Thanks [@Maosghoul](https://github.com/Maosghoul)! - MiniMax provider added. MiniMax provider preserves reasoning blocks and has experimental support for native tool calling.
+- [#3295](https://github.com/Nova-Org/novacode/pull/3295) [`5a155a9`](https://github.com/Nova-Org/novacode/commit/5a155a9825e20f10bfc752baff37cd5de53980b2) Thanks [@Maosghoul](https://github.com/Maosghoul)! - MiniMax provider added. MiniMax provider preserves reasoning blocks and has experimental support for native tool calling.
 
-- [#3632](https://github.com/Kilo-Org/kilocode/pull/3632) [`d7fad58`](https://github.com/Kilo-Org/kilocode/commit/d7fad58673da95de682bf5d7f38a90a288daae03) Thanks [@iscekic](https://github.com/iscekic)! - Introduces "YOLO" mode, where all approval requests are automatically approved. Initially used for `--auto` mode in the CLI, now available in the extension as well in `Settings > Auto-Approval`.
+- [#3632](https://github.com/Nova-Org/novacode/pull/3632) [`d7fad58`](https://github.com/Nova-Org/novacode/commit/d7fad58673da95de682bf5d7f38a90a288daae03) Thanks [@iscekic](https://github.com/iscekic)! - Introduces "YOLO" mode, where all approval requests are automatically approved. Initially used for `--auto` mode in the CLI, now available in the extension as well in `Settings > Auto-Approval`.
 
-- [#3605](https://github.com/Kilo-Org/kilocode/pull/3605) [`03fccd3`](https://github.com/Kilo-Org/kilocode/commit/03fccd3a3c75186c320aad3754547bf1619cf424) Thanks [@viktorxhzj](https://github.com/viktorxhzj)! - OpenRouter and Kilo Gateway providers now preserve reasoning blocks between API requests. This should improve performance of reasoning models, especially MiniMax M2.
+- [#3605](https://github.com/Nova-Org/novacode/pull/3605) [`03fccd3`](https://github.com/Nova-Org/novacode/commit/03fccd3a3c75186c320aad3754547bf1619cf424) Thanks [@viktorxhzj](https://github.com/viktorxhzj)! - OpenRouter and Nova Gateway providers now preserve reasoning blocks between API requests. This should improve performance of reasoning models, especially MiniMax M2.
 
-- [#3597](https://github.com/Kilo-Org/kilocode/pull/3597) [`ea3c0bd`](https://github.com/Kilo-Org/kilocode/commit/ea3c0bda8055f3ad3370c5794803ae176fefadd4) Thanks [@mcowger](https://github.com/mcowger)! - Add Kimi K2 Thinking to Moonshot.ai provider.
+- [#3597](https://github.com/Nova-Org/novacode/pull/3597) [`ea3c0bd`](https://github.com/Nova-Org/novacode/commit/ea3c0bda8055f3ad3370c5794803ae176fefadd4) Thanks [@mcowger](https://github.com/mcowger)! - Add Kimi K2 Thinking to Moonshot.ai provider.
 
 ### Patch Changes
 
-- [#3500](https://github.com/Kilo-Org/kilocode/pull/3500) [`2e1a536`](https://github.com/Kilo-Org/kilocode/commit/2e1a53678fc1c331d98a63f0ab15b02b53fc1625) Thanks [@iscekic](https://github.com/iscekic)! - improves windows support
+- [#3500](https://github.com/Nova-Org/novacode/pull/3500) [`2e1a536`](https://github.com/Nova-Org/novacode/commit/2e1a53678fc1c331d98a63f0ab15b02b53fc1625) Thanks [@iscekic](https://github.com/iscekic)! - improves windows support
 
-- [#3629](https://github.com/Kilo-Org/kilocode/pull/3629) [`fefc671`](https://github.com/Kilo-Org/kilocode/commit/fefc671535bbfb1036c7088219d45e45d00cbad1) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Anthropic provider now preserves reasoning blocks and has (experimental) support for native (JSON-style) tool calls. This greatly improves support for Claude Haiku 4.5
+- [#3629](https://github.com/Nova-Org/novacode/pull/3629) [`fefc671`](https://github.com/Nova-Org/novacode/commit/fefc671535bbfb1036c7088219d45e45d00cbad1) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Anthropic provider now preserves reasoning blocks and has (experimental) support for native (JSON-style) tool calls. This greatly improves support for Claude Haiku 4.5
 
-- [#3612](https://github.com/Kilo-Org/kilocode/pull/3612) [`970e799`](https://github.com/Kilo-Org/kilocode/commit/970e799473111922eee13d859fd29cb3f7abf715) Thanks [@burkostya](https://github.com/burkostya)! - fix(native-tools): Make read_file_multi pattern JSON Schema compliant
+- [#3612](https://github.com/Nova-Org/novacode/pull/3612) [`970e799`](https://github.com/Nova-Org/novacode/commit/970e799473111922eee13d859fd29cb3f7abf715) Thanks [@burkostya](https://github.com/burkostya)! - fix(native-tools): Make read_file_multi pattern JSON Schema compliant
 
 ## [v4.117.0]
 
-- [#3568](https://github.com/Kilo-Org/kilocode/pull/3568) [`18dfc86`](https://github.com/Kilo-Org/kilocode/commit/18dfc86e5f00e0d722f448450574ec444d3c894a) Thanks [@mcowger](https://github.com/mcowger)! - Add Kimi K2-Thinking to Synthetic Provider
+- [#3568](https://github.com/Nova-Org/novacode/pull/3568) [`18dfc86`](https://github.com/Nova-Org/novacode/commit/18dfc86e5f00e0d722f448450574ec444d3c894a) Thanks [@mcowger](https://github.com/mcowger)! - Add Kimi K2-Thinking to Synthetic Provider
 
 ## [v4.116.1]
 
-- [#3533](https://github.com/Kilo-Org/kilocode/pull/3533) [`f5bb82d`](https://github.com/Kilo-Org/kilocode/commit/f5bb82ddf4038ed2d9e5a1266c9e6b0dc09c0af5) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix hang at startup
+- [#3533](https://github.com/Nova-Org/novacode/pull/3533) [`f5bb82d`](https://github.com/Nova-Org/novacode/commit/f5bb82ddf4038ed2d9e5a1266c9e6b0dc09c0af5) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix hang at startup
 
 ## [v4.116.0]
 
-- [#3288](https://github.com/Kilo-Org/kilocode/pull/3288) [`afeca17`](https://github.com/Kilo-Org/kilocode/commit/afeca176f4ef7d227831715b5e5a672fcf3fe58f) Thanks [@mcowger](https://github.com/mcowger)! - Add Native MCP Support for JSON Tool Calling
+- [#3288](https://github.com/Nova-Org/novacode/pull/3288) [`afeca17`](https://github.com/Nova-Org/novacode/commit/afeca176f4ef7d227831715b5e5a672fcf3fe58f) Thanks [@mcowger](https://github.com/mcowger)! - Add Native MCP Support for JSON Tool Calling
 
 ### Patch Changes
 
-- [#3471](https://github.com/Kilo-Org/kilocode/pull/3471) [`9895a95`](https://github.com/Kilo-Org/kilocode/commit/9895a959b9bb8a14aab6ec11267a2bb0e12fb78c) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Allow native tool calling fro Qwen Code provider
+- [#3471](https://github.com/Nova-Org/novacode/pull/3471) [`9895a95`](https://github.com/Nova-Org/novacode/commit/9895a959b9bb8a14aab6ec11267a2bb0e12fb78c) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Allow native tool calling fro Qwen Code provider
 
-- [#3513](https://github.com/Kilo-Org/kilocode/pull/3513) [`ff2e459`](https://github.com/Kilo-Org/kilocode/commit/ff2e4595777683265559f81f82dd9cbb0dc2e9f3) Thanks [@markijbema](https://github.com/markijbema)! - Prevent autocomplete from suggesting duplicating the previous or next line
+- [#3513](https://github.com/Nova-Org/novacode/pull/3513) [`ff2e459`](https://github.com/Nova-Org/novacode/commit/ff2e4595777683265559f81f82dd9cbb0dc2e9f3) Thanks [@markijbema](https://github.com/markijbema)! - Prevent autocomplete from suggesting duplicating the previous or next line
 
-- [#3523](https://github.com/Kilo-Org/kilocode/pull/3523) [`ba5416a`](https://github.com/Kilo-Org/kilocode/commit/ba5416ae3083fb5225ed7e9f0e1018203e611b84) Thanks [@markijbema](https://github.com/markijbema)! - Removed the gutter animation for autocomplete
+- [#3523](https://github.com/Nova-Org/novacode/pull/3523) [`ba5416a`](https://github.com/Nova-Org/novacode/commit/ba5416ae3083fb5225ed7e9f0e1018203e611b84) Thanks [@markijbema](https://github.com/markijbema)! - Removed the gutter animation for autocomplete
 
-- [#2893](https://github.com/Kilo-Org/kilocode/pull/2893) [`37d8493`](https://github.com/Kilo-Org/kilocode/commit/37d8493a4d2629d0498f089b40f850ddae0c91fc) Thanks [@ivanarifin](https://github.com/ivanarifin)! - fix(virtual-quota): display active model in UI for the frontend
+- [#2893](https://github.com/Nova-Org/novacode/pull/2893) [`37d8493`](https://github.com/Nova-Org/novacode/commit/37d8493a4d2629d0498f089b40f850ddae0c91fc) Thanks [@ivanarifin](https://github.com/ivanarifin)! - fix(virtual-quota): display active model in UI for the frontend
 
     When the backend switches the model, it now sends out a "model has changed" signal by emitting event.
     The main application logic catches this signal and immediately tells the user interface to refresh itself.
@@ -1649,175 +1638,172 @@
 
 ## [v4.115.0]
 
-- [#3486](https://github.com/Kilo-Org/kilocode/pull/3486) [`2b89d84`](https://github.com/Kilo-Org/kilocode/commit/2b89d8472123e48db866e10a88b5b6160812d73e) Thanks [@markijbema](https://github.com/markijbema)! - Show MCP tool instead of server name when asked to approve a tool
+- [#3486](https://github.com/Nova-Org/novacode/pull/3486) [`2b89d84`](https://github.com/Nova-Org/novacode/commit/2b89d8472123e48db866e10a88b5b6160812d73e) Thanks [@markijbema](https://github.com/markijbema)! - Show MCP tool instead of server name when asked to approve a tool
 
-- [#3466](https://github.com/Kilo-Org/kilocode/pull/3466) [`e623ce1`](https://github.com/Kilo-Org/kilocode/commit/e623ce146bbad7453355ee84a4b4bb2fc894b031) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Thanks @pranjaldatta! Added support for Inception as a provider
+- [#3466](https://github.com/Nova-Org/novacode/pull/3466) [`e623ce1`](https://github.com/Nova-Org/novacode/commit/e623ce146bbad7453355ee84a4b4bb2fc894b031) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Thanks @pranjaldatta! Added support for Inception as a provider
 
-- [#2435](https://github.com/Kilo-Org/kilocode/pull/2435) [`c13fe3c`](https://github.com/Kilo-Org/kilocode/commit/c13fe3c634496b9e1fc08371822a4071407ff9bc) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Auto Cleanup automatically manages your task history by removing old tasks to free up disk space and improve performance - https://kilo.ai/docs/advanced-usage/auto-cleanup
+- [#2435](https://github.com/Nova-Org/novacode/pull/2435) [`c13fe3c`](https://github.com/Nova-Org/novacode/commit/c13fe3c634496b9e1fc08371822a4071407ff9bc) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Auto Cleanup automatically manages your task history by removing old tasks to free up disk space and improve performance - https://nova.ai/docs/advanced-usage/auto-cleanup
 
 ### Patch Changes
 
-- [#3428](https://github.com/Kilo-Org/kilocode/pull/3428) [`b3c0e10`](https://github.com/Kilo-Org/kilocode/commit/b3c0e102cad5e48fe1389dc55a287dfc0072ed33) Thanks [@markijbema](https://github.com/markijbema)! - Do less requests for autocomplete when no completion could be found
+- [#3428](https://github.com/Nova-Org/novacode/pull/3428) [`b3c0e10`](https://github.com/Nova-Org/novacode/commit/b3c0e102cad5e48fe1389dc55a287dfc0072ed33) Thanks [@markijbema](https://github.com/markijbema)! - Do less requests for autocomplete when no completion could be found
 
-- [#3502](https://github.com/Kilo-Org/kilocode/pull/3502) [`94552b8`](https://github.com/Kilo-Org/kilocode/commit/94552b8704efa80a9f7aee8ad601a3f291ffe7f2) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Revert orphaned partial ask messages fix
+- [#3502](https://github.com/Nova-Org/novacode/pull/3502) [`94552b8`](https://github.com/Nova-Org/novacode/commit/94552b8704efa80a9f7aee8ad601a3f291ffe7f2) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Revert orphaned partial ask messages fix
 
 ## [v4.114.1]
 
-- [#3188](https://github.com/Kilo-Org/kilocode/pull/3188) [`131fa0e`](https://github.com/Kilo-Org/kilocode/commit/131fa0ee68d6f47172a968489129071a7da88de3) Thanks [@NikoDi2000](https://github.com/NikoDi2000)! - Add missing enable/disable word wrap tooltips
+- [#3188](https://github.com/Nova-Org/novacode/pull/3188) [`131fa0e`](https://github.com/Nova-Org/novacode/commit/131fa0ee68d6f47172a968489129071a7da88de3) Thanks [@NikoDi2000](https://github.com/NikoDi2000)! - Add missing enable/disable word wrap tooltips
 
-- [#3357](https://github.com/Kilo-Org/kilocode/pull/3357) [`d2bb122`](https://github.com/Kilo-Org/kilocode/commit/d2bb122a8b0e80044a66fe141de39489f7098bb5) Thanks [@mollux](https://github.com/mollux)! - Now only available MCP server capabilities are fetched
+- [#3357](https://github.com/Nova-Org/novacode/pull/3357) [`d2bb122`](https://github.com/Nova-Org/novacode/commit/d2bb122a8b0e80044a66fe141de39489f7098bb5) Thanks [@mollux](https://github.com/mollux)! - Now only available MCP server capabilities are fetched
 
-- [#2817](https://github.com/Kilo-Org/kilocode/pull/2817) [`0da1bc7`](https://github.com/Kilo-Org/kilocode/commit/0da1bc772a700874f8ec3fbad039fed1ea4d89dc) Thanks [@dennismeister93](https://github.com/dennismeister93)! - Updated MCP SDK to 1.13.3
+- [#2817](https://github.com/Nova-Org/novacode/pull/2817) [`0da1bc7`](https://github.com/Nova-Org/novacode/commit/0da1bc772a700874f8ec3fbad039fed1ea4d89dc) Thanks [@dennismeister93](https://github.com/dennismeister93)! - Updated MCP SDK to 1.13.3
 
-- [#2849](https://github.com/Kilo-Org/kilocode/pull/2849) [`642cec5`](https://github.com/Kilo-Org/kilocode/commit/642cec502c9fecd297dce8cb1cc708ad3e9c7d12) Thanks [@Ralph-Abejuela](https://github.com/Ralph-Abejuela)! - Added option to start rate limiting after the API stream ends
+- [#2849](https://github.com/Nova-Org/novacode/pull/2849) [`642cec5`](https://github.com/Nova-Org/novacode/commit/642cec502c9fecd297dce8cb1cc708ad3e9c7d12) Thanks [@Ralph-Abejuela](https://github.com/Ralph-Abejuela)! - Added option to start rate limiting after the API stream ends
 
-- [#3468](https://github.com/Kilo-Org/kilocode/pull/3468) [`8f8ef10`](https://github.com/Kilo-Org/kilocode/commit/8f8ef107dd2751e4141473d33e098d6f28faa6d1) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Resolve orphaned partial ask messages
+- [#3468](https://github.com/Nova-Org/novacode/pull/3468) [`8f8ef10`](https://github.com/Nova-Org/novacode/commit/8f8ef107dd2751e4141473d33e098d6f28faa6d1) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Resolve orphaned partial ask messages
 
-- [#3213](https://github.com/Kilo-Org/kilocode/pull/3213) [`7238628`](https://github.com/Kilo-Org/kilocode/commit/7238628bc24058eb352ff231090c08d99a8a8961) Thanks [@siulong](https://github.com/siulong)! - Fixed the GitHub feedback link at the bottom of the marketplace not being clickable.
+- [#3213](https://github.com/Nova-Org/novacode/pull/3213) [`7238628`](https://github.com/Nova-Org/novacode/commit/7238628bc24058eb352ff231090c08d99a8a8961) Thanks [@siulong](https://github.com/siulong)! - Fixed the GitHub feedback link at the bottom of the marketplace not being clickable.
 
 ## [v4.114.0]
 
-- [#3435](https://github.com/Kilo-Org/kilocode/pull/3435) [`bd4f19d`](https://github.com/Kilo-Org/kilocode/commit/bd4f19da040462b6477087d76cffe1006ef8d444) Thanks [@markijbema](https://github.com/markijbema)! - Cmd-L now directly inserts instead of showing as ghost text
+- [#3435](https://github.com/Nova-Org/novacode/pull/3435) [`bd4f19d`](https://github.com/Nova-Org/novacode/commit/bd4f19da040462b6477087d76cffe1006ef8d444) Thanks [@markijbema](https://github.com/markijbema)! - Cmd-L now directly inserts instead of showing as ghost text
 
 ### Patch Changes
 
-- [#3435](https://github.com/Kilo-Org/kilocode/pull/3435) [`7f018d8`](https://github.com/Kilo-Org/kilocode/commit/7f018d8428a994c6ada6ecbda95a75336150946b) Thanks [@markijbema](https://github.com/markijbema)! - Minor improvements to autocomplete internal state handling
+- [#3435](https://github.com/Nova-Org/novacode/pull/3435) [`7f018d8`](https://github.com/Nova-Org/novacode/commit/7f018d8428a994c6ada6ecbda95a75336150946b) Thanks [@markijbema](https://github.com/markijbema)! - Minor improvements to autocomplete internal state handling
 
-- [#3379](https://github.com/Kilo-Org/kilocode/pull/3379) [`9c7b99c`](https://github.com/Kilo-Org/kilocode/commit/9c7b99c716d92deabc49ec07f5771c03b3507b2c) Thanks [@TsFreddie](https://github.com/TsFreddie)! - Update pricing for DeepSeek V3.2
+- [#3379](https://github.com/Nova-Org/novacode/pull/3379) [`9c7b99c`](https://github.com/Nova-Org/novacode/commit/9c7b99c716d92deabc49ec07f5771c03b3507b2c) Thanks [@TsFreddie](https://github.com/TsFreddie)! - Update pricing for DeepSeek V3.2
 
-- [#3342](https://github.com/Kilo-Org/kilocode/pull/3342) [`8827792`](https://github.com/Kilo-Org/kilocode/commit/88277927f69e1baae6f61f0e76f3a43862abd31e) Thanks [@mcowger](https://github.com/mcowger)! - Improved messaging when VS Code LM is unavailable
+- [#3342](https://github.com/Nova-Org/novacode/pull/3342) [`8827792`](https://github.com/Nova-Org/novacode/commit/88277927f69e1baae6f61f0e76f3a43862abd31e) Thanks [@mcowger](https://github.com/mcowger)! - Improved messaging when VS Code LM is unavailable
 
-- [#3437](https://github.com/Kilo-Org/kilocode/pull/3437) [`829f052`](https://github.com/Kilo-Org/kilocode/commit/829f052d199ef80136713922ce70230048dde6e0) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add zai-glm-4.6 model to Cerebras and set gpt-oss-120b as default (thanks Roo)
+- [#3437](https://github.com/Nova-Org/novacode/pull/3437) [`829f052`](https://github.com/Nova-Org/novacode/commit/829f052d199ef80136713922ce70230048dde6e0) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add zai-glm-4.6 model to Cerebras and set gpt-oss-120b as default (thanks Roo)
 
-- [#3411](https://github.com/Kilo-Org/kilocode/pull/3411) [`2dc2a32`](https://github.com/Kilo-Org/kilocode/commit/2dc2a32d9db54cfe3908263eb5f594c99058dde5) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix @ mentions when editing messages
+- [#3411](https://github.com/Nova-Org/novacode/pull/3411) [`2dc2a32`](https://github.com/Nova-Org/novacode/commit/2dc2a32d9db54cfe3908263eb5f594c99058dde5) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix @ mentions when editing messages
 
 ## [v4.113.1]
 
-- [#3408](https://github.com/Kilo-Org/kilocode/pull/3408) [`5aee3ad`](https://github.com/Kilo-Org/kilocode/commit/5aee3ad6ee200eefd5dd12933ba650989ccc0857) Thanks [@brianc](https://github.com/brianc)! - Fix auto-complete indicator. It now hides properly if the autocomplete request errors in the background.
+- [#3408](https://github.com/Nova-Org/novacode/pull/3408) [`5aee3ad`](https://github.com/Nova-Org/novacode/commit/5aee3ad6ee200eefd5dd12933ba650989ccc0857) Thanks [@brianc](https://github.com/brianc)! - Fix auto-complete indicator. It now hides properly if the autocomplete request errors in the background.
 
 ## [v4.113.0]
 
-- [#3382](https://github.com/Kilo-Org/kilocode/pull/3382) [`98c4d89`](https://github.com/Kilo-Org/kilocode/commit/98c4d89f414394de0b5ab579e9216c860b4a1d30) Thanks [@hassoncs](https://github.com/hassoncs)! - Add descriptions to the MCP and modes marketplace headers
+- [#3382](https://github.com/Nova-Org/novacode/pull/3382) [`98c4d89`](https://github.com/Nova-Org/novacode/commit/98c4d89f414394de0b5ab579e9216c860b4a1d30) Thanks [@hassoncs](https://github.com/hassoncs)! - Add descriptions to the MCP and modes marketplace headers
 
-- [#2442](https://github.com/Kilo-Org/kilocode/pull/2442) [`34b04ae`](https://github.com/Kilo-Org/kilocode/commit/34b04ae0c5763757c41bfbd3132aed3a67d2ac7a) Thanks [@hassoncs](https://github.com/hassoncs)! - Added AI powered commit message generation to Jetbrains IDEs
+- [#2442](https://github.com/Nova-Org/novacode/pull/2442) [`34b04ae`](https://github.com/Nova-Org/novacode/commit/34b04ae0c5763757c41bfbd3132aed3a67d2ac7a) Thanks [@hassoncs](https://github.com/hassoncs)! - Added AI powered commit message generation to Jetbrains IDEs
 
 ### Patch Changes
 
-- [#3373](https://github.com/Kilo-Org/kilocode/pull/3373) [`3cb7d20`](https://github.com/Kilo-Org/kilocode/commit/3cb7d20fc79707f901c8429c971ed86500b0b527) Thanks [@markijbema](https://github.com/markijbema)! - Fix: restored cmd-l functionality
+- [#3373](https://github.com/Nova-Org/novacode/pull/3373) [`3cb7d20`](https://github.com/Nova-Org/novacode/commit/3cb7d20fc79707f901c8429c971ed86500b0b527) Thanks [@markijbema](https://github.com/markijbema)! - Fix: restored cmd-l functionality
 
 ## [v4.112.1]
 
-- [#3375](https://github.com/Kilo-Org/kilocode/pull/3375) [`52d39dd`](https://github.com/Kilo-Org/kilocode/commit/52d39ddaadf3b3ce8388db02078b004b6573e6da) Thanks [@RSO](https://github.com/RSO)! - Fixed autocomplete enabling/disabling
+- [#3375](https://github.com/Nova-Org/novacode/pull/3375) [`52d39dd`](https://github.com/Nova-Org/novacode/commit/52d39ddaadf3b3ce8388db02078b004b6573e6da) Thanks [@RSO](https://github.com/RSO)! - Fixed autocomplete enabling/disabling
 
 ## [v4.112.0]
 
-- [#3346](https://github.com/Kilo-Org/kilocode/pull/3346) [`5d82884`](https://github.com/Kilo-Org/kilocode/commit/5d828842b502b6accd2e0423db99ef8bdc0dbf33) Thanks [@mcowger](https://github.com/mcowger)! - Fixed Anthropic models not working on Google Vertex Global
+- [#3346](https://github.com/Nova-Org/novacode/pull/3346) [`5d82884`](https://github.com/Nova-Org/novacode/commit/5d828842b502b6accd2e0423db99ef8bdc0dbf33) Thanks [@mcowger](https://github.com/mcowger)! - Fixed Anthropic models not working on Google Vertex Global
 
 ## [v4.111.2]
 
-- [#3363](https://github.com/Kilo-Org/kilocode/pull/3363) [`233334c`](https://github.com/Kilo-Org/kilocode/commit/233334cd284477290b67359add7e0f703d8707b7) Thanks [@markijbema](https://github.com/markijbema)! - Various improvements to the autocomplete functionality
+- [#3363](https://github.com/Nova-Org/novacode/pull/3363) [`233334c`](https://github.com/Nova-Org/novacode/commit/233334cd284477290b67359add7e0f703d8707b7) Thanks [@markijbema](https://github.com/markijbema)! - Various improvements to the autocomplete functionality
 
 ## [v4.111.1]
 
-- [#3282](https://github.com/Kilo-Org/kilocode/pull/3282) [`ed4399b`](https://github.com/Kilo-Org/kilocode/commit/ed4399b7d82d735895fbf4d85cfaefff5002571a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved handling of tool calls in the API conversation history
+- [#3282](https://github.com/Nova-Org/novacode/pull/3282) [`ed4399b`](https://github.com/Nova-Org/novacode/commit/ed4399b7d82d735895fbf4d85cfaefff5002571a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved handling of tool calls in the API conversation history
 
-- [#3270](https://github.com/Kilo-Org/kilocode/pull/3270) [`2b35053`](https://github.com/Kilo-Org/kilocode/commit/2b350530367bb0a14a0fdc7c11a030c2943c6cf6) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Claude Haiku 4.5 now uses a simplified read file tool for reduced error rate
+- [#3270](https://github.com/Nova-Org/novacode/pull/3270) [`2b35053`](https://github.com/Nova-Org/novacode/commit/2b350530367bb0a14a0fdc7c11a030c2943c6cf6) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Claude Haiku 4.5 now uses a simplified read file tool for reduced error rate
 
 ## [v4.111.0]
 
-- [#3256](https://github.com/Kilo-Org/kilocode/pull/3256) [`f81b48b`](https://github.com/Kilo-Org/kilocode/commit/f81b48b8dec9cd276c3c7ba994d0512036abfa96) Thanks [@markijbema](https://github.com/markijbema)! - Switched autocomplete to showing completions inline
+- [#3256](https://github.com/Nova-Org/novacode/pull/3256) [`f81b48b`](https://github.com/Nova-Org/novacode/commit/f81b48b8dec9cd276c3c7ba994d0512036abfa96) Thanks [@markijbema](https://github.com/markijbema)! - Switched autocomplete to showing completions inline
 
 ### Patch Changes
 
-- [#3261](https://github.com/Kilo-Org/kilocode/pull/3261) [`bae048f`](https://github.com/Kilo-Org/kilocode/commit/bae048f914712439e54f29363d52dc24860000e7) Thanks [@mcowger](https://github.com/mcowger)! - Improve native tool calling consistency
+- [#3261](https://github.com/Nova-Org/novacode/pull/3261) [`bae048f`](https://github.com/Nova-Org/novacode/commit/bae048f914712439e54f29363d52dc24860000e7) Thanks [@mcowger](https://github.com/mcowger)! - Improve native tool calling consistency
 
-- [#3281](https://github.com/Kilo-Org/kilocode/pull/3281) [`2586e9b`](https://github.com/Kilo-Org/kilocode/commit/2586e9b4f6cbea9734ff10df7086f2d999713448) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix broken sign-in links
+- [#3281](https://github.com/Nova-Org/novacode/pull/3281) [`2586e9b`](https://github.com/Nova-Org/novacode/commit/2586e9b4f6cbea9734ff10df7086f2d999713448) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix broken sign-in links
 
-- [#3313](https://github.com/Kilo-Org/kilocode/pull/3313) [`2e61e91`](https://github.com/Kilo-Org/kilocode/commit/2e61e9152ae3be43ce12e9fd3c2f94c0d603d771) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Running commands are no longer sometimes shown twice in the chat
+- [#3313](https://github.com/Nova-Org/novacode/pull/3313) [`2e61e91`](https://github.com/Nova-Org/novacode/commit/2e61e9152ae3be43ce12e9fd3c2f94c0d603d771) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Running commands are no longer sometimes shown twice in the chat
 
 ## [v4.110.0]
 
 ### Patch Changes
 
-- [#3249](https://github.com/Kilo-Org/kilocode/pull/3249) [`ccee64c`](https://github.com/Kilo-Org/kilocode/commit/ccee64cf1676f51a6b9dae49aad994d9f834b3e8) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Remove credit status bar until we can retrieve the up to date balance from the proxy response.
+- [#3249](https://github.com/Nova-Org/novacode/pull/3249) [`ccee64c`](https://github.com/Nova-Org/novacode/commit/ccee64cf1676f51a6b9dae49aad994d9f834b3e8) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Remove credit status bar until we can retrieve the up to date balance from the proxy response.
 
-- [#3235](https://github.com/Kilo-Org/kilocode/pull/3235) [`0108896`](https://github.com/Kilo-Org/kilocode/commit/010889619121159a8993ad5846ac2cccecd91bd8) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed some "not a function" crashes
+- [#3235](https://github.com/Nova-Org/novacode/pull/3235) [`0108896`](https://github.com/Nova-Org/novacode/commit/010889619121159a8993ad5846ac2cccecd91bd8) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed some "not a function" crashes
 
-- [#3226](https://github.com/Kilo-Org/kilocode/pull/3226) [`e13a99c`](https://github.com/Kilo-Org/kilocode/commit/e13a99c67bd644e7ab9372757227aab3f72da1d4) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Reverted "Update base URL for Vertex Anthropic models to work around outdated library." because it is causing issues for some users.
+- [#3226](https://github.com/Nova-Org/novacode/pull/3226) [`e13a99c`](https://github.com/Nova-Org/novacode/commit/e13a99c67bd644e7ab9372757227aab3f72da1d4) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Reverted "Update base URL for Vertex Anthropic models to work around outdated library." because it is causing issues for some users.
 
-- [#2663](https://github.com/Kilo-Org/kilocode/pull/2663) [`43140c9`](https://github.com/Kilo-Org/kilocode/commit/43140c950719d9718c089e45f9ae63b334dd9a6e) Thanks [@NaccOll](https://github.com/NaccOll)! - Fix listCodeDefinitionNamesTool for annotated Java methods
+- [#2663](https://github.com/Nova-Org/novacode/pull/2663) [`43140c9`](https://github.com/Nova-Org/novacode/commit/43140c950719d9718c089e45f9ae63b334dd9a6e) Thanks [@NaccOll](https://github.com/NaccOll)! - Fix listCodeDefinitionNamesTool for annotated Java methods
 
-- [#3242](https://github.com/Kilo-Org/kilocode/pull/3242) [`8604c83`](https://github.com/Kilo-Org/kilocode/commit/8604c838b205eaa1bdf510b8b64083a8c9c15377) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved support for HTTP proxy environment variables
+- [#3242](https://github.com/Nova-Org/novacode/pull/3242) [`8604c83`](https://github.com/Nova-Org/novacode/commit/8604c838b205eaa1bdf510b8b64083a8c9c15377) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved support for HTTP proxy environment variables
 
 ## [v4.109.2]
 
-- [#3216](https://github.com/Kilo-Org/kilocode/pull/3216) [`3f34635`](https://github.com/Kilo-Org/kilocode/commit/3f3463554f7cf016db9b2851c40217e38a048840) Thanks [@markijbema](https://github.com/markijbema)! - Do not accept an autocomplete suggestion with shift-tab or ctrl-tab (only plain tab)
+- [#3216](https://github.com/Nova-Org/novacode/pull/3216) [`3f34635`](https://github.com/Nova-Org/novacode/commit/3f3463554f7cf016db9b2851c40217e38a048840) Thanks [@markijbema](https://github.com/markijbema)! - Do not accept an autocomplete suggestion with shift-tab or ctrl-tab (only plain tab)
 
-- [#3214](https://github.com/Kilo-Org/kilocode/pull/3214) [`b271af9`](https://github.com/Kilo-Org/kilocode/commit/b271af9c51da9a8f6ec3a6f4caf78ff18db9b3a8) Thanks [@mcowger](https://github.com/mcowger)! - Update Synthetic Provider to support GLM 4.6, and enable native tool calling
+- [#3214](https://github.com/Nova-Org/novacode/pull/3214) [`b271af9`](https://github.com/Nova-Org/novacode/commit/b271af9c51da9a8f6ec3a6f4caf78ff18db9b3a8) Thanks [@mcowger](https://github.com/mcowger)! - Update Synthetic Provider to support GLM 4.6, and enable native tool calling
 
-- [#3199](https://github.com/Kilo-Org/kilocode/pull/3199) [`14bbc5f`](https://github.com/Kilo-Org/kilocode/commit/14bbc5f9b5a61cbf2016c7b6a784fdc546fa6a0e) Thanks [@possible055](https://github.com/possible055)! - Improve Chinese translation of autocomplete-related terms
+- [#3199](https://github.com/Nova-Org/novacode/pull/3199) [`14bbc5f`](https://github.com/Nova-Org/novacode/commit/14bbc5f9b5a61cbf2016c7b6a784fdc546fa6a0e) Thanks [@possible055](https://github.com/possible055)! - Improve Chinese translation of autocomplete-related terms
 
 ## [v4.109.1]
 
-- [#3203](https://github.com/Kilo-Org/kilocode/pull/3203) [`aeb8bf3`](https://github.com/Kilo-Org/kilocode/commit/aeb8bf37df44532517db96511e3f0f85861f55b8) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix Z.ai provider giving an Unauthorized error
+- [#3203](https://github.com/Nova-Org/novacode/pull/3203) [`aeb8bf3`](https://github.com/Nova-Org/novacode/commit/aeb8bf37df44532517db96511e3f0f85861f55b8) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix Z.ai provider giving an Unauthorized error
 
 ## [v4.109.0]
 
-- [#3088](https://github.com/Kilo-Org/kilocode/pull/3088) [`84a1fa3`](https://github.com/Kilo-Org/kilocode/commit/84a1fa3f84eac42fa76da9be09270cdb57b19b34) Thanks [@mcowger](https://github.com/mcowger)! - Update base URL for Vertex Anthropic models to work around outdated library.
+- [#3088](https://github.com/Nova-Org/novacode/pull/3088) [`84a1fa3`](https://github.com/Nova-Org/novacode/commit/84a1fa3f84eac42fa76da9be09270cdb57b19b34) Thanks [@mcowger](https://github.com/mcowger)! - Update base URL for Vertex Anthropic models to work around outdated library.
 
-- [#3192](https://github.com/Kilo-Org/kilocode/pull/3192) [`7015c23`](https://github.com/Kilo-Org/kilocode/commit/7015c2367c0ddf45d40b4adf96386f3ca5005bc1) Thanks [@markijbema](https://github.com/markijbema)! - Fix bug: autocomplete no longer suggests strange XML
+- [#3192](https://github.com/Nova-Org/novacode/pull/3192) [`7015c23`](https://github.com/Nova-Org/novacode/commit/7015c2367c0ddf45d40b4adf96386f3ca5005bc1) Thanks [@markijbema](https://github.com/markijbema)! - Fix bug: autocomplete no longer suggests strange XML
 
 ### Patch Changes
 
-- [#3159](https://github.com/Kilo-Org/kilocode/pull/3159) [`935bbae`](https://github.com/Kilo-Org/kilocode/commit/935bbae3a080c8475671b97440eacf2ead939198) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.28.18
-
+- [#3159](https://github.com/Nova-Org/novacode/pull/3159) [`935bbae`](https://github.com/Nova-Org/novacode/commit/935bbae3a080c8475671b97440eacf2ead939198) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.28.18
     - Fix: Remove request content from UI messages to improve performance and reduce clutter (#5601 by @MuriloFP, #8594 by @multivac2x, #8690 by @hannesrudolph, PR by @mrubens)
     - Fix: Add userAgent to Bedrock client for version tracking (#8660 by @ajjuaire, PR by @app/roomote)
     - Feat: Z AI now uses only two coding endpoints for better performance (#8687 by @hannesrudolph)
     - Feat: Update image generation model selection for improved quality (thanks @chrarnoldus!)
 
-- [#3194](https://github.com/Kilo-Org/kilocode/pull/3194) [`b566965`](https://github.com/Kilo-Org/kilocode/commit/b56696581e82652086564503f7743e9e82585823) Thanks [@markijbema](https://github.com/markijbema)! - Do not trigger autocomplete for external events, like git changes
+- [#3194](https://github.com/Nova-Org/novacode/pull/3194) [`b566965`](https://github.com/Nova-Org/novacode/commit/b56696581e82652086564503f7743e9e82585823) Thanks [@markijbema](https://github.com/markijbema)! - Do not trigger autocomplete for external events, like git changes
 
-- [#3100](https://github.com/Kilo-Org/kilocode/pull/3100) [`3e409b8`](https://github.com/Kilo-Org/kilocode/commit/3e409b84310f481d1c3be4095d887f5cf6d15282) Thanks [@markijbema](https://github.com/markijbema)! - Added Amazon Bedrock as a provider for autocomplete
+- [#3100](https://github.com/Nova-Org/novacode/pull/3100) [`3e409b8`](https://github.com/Nova-Org/novacode/commit/3e409b84310f481d1c3be4095d887f5cf6d15282) Thanks [@markijbema](https://github.com/markijbema)! - Added Amazon Bedrock as a provider for autocomplete
 
-- [#3149](https://github.com/Kilo-Org/kilocode/pull/3149) [`79c7d60`](https://github.com/Kilo-Org/kilocode/commit/79c7d60a10a765da8195fde80e6a89630993b918) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains - Update framework (Plugin now requires IntelliJ IDEA 2024.3 or later)
+- [#3149](https://github.com/Nova-Org/novacode/pull/3149) [`79c7d60`](https://github.com/Nova-Org/novacode/commit/79c7d60a10a765da8195fde80e6a89630993b918) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains - Update framework (Plugin now requires IntelliJ IDEA 2024.3 or later)
 
-- [#3195](https://github.com/Kilo-Org/kilocode/pull/3195) [`93371d0`](https://github.com/Kilo-Org/kilocode/commit/93371d08f1c1b88eeb9f567af9ae74188fe7e379) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed crash when browser tool is used with native tool calling enabled
+- [#3195](https://github.com/Nova-Org/novacode/pull/3195) [`93371d0`](https://github.com/Nova-Org/novacode/commit/93371d08f1c1b88eeb9f567af9ae74188fe7e379) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed crash when browser tool is used with native tool calling enabled
 
 ## [v4.108.0]
 
-- [#2674](https://github.com/Kilo-Org/kilocode/pull/2674) [`2836aed`](https://github.com/Kilo-Org/kilocode/commit/2836aeddbbd6884f2c6f2421ca79387c25f5cd94) Thanks [@mcowger](https://github.com/mcowger)! - add send message on enter setting with configurable behavior
+- [#2674](https://github.com/Nova-Org/novacode/pull/2674) [`2836aed`](https://github.com/Nova-Org/novacode/commit/2836aeddbbd6884f2c6f2421ca79387c25f5cd94) Thanks [@mcowger](https://github.com/mcowger)! - add send message on enter setting with configurable behavior
 
-- [#3090](https://github.com/Kilo-Org/kilocode/pull/3090) [`261889f`](https://github.com/Kilo-Org/kilocode/commit/261889f1d4fa853aea0ddb261856b6d4c63e1159) Thanks [@mcowger](https://github.com/mcowger)! - Allow the use of native function calling for OpenAI-compatible, LM Studio, Chutes, DeepInfra, xAI and Z.ai providers.
+- [#3090](https://github.com/Nova-Org/novacode/pull/3090) [`261889f`](https://github.com/Nova-Org/novacode/commit/261889f1d4fa853aea0ddb261856b6d4c63e1159) Thanks [@mcowger](https://github.com/mcowger)! - Allow the use of native function calling for OpenAI-compatible, LM Studio, Chutes, DeepInfra, xAI and Z.ai providers.
 
 ### Patch Changes
 
-- [#3155](https://github.com/Kilo-Org/kilocode/pull/3155) [`6242b03`](https://github.com/Kilo-Org/kilocode/commit/6242b03e9fb58eff8da9f637fa448b35aeaae3a3) Thanks [@NikoDi2000](https://github.com/NikoDi2000)! - Improved the Chinese translation of "run" from '命令' to '运行'
+- [#3155](https://github.com/Nova-Org/novacode/pull/3155) [`6242b03`](https://github.com/Nova-Org/novacode/commit/6242b03e9fb58eff8da9f637fa448b35aeaae3a3) Thanks [@NikoDi2000](https://github.com/NikoDi2000)! - Improved the Chinese translation of "run" from '命令' to '运行'
 
-- [#3120](https://github.com/Kilo-Org/kilocode/pull/3120) [`ced4857`](https://github.com/Kilo-Org/kilocode/commit/ced48571894311e3350b9603071e5e2becc9473f) Thanks [@mcowger](https://github.com/mcowger)! - The apply_diff tool was implemented for experimental JSON-style tool calling
+- [#3120](https://github.com/Nova-Org/novacode/pull/3120) [`ced4857`](https://github.com/Nova-Org/novacode/commit/ced48571894311e3350b9603071e5e2becc9473f) Thanks [@mcowger](https://github.com/mcowger)! - The apply_diff tool was implemented for experimental JSON-style tool calling
 
 ## [v4.107.0]
 
 ### Patch Changes
 
-- [#3082](https://github.com/Kilo-Org/kilocode/pull/3082) [`d82e684`](https://github.com/Kilo-Org/kilocode/commit/d82e6842d423861d7c5725ebfdba491438b3302a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The "Enable browser tool" setting is now honored when using experimental JSON style tool calls.
+- [#3082](https://github.com/Nova-Org/novacode/pull/3082) [`d82e684`](https://github.com/Nova-Org/novacode/commit/d82e6842d423861d7c5725ebfdba491438b3302a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The "Enable browser tool" setting is now honored when using experimental JSON style tool calls.
 
-- [#3059](https://github.com/Kilo-Org/kilocode/pull/3059) [`d71f1d6`](https://github.com/Kilo-Org/kilocode/commit/d71f1d67e372fab1186ec07eda97c6d950338ec2) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix bug preventing the agent from editing files properly when git diff views are open
+- [#3059](https://github.com/Nova-Org/novacode/pull/3059) [`d71f1d6`](https://github.com/Nova-Org/novacode/commit/d71f1d67e372fab1186ec07eda97c6d950338ec2) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix bug preventing the agent from editing files properly when git diff views are open
 
-- [#3105](https://github.com/Kilo-Org/kilocode/pull/3105) [`b0c7475`](https://github.com/Kilo-Org/kilocode/commit/b0c7475a5f086171dbff162cbfa4761937617f27) Thanks [@metju90](https://github.com/metju90)! - Fix button styling on Let's Go CTA
+- [#3105](https://github.com/Nova-Org/novacode/pull/3105) [`b0c7475`](https://github.com/Nova-Org/novacode/commit/b0c7475a5f086171dbff162cbfa4761937617f27) Thanks [@metju90](https://github.com/metju90)! - Fix button styling on Let's Go CTA
 
-- [#3107](https://github.com/Kilo-Org/kilocode/pull/3107) [`c58c4ac`](https://github.com/Kilo-Org/kilocode/commit/c58c4ac9bed8af1a9c18250e759ee4b93873f86b) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.28.16-v3.28.17
-
+- [#3107](https://github.com/Nova-Org/novacode/pull/3107) [`c58c4ac`](https://github.com/Nova-Org/novacode/commit/c58c4ac9bed8af1a9c18250e759ee4b93873f86b) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.28.16-v3.28.17
     - Fix: Update zh-TW run command title translation (thanks @PeterDaveHello!)
     - feat: Add Claude Sonnet 4.5 1M context window support for Claude Code (thanks @ColbySerpa!)
 
 ## [v4.106.0]
 
-- [#2833](https://github.com/Kilo-Org/kilocode/pull/2833) [`0b8ef46`](https://github.com/Kilo-Org/kilocode/commit/0b8ef4632cab8cbf1da7a90a2f9b228861b41be8) Thanks [@mcowger](https://github.com/mcowger)! - (also thanks to @NaccOll for paving the way) - Preliminary support for native tool calling (a.k.a native function calling) was added.
+- [#2833](https://github.com/Nova-Org/novacode/pull/2833) [`0b8ef46`](https://github.com/Nova-Org/novacode/commit/0b8ef4632cab8cbf1da7a90a2f9b228861b41be8) Thanks [@mcowger](https://github.com/mcowger)! - (also thanks to @NaccOll for paving the way) - Preliminary support for native tool calling (a.k.a native function calling) was added.
 
     This feature is currently experimental and mostly intended for users interested in contributing to its development.
-    It is so far only supported when using OpenRouter or Kilo Code providers. There are possible issues including, but not limited to:
-
+    It is so far only supported when using OpenRouter or Nova Code providers. There are possible issues including, but not limited to:
     - Missing tools (e.g. apply_diff tool)
     - Tools calls not updating the UI until they are complete
     - Tools being used even though they are disabled (e.g. browser tool)
@@ -1827,15 +1813,15 @@
     Native tool calling can be enabled in Providers Settings > Advanced Settings > Tool Call Style > JSON.
     It is enabled by default for Claude Haiku 4.5, because that model does not work at all otherwise.
 
-- [#3050](https://github.com/Kilo-Org/kilocode/pull/3050) [`357d438`](https://github.com/Kilo-Org/kilocode/commit/357d4385c0a5e609a408c5842047c0e6593b8153) Thanks [@markijbema](https://github.com/markijbema)! - CMD-I now invokes the agent so you can give it more complex prompts
+- [#3050](https://github.com/Nova-Org/novacode/pull/3050) [`357d438`](https://github.com/Nova-Org/novacode/commit/357d4385c0a5e609a408c5842047c0e6593b8153) Thanks [@markijbema](https://github.com/markijbema)! - CMD-I now invokes the agent so you can give it more complex prompts
 
 ## [v4.105.0]
 
-- [#3005](https://github.com/Kilo-Org/kilocode/pull/3005) [`b87ae9c`](https://github.com/Kilo-Org/kilocode/commit/b87ae9ca29ca632ec0d324dae469a75c8005e876) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Improve the edit chat area to allow context and file drag and drop when editing messages. Align more with upstream edit functionality
+- [#3005](https://github.com/Nova-Org/novacode/pull/3005) [`b87ae9c`](https://github.com/Nova-Org/novacode/commit/b87ae9ca29ca632ec0d324dae469a75c8005e876) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Improve the edit chat area to allow context and file drag and drop when editing messages. Align more with upstream edit functionality
 
 ### Patch Changes
 
-- [#2983](https://github.com/Kilo-Org/kilocode/pull/2983) [`93e8243`](https://github.com/Kilo-Org/kilocode/commit/93e8243686488ecf61476f854cd19eb67706f7cb) Thanks [@jrf0110](https://github.com/jrf0110)! - Adds project usage tracking for Teams and Enterprise customers. Organization members can view and filter usage by project. Project identifier is automatically inferred from `.git/config`. It can be overwritten by writing a `.kilocode/config.json` file with the following contents:
+- [#2983](https://github.com/Nova-Org/novacode/pull/2983) [`93e8243`](https://github.com/Nova-Org/novacode/commit/93e8243686488ecf61476f854cd19eb67706f7cb) Thanks [@jrf0110](https://github.com/jrf0110)! - Adds project usage tracking for Teams and Enterprise customers. Organization members can view and filter usage by project. Project identifier is automatically inferred from `.git/config`. It can be overwritten by writing a `.novacode/config.json` file with the following contents:
 
     ```json
     {
@@ -1845,111 +1831,108 @@
     }
     ```
 
-- [#3057](https://github.com/Kilo-Org/kilocode/pull/3057) [`69f5a18`](https://github.com/Kilo-Org/kilocode/commit/69f5a182cf42361e659e94c95969e3bd3641176f) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Thanks Roo, support for Claude Haiku 4.5 to Anthropic, Bedrock and Vertex providers was added
+- [#3057](https://github.com/Nova-Org/novacode/pull/3057) [`69f5a18`](https://github.com/Nova-Org/novacode/commit/69f5a182cf42361e659e94c95969e3bd3641176f) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Thanks Roo, support for Claude Haiku 4.5 to Anthropic, Bedrock and Vertex providers was added
 
-- [#3046](https://github.com/Kilo-Org/kilocode/pull/3046) [`1bd934f`](https://github.com/Kilo-Org/kilocode/commit/1bd934f784034ec29d10ae7b42d67f768e0883b1) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - A warning is now shown when the webview memory usage crosses 90% of the limit (gray screen territory)
+- [#3046](https://github.com/Nova-Org/novacode/pull/3046) [`1bd934f`](https://github.com/Nova-Org/novacode/commit/1bd934f784034ec29d10ae7b42d67f768e0883b1) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - A warning is now shown when the webview memory usage crosses 90% of the limit (gray screen territory)
 
-- [#2885](https://github.com/Kilo-Org/kilocode/pull/2885) [`a34dab0`](https://github.com/Kilo-Org/kilocode/commit/a34dab09d2cbcc9732698f21e824b6773b30fa2b) Thanks [@shameez-struggles-to-commit](https://github.com/shameez-struggles-to-commit)! - Update VS Code Language Model API provider metadata to reflect current model limits:
-
+- [#2885](https://github.com/Nova-Org/novacode/pull/2885) [`a34dab0`](https://github.com/Nova-Org/novacode/commit/a34dab09d2cbcc9732698f21e824b6773b30fa2b) Thanks [@shameez-struggles-to-commit](https://github.com/shameez-struggles-to-commit)! - Update VS Code Language Model API provider metadata to reflect current model limits:
     - Align context windows, prompt/input limits, and max output tokens with the latest provider data for matching models: gpt-3.5-turbo, gpt-4o-mini, gpt-4, gpt-4-0125-preview, gpt-4o, o3-mini, claude-3.5-sonnet, claude-sonnet-4, gemini-2.0-flash-001, gemini-2.5-pro, o4-mini-2025-04-16, gpt-4.1, gpt-5-mini, gpt-5.
     - Fixes an issue where a default 128k context was assumed for all models.
     - Notable: GPT-5 family now uses 264k context; o3-mini/o4-mini, Gemini, Claude, and 4o families have updated output and image support flags. GPT-5-mini max output explicitly set to 127,805.
 
-    This ensures Kilo Code correctly enforces model token budgets with the VS Code LM integration.
+    This ensures Nova Code correctly enforces model token budgets with the VS Code LM integration.
 
 ## [v4.104.0]
 
-- [#2673](https://github.com/Kilo-Org/kilocode/pull/2673) [`cf1aca2`](https://github.com/Kilo-Org/kilocode/commit/cf1aca2fb6c0f16414d42737a4ebf90357f5a796) Thanks [@mcowger](https://github.com/mcowger)! - Update Gemini provider to support dynamic model retrieval.
+- [#2673](https://github.com/Nova-Org/novacode/pull/2673) [`cf1aca2`](https://github.com/Nova-Org/novacode/commit/cf1aca2fb6c0f16414d42737a4ebf90357f5a796) Thanks [@mcowger](https://github.com/mcowger)! - Update Gemini provider to support dynamic model retrieval.
 
-- [#2749](https://github.com/Kilo-Org/kilocode/pull/2749) [`7e493ec`](https://github.com/Kilo-Org/kilocode/commit/7e493ec35c01687b78cb2fb54b3f92c6b42662aa) Thanks [@mcowger](https://github.com/mcowger)! - Improved OpenAI compatible parser's ability to yield reasoning content
+- [#2749](https://github.com/Nova-Org/novacode/pull/2749) [`7e493ec`](https://github.com/Nova-Org/novacode/commit/7e493ec35c01687b78cb2fb54b3f92c6b42662aa) Thanks [@mcowger](https://github.com/mcowger)! - Improved OpenAI compatible parser's ability to yield reasoning content
 
 ## [v4.103.1]
 
-- [#2962](https://github.com/Kilo-Org/kilocode/pull/2962) [`a424824`](https://github.com/Kilo-Org/kilocode/commit/a424824269b3cafdf58bcdb1acf7ed6151f32e0b) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved the error message when an unsupported reasoning effort value is chosen
+- [#2962](https://github.com/Nova-Org/novacode/pull/2962) [`a424824`](https://github.com/Nova-Org/novacode/commit/a424824269b3cafdf58bcdb1acf7ed6151f32e0b) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved the error message when an unsupported reasoning effort value is chosen
 
-- [#2960](https://github.com/Kilo-Org/kilocode/pull/2960) [`254e21b`](https://github.com/Kilo-Org/kilocode/commit/254e21b29df46dab3048ecd792625eadc20beafb) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The reasoning effort setting is no longer ignored for GLM 4.6 when using the Kilo Code or OpenRouter providers. Some inference providers on OpenRouter have trouble when reasoning is enabled, but this is now less of a problem, because more providers have come online. Most providers do not expose reasoning tokens for GLM 4.6, regardless of reasoning effort.
+- [#2960](https://github.com/Nova-Org/novacode/pull/2960) [`254e21b`](https://github.com/Nova-Org/novacode/commit/254e21b29df46dab3048ecd792625eadc20beafb) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The reasoning effort setting is no longer ignored for GLM 4.6 when using the Nova Code or OpenRouter providers. Some inference providers on OpenRouter have trouble when reasoning is enabled, but this is now less of a problem, because more providers have come online. Most providers do not expose reasoning tokens for GLM 4.6, regardless of reasoning effort.
 
 ## [v4.103.0]
 
-- [#2528](https://github.com/Kilo-Org/kilocode/pull/2528) [`14d5060`](https://github.com/Kilo-Org/kilocode/commit/14d506025a9374f54409768629fc4ebd57f8f628) Thanks [@mcowger](https://github.com/mcowger)! - Add timestamps to Chat view.
+- [#2528](https://github.com/Nova-Org/novacode/pull/2528) [`14d5060`](https://github.com/Nova-Org/novacode/commit/14d506025a9374f54409768629fc4ebd57f8f628) Thanks [@mcowger](https://github.com/mcowger)! - Add timestamps to Chat view.
 
 ### Patch Changes
 
-- [#2861](https://github.com/Kilo-Org/kilocode/pull/2861) [`279d7cf`](https://github.com/Kilo-Org/kilocode/commit/279d7cff9d19ec908681318fbe929b45fbf94393) Thanks [@jrf0110](https://github.com/jrf0110)! - Organization modes selection. This feature allows organizations to create
-  new modes and send them to the KiloCode extension. It also allows for
-  overwriting Kilo Code's built-in modes. Organization modes are readonly
+- [#2861](https://github.com/Nova-Org/novacode/pull/2861) [`279d7cf`](https://github.com/Nova-Org/novacode/commit/279d7cff9d19ec908681318fbe929b45fbf94393) Thanks [@jrf0110](https://github.com/jrf0110)! - Organization modes selection. This feature allows organizations to create
+  new modes and send them to the NovaCode extension. It also allows for
+  overwriting Nova Code's built-in modes. Organization modes are readonly
   from the extension and must be edited from the dashboard.
 
-- [#2858](https://github.com/Kilo-Org/kilocode/pull/2858) [`154722b`](https://github.com/Kilo-Org/kilocode/commit/154722be5a73143231e95ccbc2679b8a4eaaa5ab) Thanks [@hassoncs](https://github.com/hassoncs)! - Make all text-based links the same visual style
+- [#2858](https://github.com/Nova-Org/novacode/pull/2858) [`154722b`](https://github.com/Nova-Org/novacode/commit/154722be5a73143231e95ccbc2679b8a4eaaa5ab) Thanks [@hassoncs](https://github.com/hassoncs)! - Make all text-based links the same visual style
 
 ## [v4.102.0]
 
-- [#2854](https://github.com/Kilo-Org/kilocode/pull/2854) [`bd5d7fc`](https://github.com/Kilo-Org/kilocode/commit/bd5d7fc5f0c67ac2b040dbdefbd90d0396e0b60e) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.28.14-v3.28.15
-
+- [#2854](https://github.com/Nova-Org/novacode/pull/2854) [`bd5d7fc`](https://github.com/Nova-Org/novacode/commit/bd5d7fc5f0c67ac2b040dbdefbd90d0396e0b60e) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.28.14-v3.28.15
     - Fix: properly reset cost limit tracking when user clicks "Reset and Continue" (#6889 by @alecoot, PR by app/roomote)
     - Fix: improve save button activation in prompts settings (#5780 by @beccare, PR by app/roomote)
     - Fix: overeager 'there are unsaved changes' dialog in settings (thanks @brunobergher!)
     - Fix: Claude Sonnet 4.5 compatibility improvements (thanks @mrubens!)
     - Remove unsupported Gemini 2.5 Flash Image Preview free model (thanks @SannidhyaSah!)
 
-- [#1652](https://github.com/Kilo-Org/kilocode/pull/1652) [`b3caf38`](https://github.com/Kilo-Org/kilocode/commit/b3caf38e44f2f6ccd58f3e92cd68edce48a96844) Thanks [@hassoncs](https://github.com/hassoncs)! - Add a display setting that hides costs below a user-defined threshold
+- [#1652](https://github.com/Nova-Org/novacode/pull/1652) [`b3caf38`](https://github.com/Nova-Org/novacode/commit/b3caf38e44f2f6ccd58f3e92cd68edce48a96844) Thanks [@hassoncs](https://github.com/hassoncs)! - Add a display setting that hides costs below a user-defined threshold
 
 ### Patch Changes
 
-- [#2871](https://github.com/Kilo-Org/kilocode/pull/2871) [`0403f82`](https://github.com/Kilo-Org/kilocode/commit/0403f820a8413656eecbe3bbfe252a52c2999e37) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved Fast Apply error messages
+- [#2871](https://github.com/Nova-Org/novacode/pull/2871) [`0403f82`](https://github.com/Nova-Org/novacode/commit/0403f820a8413656eecbe3bbfe252a52c2999e37) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved Fast Apply error messages
 
-- [#2851](https://github.com/Kilo-Org/kilocode/pull/2851) [`9e6a897`](https://github.com/Kilo-Org/kilocode/commit/9e6a89796f04f6215e31ac7950669783387a11de) Thanks [@eliasto](https://github.com/eliasto)! - Add custom base URL support to OVHcloud provider
+- [#2851](https://github.com/Nova-Org/novacode/pull/2851) [`9e6a897`](https://github.com/Nova-Org/novacode/commit/9e6a89796f04f6215e31ac7950669783387a11de) Thanks [@eliasto](https://github.com/eliasto)! - Add custom base URL support to OVHcloud provider
 
-- [#2870](https://github.com/Kilo-Org/kilocode/pull/2870) [`4730e08`](https://github.com/Kilo-Org/kilocode/commit/4730e080f99bcd414a3eb0a71a04ab5fd6dbcb6e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - A checkpoint is now created before _every_ tool call
+- [#2870](https://github.com/Nova-Org/novacode/pull/2870) [`4730e08`](https://github.com/Nova-Org/novacode/commit/4730e080f99bcd414a3eb0a71a04ab5fd6dbcb6e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - A checkpoint is now created before _every_ tool call
 
 ## [v4.101.0]
 
-- [#2518](https://github.com/Kilo-Org/kilocode/pull/2518) [`01106a8`](https://github.com/Kilo-Org/kilocode/commit/01106a8d35159ccea34e290a2174d44d83fecd64) Thanks [@eliasto](https://github.com/eliasto)! - OVHcloud AI Endpoints provider added
+- [#2518](https://github.com/Nova-Org/novacode/pull/2518) [`01106a8`](https://github.com/Nova-Org/novacode/commit/01106a8d35159ccea34e290a2174d44d83fecd64) Thanks [@eliasto](https://github.com/eliasto)! - OVHcloud AI Endpoints provider added
 
 ### Patch Changes
 
-- [#2852](https://github.com/Kilo-Org/kilocode/pull/2852) [`a707e1d`](https://github.com/Kilo-Org/kilocode/commit/a707e1db5b4f8ee3ca80f259217f521a02ddbd50) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Autocomplete now honors .kilocodeignore
+- [#2852](https://github.com/Nova-Org/novacode/pull/2852) [`a707e1d`](https://github.com/Nova-Org/novacode/commit/a707e1db5b4f8ee3ca80f259217f521a02ddbd50) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Autocomplete now honors .novacodeignore
 
-- [#2829](https://github.com/Kilo-Org/kilocode/pull/2829) [`75acbab`](https://github.com/Kilo-Org/kilocode/commit/75acbabd1f0d39488bc252e8559e39a4b8daed19) Thanks [@hassoncs](https://github.com/hassoncs)! - Potentially fix missing Kilo Code icon by removing 'when' condition from the extension's activitybar config
+- [#2829](https://github.com/Nova-Org/novacode/pull/2829) [`75acbab`](https://github.com/Nova-Org/novacode/commit/75acbabd1f0d39488bc252e8559e39a4b8daed19) Thanks [@hassoncs](https://github.com/hassoncs)! - Potentially fix missing Nova Code icon by removing 'when' condition from the extension's activitybar config
 
-- [#2831](https://github.com/Kilo-Org/kilocode/pull/2831) [`9d457f0`](https://github.com/Kilo-Org/kilocode/commit/9d457f0bc3eef1c1f07eb80070e0ecf69355b38a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - When using Kilo Code or OpenRouter, the inference provider used is now shown in a tooltip on "API Request"
+- [#2831](https://github.com/Nova-Org/novacode/pull/2831) [`9d457f0`](https://github.com/Nova-Org/novacode/commit/9d457f0bc3eef1c1f07eb80070e0ecf69355b38a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - When using Nova Code or OpenRouter, the inference provider used is now shown in a tooltip on "API Request"
 
 ## [v4.100.0]
 
-- [#2787](https://github.com/Kilo-Org/kilocode/pull/2787) [`9c16d14`](https://github.com/Kilo-Org/kilocode/commit/9c16d14c4b8455041b16e5ffa0787014d5154d19) Thanks [@b3nw](https://github.com/b3nw)! - Chutes model list is now dynamically loaded
+- [#2787](https://github.com/Nova-Org/novacode/pull/2787) [`9c16d14`](https://github.com/Nova-Org/novacode/commit/9c16d14c4b8455041b16e5ffa0787014d5154d19) Thanks [@b3nw](https://github.com/b3nw)! - Chutes model list is now dynamically loaded
 
-- [#2806](https://github.com/Kilo-Org/kilocode/pull/2806) [`5d1cda9`](https://github.com/Kilo-Org/kilocode/commit/5d1cda99a5c3872dae526db9b3c8cefbabe69de0) Thanks [@EamonNerbonne](https://github.com/EamonNerbonne)! - Removed the option to use custom provider for autocomplete.
+- [#2806](https://github.com/Nova-Org/novacode/pull/2806) [`5d1cda9`](https://github.com/Nova-Org/novacode/commit/5d1cda99a5c3872dae526db9b3c8cefbabe69de0) Thanks [@EamonNerbonne](https://github.com/EamonNerbonne)! - Removed the option to use custom provider for autocomplete.
 
     Using a custom provider defaults to using a your globally configured provider without any context-window cap, and using a custom provider with no further restrictions like that means that per-autocomplete request costs are sometimes extremely high and responses very slow.
 
-- [#2790](https://github.com/Kilo-Org/kilocode/pull/2790) [`d0f6fa0`](https://github.com/Kilo-Org/kilocode/commit/d0f6fa0531e5abfb39f2e99c7a637ead54bfe8be) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Zero Data Retention can now be enabled for Kilo Code and OpenRouter under the Provider Routing settings.
+- [#2790](https://github.com/Nova-Org/novacode/pull/2790) [`d0f6fa0`](https://github.com/Nova-Org/novacode/commit/d0f6fa0531e5abfb39f2e99c7a637ead54bfe8be) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Zero Data Retention can now be enabled for Nova Code and OpenRouter under the Provider Routing settings.
 
-- [#2567](https://github.com/Kilo-Org/kilocode/pull/2567) [`68ea97f`](https://github.com/Kilo-Org/kilocode/commit/68ea97fc02861e932cf0357d60d73a3204ed19ef) Thanks [@billycao](https://github.com/billycao)! - Add provider support for Synthetic (https://synthetic.new)
+- [#2567](https://github.com/Nova-Org/novacode/pull/2567) [`68ea97f`](https://github.com/Nova-Org/novacode/commit/68ea97fc02861e932cf0357d60d73a3204ed19ef) Thanks [@billycao](https://github.com/billycao)! - Add provider support for Synthetic (https://synthetic.new)
 
-- [#2807](https://github.com/Kilo-Org/kilocode/pull/2807) [`3375470`](https://github.com/Kilo-Org/kilocode/commit/337547095ff64fbdd1294a22b19c7dd6b41e37bb) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The See All Changes button when a task completes is now accompanied by a Revert All Changes button to be able to easily revert all changes.
+- [#2807](https://github.com/Nova-Org/novacode/pull/2807) [`3375470`](https://github.com/Nova-Org/novacode/commit/337547095ff64fbdd1294a22b19c7dd6b41e37bb) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The See All Changes button when a task completes is now accompanied by a Revert All Changes button to be able to easily revert all changes.
 
 ### Patch Changes
 
-- [#2798](https://github.com/Kilo-Org/kilocode/pull/2798) [`bb3baca`](https://github.com/Kilo-Org/kilocode/commit/bb3baca433ce77419abd8d3f4814278a05f8c631) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The API Request timeout for Ollama and LM Studio is now configurable (VS Code Extensions panel -> Kilo Code gear menu -> Settings -> API Request Timeout)
+- [#2798](https://github.com/Nova-Org/novacode/pull/2798) [`bb3baca`](https://github.com/Nova-Org/novacode/commit/bb3baca433ce77419abd8d3f4814278a05f8c631) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The API Request timeout for Ollama and LM Studio is now configurable (VS Code Extensions panel -> Nova Code gear menu -> Settings -> API Request Timeout)
 
 ## [v4.99.2]
 
-- [#2729](https://github.com/Kilo-Org/kilocode/pull/2729) [`bda1ef4`](https://github.com/Kilo-Org/kilocode/commit/bda1ef4a6ece7532db4e07359cfae640b1080d3c) Thanks [@ivanarifin](https://github.com/ivanarifin)! - Update the environment variables of Gemini CLI when OAuth path changes
+- [#2729](https://github.com/Nova-Org/novacode/pull/2729) [`bda1ef4`](https://github.com/Nova-Org/novacode/commit/bda1ef4a6ece7532db4e07359cfae640b1080d3c) Thanks [@ivanarifin](https://github.com/ivanarifin)! - Update the environment variables of Gemini CLI when OAuth path changes
 
-- [#2755](https://github.com/Kilo-Org/kilocode/pull/2755) [`82ffeb4`](https://github.com/Kilo-Org/kilocode/commit/82ffeb4bcfbf1ff6b4cc50413e7dbc57fd82c7cd) Thanks [@b3nw](https://github.com/b3nw)! - Add zai-org/GLM-4.6-turbo model to Chutes provider
+- [#2755](https://github.com/Nova-Org/novacode/pull/2755) [`82ffeb4`](https://github.com/Nova-Org/novacode/commit/82ffeb4bcfbf1ff6b4cc50413e7dbc57fd82c7cd) Thanks [@b3nw](https://github.com/b3nw)! - Add zai-org/GLM-4.6-turbo model to Chutes provider
 
 ## [v4.99.1]
 
-- [#2731](https://github.com/Kilo-Org/kilocode/pull/2731) [`36cf88f`](https://github.com/Kilo-Org/kilocode/commit/36cf88f868eee2a322b35b37032f98d199e0f91a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - A recommendation to disable Editing Through Diffs or Fast Apply is now included in the error message when a model fails to use them properly
+- [#2731](https://github.com/Nova-Org/novacode/pull/2731) [`36cf88f`](https://github.com/Nova-Org/novacode/commit/36cf88f868eee2a322b35b37032f98d199e0f91a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - A recommendation to disable Editing Through Diffs or Fast Apply is now included in the error message when a model fails to use them properly
 
-- [#2751](https://github.com/Kilo-Org/kilocode/pull/2751) [`6ebf0bb`](https://github.com/Kilo-Org/kilocode/commit/6ebf0bbe38be7d737546f8975cff927d95e85751) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed some untranslated text being shown in the Ollama settings
+- [#2751](https://github.com/Nova-Org/novacode/pull/2751) [`6ebf0bb`](https://github.com/Nova-Org/novacode/commit/6ebf0bbe38be7d737546f8975cff927d95e85751) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed some untranslated text being shown in the Ollama settings
 
 ## [v4.99.0]
 
-- [#2719](https://github.com/Kilo-Org/kilocode/pull/2719) [`345947f`](https://github.com/Kilo-Org/kilocode/commit/345947f29978045209a82687843c28059b339dc0) Thanks [@mcowger](https://github.com/mcowger)! - Prevent race conditions from stopping agent progress during indexing.
+- [#2719](https://github.com/Nova-Org/novacode/pull/2719) [`345947f`](https://github.com/Nova-Org/novacode/commit/345947f29978045209a82687843c28059b339dc0) Thanks [@mcowger](https://github.com/mcowger)! - Prevent race conditions from stopping agent progress during indexing.
 
-- [#2716](https://github.com/Kilo-Org/kilocode/pull/2716) [`41a6dbf`](https://github.com/Kilo-Org/kilocode/commit/41a6dbf1a54a699e358a24ecd167f692f3a2aef5) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.28.8-v3.28.13
-
+- [#2716](https://github.com/Nova-Org/novacode/pull/2716) [`41a6dbf`](https://github.com/Nova-Org/novacode/commit/41a6dbf1a54a699e358a24ecd167f692f3a2aef5) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.28.8-v3.28.13
     - Fix: Remove topP parameter from Bedrock inference config (#8377 by @ronyblum, PR by @daniel-lxs)
     - Fix: Correct Vertex AI Sonnet 4.5 model configuration (#8387 by @nickcatal, PR by @mrubens!)
     - Fix: Correct Anthropic Sonnet 4.5 model ID and add Bedrock 1M context checkbox (thanks @daniel-lxs!)
@@ -1963,32 +1946,31 @@
     - Fix: Resolve frequent "No tool used" errors by clarifying tool-use rules (thanks @hannesrudolph!)
     - Fix: Include initial ask in condense summarization (thanks @hannesrudolph!)
 
-- [#2701](https://github.com/Kilo-Org/kilocode/pull/2701) [`0593631`](https://github.com/Kilo-Org/kilocode/commit/05936316c0bedfb62a0c1851dd4abfe1882fe3a4) Thanks [@mcowger](https://github.com/mcowger)! - Added additional supported models to the Fast Apply experimental feature for a total of three: Morph V3 Fast, Morph V3 Large and Relace Apply 3
+- [#2701](https://github.com/Nova-Org/novacode/pull/2701) [`0593631`](https://github.com/Nova-Org/novacode/commit/05936316c0bedfb62a0c1851dd4abfe1882fe3a4) Thanks [@mcowger](https://github.com/mcowger)! - Added additional supported models to the Fast Apply experimental feature for a total of three: Morph V3 Fast, Morph V3 Large and Relace Apply 3
 
 ### Patch Changes
 
-- [#2656](https://github.com/Kilo-Org/kilocode/pull/2656) [`4e1b4ed`](https://github.com/Kilo-Org/kilocode/commit/4e1b4edb06ba3894bba86abd63853c167f1b4eb0) Thanks [@SnHaku](https://github.com/SnHaku)! - Fixed JetBrains PowerShell integration
+- [#2656](https://github.com/Nova-Org/novacode/pull/2656) [`4e1b4ed`](https://github.com/Nova-Org/novacode/commit/4e1b4edb06ba3894bba86abd63853c167f1b4eb0) Thanks [@SnHaku](https://github.com/SnHaku)! - Fixed JetBrains PowerShell integration
 
-- [#2725](https://github.com/Kilo-Org/kilocode/pull/2725) [`2ae6a7c`](https://github.com/Kilo-Org/kilocode/commit/2ae6a7c3a9531ad6418cc3858aa43f96fc849072) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed GLM 4.6 always getting stuck in loops with Kilo Code and OpenRouter providers
+- [#2725](https://github.com/Nova-Org/novacode/pull/2725) [`2ae6a7c`](https://github.com/Nova-Org/novacode/commit/2ae6a7c3a9531ad6418cc3858aa43f96fc849072) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed GLM 4.6 always getting stuck in loops with Nova Code and OpenRouter providers
 
-- [#2659](https://github.com/Kilo-Org/kilocode/pull/2659) [`318edd6`](https://github.com/Kilo-Org/kilocode/commit/318edd639b38f65dfdab0695f481322ea90ce2cc) Thanks [@akhil41](https://github.com/akhil41)! - Update Chutes AI provider model list
+- [#2659](https://github.com/Nova-Org/novacode/pull/2659) [`318edd6`](https://github.com/Nova-Org/novacode/commit/318edd639b38f65dfdab0695f481322ea90ce2cc) Thanks [@akhil41](https://github.com/akhil41)! - Update Chutes AI provider model list
 
 ## [v4.98.2]
 
-- [#2704](https://github.com/Kilo-Org/kilocode/pull/2704) [`6b6af0a`](https://github.com/Kilo-Org/kilocode/commit/6b6af0a2113cd106f08b1538172d5ba5d19a80ff) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed duplicated cost display
+- [#2704](https://github.com/Nova-Org/novacode/pull/2704) [`6b6af0a`](https://github.com/Nova-Org/novacode/commit/6b6af0a2113cd106f08b1538172d5ba5d19a80ff) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed duplicated cost display
 
-- [#2705](https://github.com/Kilo-Org/kilocode/pull/2705) [`e65557d`](https://github.com/Kilo-Org/kilocode/commit/e65557dcfb880f70c6d18a6f511454c234b70ee4) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Added "Command Timeout Allowlist" and "Prevent Completion with Open Todos" to Extension Settings.
+- [#2705](https://github.com/Nova-Org/novacode/pull/2705) [`e65557d`](https://github.com/Nova-Org/novacode/commit/e65557dcfb880f70c6d18a6f511454c234b70ee4) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Added "Command Timeout Allowlist" and "Prevent Completion with Open Todos" to Extension Settings.
 
-- [#2707](https://github.com/Kilo-Org/kilocode/pull/2707) [`55ff2dc`](https://github.com/Kilo-Org/kilocode/commit/55ff2dcf6bccfcc9d70ba631ba57c99269ebe716) Thanks [@Ed4ward](https://github.com/Ed4ward)! - Added GLM 4.6 support to the Z.AI provider
+- [#2707](https://github.com/Nova-Org/novacode/pull/2707) [`55ff2dc`](https://github.com/Nova-Org/novacode/commit/55ff2dcf6bccfcc9d70ba631ba57c99269ebe716) Thanks [@Ed4ward](https://github.com/Ed4ward)! - Added GLM 4.6 support to the Z.AI provider
 
 ## [v4.98.1]
 
-- [#2695](https://github.com/Kilo-Org/kilocode/pull/2695) [`ab49c14`](https://github.com/Kilo-Org/kilocode/commit/ab49c141ca397a0af985341a1cfe907d586430ef) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add Claude 4.5 Sonnet to all supported providers (thanks Roo Code)
+- [#2695](https://github.com/Nova-Org/novacode/pull/2695) [`ab49c14`](https://github.com/Nova-Org/novacode/commit/ab49c141ca397a0af985341a1cfe907d586430ef) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add Claude 4.5 Sonnet to all supported providers (thanks Roo Code)
 
 ## [v4.98.0]
 
-- [#2623](https://github.com/Kilo-Org/kilocode/pull/2623) [`da834dd`](https://github.com/Kilo-Org/kilocode/commit/da834ddcd24ee334ec97c1a5ca398b87d624adc0) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.28.2-v3.28.7
-
+- [#2623](https://github.com/Nova-Org/novacode/pull/2623) [`da834dd`](https://github.com/Nova-Org/novacode/commit/da834ddcd24ee334ec97c1a5ca398b87d624adc0) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.28.2-v3.28.7
     - UX: Collapse thinking blocks by default with UI settings to always show them (thanks @brunobergher!)
     - Fix: Resolve checkpoint restore popover positioning issue (#8219 by @NaccOll, PR by @app/roomote)
     - Add support for zai-org/GLM-4.5-turbo model in Chutes provider (#8155 by @mugnimaestra, PR by @app/roomote)
@@ -2011,62 +1993,61 @@
     - Fix: Handle ByteString conversion errors in OpenAI embedders (#7959 by @PavelA85, PR by @daniel-lxs)
     - Bring back a way to temporarily and globally pause auto-approve without losing your toggle state (thanks @brunobergher!)
 
-- [#2221](https://github.com/Kilo-Org/kilocode/pull/2221) [`bcb4c69`](https://github.com/Kilo-Org/kilocode/commit/bcb4c69f92c833e3c6cfc10d64b80077613386f1) Thanks [@Ffinnis](https://github.com/Ffinnis)! - Add ability to cancel code indexing process
+- [#2221](https://github.com/Nova-Org/novacode/pull/2221) [`bcb4c69`](https://github.com/Nova-Org/novacode/commit/bcb4c69f92c833e3c6cfc10d64b80077613386f1) Thanks [@Ffinnis](https://github.com/Ffinnis)! - Add ability to cancel code indexing process
 
 ### Patch Changes
 
-- [#2665](https://github.com/Kilo-Org/kilocode/pull/2665) [`7b100d5`](https://github.com/Kilo-Org/kilocode/commit/7b100d5473e28aeafa832bcc3bbca3699c5ad9b1) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The "See New Changes" button is now hidden when checkpoints are disabled.
+- [#2665](https://github.com/Nova-Org/novacode/pull/2665) [`7b100d5`](https://github.com/Nova-Org/novacode/commit/7b100d5473e28aeafa832bcc3bbca3699c5ad9b1) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The "See New Changes" button is now hidden when checkpoints are disabled.
 
 ## [v4.97.2]
 
-- [#2655](https://github.com/Kilo-Org/kilocode/pull/2655) [`3f83727`](https://github.com/Kilo-Org/kilocode/commit/3f8372708344171f4b379b90ad04693e1f67be39) Thanks [@PierreAncey](https://github.com/PierreAncey)! - Add Grok 4 Fast model to xAI provider
+- [#2655](https://github.com/Nova-Org/novacode/pull/2655) [`3f83727`](https://github.com/Nova-Org/novacode/commit/3f8372708344171f4b379b90ad04693e1f67be39) Thanks [@PierreAncey](https://github.com/PierreAncey)! - Add Grok 4 Fast model to xAI provider
 
-- [#2648](https://github.com/Kilo-Org/kilocode/pull/2648) [`6f3f9fb`](https://github.com/Kilo-Org/kilocode/commit/6f3f9fba397ad34430c98a6db7ef535fe32622e8) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix error logging behavior in JetBrains plugin by updating console bridge log levels
+- [#2648](https://github.com/Nova-Org/novacode/pull/2648) [`6f3f9fb`](https://github.com/Nova-Org/novacode/commit/6f3f9fba397ad34430c98a6db7ef535fe32622e8) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix error logging behavior in JetBrains plugin by updating console bridge log levels
 
-- [#2617](https://github.com/Kilo-Org/kilocode/pull/2617) [`a94bf01`](https://github.com/Kilo-Org/kilocode/commit/a94bf01f7df542ffd372bbb0d385b39941187b0d) Thanks [@RSO](https://github.com/RSO)! - JetBrains: Fix terminal not having complete path
+- [#2617](https://github.com/Nova-Org/novacode/pull/2617) [`a94bf01`](https://github.com/Nova-Org/novacode/commit/a94bf01f7df542ffd372bbb0d385b39941187b0d) Thanks [@RSO](https://github.com/RSO)! - JetBrains: Fix terminal not having complete path
 
 ## [v4.97.1]
 
-- [#2625](https://github.com/Kilo-Org/kilocode/pull/2625) [`3409665`](https://github.com/Kilo-Org/kilocode/commit/340966544bda3a069f9cf2478658bf58f5e2cf3c) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add fix for Gemini CLI not being able to refresh access token anymore
+- [#2625](https://github.com/Nova-Org/novacode/pull/2625) [`3409665`](https://github.com/Nova-Org/novacode/commit/340966544bda3a069f9cf2478658bf58f5e2cf3c) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add fix for Gemini CLI not being able to refresh access token anymore
 
-- [#2536](https://github.com/Kilo-Org/kilocode/pull/2536) [`1a01114`](https://github.com/Kilo-Org/kilocode/commit/1a011145572333d053b8999c3f38bf718bbedf66) Thanks [@mcowger](https://github.com/mcowger)! - Only validate embedders when they match the currently configured provider
+- [#2536](https://github.com/Nova-Org/novacode/pull/2536) [`1a01114`](https://github.com/Nova-Org/novacode/commit/1a011145572333d053b8999c3f38bf718bbedf66) Thanks [@mcowger](https://github.com/mcowger)! - Only validate embedders when they match the currently configured provider
 
-- [#2491](https://github.com/Kilo-Org/kilocode/pull/2491) [`06afc76`](https://github.com/Kilo-Org/kilocode/commit/06afc769d29740083027a1caa6195edcfbbb94e2) Thanks [@Thireus](https://github.com/Thireus)! - Increase OpenAI Compatible timeout
+- [#2491](https://github.com/Nova-Org/novacode/pull/2491) [`06afc76`](https://github.com/Nova-Org/novacode/commit/06afc769d29740083027a1caa6195edcfbbb94e2) Thanks [@Thireus](https://github.com/Thireus)! - Increase OpenAI Compatible timeout
 
 ## [v4.97.0]
 
-- [#2505](https://github.com/Kilo-Org/kilocode/pull/2505) [`a59e7f5`](https://github.com/Kilo-Org/kilocode/commit/a59e7f565478c7405e62c59448bf7667e4b26c8f) Thanks [@markijbema](https://github.com/markijbema)! - Added option to the Display tab of the settings to disable autocomplete gutter animation
+- [#2505](https://github.com/Nova-Org/novacode/pull/2505) [`a59e7f5`](https://github.com/Nova-Org/novacode/commit/a59e7f565478c7405e62c59448bf7667e4b26c8f) Thanks [@markijbema](https://github.com/markijbema)! - Added option to the Display tab of the settings to disable autocomplete gutter animation
 
-- [#2602](https://github.com/Kilo-Org/kilocode/pull/2602) [`0807e5f`](https://github.com/Kilo-Org/kilocode/commit/0807e5ffdfcef1f90e6469a964d47ec177cca706) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add GPT-5-Codex to OpenAI provider (thanks Roo / @daniel-lxs)
+- [#2602](https://github.com/Nova-Org/novacode/pull/2602) [`0807e5f`](https://github.com/Nova-Org/novacode/commit/0807e5ffdfcef1f90e6469a964d47ec177cca706) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add GPT-5-Codex to OpenAI provider (thanks Roo / @daniel-lxs)
 
 ### Patch Changes
 
-- [#2583](https://github.com/Kilo-Org/kilocode/pull/2583) [`0c13d2d`](https://github.com/Kilo-Org/kilocode/commit/0c13d2db8391f194150001a2fc1e247573a95db2) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The rate limiter no longer generates timeouts longer than the configured limit.
+- [#2583](https://github.com/Nova-Org/novacode/pull/2583) [`0c13d2d`](https://github.com/Nova-Org/novacode/commit/0c13d2db8391f194150001a2fc1e247573a95db2) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The rate limiter no longer generates timeouts longer than the configured limit.
 
-- [#2596](https://github.com/Kilo-Org/kilocode/pull/2596) [`38f4547`](https://github.com/Kilo-Org/kilocode/commit/38f45478d4183f375e8a717a3564d3ac91fd6daa) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Reasoning can now be disabled for DeepSeek V3.1 models when using Kilo Code or OpenRouter providers by setting Reasoning Effort to minimal
+- [#2596](https://github.com/Nova-Org/novacode/pull/2596) [`38f4547`](https://github.com/Nova-Org/novacode/commit/38f45478d4183f375e8a717a3564d3ac91fd6daa) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Reasoning can now be disabled for DeepSeek V3.1 models when using Nova Code or OpenRouter providers by setting Reasoning Effort to minimal
 
-- [#2586](https://github.com/Kilo-Org/kilocode/pull/2586) [`0b4025d`](https://github.com/Kilo-Org/kilocode/commit/0b4025df4c44d86a0aba20d19d5b32f2eaa214c6) Thanks [@b3nw](https://github.com/b3nw)! - New Chutes AI models added and pricing updated
+- [#2586](https://github.com/Nova-Org/novacode/pull/2586) [`0b4025d`](https://github.com/Nova-Org/novacode/commit/0b4025df4c44d86a0aba20d19d5b32f2eaa214c6) Thanks [@b3nw](https://github.com/b3nw)! - New Chutes AI models added and pricing updated
 
-- [#2603](https://github.com/Kilo-Org/kilocode/pull/2603) [`b5325a8`](https://github.com/Kilo-Org/kilocode/commit/b5325a82abe94e195b580ac27cd0a8bf7f8577a7) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Reasoning can now be disabled for Grok 4 Fast on OpenRouter by setting Reasoning Effort to minimal. Note that Grok 4 Fast does not expose its reasoning tokens.
+- [#2603](https://github.com/Nova-Org/novacode/pull/2603) [`b5325a8`](https://github.com/Nova-Org/novacode/commit/b5325a82abe94e195b580ac27cd0a8bf7f8577a7) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Reasoning can now be disabled for Grok 4 Fast on OpenRouter by setting Reasoning Effort to minimal. Note that Grok 4 Fast does not expose its reasoning tokens.
 
-- [#2570](https://github.com/Kilo-Org/kilocode/pull/2570) [`18963de`](https://github.com/Kilo-Org/kilocode/commit/18963de4dce86be883c03ceeb418e820bd2c0635) Thanks [@snova-jorgep](https://github.com/snova-jorgep)! - Update available SambaNova models
+- [#2570](https://github.com/Nova-Org/novacode/pull/2570) [`18963de`](https://github.com/Nova-Org/novacode/commit/18963de4dce86be883c03ceeb418e820bd2c0635) Thanks [@snova-jorgep](https://github.com/snova-jorgep)! - Update available SambaNova models
 
 ## [v4.96.2]
 
-- [#2521](https://github.com/Kilo-Org/kilocode/pull/2521) [`9304511`](https://github.com/Kilo-Org/kilocode/commit/9304511cb001114886f026744c3492f6a6a839f2) Thanks [@mcowger](https://github.com/mcowger)! - Update loop error message to refer to model instead of Kilo Code as the cause.
+- [#2521](https://github.com/Nova-Org/novacode/pull/2521) [`9304511`](https://github.com/Nova-Org/novacode/commit/9304511cb001114886f026744c3492f6a6a839f2) Thanks [@mcowger](https://github.com/mcowger)! - Update loop error message to refer to model instead of Nova Code as the cause.
 
-- [#2532](https://github.com/Kilo-Org/kilocode/pull/2532) [`8103ad4`](https://github.com/Kilo-Org/kilocode/commit/8103ad4b59135888861b06c2cff7fc35ba965607) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The description of the read_file tool was tweaked to make it more likely a vision-capable model will use it for image reading.
+- [#2532](https://github.com/Nova-Org/novacode/pull/2532) [`8103ad4`](https://github.com/Nova-Org/novacode/commit/8103ad4b59135888861b06c2cff7fc35ba965607) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The description of the read_file tool was tweaked to make it more likely a vision-capable model will use it for image reading.
 
-- [#2558](https://github.com/Kilo-Org/kilocode/pull/2558) [`3044c43`](https://github.com/Kilo-Org/kilocode/commit/3044c43479b7d64599af536d3df90251b850ea24) Thanks [@ivanarifin](https://github.com/ivanarifin)! - Fix env path resolution for custom gemini cli oauth path
+- [#2558](https://github.com/Nova-Org/novacode/pull/2558) [`3044c43`](https://github.com/Nova-Org/novacode/commit/3044c43479b7d64599af536d3df90251b850ea24) Thanks [@ivanarifin](https://github.com/ivanarifin)! - Fix env path resolution for custom gemini cli oauth path
 
 ## [v4.96.1]
 
-- [#2452](https://github.com/Kilo-Org/kilocode/pull/2452) [`d4cfbe9`](https://github.com/Kilo-Org/kilocode/commit/d4cfbe98a7ca4e2ce389fe221875f6158688ff69) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains - Fix reload extension when switch project
+- [#2452](https://github.com/Nova-Org/novacode/pull/2452) [`d4cfbe9`](https://github.com/Nova-Org/novacode/commit/d4cfbe98a7ca4e2ce389fe221875f6158688ff69) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains - Fix reload extension when switch project
 
 ## [v4.96.0]
 
-- [#2504](https://github.com/Kilo-Org/kilocode/pull/2504) [`4927414`](https://github.com/Kilo-Org/kilocode/commit/4927414d0737312796a0c5ae9b0e5a9d7629fbbc) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Include changes from Roo Code v3.28.0-v3.28.2:
-
+- [#2504](https://github.com/Nova-Org/novacode/pull/2504) [`4927414`](https://github.com/Nova-Org/novacode/commit/4927414d0737312796a0c5ae9b0e5a9d7629fbbc) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Include changes from Roo Code v3.28.0-v3.28.2:
     - Improve auto-approve UI with smaller and more subtle design (thanks @brunobergher!)
     - Fix: Message queue re-queue loop in Task.ask() causing performance issues (#7861 by @hannesrudolph, PR by @daniel-lxs)
     - Fix: Restrict @-mention parsing to line-start or whitespace boundaries to prevent false triggers (#7875 by @hannesrudolph, PR by @app/roomote)
@@ -2090,56 +2071,55 @@
 
 ### Patch Changes
 
-- [#2484](https://github.com/Kilo-Org/kilocode/pull/2484) [`f57fa9c`](https://github.com/Kilo-Org/kilocode/commit/f57fa9c58baca627a84003f0da133286212dba92) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix the autocomplete status bar appearing when autocomplete is not enabled
+- [#2484](https://github.com/Nova-Org/novacode/pull/2484) [`f57fa9c`](https://github.com/Nova-Org/novacode/commit/f57fa9c58baca627a84003f0da133286212dba92) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix the autocomplete status bar appearing when autocomplete is not enabled
 
-- [#2260](https://github.com/Kilo-Org/kilocode/pull/2260) [`9d4b078`](https://github.com/Kilo-Org/kilocode/commit/9d4b078c867c5b160af7a3f4629adfb016f9c2d9) Thanks [@anhhct](https://github.com/anhhct)! - The follow_up parameter of the ask_followup_question tool is now optional
+- [#2260](https://github.com/Nova-Org/novacode/pull/2260) [`9d4b078`](https://github.com/Nova-Org/novacode/commit/9d4b078c867c5b160af7a3f4629adfb016f9c2d9) Thanks [@anhhct](https://github.com/anhhct)! - The follow_up parameter of the ask_followup_question tool is now optional
 
-- [#2458](https://github.com/Kilo-Org/kilocode/pull/2458) [`6a79d3b`](https://github.com/Kilo-Org/kilocode/commit/6a79d3b640f8c7e3f24e54bcf17ce63127fbce57) Thanks [@NaccOll](https://github.com/NaccOll)! - Fix Highlight is on the wrong places when referencing context
+- [#2458](https://github.com/Nova-Org/novacode/pull/2458) [`6a79d3b`](https://github.com/Nova-Org/novacode/commit/6a79d3b640f8c7e3f24e54bcf17ce63127fbce57) Thanks [@NaccOll](https://github.com/NaccOll)! - Fix Highlight is on the wrong places when referencing context
 
 ## [v4.95.0]
 
-- [#2437](https://github.com/Kilo-Org/kilocode/pull/2437) [`5591bcb`](https://github.com/Kilo-Org/kilocode/commit/5591bcbb68d2e8e5af49baf45b8614982ab71e2f) Thanks [@hassoncs](https://github.com/hassoncs)! - You can now auto-start a task in a given profile/mode by creating a `.kilocode/launchConfig.json` before starting VS Code.
+- [#2437](https://github.com/Nova-Org/novacode/pull/2437) [`5591bcb`](https://github.com/Nova-Org/novacode/commit/5591bcbb68d2e8e5af49baf45b8614982ab71e2f) Thanks [@hassoncs](https://github.com/hassoncs)! - You can now auto-start a task in a given profile/mode by creating a `.novacode/launchConfig.json` before starting VS Code.
 
     See the docs for more information!
 
-- [#2394](https://github.com/Kilo-Org/kilocode/pull/2394) [`94ce7ca`](https://github.com/Kilo-Org/kilocode/commit/94ce7ca174c4569d8e31fe11d075f04631fc42f4) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The Task History tab is now paginated. This should help with reducing memory consumption.
+- [#2394](https://github.com/Nova-Org/novacode/pull/2394) [`94ce7ca`](https://github.com/Nova-Org/novacode/commit/94ce7ca174c4569d8e31fe11d075f04631fc42f4) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The Task History tab is now paginated. This should help with reducing memory consumption.
 
-- [#2417](https://github.com/Kilo-Org/kilocode/pull/2417) [`0d4a18f`](https://github.com/Kilo-Org/kilocode/commit/0d4a18fd0ff5a1948405405644ff30b9cbfa3e43) Thanks [@hassoncs](https://github.com/hassoncs)! - Inline assist / autocomplete suggestions now support colorized code highlighting
+- [#2417](https://github.com/Nova-Org/novacode/pull/2417) [`0d4a18f`](https://github.com/Nova-Org/novacode/commit/0d4a18fd0ff5a1948405405644ff30b9cbfa3e43) Thanks [@hassoncs](https://github.com/hassoncs)! - Inline assist / autocomplete suggestions now support colorized code highlighting
 
 ### Patch Changes
 
-- [#2421](https://github.com/Kilo-Org/kilocode/pull/2421) [`825f7df`](https://github.com/Kilo-Org/kilocode/commit/825f7df5da5a6bbdbfe26739cd5adfc2836fb7a1) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved proxy support in cases where previously the Kilo Code and OpenRouter model lists would remain empty
+- [#2421](https://github.com/Nova-Org/novacode/pull/2421) [`825f7df`](https://github.com/Nova-Org/novacode/commit/825f7df5da5a6bbdbfe26739cd5adfc2836fb7a1) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved proxy support in cases where previously the Nova Code and OpenRouter model lists would remain empty
 
 ## [v4.94.0]
 
-- [#2361](https://github.com/Kilo-Org/kilocode/pull/2361) [`9b553d3`](https://github.com/Kilo-Org/kilocode/commit/9b553d32940736fec49dde8de75faba1e0890471) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains - Improve Light Theme
+- [#2361](https://github.com/Nova-Org/novacode/pull/2361) [`9b553d3`](https://github.com/Nova-Org/novacode/commit/9b553d32940736fec49dde8de75faba1e0890471) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains - Improve Light Theme
 
-- [#2407](https://github.com/Kilo-Org/kilocode/pull/2407) [`aacf662`](https://github.com/Kilo-Org/kilocode/commit/aacf662030e25c64fbc8800bcf514832949f74ec) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Re-add codeblock menu bar for easy copying and syntax highlighting toggling
+- [#2407](https://github.com/Nova-Org/novacode/pull/2407) [`aacf662`](https://github.com/Nova-Org/novacode/commit/aacf662030e25c64fbc8800bcf514832949f74ec) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Re-add codeblock menu bar for easy copying and syntax highlighting toggling
 
 ### Patch Changes
 
-- [#2423](https://github.com/Kilo-Org/kilocode/pull/2423) [`ed12b48`](https://github.com/Kilo-Org/kilocode/commit/ed12b4897bc65df822fa994c13bf325c12055842) Thanks [@mcowger](https://github.com/mcowger)! - Improved the behavior of the Virtual Quota Fallback provider when there are no limits configured.
+- [#2423](https://github.com/Nova-Org/novacode/pull/2423) [`ed12b48`](https://github.com/Nova-Org/novacode/commit/ed12b4897bc65df822fa994c13bf325c12055842) Thanks [@mcowger](https://github.com/mcowger)! - Improved the behavior of the Virtual Quota Fallback provider when there are no limits configured.
 
-- [#2412](https://github.com/Kilo-Org/kilocode/pull/2412) [`e7fc4b4`](https://github.com/Kilo-Org/kilocode/commit/e7fc4b473b105ce8a6d92df17f1893f724c158a1) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Change default mode on first start from architect to code and tweak mode selector menu to show all default modes
+- [#2412](https://github.com/Nova-Org/novacode/pull/2412) [`e7fc4b4`](https://github.com/Nova-Org/novacode/commit/e7fc4b473b105ce8a6d92df17f1893f724c158a1) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Change default mode on first start from architect to code and tweak mode selector menu to show all default modes
 
-- [#2402](https://github.com/Kilo-Org/kilocode/pull/2402) [`cb44445`](https://github.com/Kilo-Org/kilocode/commit/cb44445574a43179968656ade28bfce666973f9d) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The Z.ai provider now supports their coding plan (subscription)
+- [#2402](https://github.com/Nova-Org/novacode/pull/2402) [`cb44445`](https://github.com/Nova-Org/novacode/commit/cb44445574a43179968656ade28bfce666973f9d) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The Z.ai provider now supports their coding plan (subscription)
 
-- [#2408](https://github.com/Kilo-Org/kilocode/pull/2408) [`53b387c`](https://github.com/Kilo-Org/kilocode/commit/53b387ce388dbd0c51547934c308d305128f9e5a) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add support for Qwen3-Next-80B-A3B-Instruct and Qwen3-Next-80B-A3B-Thinking to Chutes provider
+- [#2408](https://github.com/Nova-Org/novacode/pull/2408) [`53b387c`](https://github.com/Nova-Org/novacode/commit/53b387ce388dbd0c51547934c308d305128f9e5a) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add support for Qwen3-Next-80B-A3B-Instruct and Qwen3-Next-80B-A3B-Thinking to Chutes provider
 
 ## [v4.93.2]
 
-- [#2401](https://github.com/Kilo-Org/kilocode/pull/2401) [`4c0c434`](https://github.com/Kilo-Org/kilocode/commit/4c0c434fce4bd8ce9c31a396c98e21b62cb300c1) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Commit Message Generation and Enhance Prompt now support billing through Kilo for Teams
+- [#2401](https://github.com/Nova-Org/novacode/pull/2401) [`4c0c434`](https://github.com/Nova-Org/novacode/commit/4c0c434fce4bd8ce9c31a396c98e21b62cb300c1) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Commit Message Generation and Enhance Prompt now support billing through Nova for Teams
 
 ## [v4.93.1]
 
-- [#2388](https://github.com/Kilo-Org/kilocode/pull/2388) [`484ced4`](https://github.com/Kilo-Org/kilocode/commit/484ced4df8f6bc24091268d1850c8eba752e7cc8) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Kilo Code Provider Routing settings are now hidden when managed by an organization
+- [#2388](https://github.com/Nova-Org/novacode/pull/2388) [`484ced4`](https://github.com/Nova-Org/novacode/commit/484ced4df8f6bc24091268d1850c8eba752e7cc8) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Nova Code Provider Routing settings are now hidden when managed by an organization
 
 ## [v4.93.0]
 
-- [#2353](https://github.com/Kilo-Org/kilocode/pull/2353) [`75f8f7b`](https://github.com/Kilo-Org/kilocode/commit/75f8f7b21671ddfba4bdfb441fe3e8fd215530d1) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.27.0
+- [#2353](https://github.com/Nova-Org/novacode/pull/2353) [`75f8f7b`](https://github.com/Nova-Org/novacode/commit/75f8f7b21671ddfba4bdfb441fe3e8fd215530d1) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.27.0
 
     Added from Roo Code v3.26.5-v3.27.0:
-
     - Add: Kimi K2-0905 model support in Chutes provider (#7700 by @pwilkin, PR by @app/roomote)
     - Fix: Prevent stack overflow in codebase indexing for large projects (#7588 by @StarTrai1, PR by @daniel-lxs)
     - Fix: Resolve race condition in Gemini Grounding Sources by improving code design (#6372 by @daniel-lxs, PR by @HahaBill)
@@ -2170,62 +2150,61 @@
 
 ### Patch Changes
 
-- [#2375](https://github.com/Kilo-Org/kilocode/pull/2375) [`5b634bc`](https://github.com/Kilo-Org/kilocode/commit/5b634bc5933eca19abc8f9bb4e011d0dae486b76) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Removed the arbitrary 8192 output limit for Anthropic models
+- [#2375](https://github.com/Nova-Org/novacode/pull/2375) [`5b634bc`](https://github.com/Nova-Org/novacode/commit/5b634bc5933eca19abc8f9bb4e011d0dae486b76) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Removed the arbitrary 8192 output limit for Anthropic models
 
-- [#2368](https://github.com/Kilo-Org/kilocode/pull/2368) [`5f4071b`](https://github.com/Kilo-Org/kilocode/commit/5f4071b64d9cbd7a8b37b806a678e0f70457ebee) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed context windows being too small when using Ollama Turbo
+- [#2368](https://github.com/Nova-Org/novacode/pull/2368) [`5f4071b`](https://github.com/Nova-Org/novacode/commit/5f4071b64d9cbd7a8b37b806a678e0f70457ebee) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed context windows being too small when using Ollama Turbo
 
 ## [v4.92.1]
 
-- [#2364](https://github.com/Kilo-Org/kilocode/pull/2364) [`7573854`](https://github.com/Kilo-Org/kilocode/commit/75738541270db6702aac649730472c92e8084444) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Remove some nonexistent models from the model selector
+- [#2364](https://github.com/Nova-Org/novacode/pull/2364) [`7573854`](https://github.com/Nova-Org/novacode/commit/75738541270db6702aac649730472c92e8084444) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Remove some nonexistent models from the model selector
 
 ## [v4.92.0]
 
-- [#2299](https://github.com/Kilo-Org/kilocode/pull/2299) [`1ab5cc7`](https://github.com/Kilo-Org/kilocode/commit/1ab5cc7d0f9d7748137791043508253af70704a9) Thanks [@catrielmuller](https://github.com/catrielmuller)! - MacOS - System Terminal Notifier Support
+- [#2299](https://github.com/Nova-Org/novacode/pull/2299) [`1ab5cc7`](https://github.com/Nova-Org/novacode/commit/1ab5cc7d0f9d7748137791043508253af70704a9) Thanks [@catrielmuller](https://github.com/catrielmuller)! - MacOS - System Terminal Notifier Support
 
 ### Patch Changes
 
-- [#2352](https://github.com/Kilo-Org/kilocode/pull/2352) [`e343439`](https://github.com/Kilo-Org/kilocode/commit/e34343916be94d0f4374753e0c130b911cfbf20e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Better error messages are shown when the model currently in use disappears (this will be relevant shortly for Sonoma)
+- [#2352](https://github.com/Nova-Org/novacode/pull/2352) [`e343439`](https://github.com/Nova-Org/novacode/commit/e34343916be94d0f4374753e0c130b911cfbf20e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Better error messages are shown when the model currently in use disappears (this will be relevant shortly for Sonoma)
 
 ## [v4.91.2]
 
-- [#2342](https://github.com/Kilo-Org/kilocode/pull/2342) [`6641568`](https://github.com/Kilo-Org/kilocode/commit/6641568fedba0b5f0a76ce9c5d88182b58b327a5) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix Jetbrains editor detection
+- [#2342](https://github.com/Nova-Org/novacode/pull/2342) [`6641568`](https://github.com/Nova-Org/novacode/commit/6641568fedba0b5f0a76ce9c5d88182b58b327a5) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix Jetbrains editor detection
 
 ## [v4.91.1]
 
-- [#2310](https://github.com/Kilo-Org/kilocode/pull/2310) [`29c7af6`](https://github.com/Kilo-Org/kilocode/commit/29c7af60d8c5c285b28ce2f9bd1bfeff1d59dc40) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Thanks @Qiiks! - Remove duplicate Qwen Code provider settings
+- [#2310](https://github.com/Nova-Org/novacode/pull/2310) [`29c7af6`](https://github.com/Nova-Org/novacode/commit/29c7af60d8c5c285b28ce2f9bd1bfeff1d59dc40) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Thanks @Qiiks! - Remove duplicate Qwen Code provider settings
 
-- [#2322](https://github.com/Kilo-Org/kilocode/pull/2322) [`669713e`](https://github.com/Kilo-Org/kilocode/commit/669713e6a66ce6599664e15450bf2c917861df51) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed the maximum output size of Claude Opus 4.1, which was inadvertenly set to 8192 rather than 32k
+- [#2322](https://github.com/Nova-Org/novacode/pull/2322) [`669713e`](https://github.com/Nova-Org/novacode/commit/669713e6a66ce6599664e15450bf2c917861df51) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed the maximum output size of Claude Opus 4.1, which was inadvertenly set to 8192 rather than 32k
 
-- [#2332](https://github.com/Kilo-Org/kilocode/pull/2332) [`e3eea75`](https://github.com/Kilo-Org/kilocode/commit/e3eea758975c2ef3da34dec167ea373277ab5928) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed an HTTP 500 error with OpenAI-compatible providers when no custom temperature is set
+- [#2332](https://github.com/Nova-Org/novacode/pull/2332) [`e3eea75`](https://github.com/Nova-Org/novacode/commit/e3eea758975c2ef3da34dec167ea373277ab5928) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed an HTTP 500 error with OpenAI-compatible providers when no custom temperature is set
 
 ## [v4.91.0]
 
-- [#2289](https://github.com/Kilo-Org/kilocode/pull/2289) [`13c45e5`](https://github.com/Kilo-Org/kilocode/commit/13c45e59adc7d4f337dacb8eda5e35127639c241) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Added support for Kimi K2 0905 to Chutes, Fireworks, Groq and Moonshot providers
+- [#2289](https://github.com/Nova-Org/novacode/pull/2289) [`13c45e5`](https://github.com/Nova-Org/novacode/commit/13c45e59adc7d4f337dacb8eda5e35127639c241) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Added support for Kimi K2 0905 to Chutes, Fireworks, Groq and Moonshot providers
 
-- [#2294](https://github.com/Kilo-Org/kilocode/pull/2294) [`980a253`](https://github.com/Kilo-Org/kilocode/commit/980a253ccc906c7a40ef65ab4a7513097b99648b) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains - MultiDiff / See New Changes support
+- [#2294](https://github.com/Nova-Org/novacode/pull/2294) [`980a253`](https://github.com/Nova-Org/novacode/commit/980a253ccc906c7a40ef65ab4a7513097b99648b) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains - MultiDiff / See New Changes support
 
 ### Patch Changes
 
-- [#2281](https://github.com/Kilo-Org/kilocode/pull/2281) [`71334fc`](https://github.com/Kilo-Org/kilocode/commit/71334fcb9556fc8ada02b707bef9dd09aedf3864) Thanks [@hassoncs](https://github.com/hassoncs)! - Clear images when changing to a model that does not support them
+- [#2281](https://github.com/Nova-Org/novacode/pull/2281) [`71334fc`](https://github.com/Nova-Org/novacode/commit/71334fcb9556fc8ada02b707bef9dd09aedf3864) Thanks [@hassoncs](https://github.com/hassoncs)! - Clear images when changing to a model that does not support them
 
-- [#2280](https://github.com/Kilo-Org/kilocode/pull/2280) [`0713b0d`](https://github.com/Kilo-Org/kilocode/commit/0713b0dbfe047ac7f68727d6dd77b780c9006c6b) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix organization switching not saving properly
+- [#2280](https://github.com/Nova-Org/novacode/pull/2280) [`0713b0d`](https://github.com/Nova-Org/novacode/commit/0713b0dbfe047ac7f68727d6dd77b780c9006c6b) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix organization switching not saving properly
 
-- [#2287](https://github.com/Kilo-Org/kilocode/pull/2287) [`b5a8550`](https://github.com/Kilo-Org/kilocode/commit/b5a8550a106fcafa31d332f5b76febc34ffc43ec) Thanks [@Qiiks](https://github.com/Qiiks)! - Fix Gemini CLI integration to handle nested response structures
+- [#2287](https://github.com/Nova-Org/novacode/pull/2287) [`b5a8550`](https://github.com/Nova-Org/novacode/commit/b5a8550a106fcafa31d332f5b76febc34ffc43ec) Thanks [@Qiiks](https://github.com/Qiiks)! - Fix Gemini CLI integration to handle nested response structures
 
 ## [v4.90.0]
 
-- [#2275](https://github.com/Kilo-Org/kilocode/pull/2275) [`4ae9acc`](https://github.com/Kilo-Org/kilocode/commit/4ae9acc00a90331944333356e8b936a0dcc06e77) Thanks [@jeske](https://github.com/jeske)! - fixes an intermittent async race that discards user-chat-input during structured approve/reject
+- [#2275](https://github.com/Nova-Org/novacode/pull/2275) [`4ae9acc`](https://github.com/Nova-Org/novacode/commit/4ae9acc00a90331944333356e8b936a0dcc06e77) Thanks [@jeske](https://github.com/jeske)! - fixes an intermittent async race that discards user-chat-input during structured approve/reject
 
-- [#2129](https://github.com/Kilo-Org/kilocode/pull/2129) [`984b5c4`](https://github.com/Kilo-Org/kilocode/commit/984b5c4151945fc483ca1fd08e07c12f61a372da) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains Extension Beta
+- [#2129](https://github.com/Nova-Org/novacode/pull/2129) [`984b5c4`](https://github.com/Nova-Org/novacode/commit/984b5c4151945fc483ca1fd08e07c12f61a372da) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Jetbrains Extension Beta
 
 ### Patch Changes
 
-- [#2274](https://github.com/Kilo-Org/kilocode/pull/2274) [`24d0c9f`](https://github.com/Kilo-Org/kilocode/commit/24d0c9f679e33c899f74c06440a80e4ea50b07ed) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The API Provider (Kilo Code or OpenRouter) for image generation is now an explicit choice
+- [#2274](https://github.com/Nova-Org/novacode/pull/2274) [`24d0c9f`](https://github.com/Nova-Org/novacode/commit/24d0c9f679e33c899f74c06440a80e4ea50b07ed) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The API Provider (Nova Code or OpenRouter) for image generation is now an explicit choice
 
 ## [v4.89.0]
 
-- [#2242](https://github.com/Kilo-Org/kilocode/pull/2242) [`f474c89`](https://github.com/Kilo-Org/kilocode/commit/f474c89e3881955d2f41b8912b728e91eddb87f8) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.26.4
-
+- [#2242](https://github.com/Nova-Org/novacode/pull/2242) [`f474c89`](https://github.com/Nova-Org/novacode/commit/f474c89e3881955d2f41b8912b728e91eddb87f8) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.26.4
     - Optimize memory usage for image handling in webview (thanks @daniel-lxs!)
     - Fix: Special tokens should not break task processing (#7539 by @pwilkin, PR by @pwilkin)
     - Add Ollama API key support for Turbo mode (#7147 by @LivioGama, PR by @app/roomote)
@@ -2234,7 +2213,7 @@
     - Show console logging in vitests when the --no-silent flag is set (thanks @hassoncs!)
     - feat: Add experimental image generation tool with OpenRouter integration (thanks @daniel-lxs!)
     - Fix: Resolve GPT-5 Responses API issues with condensing and image support (#7334 by @nlbuescher, PR by @daniel-lxs)
-    - Fix: Hide .kilocodeignore'd files from environment details by default (#7368 by @AlexBlack772, PR by @app/roomote)
+    - Fix: Hide .novacodeignore'd files from environment details by default (#7368 by @AlexBlack772, PR by @app/roomote)
     - Fix: Exclude browser scroll actions from repetition detection (#7470 by @cgrierson-smartsheet, PR by @app/roomote)
     - Add Vercel AI Gateway provider integration (thanks @joshualipman123!)
     - Add support for Vercel embeddings (thanks @mrubens!)
@@ -2258,56 +2237,55 @@
 
 ## [v4.88.0]
 
-- [#2235](https://github.com/Kilo-Org/kilocode/pull/2235) [`fbf4e42`](https://github.com/Kilo-Org/kilocode/commit/fbf4e42125cef538387301be784ede7d2609fe16) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Rename Inline Assist to Kilo Code Autocomplete
+- [#2235](https://github.com/Nova-Org/novacode/pull/2235) [`fbf4e42`](https://github.com/Nova-Org/novacode/commit/fbf4e42125cef538387301be784ede7d2609fe16) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Rename Inline Assist to Nova Code Autocomplete
 
-- [#2202](https://github.com/Kilo-Org/kilocode/pull/2202) [`92ef190`](https://github.com/Kilo-Org/kilocode/commit/92ef190d8d9e5ec0df3cbdd8488c98f4190f57b2) Thanks [@hassoncs](https://github.com/hassoncs)! - Show a warning when trying to paste an image when the current model does not support images
+- [#2202](https://github.com/Nova-Org/novacode/pull/2202) [`92ef190`](https://github.com/Nova-Org/novacode/commit/92ef190d8d9e5ec0df3cbdd8488c98f4190f57b2) Thanks [@hassoncs](https://github.com/hassoncs)! - Show a warning when trying to paste an image when the current model does not support images
 
 ### Patch Changes
 
-- [#2244](https://github.com/Kilo-Org/kilocode/pull/2244) [`6a83c5a`](https://github.com/Kilo-Org/kilocode/commit/6a83c5acdd8153a2d8c89aff9644883061c7efe6) Thanks [@hassoncs](https://github.com/hassoncs)! - Prevent writing to files outside the workspace by default
+- [#2244](https://github.com/Nova-Org/novacode/pull/2244) [`6a83c5a`](https://github.com/Nova-Org/novacode/commit/6a83c5acdd8153a2d8c89aff9644883061c7efe6) Thanks [@hassoncs](https://github.com/hassoncs)! - Prevent writing to files outside the workspace by default
 
     This should mitigate supply chain compromise attacks via prompt injection. Thank you, Evan Harris from MCP Security Research for finding this!
 
-- [#2245](https://github.com/Kilo-Org/kilocode/pull/2245) [`fff884f`](https://github.com/Kilo-Org/kilocode/commit/fff884fd6f2f1be4906e3d4494adeed3017e8d57) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix Kilo Code Marketplace header missing background color
+- [#2245](https://github.com/Nova-Org/novacode/pull/2245) [`fff884f`](https://github.com/Nova-Org/novacode/commit/fff884fd6f2f1be4906e3d4494adeed3017e8d57) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix Nova Code Marketplace header missing background color
 
-- [#2237](https://github.com/Kilo-Org/kilocode/pull/2237) [`06c6e8b`](https://github.com/Kilo-Org/kilocode/commit/06c6e8b013b54fc7706a9862af9ddabc86fb8781) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Kilo Code now shows an error message when a model reaches its maximum ouput
+- [#2237](https://github.com/Nova-Org/novacode/pull/2237) [`06c6e8b`](https://github.com/Nova-Org/novacode/commit/06c6e8b013b54fc7706a9862af9ddabc86fb8781) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Nova Code now shows an error message when a model reaches its maximum ouput
 
-- [#2238](https://github.com/Kilo-Org/kilocode/pull/2238) [`b5de938`](https://github.com/Kilo-Org/kilocode/commit/b5de93836338c0398dfa6dede89dbb92f525ceef) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed 500 error with Chutes when no custom temperature is specified.
+- [#2238](https://github.com/Nova-Org/novacode/pull/2238) [`b5de938`](https://github.com/Nova-Org/novacode/commit/b5de93836338c0398dfa6dede89dbb92f525ceef) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed 500 error with Chutes when no custom temperature is specified.
 
-- [#2248](https://github.com/Kilo-Org/kilocode/pull/2248) [`b8c6f27`](https://github.com/Kilo-Org/kilocode/commit/b8c6f2780757f16e1599b989bb88d235c26233c4) Thanks [@hassoncs](https://github.com/hassoncs)! - Remove the Inline Assist experiment, enabling it by default
+- [#2248](https://github.com/Nova-Org/novacode/pull/2248) [`b8c6f27`](https://github.com/Nova-Org/novacode/commit/b8c6f2780757f16e1599b989bb88d235c26233c4) Thanks [@hassoncs](https://github.com/hassoncs)! - Remove the Inline Assist experiment, enabling it by default
 
     The individual commands and keyboard shortcuts can still be enabled/disabled individually in the settings.
 
 ## [v4.87.0]
 
-- [#2010](https://github.com/Kilo-Org/kilocode/pull/2010) [`a7b89d3`](https://github.com/Kilo-Org/kilocode/commit/a7b89d3cf173e6f5d1915aece598489d63652b5f) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - There is now a "See New Changes" button below a Task Completed message. Use this button to see all file changes made since the previous Task Completed message. This feature requires checkpoints to be enabled.
+- [#2010](https://github.com/Nova-Org/novacode/pull/2010) [`a7b89d3`](https://github.com/Nova-Org/novacode/commit/a7b89d3cf173e6f5d1915aece598489d63652b5f) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - There is now a "See New Changes" button below a Task Completed message. Use this button to see all file changes made since the previous Task Completed message. This feature requires checkpoints to be enabled.
 
 ### Patch Changes
 
-- [#2215](https://github.com/Kilo-Org/kilocode/pull/2215) [`4b102aa`](https://github.com/Kilo-Org/kilocode/commit/4b102aaeb42e776e224d71d5fc55033ff0388442) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The Data Provider Collection setting in the Kilo Code and OpenRouter provider settings is now enabled even when a specific inference provider is selected.
+- [#2215](https://github.com/Nova-Org/novacode/pull/2215) [`4b102aa`](https://github.com/Nova-Org/novacode/commit/4b102aaeb42e776e224d71d5fc55033ff0388442) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The Data Provider Collection setting in the Nova Code and OpenRouter provider settings is now enabled even when a specific inference provider is selected.
 
-- [#2228](https://github.com/Kilo-Org/kilocode/pull/2228) [`5bd17b9`](https://github.com/Kilo-Org/kilocode/commit/5bd17b9ff2b44282200992befad618729e2c1e8e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Warning messages for common cases where checkpoints do not work were added
+- [#2228](https://github.com/Nova-Org/novacode/pull/2228) [`5bd17b9`](https://github.com/Nova-Org/novacode/commit/5bd17b9ff2b44282200992befad618729e2c1e8e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Warning messages for common cases where checkpoints do not work were added
 
-- [#2174](https://github.com/Kilo-Org/kilocode/pull/2174) [`a1d0972`](https://github.com/Kilo-Org/kilocode/commit/a1d097294a2fd64bd86a6260169d450fb36966f0) Thanks [@TimAidley](https://github.com/TimAidley)! - Add GPT-5 support to LiteLLM provider
+- [#2174](https://github.com/Nova-Org/novacode/pull/2174) [`a1d0972`](https://github.com/Nova-Org/novacode/commit/a1d097294a2fd64bd86a6260169d450fb36966f0) Thanks [@TimAidley](https://github.com/TimAidley)! - Add GPT-5 support to LiteLLM provider
 
-- [#2216](https://github.com/Kilo-Org/kilocode/pull/2216) [`479821f`](https://github.com/Kilo-Org/kilocode/commit/479821f84d64d91412996a24d4ed9314f7373839) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The OLLAMA_CONTEXT_LENGTH environment variable is now prioritized over the model's num_ctx parameter.
+- [#2216](https://github.com/Nova-Org/novacode/pull/2216) [`479821f`](https://github.com/Nova-Org/novacode/commit/479821f84d64d91412996a24d4ed9314f7373839) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The OLLAMA_CONTEXT_LENGTH environment variable is now prioritized over the model's num_ctx parameter.
 
-- [#2191](https://github.com/Kilo-Org/kilocode/pull/2191) [`6fcde72`](https://github.com/Kilo-Org/kilocode/commit/6fcde72c3470d5634a8091dc92191a50f07bab40) Thanks [@hassoncs](https://github.com/hassoncs)! - Explicitly disable the web version of the extension since it is not compatible (vscode.dev)
+- [#2191](https://github.com/Nova-Org/novacode/pull/2191) [`6fcde72`](https://github.com/Nova-Org/novacode/commit/6fcde72c3470d5634a8091dc92191a50f07bab40) Thanks [@hassoncs](https://github.com/hassoncs)! - Explicitly disable the web version of the extension since it is not compatible (vscode.dev)
 
 ## [v4.86.0]
 
-- [#2012](https://github.com/Kilo-Org/kilocode/pull/2012) [`1fd698a`](https://github.com/Kilo-Org/kilocode/commit/1fd698ad2025946519a0ce2d516ec528ea92eea4) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Improve Inline Assist model compatibility and performance
+- [#2012](https://github.com/Nova-Org/novacode/pull/2012) [`1fd698a`](https://github.com/Nova-Org/novacode/commit/1fd698ad2025946519a0ce2d516ec528ea92eea4) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Improve Inline Assist model compatibility and performance
 
-- [#2199](https://github.com/Kilo-Org/kilocode/pull/2199) [`a19f72c`](https://github.com/Kilo-Org/kilocode/commit/a19f72c05f2bed48106b33c6eaa9f4e9e6d4d020) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Thanks @Thachnh! - Added DeepInfra provider with dynamic model fetching and prompt caching
+- [#2199](https://github.com/Nova-Org/novacode/pull/2199) [`a19f72c`](https://github.com/Nova-Org/novacode/commit/a19f72c05f2bed48106b33c6eaa9f4e9e6d4d020) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Thanks @Thachnh! - Added DeepInfra provider with dynamic model fetching and prompt caching
 
 ### Patch Changes
 
-- [#2170](https://github.com/Kilo-Org/kilocode/pull/2170) [`58987e3`](https://github.com/Kilo-Org/kilocode/commit/58987e36377724b639d4b19a2d92162b34bc5eaa) Thanks [@mcowger](https://github.com/mcowger)! - Remove the forced override of the context limit for Ollama API
+- [#2170](https://github.com/Nova-Org/novacode/pull/2170) [`58987e3`](https://github.com/Nova-Org/novacode/commit/58987e36377724b639d4b19a2d92162b34bc5eaa) Thanks [@mcowger](https://github.com/mcowger)! - Remove the forced override of the context limit for Ollama API
 
 ## [v4.85.0]
 
-- [#2119](https://github.com/Kilo-Org/kilocode/pull/2119) [`19dc45d`](https://github.com/Kilo-Org/kilocode/commit/19dc45d1b1578a41c41ecb787e7945513f6554d9) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.25.23
-
+- [#2119](https://github.com/Nova-Org/novacode/pull/2119) [`19dc45d`](https://github.com/Nova-Org/novacode/commit/19dc45d1b1578a41c41ecb787e7945513f6554d9) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.25.23
     - feat: add custom base URL support for Requesty provider (thanks @requesty-JohnCosta27!)
     - feat: add DeepSeek V3.1 model to Chutes AI provider (#7294 by @dmarkey, PR by @app/roomote)
     - Add prompt caching support for Kimi K2 on Groq (thanks @daniel-lxs and @benank!)
@@ -2326,57 +2304,55 @@
 
 ### Patch Changes
 
-- [#2184](https://github.com/Kilo-Org/kilocode/pull/2184) [`0be6743`](https://github.com/Kilo-Org/kilocode/commit/0be6743e08540d1671c10f79b49f17eeac82397e) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix: add favorite button back to tasks
+- [#2184](https://github.com/Nova-Org/novacode/pull/2184) [`0be6743`](https://github.com/Nova-Org/novacode/commit/0be6743e08540d1671c10f79b49f17eeac82397e) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix: add favorite button back to tasks
 
-- [#2125](https://github.com/Kilo-Org/kilocode/pull/2125) [`5828254`](https://github.com/Kilo-Org/kilocode/commit/5828254d47e9073c0f0fc9c9db5ef38eb6358036) Thanks [@nitinprajwal](https://github.com/nitinprajwal)! - Added support to Qwen Code for a custom OAuth credential storage path
+- [#2125](https://github.com/Nova-Org/novacode/pull/2125) [`5828254`](https://github.com/Nova-Org/novacode/commit/5828254d47e9073c0f0fc9c9db5ef38eb6358036) Thanks [@nitinprajwal](https://github.com/nitinprajwal)! - Added support to Qwen Code for a custom OAuth credential storage path
 
 ## [v4.84.1]
 
-- [#2113](https://github.com/Kilo-Org/kilocode/pull/2113) [`d40b35a`](https://github.com/Kilo-Org/kilocode/commit/d40b35a3a1efcc2fbfca51d4ca64a8da2aa321e5) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The model selector below the chat now shows the correct model list for Qwen Code and some other providers
+- [#2113](https://github.com/Nova-Org/novacode/pull/2113) [`d40b35a`](https://github.com/Nova-Org/novacode/commit/d40b35a3a1efcc2fbfca51d4ca64a8da2aa321e5) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The model selector below the chat now shows the correct model list for Qwen Code and some other providers
 
-- [#2116](https://github.com/Kilo-Org/kilocode/pull/2116) [`61e18d6`](https://github.com/Kilo-Org/kilocode/commit/61e18d60f54d11d63a64cd674474a68fa398c3b9) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Checkpoints now work when using Morph fast apply
+- [#2116](https://github.com/Nova-Org/novacode/pull/2116) [`61e18d6`](https://github.com/Nova-Org/novacode/commit/61e18d60f54d11d63a64cd674474a68fa398c3b9) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Checkpoints now work when using Morph fast apply
 
-- [#2130](https://github.com/Kilo-Org/kilocode/pull/2130) [`78aaf7c`](https://github.com/Kilo-Org/kilocode/commit/78aaf7c4607c5a98174a26b99973e379b87e5893) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Added support for Grok Code Fast to the xAI provider
+- [#2130](https://github.com/Nova-Org/novacode/pull/2130) [`78aaf7c`](https://github.com/Nova-Org/novacode/commit/78aaf7c4607c5a98174a26b99973e379b87e5893) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Added support for Grok Code Fast to the xAI provider
 
-- [#2109](https://github.com/Kilo-Org/kilocode/pull/2109) [`173ecf4`](https://github.com/Kilo-Org/kilocode/commit/173ecf4983449a4b7766ba900f736a57b7d5d525) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - A solitary "0" that was sometimes shown on the Kilo Code and OpenRouter API provider settings page was removed.
+- [#2109](https://github.com/Nova-Org/novacode/pull/2109) [`173ecf4`](https://github.com/Nova-Org/novacode/commit/173ecf4983449a4b7766ba900f736a57b7d5d525) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - A solitary "0" that was sometimes shown on the Nova Code and OpenRouter API provider settings page was removed.
 
 ## [v4.84.0]
 
-- [#1961](https://github.com/Kilo-Org/kilocode/pull/1961) [`d4a7cb6`](https://github.com/Kilo-Org/kilocode/commit/d4a7cb6300d8e00d5889e1079057e43de19ff95e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Updates to the experimental Morph FastApply support
-
+- [#1961](https://github.com/Nova-Org/novacode/pull/1961) [`d4a7cb6`](https://github.com/Nova-Org/novacode/commit/d4a7cb6300d8e00d5889e1079057e43de19ff95e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Updates to the experimental Morph FastApply support
     - A visual indication is now included in the task view whenever Morph is used.
     - The traditional file editing tools are now disabled to ensure Morph is used to edit files.
     - Morph is now automatically disabled when the API provider does not support it and no Morph API key is configured.
     - The Morph API key is no longer lost when switching provider profiles.
 
-- [#1886](https://github.com/Kilo-Org/kilocode/pull/1886) [`0221aaa`](https://github.com/Kilo-Org/kilocode/commit/0221aaa4febea9dfeea8cfbb26fa355204e75d1b) Thanks [@mcowger](https://github.com/mcowger)! - Add collapsible MCP tool calls with memory management
+- [#1886](https://github.com/Nova-Org/novacode/pull/1886) [`0221aaa`](https://github.com/Nova-Org/novacode/commit/0221aaa4febea9dfeea8cfbb26fa355204e75d1b) Thanks [@mcowger](https://github.com/mcowger)! - Add collapsible MCP tool calls with memory management
 
 ### Patch Changes
 
-- [#2095](https://github.com/Kilo-Org/kilocode/pull/2095) [`8623bb8`](https://github.com/Kilo-Org/kilocode/commit/8623bb8516a7453d299512bd11c5000f43ecb952) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Kilo Code provider now falls back to the default model when the selected model no longer exists
+- [#2095](https://github.com/Nova-Org/novacode/pull/2095) [`8623bb8`](https://github.com/Nova-Org/novacode/commit/8623bb8516a7453d299512bd11c5000f43ecb952) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Nova Code provider now falls back to the default model when the selected model no longer exists
 
-- [#2090](https://github.com/Kilo-Org/kilocode/pull/2090) [`fd147b8`](https://github.com/Kilo-Org/kilocode/commit/fd147b8ed35c8963ec66c5fae89f37829529574f) Thanks [@Mats4k](https://github.com/Mats4k)! - Improvements to German language translation
+- [#2090](https://github.com/Nova-Org/novacode/pull/2090) [`fd147b8`](https://github.com/Nova-Org/novacode/commit/fd147b8ed35c8963ec66c5fae89f37829529574f) Thanks [@Mats4k](https://github.com/Mats4k)! - Improvements to German language translation
 
-- [#2030](https://github.com/Kilo-Org/kilocode/pull/2030) [`11e8c7d`](https://github.com/Kilo-Org/kilocode/commit/11e8c7dda9f03b769e22f233b5ea487c9a12bd66) Thanks [@ivanarifin](https://github.com/ivanarifin)! - Show message when Virtual Quota Fallback Provider switches profiles
+- [#2030](https://github.com/Nova-Org/novacode/pull/2030) [`11e8c7d`](https://github.com/Nova-Org/novacode/commit/11e8c7dda9f03b769e22f233b5ea487c9a12bd66) Thanks [@ivanarifin](https://github.com/ivanarifin)! - Show message when Virtual Quota Fallback Provider switches profiles
 
-- [#2100](https://github.com/Kilo-Org/kilocode/pull/2100) [`5ed3d7b`](https://github.com/Kilo-Org/kilocode/commit/5ed3d7be3273fef7ff0eeede8db064fc9bdb4fe0) Thanks [@RSO](https://github.com/RSO)! - Changed the API domain for the Kilo Code provider
+- [#2100](https://github.com/Nova-Org/novacode/pull/2100) [`5ed3d7b`](https://github.com/Nova-Org/novacode/commit/5ed3d7be3273fef7ff0eeede8db064fc9bdb4fe0) Thanks [@RSO](https://github.com/RSO)! - Changed the API domain for the Nova Code provider
 
-- [#1964](https://github.com/Kilo-Org/kilocode/pull/1964) [`6b0dfbf`](https://github.com/Kilo-Org/kilocode/commit/6b0dfbf10a397063f02e0dd6964d1fb1b773cf12) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The Kilo Code API Provider settings now also shows the average cost per request in addition to the average cost per million tokens for a particular model.
+- [#1964](https://github.com/Nova-Org/novacode/pull/1964) [`6b0dfbf`](https://github.com/Nova-Org/novacode/commit/6b0dfbf10a397063f02e0dd6964d1fb1b773cf12) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The Nova Code API Provider settings now also shows the average cost per request in addition to the average cost per million tokens for a particular model.
 
 ## [v4.83.1]
 
-- [#2073](https://github.com/Kilo-Org/kilocode/pull/2073) [`a4b8770`](https://github.com/Kilo-Org/kilocode/commit/a4b8770ba82cbb366bb986a36026b6860129f799) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Ensured free model usage is reported as free
+- [#2073](https://github.com/Nova-Org/novacode/pull/2073) [`a4b8770`](https://github.com/Nova-Org/novacode/commit/a4b8770ba82cbb366bb986a36026b6860129f799) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Ensured free model usage is reported as free
 
-- [#2066](https://github.com/Kilo-Org/kilocode/pull/2066) [`62624d2`](https://github.com/Kilo-Org/kilocode/commit/62624d21f4f3408a552b5f0308d35be154d403b3) Thanks [@mcowger](https://github.com/mcowger)! - Fixed "'messages' field is required" error in LMStudio
+- [#2066](https://github.com/Nova-Org/novacode/pull/2066) [`62624d2`](https://github.com/Nova-Org/novacode/commit/62624d21f4f3408a552b5f0308d35be154d403b3) Thanks [@mcowger](https://github.com/mcowger)! - Fixed "'messages' field is required" error in LMStudio
 
-- [#2064](https://github.com/Kilo-Org/kilocode/pull/2064) [`8655a71`](https://github.com/Kilo-Org/kilocode/commit/8655a712d7fc84fce1a7aa8c928fa2b32a68cf24) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved the "language model did not provide any assistant messages" error message to indicate that it likely involves rate limiting
+- [#2064](https://github.com/Nova-Org/novacode/pull/2064) [`8655a71`](https://github.com/Nova-Org/novacode/commit/8655a712d7fc84fce1a7aa8c928fa2b32a68cf24) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved the "language model did not provide any assistant messages" error message to indicate that it likely involves rate limiting
 
 ## [v4.83.0]
 
-- [#2063](https://github.com/Kilo-Org/kilocode/pull/2063) [`e844c5f`](https://github.com/Kilo-Org/kilocode/commit/e844c5f3a43c0808a037156e44f621b36a529abd) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add marketplace for modes
+- [#2063](https://github.com/Nova-Org/novacode/pull/2063) [`e844c5f`](https://github.com/Nova-Org/novacode/commit/e844c5f3a43c0808a037156e44f621b36a529abd) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add marketplace for modes
 
-- [#2050](https://github.com/Kilo-Org/kilocode/pull/2050) [`0ffe951`](https://github.com/Kilo-Org/kilocode/commit/0ffe951af4d356984608df623c410327cee7f130) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.25.20
-
+- [#2050](https://github.com/Nova-Org/novacode/pull/2050) [`0ffe951`](https://github.com/Nova-Org/novacode/commit/0ffe951af4d356984608df623c410327cee7f130) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.25.20
     - Fix: respect enableReasoningEffort setting when determining reasoning usage (#7048 by @ikbencasdoei, PR by @app/roomote)
     - Fix: prevent duplicate LM Studio models with case-insensitive deduplication (#6954 by @fbuechler, PR by @daniel-lxs)
     - Feat: simplify ask_followup_question prompt documentation (thanks @daniel-lxs!)
@@ -2402,26 +2378,25 @@
 
 ## [v4.82.3]
 
-- [#2047](https://github.com/Kilo-Org/kilocode/pull/2047) [`077b774`](https://github.com/Kilo-Org/kilocode/commit/077b774deaf1a65d7864db0c1248cfa9574b93b9) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed an issue that caused the same error to be reported multiple times
+- [#2047](https://github.com/Nova-Org/novacode/pull/2047) [`077b774`](https://github.com/Nova-Org/novacode/commit/077b774deaf1a65d7864db0c1248cfa9574b93b9) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed an issue that caused the same error to be reported multiple times
 
 ## [v4.82.2]
 
-- [#1811](https://github.com/Kilo-Org/kilocode/pull/1811) [`5f7afe6`](https://github.com/Kilo-Org/kilocode/commit/5f7afe6ffeb1078428b0b43c6d9a4e9252e78bc8) Thanks [@gerardbalaoro](https://github.com/gerardbalaoro)! - Adjust position within context menus to be below default items
+- [#1811](https://github.com/Nova-Org/novacode/pull/1811) [`5f7afe6`](https://github.com/Nova-Org/novacode/commit/5f7afe6ffeb1078428b0b43c6d9a4e9252e78bc8) Thanks [@gerardbalaoro](https://github.com/gerardbalaoro)! - Adjust position within context menus to be below default items
 
-- [#2033](https://github.com/Kilo-Org/kilocode/pull/2033) [`8aef7ef`](https://github.com/Kilo-Org/kilocode/commit/8aef7efc9597613010339a667f87328cf70c9ce1) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Thanks @daniel-lxs! - Added a single-file read tool that works better with Sonic than the default multi-file read tool.
+- [#2033](https://github.com/Nova-Org/novacode/pull/2033) [`8aef7ef`](https://github.com/Nova-Org/novacode/commit/8aef7efc9597613010339a667f87328cf70c9ce1) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Thanks @daniel-lxs! - Added a single-file read tool that works better with Sonic than the default multi-file read tool.
 
 ## [v4.82.1]
 
-- [#2021](https://github.com/Kilo-Org/kilocode/pull/2021) [`02adf7c`](https://github.com/Kilo-Org/kilocode/commit/02adf7c4780170125e0f54beaeb5a3cbbd972669) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - OpenRouter inference providers whose context window is smaller than that of the top provider for a particular model are now automatically ignored by default. They can still be used by selecting them specifically in the Provider Routing settings.
+- [#2021](https://github.com/Nova-Org/novacode/pull/2021) [`02adf7c`](https://github.com/Nova-Org/novacode/commit/02adf7c4780170125e0f54beaeb5a3cbbd972669) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - OpenRouter inference providers whose context window is smaller than that of the top provider for a particular model are now automatically ignored by default. They can still be used by selecting them specifically in the Provider Routing settings.
 
-- [#2015](https://github.com/Kilo-Org/kilocode/pull/2015) [`e5c7641`](https://github.com/Kilo-Org/kilocode/commit/e5c76411cc3ff6f5aae53e5d1e39775d6830e03e) Thanks [@mcowger](https://github.com/mcowger)! - Add API key support to the Ollama provider, enabling usage of Ollama Turbo
+- [#2015](https://github.com/Nova-Org/novacode/pull/2015) [`e5c7641`](https://github.com/Nova-Org/novacode/commit/e5c76411cc3ff6f5aae53e5d1e39775d6830e03e) Thanks [@mcowger](https://github.com/mcowger)! - Add API key support to the Ollama provider, enabling usage of Ollama Turbo
 
-- [#2029](https://github.com/Kilo-Org/kilocode/pull/2029) [`64c6955`](https://github.com/Kilo-Org/kilocode/commit/64c695517dd8a5556c418d88c8338ea090ea09a9) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add search to provider list and sort it alphabetically
+- [#2029](https://github.com/Nova-Org/novacode/pull/2029) [`64c6955`](https://github.com/Nova-Org/novacode/commit/64c695517dd8a5556c418d88c8338ea090ea09a9) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add search to provider list and sort it alphabetically
 
 ## [v4.82.0]
 
-- [#1974](https://github.com/Kilo-Org/kilocode/pull/1974) [`ec18e51`](https://github.com/Kilo-Org/kilocode/commit/ec18e51d7f38c2f5ee21a02cf2290be21223119b) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code 3.25.14
-
+- [#1974](https://github.com/Nova-Org/novacode/pull/1974) [`ec18e51`](https://github.com/Nova-Org/novacode/commit/ec18e51d7f38c2f5ee21a02cf2290be21223119b) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code 3.25.14
     - Fix: Only include verbosity parameter for models that support it (#7054 by @eastonmeth, PR by @app/roomote)
     - Fix: AWS Bedrock 1M context - Move anthropic_beta to additionalModelRequestFields (thanks @daniel-lxs!)
     - Fix: Make cancelling requests more responsive by reverting recent changes
@@ -2433,7 +2408,7 @@
     - Add: Minimal reasoning support to OpenRouter (thanks @daniel-lxs!)
     - Fix: Add configurable API request timeout for local providers (#6521 by @dabockster, PR by @app/roomote)
     - Fix: Add --no-sandbox flag to browser launch options (#6632 by @QuinsZouls, PR by @QuinsZouls)
-    - Fix: Ensure JSON files respect .kilocodeignore during indexing (#6690 by @evermoving, PR by @app/roomote)
+    - Fix: Ensure JSON files respect .novacodeignore during indexing (#6690 by @evermoving, PR by @app/roomote)
     - Add: New Chutes provider models (#6698 by @fstandhartinger, PR by @app/roomote)
     - Add: OpenAI gpt-oss models to Amazon Bedrock dropdown (#6752 by @josh-clanton-powerschool, PR by @app/roomote)
     - Fix: Correct tool repetition detector to not block first tool call when limit is 1 (#6834 by @NaccOll, PR by @app/roomote)
@@ -2453,44 +2428,43 @@
 
 ## [v4.81.0]
 
-- [#1868](https://github.com/Kilo-Org/kilocode/pull/1868) [`50638b4`](https://github.com/Kilo-Org/kilocode/commit/50638b4226aa3de24f5a9b825a8ef7f1e4d376f6) Thanks [@Toukaiteio](https://github.com/Toukaiteio)! - Add Support For Qwen Code
+- [#1868](https://github.com/Nova-Org/novacode/pull/1868) [`50638b4`](https://github.com/Nova-Org/novacode/commit/50638b4226aa3de24f5a9b825a8ef7f1e4d376f6) Thanks [@Toukaiteio](https://github.com/Toukaiteio)! - Add Support For Qwen Code
 
 ### Patch Changes
 
-- [#1968](https://github.com/Kilo-Org/kilocode/pull/1968) [`e7680cc`](https://github.com/Kilo-Org/kilocode/commit/e7680cc7f9563a52d4a4babe70ca300ce67aef4a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - OpenRouter routing settings are no longer randomly reset
+- [#1968](https://github.com/Nova-Org/novacode/pull/1968) [`e7680cc`](https://github.com/Nova-Org/novacode/commit/e7680cc7f9563a52d4a4babe70ca300ce67aef4a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - OpenRouter routing settings are no longer randomly reset
 
-- [#1948](https://github.com/Kilo-Org/kilocode/pull/1948) [`ecc81c6`](https://github.com/Kilo-Org/kilocode/commit/ecc81c61db648f2701aa7d71f70cefc71a553300) Thanks [@hassoncs](https://github.com/hassoncs)! - Support drag-to-pan in the Task Timeline header
+- [#1948](https://github.com/Nova-Org/novacode/pull/1948) [`ecc81c6`](https://github.com/Nova-Org/novacode/commit/ecc81c61db648f2701aa7d71f70cefc71a553300) Thanks [@hassoncs](https://github.com/hassoncs)! - Support drag-to-pan in the Task Timeline header
 
-- [#1899](https://github.com/Kilo-Org/kilocode/pull/1899) [`22c59ba`](https://github.com/Kilo-Org/kilocode/commit/22c59ba824199f9be7662e56fa71a74ca042c7bd) Thanks [@ivanarifin](https://github.com/ivanarifin)! - Improve virtual quota fallback handler initialization and error handling
+- [#1899](https://github.com/Nova-Org/novacode/pull/1899) [`22c59ba`](https://github.com/Nova-Org/novacode/commit/22c59ba824199f9be7662e56fa71a74ca042c7bd) Thanks [@ivanarifin](https://github.com/ivanarifin)! - Improve virtual quota fallback handler initialization and error handling
 
-- [#1955](https://github.com/Kilo-Org/kilocode/pull/1955) [`553033a`](https://github.com/Kilo-Org/kilocode/commit/553033af3220c66e177f516df1bc6b7ee431192e) Thanks [@hassoncs](https://github.com/hassoncs)! - Add Max Cost input to the AutoApprove menu in the ChatView
+- [#1955](https://github.com/Nova-Org/novacode/pull/1955) [`553033a`](https://github.com/Nova-Org/novacode/commit/553033af3220c66e177f516df1bc6b7ee431192e) Thanks [@hassoncs](https://github.com/hassoncs)! - Add Max Cost input to the AutoApprove menu in the ChatView
 
 ## [v4.80.0]
 
-- [#1893](https://github.com/Kilo-Org/kilocode/pull/1893) [`d36b1c1`](https://github.com/Kilo-Org/kilocode/commit/d36b1c17fa9d5cb06d13865b4d1ba1e66500a85c) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - More price details are now shown for Kilo Code Provider and OpenRouter. Average Kilo Code cost is the average cost of a model when using Kilo Code, after applying caching discounts. A breakdown of provider prices is also available.
+- [#1893](https://github.com/Nova-Org/novacode/pull/1893) [`d36b1c1`](https://github.com/Nova-Org/novacode/commit/d36b1c17fa9d5cb06d13865b4d1ba1e66500a85c) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - More price details are now shown for Nova Code Provider and OpenRouter. Average Nova Code cost is the average cost of a model when using Nova Code, after applying caching discounts. A breakdown of provider prices is also available.
 
-- [#1893](https://github.com/Kilo-Org/kilocode/pull/1893) [`d36b1c1`](https://github.com/Kilo-Org/kilocode/commit/d36b1c17fa9d5cb06d13865b4d1ba1e66500a85c) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Provider Routing options have been added to Kilo Code and OpenRouter settings. It is now possible to select a sorting preference (e.g. prefer lower price) and data policy (e.g. deny data collection).
+- [#1893](https://github.com/Nova-Org/novacode/pull/1893) [`d36b1c1`](https://github.com/Nova-Org/novacode/commit/d36b1c17fa9d5cb06d13865b4d1ba1e66500a85c) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Provider Routing options have been added to Nova Code and OpenRouter settings. It is now possible to select a sorting preference (e.g. prefer lower price) and data policy (e.g. deny data collection).
 
 ### Patch Changes
 
-- [#1924](https://github.com/Kilo-Org/kilocode/pull/1924) [`f7d54ee`](https://github.com/Kilo-Org/kilocode/commit/f7d54eee006c21e3b7760e2ee88f144760731892) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The dedicated Big Model API provider was removed. Instead, you can use the Z.AI provider with open.bigmodel.cn endpoint.
+- [#1924](https://github.com/Nova-Org/novacode/pull/1924) [`f7d54ee`](https://github.com/Nova-Org/novacode/commit/f7d54eee006c21e3b7760e2ee88f144760731892) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The dedicated Big Model API provider was removed. Instead, you can use the Z.AI provider with open.bigmodel.cn endpoint.
 
 ## [v4.79.3]
 
-- [#1911](https://github.com/Kilo-Org/kilocode/pull/1911) [`62018d4`](https://github.com/Kilo-Org/kilocode/commit/62018d4cb0dff0386bdccc68ce4a9dbb21834e8f) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed Enhance Prompt and Commit Message Generation not working with GPT-5 on the OpenAI provider
+- [#1911](https://github.com/Nova-Org/novacode/pull/1911) [`62018d4`](https://github.com/Nova-Org/novacode/commit/62018d4cb0dff0386bdccc68ce4a9dbb21834e8f) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed Enhance Prompt and Commit Message Generation not working with GPT-5 on the OpenAI provider
 
 ## [v4.79.2]
 
-- [#1892](https://github.com/Kilo-Org/kilocode/pull/1892) [`c5cfb6c`](https://github.com/Kilo-Org/kilocode/commit/c5cfb6cc0af6b7de2a33832b6b1b56b60b950edc) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed not being able to set the Max Auto-Approve Cost
+- [#1892](https://github.com/Nova-Org/novacode/pull/1892) [`c5cfb6c`](https://github.com/Nova-Org/novacode/commit/c5cfb6cc0af6b7de2a33832b6b1b56b60b950edc) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed not being able to set the Max Auto-Approve Cost
 
-- [#1889](https://github.com/Kilo-Org/kilocode/pull/1889) [`2bbebd0`](https://github.com/Kilo-Org/kilocode/commit/2bbebd09c27a00c197de9dfcc384f34880fdb46f) Thanks [@unitythemaker](https://github.com/unitythemaker)! - Chutes model list updated
+- [#1889](https://github.com/Nova-Org/novacode/pull/1889) [`2bbebd0`](https://github.com/Nova-Org/novacode/commit/2bbebd09c27a00c197de9dfcc384f34880fdb46f) Thanks [@unitythemaker](https://github.com/unitythemaker)! - Chutes model list updated
 
-- [#1879](https://github.com/Kilo-Org/kilocode/pull/1879) [`e348ea1`](https://github.com/Kilo-Org/kilocode/commit/e348ea18cbbfc76abece9cbe9e54bc477e764e99) Thanks [@possible055](https://github.com/possible055)! - Update Traditional Chinese translations for Settings UI
+- [#1879](https://github.com/Nova-Org/novacode/pull/1879) [`e348ea1`](https://github.com/Nova-Org/novacode/commit/e348ea18cbbfc76abece9cbe9e54bc477e764e99) Thanks [@possible055](https://github.com/possible055)! - Update Traditional Chinese translations for Settings UI
 
 ## [v4.79.1]
 
-- [#1871](https://github.com/Kilo-Org/kilocode/pull/1871) [`fe0b1ce`](https://github.com/Kilo-Org/kilocode/commit/fe0b1ce7141e6fb07f4c4816fd1895a663ce13e7) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.25.10
-
+- [#1871](https://github.com/Nova-Org/novacode/pull/1871) [`fe0b1ce`](https://github.com/Nova-Org/novacode/commit/fe0b1ce7141e6fb07f4c4816fd1895a663ce13e7) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.25.10
     - Improved support for GPT-5 (thanks Cline and @app/roomote!)
     - Fix: Use CDATA sections in XML examples to prevent parser errors (#4852 by @hannesrudolph, PR by @hannesrudolph)
     - Fix: Add missing MCP error translation keys (thanks @app/roomote!)
@@ -2500,8 +2474,7 @@
 
 ## [v4.79.0]
 
-- [#1862](https://github.com/Kilo-Org/kilocode/pull/1862) [`43c7179`](https://github.com/Kilo-Org/kilocode/commit/43c71796a58e25805217c520a9d612d56b2f11d5) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.25.8
-
+- [#1862](https://github.com/Nova-Org/novacode/pull/1862) [`43c7179`](https://github.com/Nova-Org/novacode/commit/43c71796a58e25805217c520a9d612d56b2f11d5) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.25.8
     - Fix: Prevent disabled MCP servers from starting processes and show correct status (#6036 by @hannesrudolph, PR by @app/roomote)
     - Fix: Handle current directory path "." correctly in codebase_search tool (#6514 by @hannesrudolph, PR by @app/roomote)
     - Fix: Trim whitespace from OpenAI base URL to fix model detection (#6559 by @vauhochzett, PR by @app/roomote)
@@ -2540,94 +2513,93 @@
 
 ### Patch Changes
 
-- [#1856](https://github.com/Kilo-Org/kilocode/pull/1856) [`9c8423e`](https://github.com/Kilo-Org/kilocode/commit/9c8423ef902cf68566185dbf96dae92f4fcac9b3) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed Enhance Prompt and Commit Generation Message not working with GPT-5 on the OpenAI provider
+- [#1856](https://github.com/Nova-Org/novacode/pull/1856) [`9c8423e`](https://github.com/Nova-Org/novacode/commit/9c8423ef902cf68566185dbf96dae92f4fcac9b3) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed Enhance Prompt and Commit Generation Message not working with GPT-5 on the OpenAI provider
 
-- [#1822](https://github.com/Kilo-Org/kilocode/pull/1822) [`79efaea`](https://github.com/Kilo-Org/kilocode/commit/79efaeaa3da8881310feb4a711f475810df5f84e) Thanks [@tejaschokhawala](https://github.com/tejaschokhawala)! - Thinking Budget value parsing and boundary handling corrected
+- [#1822](https://github.com/Nova-Org/novacode/pull/1822) [`79efaea`](https://github.com/Nova-Org/novacode/commit/79efaeaa3da8881310feb4a711f475810df5f84e) Thanks [@tejaschokhawala](https://github.com/tejaschokhawala)! - Thinking Budget value parsing and boundary handling corrected
 
-- [#1850](https://github.com/Kilo-Org/kilocode/pull/1850) [`b9714db`](https://github.com/Kilo-Org/kilocode/commit/b9714dbbdde7e6ec628d32657329fe82c01cfb42) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed "Failed to load Kilo Code provider model list" error
+- [#1850](https://github.com/Nova-Org/novacode/pull/1850) [`b9714db`](https://github.com/Nova-Org/novacode/commit/b9714dbbdde7e6ec628d32657329fe82c01cfb42) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed "Failed to load Nova Code provider model list" error
 
-- [#1829](https://github.com/Kilo-Org/kilocode/pull/1829) [`2bdeaa0`](https://github.com/Kilo-Org/kilocode/commit/2bdeaa05074e5e87ffa2af1bbed149864dbd3785) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Improve memory allocation on webview
+- [#1829](https://github.com/Nova-Org/novacode/pull/1829) [`2bdeaa0`](https://github.com/Nova-Org/novacode/commit/2bdeaa05074e5e87ffa2af1bbed149864dbd3785) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Improve memory allocation on webview
 
 ## [v4.78.0]
 
-- [#1836](https://github.com/Kilo-Org/kilocode/pull/1836) [`1cc5edd`](https://github.com/Kilo-Org/kilocode/commit/1cc5edd003434fcd3d1fd66e652099165b077ac6) Thanks [@hassoncs](https://github.com/hassoncs)! - The task timeline now scrolls horizontally using the mouse wheel (thanks @ABODFTW!)
+- [#1836](https://github.com/Nova-Org/novacode/pull/1836) [`1cc5edd`](https://github.com/Nova-Org/novacode/commit/1cc5edd003434fcd3d1fd66e652099165b077ac6) Thanks [@hassoncs](https://github.com/hassoncs)! - The task timeline now scrolls horizontally using the mouse wheel (thanks @ABODFTW!)
 
 ### Patch Changes
 
-- [#1814](https://github.com/Kilo-Org/kilocode/pull/1814) [`3e7290e`](https://github.com/Kilo-Org/kilocode/commit/3e7290e49974d26ee55bcaef743edb527e214735) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Removed "Press Ctrl+Shift+G to generate terminal commands" message
+- [#1814](https://github.com/Nova-Org/novacode/pull/1814) [`3e7290e`](https://github.com/Nova-Org/novacode/commit/3e7290e49974d26ee55bcaef743edb527e214735) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Removed "Press Ctrl+Shift+G to generate terminal commands" message
 
-- [#1832](https://github.com/Kilo-Org/kilocode/pull/1832) [`80b0f20`](https://github.com/Kilo-Org/kilocode/commit/80b0f209ad823ac23f30838ba3989dbf877fce73) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add GPT-5 model support to OpenAI provider
+- [#1832](https://github.com/Nova-Org/novacode/pull/1832) [`80b0f20`](https://github.com/Nova-Org/novacode/commit/80b0f209ad823ac23f30838ba3989dbf877fce73) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add GPT-5 model support to OpenAI provider
 
 ## [v4.77.1]
 
-- [#1792](https://github.com/Kilo-Org/kilocode/pull/1792) [`ee300bc`](https://github.com/Kilo-Org/kilocode/commit/ee300bcd9138049182f9979ea9794996c96ee3d1) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix infinite spinning initial API request
+- [#1792](https://github.com/Nova-Org/novacode/pull/1792) [`ee300bc`](https://github.com/Nova-Org/novacode/commit/ee300bcd9138049182f9979ea9794996c96ee3d1) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix infinite spinning initial API request
 
 ## [v4.77.0]
 
-- [#1784](https://github.com/Kilo-Org/kilocode/pull/1784) [`bf5bd8e`](https://github.com/Kilo-Org/kilocode/commit/bf5bd8e22e34191730512f0f793d45b6f3a0a694) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Inline Assist - Improve compatibility with more models (JSON Parsing)
+- [#1784](https://github.com/Nova-Org/novacode/pull/1784) [`bf5bd8e`](https://github.com/Nova-Org/novacode/commit/bf5bd8e22e34191730512f0f793d45b6f3a0a694) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Inline Assist - Improve compatibility with more models (JSON Parsing)
 
 ### Patch Changes
 
-- [#1786](https://github.com/Kilo-Org/kilocode/pull/1786) [`26cb921`](https://github.com/Kilo-Org/kilocode/commit/26cb92172d361bb274cb30d81f400136bff06f1e) Thanks [@hellosunghyun](https://github.com/hellosunghyun)! - Update Cerebras models with latest offerings
+- [#1786](https://github.com/Nova-Org/novacode/pull/1786) [`26cb921`](https://github.com/Nova-Org/novacode/commit/26cb92172d361bb274cb30d81f400136bff06f1e) Thanks [@hellosunghyun](https://github.com/hellosunghyun)! - Update Cerebras models with latest offerings
 
 ## [v4.76.0]
 
-- [#1738](https://github.com/Kilo-Org/kilocode/pull/1738) [`0d3643b`](https://github.com/Kilo-Org/kilocode/commit/0d3643b4926fb1d77c865eb96ab9bcfdc49e1ea3) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Inline Assistant: Auto trigger - automatically show code suggestions after a configurable delay
+- [#1738](https://github.com/Nova-Org/novacode/pull/1738) [`0d3643b`](https://github.com/Nova-Org/novacode/commit/0d3643b4926fb1d77c865eb96ab9bcfdc49e1ea3) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Inline Assistant: Auto trigger - automatically show code suggestions after a configurable delay
 
-- [#1631](https://github.com/Kilo-Org/kilocode/pull/1631) [`b4f6e09`](https://github.com/Kilo-Org/kilocode/commit/b4f6e09ad57a9e00b5b64f7d75311c647cdf5fce) Thanks [@mcowger](https://github.com/mcowger)! - Add support for virtual provider usage tracking, and fix a selection race condition.
+- [#1631](https://github.com/Nova-Org/novacode/pull/1631) [`b4f6e09`](https://github.com/Nova-Org/novacode/commit/b4f6e09ad57a9e00b5b64f7d75311c647cdf5fce) Thanks [@mcowger](https://github.com/mcowger)! - Add support for virtual provider usage tracking, and fix a selection race condition.
 
 ### Patch Changes
 
-- [#1776](https://github.com/Kilo-Org/kilocode/pull/1776) [`7a705a2`](https://github.com/Kilo-Org/kilocode/commit/7a705a26a9b1bb56579e44f01810c42585c75e53) Thanks [@ipkalid](https://github.com/ipkalid)! - add GPT-OSS 120b and 20b models to Groq provider
+- [#1776](https://github.com/Nova-Org/novacode/pull/1776) [`7a705a2`](https://github.com/Nova-Org/novacode/commit/7a705a26a9b1bb56579e44f01810c42585c75e53) Thanks [@ipkalid](https://github.com/ipkalid)! - add GPT-OSS 120b and 20b models to Groq provider
 
 ## [v4.75.0]
 
-- [#1750](https://github.com/Kilo-Org/kilocode/pull/1750) [`4e48339`](https://github.com/Kilo-Org/kilocode/commit/4e48339bb1651e83fe40f481a66c97720afe9900) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Increased maximum system prompt length for Claude Code
+- [#1750](https://github.com/Nova-Org/novacode/pull/1750) [`4e48339`](https://github.com/Nova-Org/novacode/commit/4e48339bb1651e83fe40f481a66c97720afe9900) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Increased maximum system prompt length for Claude Code
 
 ### Patch Changes
 
-- [#1761](https://github.com/Kilo-Org/kilocode/pull/1761) [`c13bf0c`](https://github.com/Kilo-Org/kilocode/commit/c13bf0c03cd26f40a705fde2dc0ce67a1e1cc622) Thanks [@Ed4ward](https://github.com/Ed4ward)! - adjust the configurations of BigModel provider for GLM-4.5, added tiers for models prices
+- [#1761](https://github.com/Nova-Org/novacode/pull/1761) [`c13bf0c`](https://github.com/Nova-Org/novacode/commit/c13bf0c03cd26f40a705fde2dc0ce67a1e1cc622) Thanks [@Ed4ward](https://github.com/Ed4ward)! - adjust the configurations of BigModel provider for GLM-4.5, added tiers for models prices
 
-- [#1755](https://github.com/Kilo-Org/kilocode/pull/1755) [`9054e23`](https://github.com/Kilo-Org/kilocode/commit/9054e23bd9ca05f920845b8e24d1785fcf9a0e2e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add support for GLM-4.5-Flash, Zhipu's most advanced free model to date, to the BigModel and Z.AI providers.
+- [#1755](https://github.com/Nova-Org/novacode/pull/1755) [`9054e23`](https://github.com/Nova-Org/novacode/commit/9054e23bd9ca05f920845b8e24d1785fcf9a0e2e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add support for GLM-4.5-Flash, Zhipu's most advanced free model to date, to the BigModel and Z.AI providers.
 
-- [#1741](https://github.com/Kilo-Org/kilocode/pull/1741) [`8ae7c1f`](https://github.com/Kilo-Org/kilocode/commit/8ae7c1f7558cff4370976d347ddc532ecf48fc45) Thanks [@tejaschokhawala](https://github.com/tejaschokhawala)! - feat(gemini): Add Gemma 3 27B to Gemini Provider
+- [#1741](https://github.com/Nova-Org/novacode/pull/1741) [`8ae7c1f`](https://github.com/Nova-Org/novacode/commit/8ae7c1f7558cff4370976d347ddc532ecf48fc45) Thanks [@tejaschokhawala](https://github.com/tejaschokhawala)! - feat(gemini): Add Gemma 3 27B to Gemini Provider
 
-- [#1744](https://github.com/Kilo-Org/kilocode/pull/1744) [`b8f3267`](https://github.com/Kilo-Org/kilocode/commit/b8f3267e584ea0399e1bdb89b2b03fd08b8c1f1b) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix Message queue #1736
+- [#1744](https://github.com/Nova-Org/novacode/pull/1744) [`b8f3267`](https://github.com/Nova-Org/novacode/commit/b8f3267e584ea0399e1bdb89b2b03fd08b8c1f1b) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix Message queue #1736
 
-- [#1763](https://github.com/Kilo-Org/kilocode/pull/1763) [`d3cfbcd`](https://github.com/Kilo-Org/kilocode/commit/d3cfbcd8ccd3820837ba86ee9f7c25a2d4fd44e0) Thanks [@ershang-fireworks](https://github.com/ershang-fireworks)! - Fix fireworks provider
+- [#1763](https://github.com/Nova-Org/novacode/pull/1763) [`d3cfbcd`](https://github.com/Nova-Org/novacode/commit/d3cfbcd8ccd3820837ba86ee9f7c25a2d4fd44e0) Thanks [@ershang-fireworks](https://github.com/ershang-fireworks)! - Fix fireworks provider
 
 ## [v4.74.0]
 
-- [#1721](https://github.com/Kilo-Org/kilocode/pull/1721) [`3f816a8`](https://github.com/Kilo-Org/kilocode/commit/3f816a8e65b7c94d7212130f1312c9d77ff84ebf) Thanks [@damonto](https://github.com/damonto)! - Remove shortcut notation from activity bar title that was present in some languages
+- [#1721](https://github.com/Nova-Org/novacode/pull/1721) [`3f816a8`](https://github.com/Nova-Org/novacode/commit/3f816a8e65b7c94d7212130f1312c9d77ff84ebf) Thanks [@damonto](https://github.com/damonto)! - Remove shortcut notation from activity bar title that was present in some languages
 
-- [#1731](https://github.com/Kilo-Org/kilocode/pull/1731) [`8aa1cd3`](https://github.com/Kilo-Org/kilocode/commit/8aa1cd3cd6fa462d8dce4961ff13080d4683161d) Thanks [@Ed4ward](https://github.com/Ed4ward)! - Added Z.AI & BigModel providers for GLM-4.5 Serials
+- [#1731](https://github.com/Nova-Org/novacode/pull/1731) [`8aa1cd3`](https://github.com/Nova-Org/novacode/commit/8aa1cd3cd6fa462d8dce4961ff13080d4683161d) Thanks [@Ed4ward](https://github.com/Ed4ward)! - Added Z.AI & BigModel providers for GLM-4.5 Serials
 
 ### Patch Changes
 
-- [#1717](https://github.com/Kilo-Org/kilocode/pull/1717) [`529c0d6`](https://github.com/Kilo-Org/kilocode/commit/529c0d61da1f45e93604dd98ed10bf74f694f02f) Thanks [@hassoncs](https://github.com/hassoncs)! - Only show the terminal generation tip once per session
+- [#1717](https://github.com/Nova-Org/novacode/pull/1717) [`529c0d6`](https://github.com/Nova-Org/novacode/commit/529c0d61da1f45e93604dd98ed10bf74f694f02f) Thanks [@hassoncs](https://github.com/hassoncs)! - Only show the terminal generation tip once per session
 
-- [#1743](https://github.com/Kilo-Org/kilocode/pull/1743) [`b5a50d1`](https://github.com/Kilo-Org/kilocode/commit/b5a50d198306dcf24d16437ccf409e54fd3972cc) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix bug preventing Orchestrator mode sub-tasks from reporting their results properly
+- [#1743](https://github.com/Nova-Org/novacode/pull/1743) [`b5a50d1`](https://github.com/Nova-Org/novacode/commit/b5a50d198306dcf24d16437ccf409e54fd3972cc) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix bug preventing Orchestrator mode sub-tasks from reporting their results properly
 
-- [#1720](https://github.com/Kilo-Org/kilocode/pull/1720) [`23dfe72`](https://github.com/Kilo-Org/kilocode/commit/23dfe7256bdf95a3be8db4dcc9d8dc6c9ac1d37a) Thanks [@k9evin](https://github.com/k9evin)! - Fix MCP Marketplace installation modal state issue
+- [#1720](https://github.com/Nova-Org/novacode/pull/1720) [`23dfe72`](https://github.com/Nova-Org/novacode/commit/23dfe7256bdf95a3be8db4dcc9d8dc6c9ac1d37a) Thanks [@k9evin](https://github.com/k9evin)! - Fix MCP Marketplace installation modal state issue
 
-- [#1735](https://github.com/Kilo-Org/kilocode/pull/1735) [`783e291`](https://github.com/Kilo-Org/kilocode/commit/783e2915bf8795f39f8d63615dd48d79cbd1760a) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix workflows don't work
+- [#1735](https://github.com/Nova-Org/novacode/pull/1735) [`783e291`](https://github.com/Nova-Org/novacode/commit/783e2915bf8795f39f8d63615dd48d79cbd1760a) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix workflows don't work
 
-- [#1734](https://github.com/Kilo-Org/kilocode/pull/1734) [`e2de39f`](https://github.com/Kilo-Org/kilocode/commit/e2de39f9082b26336992248ce4cc0ee5d191d4df) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Added missing "Generate terminal command" label on the prompts settings page
+- [#1734](https://github.com/Nova-Org/novacode/pull/1734) [`e2de39f`](https://github.com/Nova-Org/novacode/commit/e2de39f9082b26336992248ce4cc0ee5d191d4df) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Added missing "Generate terminal command" label on the prompts settings page
 
-- [#1713](https://github.com/Kilo-Org/kilocode/pull/1713) [`54b88f3`](https://github.com/Kilo-Org/kilocode/commit/54b88f3869e1fa07ae0467b557c7a33adcad0cc9) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The timeout for Ollama and LM Studio was increased from 5 minutes to 1 hour
+- [#1713](https://github.com/Nova-Org/novacode/pull/1713) [`54b88f3`](https://github.com/Nova-Org/novacode/commit/54b88f3869e1fa07ae0467b557c7a33adcad0cc9) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The timeout for Ollama and LM Studio was increased from 5 minutes to 1 hour
 
 ## [v4.73.1]
 
-- [#1707](https://github.com/Kilo-Org/kilocode/pull/1707) [`d2af1bd`](https://github.com/Kilo-Org/kilocode/commit/d2af1bd779f8e5480355eeceaeaba91679696d95) Thanks [@possible055](https://github.com/possible055)! - Refine Traditional Chinese translation
+- [#1707](https://github.com/Nova-Org/novacode/pull/1707) [`d2af1bd`](https://github.com/Nova-Org/novacode/commit/d2af1bd779f8e5480355eeceaeaba91679696d95) Thanks [@possible055](https://github.com/possible055)! - Refine Traditional Chinese translation
 
-- [#1710](https://github.com/Kilo-Org/kilocode/pull/1710) [`8d5c647`](https://github.com/Kilo-Org/kilocode/commit/8d5c647e8fd39b5dd528ea959d7e14e28b29d6e6) Thanks [@NaccOll](https://github.com/NaccOll)! - Todo reminders are no longer included in the prompt when todo lists are disabled
+- [#1710](https://github.com/Nova-Org/novacode/pull/1710) [`8d5c647`](https://github.com/Nova-Org/novacode/commit/8d5c647e8fd39b5dd528ea959d7e14e28b29d6e6) Thanks [@NaccOll](https://github.com/NaccOll)! - Todo reminders are no longer included in the prompt when todo lists are disabled
 
-- [#1711](https://github.com/Kilo-Org/kilocode/pull/1711) [`e71ca57`](https://github.com/Kilo-Org/kilocode/commit/e71ca578c2935085213ad41bf24226c55f4cf4f5) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix missing padding in the Profile selector
+- [#1711](https://github.com/Nova-Org/novacode/pull/1711) [`e71ca57`](https://github.com/Nova-Org/novacode/commit/e71ca578c2935085213ad41bf24226c55f4cf4f5) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix missing padding in the Profile selector
 
 ## [v4.73.0]
 
-- [#1654](https://github.com/Kilo-Org/kilocode/pull/1654) [`c4ed29a`](https://github.com/Kilo-Org/kilocode/commit/c4ed29acdabfd131dae82c5ccd06ebe1ecbce058) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.25.4
-
+- [#1654](https://github.com/Nova-Org/novacode/pull/1654) [`c4ed29a`](https://github.com/Nova-Org/novacode/commit/c4ed29acdabfd131dae82c5ccd06ebe1ecbce058) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.25.4
     - feat: add SambaNova provider integration (#6077 by @snova-jorgep, PR by @snova-jorgep)
     - feat: add Doubao provider integration (thanks @AntiMoron!)
     - feat: set horizon-alpha model max tokens to 32k for OpenRouter (thanks @app/roomote!)
@@ -2670,46 +2642,44 @@
     - Update list-files test for fixed hidden files bug (thanks @daniel-lxs!)
     - Fix normalize Windows paths to forward slashes in mode export (#6307 by @hannesrudolph, PR by @app/roomote)
     - Ensure form-data >= 4.0.4
-    - Fix filter out non-text tab inputs (Kilo-Org/kilocode#712 by @szermatt, PR by @hassoncs)
+    - Fix filter out non-text tab inputs (Nova-Org/novacode#712 by @szermatt, PR by @hassoncs)
 
 ## [v4.72.1]
 
-- [#1697](https://github.com/Kilo-Org/kilocode/pull/1697) [`bcea22c`](https://github.com/Kilo-Org/kilocode/commit/bcea22c5cf6c446a73edbaeabcae8bce62da6441) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - A note on where to find the MCP Marketplace was added
+- [#1697](https://github.com/Nova-Org/novacode/pull/1697) [`bcea22c`](https://github.com/Nova-Org/novacode/commit/bcea22c5cf6c446a73edbaeabcae8bce62da6441) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - A note on where to find the MCP Marketplace was added
 
 ## [v4.72.0]
 
-- [#1663](https://github.com/Kilo-Org/kilocode/pull/1663) [`b043643`](https://github.com/Kilo-Org/kilocode/commit/b043643fe067e415ef28375554e24b8829fa5600) Thanks [@hassoncs](https://github.com/hassoncs)! - Add descriptions to the Mode Selector menu
+- [#1663](https://github.com/Nova-Org/novacode/pull/1663) [`b043643`](https://github.com/Nova-Org/novacode/commit/b043643fe067e415ef28375554e24b8829fa5600) Thanks [@hassoncs](https://github.com/hassoncs)! - Add descriptions to the Mode Selector menu
 
 ### Patch Changes
 
-- [#1662](https://github.com/Kilo-Org/kilocode/pull/1662) [`57e5c3e`](https://github.com/Kilo-Org/kilocode/commit/57e5c3eb8f2a86167e121f2d459b74dea987b804) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Some UI text related to pricing and cost has been improved
+- [#1662](https://github.com/Nova-Org/novacode/pull/1662) [`57e5c3e`](https://github.com/Nova-Org/novacode/commit/57e5c3eb8f2a86167e121f2d459b74dea987b804) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Some UI text related to pricing and cost has been improved
 
-- [#1684](https://github.com/Kilo-Org/kilocode/pull/1684) [`ccd8a63`](https://github.com/Kilo-Org/kilocode/commit/ccd8a6387c7123f3cb904a1327eaa775e3f87953) Thanks [@NyxJae](https://github.com/NyxJae)! - Standardize brand names in localizations
+- [#1684](https://github.com/Nova-Org/novacode/pull/1684) [`ccd8a63`](https://github.com/Nova-Org/novacode/commit/ccd8a6387c7123f3cb904a1327eaa775e3f87953) Thanks [@NyxJae](https://github.com/NyxJae)! - Standardize brand names in localizations
 
-- [#1666](https://github.com/Kilo-Org/kilocode/pull/1666) [`c59029a`](https://github.com/Kilo-Org/kilocode/commit/c59029a57b820f3cf684476f56a30dc49509d9ea) Thanks [@kevint-cerebras](https://github.com/kevint-cerebras)! - Update available Cerebras models
+- [#1666](https://github.com/Nova-Org/novacode/pull/1666) [`c59029a`](https://github.com/Nova-Org/novacode/commit/c59029a57b820f3cf684476f56a30dc49509d9ea) Thanks [@kevint-cerebras](https://github.com/kevint-cerebras)! - Update available Cerebras models
 
-- [#1655](https://github.com/Kilo-Org/kilocode/pull/1655) [`a3276c0`](https://github.com/Kilo-Org/kilocode/commit/a3276c0feab4300731d9294bbfc44c0bf85db98a) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Credits Store Improvements
+- [#1655](https://github.com/Nova-Org/novacode/pull/1655) [`a3276c0`](https://github.com/Nova-Org/novacode/commit/a3276c0feab4300731d9294bbfc44c0bf85db98a) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Credits Store Improvements
 
-- [#1688](https://github.com/Kilo-Org/kilocode/pull/1688) [`de00d50`](https://github.com/Kilo-Org/kilocode/commit/de00d5014e57a602aaee0b21a97a6352bdcdf4c5) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Ollama requests no longer time out after 5 minutes
+- [#1688](https://github.com/Nova-Org/novacode/pull/1688) [`de00d50`](https://github.com/Nova-Org/novacode/commit/de00d5014e57a602aaee0b21a97a6352bdcdf4c5) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Ollama requests no longer time out after 5 minutes
 
-- [#1677](https://github.com/Kilo-Org/kilocode/pull/1677) [`8a0d0e8`](https://github.com/Kilo-Org/kilocode/commit/8a0d0e830fe56439ce343a743a702c8fa1d02744) Thanks [@possible055](https://github.com/possible055)! - Refine Traditional Chinese translation
+- [#1677](https://github.com/Nova-Org/novacode/pull/1677) [`8a0d0e8`](https://github.com/Nova-Org/novacode/commit/8a0d0e830fe56439ce343a743a702c8fa1d02744) Thanks [@possible055](https://github.com/possible055)! - Refine Traditional Chinese translation
 
 ## [v4.71.0]
 
-- [#1656](https://github.com/Kilo-Org/kilocode/pull/1656) [`68a3f4a`](https://github.com/Kilo-Org/kilocode/commit/68a3f4a583751ae70ecb5fbd83db119375c4d5bd) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Disable terminal shell integration by default
+- [#1656](https://github.com/Nova-Org/novacode/pull/1656) [`68a3f4a`](https://github.com/Nova-Org/novacode/commit/68a3f4a583751ae70ecb5fbd83db119375c4d5bd) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Disable terminal shell integration by default
 
-- [#1596](https://github.com/Kilo-Org/kilocode/pull/1596) [`3e918a2`](https://github.com/Kilo-Org/kilocode/commit/3e918a299c10796805880121844c4841ab56da7c) Thanks [@hassoncs](https://github.com/hassoncs)! - # Terminal Command Generator
+- [#1596](https://github.com/Nova-Org/novacode/pull/1596) [`3e918a2`](https://github.com/Nova-Org/novacode/commit/3e918a299c10796805880121844c4841ab56da7c) Thanks [@hassoncs](https://github.com/hassoncs)! - # Terminal Command Generator
 
     New AI-powered terminal command generator- helps users create terminal commands using natural language
 
     ## New Features
-
     - **Terminal Command Generator**: Press `Ctrl+Shift+G` (or `Cmd+Shift+G` on Mac) to generate terminal commands from natural language descriptions
     - **Terminal Welcome Messages**: New terminals now show helpful tips about the command generator feature
     - **API Configuration Selection**: Choose which AI provider configuration to use for terminal command generation in settings
 
     ## How to Use
-
     1. Open any terminal in VSCode
     2. Press `Ctrl+Shift+G` (Windows/Linux) or `Cmd+Shift+G` (Mac)
     3. Describe the command you want in plain English (e.g., "list all files in current directory", "find large files", "install npm package")
@@ -2717,52 +2687,50 @@
 
     ## Settings
 
-    Navigate to Kilo Code settings → Terminal to configure:
-
+    Navigate to Nova Code settings → Terminal to configure:
     - **API Configuration**: Select which AI provider to use for command generation (defaults to your current configuration)
 
-- [#1628](https://github.com/Kilo-Org/kilocode/pull/1628) [`4913a39`](https://github.com/Kilo-Org/kilocode/commit/4913a39e6cc6342c896352ed8eaa56831812810c) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Thanks @bhaktatejas922! Add experimental support for Morph Fast Apply
+- [#1628](https://github.com/Nova-Org/novacode/pull/1628) [`4913a39`](https://github.com/Nova-Org/novacode/commit/4913a39e6cc6342c896352ed8eaa56831812810c) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Thanks @bhaktatejas922! Add experimental support for Morph Fast Apply
 
 ### Patch Changes
 
-- [#1658](https://github.com/Kilo-Org/kilocode/pull/1658) [`962c90a`](https://github.com/Kilo-Org/kilocode/commit/962c90a2d057a72081cb271949cbf780c80a3555) Thanks [@hassoncs](https://github.com/hassoncs)! - Control Kilo Code programmatically from the command line using IPC with the `KILO_CODE_IPC_SOCKET_PATH` var
+- [#1658](https://github.com/Nova-Org/novacode/pull/1658) [`962c90a`](https://github.com/Nova-Org/novacode/commit/962c90a2d057a72081cb271949cbf780c80a3555) Thanks [@hassoncs](https://github.com/hassoncs)! - Control Nova Code programmatically from the command line using IPC with the `NOVA_CODE_IPC_SOCKET_PATH` var
 
-- [#1647](https://github.com/Kilo-Org/kilocode/pull/1647) [`12a7a5a`](https://github.com/Kilo-Org/kilocode/commit/12a7a5a21ed34ce68694452d7d6bb67a59ca8904) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Simplify the Welcome/Login screen
+- [#1647](https://github.com/Nova-Org/novacode/pull/1647) [`12a7a5a`](https://github.com/Nova-Org/novacode/commit/12a7a5a21ed34ce68694452d7d6bb67a59ca8904) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Simplify the Welcome/Login screen
 
-- [#1649](https://github.com/Kilo-Org/kilocode/pull/1649) [`b3d3fc4`](https://github.com/Kilo-Org/kilocode/commit/b3d3fc4c08a0c1023a37ddeb5823d12d30490727) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The rule toggle UI works again, rules can be disabled.
+- [#1649](https://github.com/Nova-Org/novacode/pull/1649) [`b3d3fc4`](https://github.com/Nova-Org/novacode/commit/b3d3fc4c08a0c1023a37ddeb5823d12d30490727) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The rule toggle UI works again, rules can be disabled.
 
 ## [v4.70.2]
 
-- [#1645](https://github.com/Kilo-Org/kilocode/pull/1645) [`81e20ef`](https://github.com/Kilo-Org/kilocode/commit/81e20ef2168b966f8757acf009b27a7374a29386) Thanks [@catrielmuller](https://github.com/catrielmuller)! - You can now buy credits straight from the profile tab
+- [#1645](https://github.com/Nova-Org/novacode/pull/1645) [`81e20ef`](https://github.com/Nova-Org/novacode/commit/81e20ef2168b966f8757acf009b27a7374a29386) Thanks [@catrielmuller](https://github.com/catrielmuller)! - You can now buy credits straight from the profile tab
 
-- [#1643](https://github.com/Kilo-Org/kilocode/pull/1643) [`0e99eae`](https://github.com/Kilo-Org/kilocode/commit/0e99eaec42f8111dc75bcd5b273871db0ddc1298) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Optimized memory usage of the chat view
+- [#1643](https://github.com/Nova-Org/novacode/pull/1643) [`0e99eae`](https://github.com/Nova-Org/novacode/commit/0e99eaec42f8111dc75bcd5b273871db0ddc1298) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Optimized memory usage of the chat view
 
-- [#1623](https://github.com/Kilo-Org/kilocode/pull/1623) [`7e29e32`](https://github.com/Kilo-Org/kilocode/commit/7e29e32f40ef3447edf3e5d356235cae6c497e32) Thanks [@hassoncs](https://github.com/hassoncs)! - Add webview memory metrics to telemetry
+- [#1623](https://github.com/Nova-Org/novacode/pull/1623) [`7e29e32`](https://github.com/Nova-Org/novacode/commit/7e29e32f40ef3447edf3e5d356235cae6c497e32) Thanks [@hassoncs](https://github.com/hassoncs)! - Add webview memory metrics to telemetry
 
 ## [v4.70.1]
 
-- [#1614](https://github.com/Kilo-Org/kilocode/pull/1614) [`2f9d064`](https://github.com/Kilo-Org/kilocode/commit/2f9d064b0370bfa4da92ceffec0026a16feb178a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - GitHub accounts now show their avatar on the profile page
+- [#1614](https://github.com/Nova-Org/novacode/pull/1614) [`2f9d064`](https://github.com/Nova-Org/novacode/commit/2f9d064b0370bfa4da92ceffec0026a16feb178a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - GitHub accounts now show their avatar on the profile page
 
 ## [v4.70.0]
 
-- [#1588](https://github.com/Kilo-Org/kilocode/pull/1588) [`96be5a5`](https://github.com/Kilo-Org/kilocode/commit/96be5a5f82111ac2357112a04d3c0adc42103592) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Add warning when Github Copilot conflicts with Kilo's Inline Assist keyboard commands
+- [#1588](https://github.com/Nova-Org/novacode/pull/1588) [`96be5a5`](https://github.com/Nova-Org/novacode/commit/96be5a5f82111ac2357112a04d3c0adc42103592) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Add warning when Github Copilot conflicts with Nova's Inline Assist keyboard commands
 
 ### Patch Changes
 
-- [#1606](https://github.com/Kilo-Org/kilocode/pull/1606) [`b518ee7`](https://github.com/Kilo-Org/kilocode/commit/b518ee7a577edb61bedcf235bb03164a29719891) Thanks [@hassoncs](https://github.com/hassoncs)! - Put all Inline Assist features behind a new Experiment
+- [#1606](https://github.com/Nova-Org/novacode/pull/1606) [`b518ee7`](https://github.com/Nova-Org/novacode/commit/b518ee7a577edb61bedcf235bb03164a29719891) Thanks [@hassoncs](https://github.com/hassoncs)! - Put all Inline Assist features behind a new Experiment
 
 ## [v4.69.0]
 
-- [#1514](https://github.com/Kilo-Org/kilocode/pull/1514) [`3d09426`](https://github.com/Kilo-Org/kilocode/commit/3d0942667c80cb0e9a185fe1bf1b2dc67f82a694) Thanks [@mcowger](https://github.com/mcowger)! - Show a toast to the user when the active handler changes in the virtual quota fallback provider.
+- [#1514](https://github.com/Nova-Org/novacode/pull/1514) [`3d09426`](https://github.com/Nova-Org/novacode/commit/3d0942667c80cb0e9a185fe1bf1b2dc67f82a694) Thanks [@mcowger](https://github.com/mcowger)! - Show a toast to the user when the active handler changes in the virtual quota fallback provider.
 
 ### Patch Changes
 
-- [#1603](https://github.com/Kilo-Org/kilocode/pull/1603) [`dd60d57`](https://github.com/Kilo-Org/kilocode/commit/dd60d57d49e6d0cd62126b869368f6bd8118202f) Thanks [@namaku](https://github.com/namaku)! - fix(ollama): prefer num_ctx from model.parameters over context_length from model.info
+- [#1603](https://github.com/Nova-Org/novacode/pull/1603) [`dd60d57`](https://github.com/Nova-Org/novacode/commit/dd60d57d49e6d0cd62126b869368f6bd8118202f) Thanks [@namaku](https://github.com/namaku)! - fix(ollama): prefer num_ctx from model.parameters over context_length from model.info
 
 ## [v4.68.0]
 
-- [#1579](https://github.com/Kilo-Org/kilocode/pull/1579) [`4e5d90a`](https://github.com/Kilo-Org/kilocode/commit/4e5d90a78b99ed5dca750446733aef36d3381680) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.24.0
-
+- [#1579](https://github.com/Nova-Org/novacode/pull/1579) [`4e5d90a`](https://github.com/Nova-Org/novacode/commit/4e5d90a78b99ed5dca750446733aef36d3381680) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.24.0
     - Add Hugging Face provider with support for open source models (thanks @TGlide!)
     - Add terminal command permissions UI to chat interface
     - Add support for Agent Rules standard via AGENTS.md (thanks @sgryphon!)
@@ -2779,24 +2747,23 @@
 
 ### Patch Changes
 
-- [#1561](https://github.com/Kilo-Org/kilocode/pull/1561) [`b3b024f`](https://github.com/Kilo-Org/kilocode/commit/b3b024f670c8b98921d3fc02c626a21c18be0a52) Thanks [@RSO](https://github.com/RSO)! - Added notifications from kilocode backend
+- [#1561](https://github.com/Nova-Org/novacode/pull/1561) [`b3b024f`](https://github.com/Nova-Org/novacode/commit/b3b024f670c8b98921d3fc02c626a21c18be0a52) Thanks [@RSO](https://github.com/RSO)! - Added notifications from novacode backend
 
-- [#1574](https://github.com/Kilo-Org/kilocode/pull/1574) [`2ac061e`](https://github.com/Kilo-Org/kilocode/commit/2ac061ed83ef68f429e113f94f6d72be47fe4389) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Improve the styles for the Inline Assist suggestion previews
+- [#1574](https://github.com/Nova-Org/novacode/pull/1574) [`2ac061e`](https://github.com/Nova-Org/novacode/commit/2ac061ed83ef68f429e113f94f6d72be47fe4389) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Improve the styles for the Inline Assist suggestion previews
 
-- [#1581](https://github.com/Kilo-Org/kilocode/pull/1581) [`abf9898`](https://github.com/Kilo-Org/kilocode/commit/abf9898fa1e4e37bdb65ba3abad5c2a7ea78db45) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix 'failure to apply changes to files' when Git diff views are open
+- [#1581](https://github.com/Nova-Org/novacode/pull/1581) [`abf9898`](https://github.com/Nova-Org/novacode/commit/abf9898fa1e4e37bdb65ba3abad5c2a7ea78db45) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix 'failure to apply changes to files' when Git diff views are open
 
-- [#1575](https://github.com/Kilo-Org/kilocode/pull/1575) [`3442152`](https://github.com/Kilo-Org/kilocode/commit/34421525994cfa794744a4f969e8eded5cf14d47) Thanks [@hassoncs](https://github.com/hassoncs)! - Attempt to fix the 'kilo icon missing' bug by switching back to PNG icons
+- [#1575](https://github.com/Nova-Org/novacode/pull/1575) [`3442152`](https://github.com/Nova-Org/novacode/commit/34421525994cfa794744a4f969e8eded5cf14d47) Thanks [@hassoncs](https://github.com/hassoncs)! - Attempt to fix the 'nova icon missing' bug by switching back to PNG icons
 
 ## [v4.67.0]
 
-- [#1484](https://github.com/Kilo-Org/kilocode/pull/1484) [`8294250`](https://github.com/Kilo-Org/kilocode/commit/8294250662f15c819f68781b507cb0e35a29b71b) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Improve Inline Assist suggestions by adding comprehensive context awareness
+- [#1484](https://github.com/Nova-Org/novacode/pull/1484) [`8294250`](https://github.com/Nova-Org/novacode/commit/8294250662f15c819f68781b507cb0e35a29b71b) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Improve Inline Assist suggestions by adding comprehensive context awareness
 
 ## [v4.66.0]
 
-- [#1539](https://github.com/Kilo-Org/kilocode/pull/1539) [`fd3679b`](https://github.com/Kilo-Org/kilocode/commit/fd3679b56b1b72ca41d70b30d805c94d377f3626) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Ollama models now use and report the correct context window size.
+- [#1539](https://github.com/Nova-Org/novacode/pull/1539) [`fd3679b`](https://github.com/Nova-Org/novacode/commit/fd3679b56b1b72ca41d70b30d805c94d377f3626) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Ollama models now use and report the correct context window size.
 
-- [#1510](https://github.com/Kilo-Org/kilocode/pull/1510) [`ee48df4`](https://github.com/Kilo-Org/kilocode/commit/ee48df43fb460a1fbaa9e4f5a11ce45172bf63e3) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Include changes from Roo Code v3.23.19
-
+- [#1510](https://github.com/Nova-Org/novacode/pull/1510) [`ee48df4`](https://github.com/Nova-Org/novacode/commit/ee48df43fb460a1fbaa9e4f5a11ce45172bf63e3) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Include changes from Roo Code v3.23.19
     - Fix configurable delay for diagnostics to prevent premature error reporting
     - Add command timeout allowlist
     - Add description and whenToUse fields to custom modes in .roomodes (thanks @RandalSchwartz!)
@@ -2828,84 +2795,83 @@
 
 ### Patch Changes
 
-- [#1550](https://github.com/Kilo-Org/kilocode/pull/1550) [`48b0d78`](https://github.com/Kilo-Org/kilocode/commit/48b0d78ea9282f4447e5c57262d727b2bc621e50) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - A visual indication is now provided whenever the cost of an API Request could not be retrieved
+- [#1550](https://github.com/Nova-Org/novacode/pull/1550) [`48b0d78`](https://github.com/Nova-Org/novacode/commit/48b0d78ea9282f4447e5c57262d727b2bc621e50) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - A visual indication is now provided whenever the cost of an API Request could not be retrieved
 
 ## [v4.65.3]
 
-- [#1544](https://github.com/Kilo-Org/kilocode/pull/1544) [`758d4ad`](https://github.com/Kilo-Org/kilocode/commit/758d4addb361ae9bc7eb3ba3a98f37a298f8d60d) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improvements to token and cost usage reporting
+- [#1544](https://github.com/Nova-Org/novacode/pull/1544) [`758d4ad`](https://github.com/Nova-Org/novacode/commit/758d4addb361ae9bc7eb3ba3a98f37a298f8d60d) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improvements to token and cost usage reporting
 
 ## [v4.65.2]
 
-- [#1526](https://github.com/Kilo-Org/kilocode/pull/1526) [`fe97c95`](https://github.com/Kilo-Org/kilocode/commit/fe97c9526a13dcf6834c5695dc46b41964738464) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Specify the default model in one place in the code
+- [#1526](https://github.com/Nova-Org/novacode/pull/1526) [`fe97c95`](https://github.com/Nova-Org/novacode/commit/fe97c9526a13dcf6834c5695dc46b41964738464) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Specify the default model in one place in the code
 
 ## [v4.65.1]
 
-- [#1518](https://github.com/Kilo-Org/kilocode/pull/1518) [`f709388`](https://github.com/Kilo-Org/kilocode/commit/f709388ae1e1b730c06796d0b9ec207532219d6e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Claude Sonnet 4 is now the default model! Attend the Anthropic x Kilo Code workshop [The Art of Prompt Engineering for Software Developers](https://www.eventbrite.nl/e/the-art-of-prompt-engineering-for-software-developers-tickets-1474017238239) Thursday, July 31 2025!
+- [#1518](https://github.com/Nova-Org/novacode/pull/1518) [`f709388`](https://github.com/Nova-Org/novacode/commit/f709388ae1e1b730c06796d0b9ec207532219d6e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Claude Sonnet 4 is now the default model! Attend the Anthropic x Nova Code workshop [The Art of Prompt Engineering for Software Developers](https://www.eventbrite.nl/e/the-art-of-prompt-engineering-for-software-developers-tickets-1474017238239) Thursday, July 31 2025!
 
-- [#1521](https://github.com/Kilo-Org/kilocode/pull/1521) [`08ccbea`](https://github.com/Kilo-Org/kilocode/commit/08ccbeaf2c4e5d9ec22c77edc7cea673f75e397c) Thanks [@hassoncs](https://github.com/hassoncs)! - The chat box is no longer cleared when clicking buttons
+- [#1521](https://github.com/Nova-Org/novacode/pull/1521) [`08ccbea`](https://github.com/Nova-Org/novacode/commit/08ccbeaf2c4e5d9ec22c77edc7cea673f75e397c) Thanks [@hassoncs](https://github.com/hassoncs)! - The chat box is no longer cleared when clicking buttons
 
     Previously, if either of the buttons in the agent chat was clicked, the ChatTextArea would get cleared. Now, the ChatTextArea will only get cleared if a message is sent as part of the response.
 
 ## [v4.65.0]
 
-- [#1487](https://github.com/Kilo-Org/kilocode/pull/1487) [`ad91c38`](https://github.com/Kilo-Org/kilocode/commit/ad91c3824c5fcbced818c90745bed95f7a7e9dc0) Thanks [@mcowger](https://github.com/mcowger)! - Introduce a new Virtual Quota Fallback Provider - delegate to other Profiles based on cost or request count limits!
+- [#1487](https://github.com/Nova-Org/novacode/pull/1487) [`ad91c38`](https://github.com/Nova-Org/novacode/commit/ad91c3824c5fcbced818c90745bed95f7a7e9dc0) Thanks [@mcowger](https://github.com/mcowger)! - Introduce a new Virtual Quota Fallback Provider - delegate to other Profiles based on cost or request count limits!
 
     This new virtual provider lets you set cost- or request-based quotas for a list of profiles. It will automatically falls back to the next profile's provider when any limit is reached!
 
 ### Patch Changes
 
-- [#1502](https://github.com/Kilo-Org/kilocode/pull/1502) [`73f414c`](https://github.com/Kilo-Org/kilocode/commit/73f414c25a59e140946c4c415a8f11817898987c) Thanks [@hellosunghyun](https://github.com/hellosunghyun)! - Update Cerebras models with latest offerings
+- [#1502](https://github.com/Nova-Org/novacode/pull/1502) [`73f414c`](https://github.com/Nova-Org/novacode/commit/73f414c25a59e140946c4c415a8f11817898987c) Thanks [@hellosunghyun](https://github.com/hellosunghyun)! - Update Cerebras models with latest offerings
 
-- [#1512](https://github.com/Kilo-Org/kilocode/pull/1512) [`aea28be`](https://github.com/Kilo-Org/kilocode/commit/aea28bec33d27ad3f824a8a1d44c9d36025adf26) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix a memory leak when opening many documents with different Uris
+- [#1512](https://github.com/Nova-Org/novacode/pull/1512) [`aea28be`](https://github.com/Nova-Org/novacode/commit/aea28bec33d27ad3f824a8a1d44c9d36025adf26) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix a memory leak when opening many documents with different Uris
 
-- [#1515](https://github.com/Kilo-Org/kilocode/pull/1515) [`2b208b3`](https://github.com/Kilo-Org/kilocode/commit/2b208b3320834a847fb3443677d5e7dee3722c41) Thanks [@hassoncs](https://github.com/hassoncs)! - Improve the background color of the "Help Improve Kilo Code" banner
+- [#1515](https://github.com/Nova-Org/novacode/pull/1515) [`2b208b3`](https://github.com/Nova-Org/novacode/commit/2b208b3320834a847fb3443677d5e7dee3722c41) Thanks [@hassoncs](https://github.com/hassoncs)! - Improve the background color of the "Help Improve Nova Code" banner
 
 ## [v4.64.3]
 
-- [#1494](https://github.com/Kilo-Org/kilocode/pull/1494) [`1488591`](https://github.com/Kilo-Org/kilocode/commit/148859168d0dc1521d5ee7c5d96263ffae47a587) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved error reporting for Checkpoint-related failures
+- [#1494](https://github.com/Nova-Org/novacode/pull/1494) [`1488591`](https://github.com/Nova-Org/novacode/commit/148859168d0dc1521d5ee7c5d96263ffae47a587) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved error reporting for Checkpoint-related failures
 
 ## [v4.64.2]
 
-- [#1477](https://github.com/Kilo-Org/kilocode/pull/1477) [`8edf106`](https://github.com/Kilo-Org/kilocode/commit/8edf1063d308f36074e10d68cf8418d0f20665d6) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Prevent selection of incompatible providers when you switch models
+- [#1477](https://github.com/Nova-Org/novacode/pull/1477) [`8edf106`](https://github.com/Nova-Org/novacode/commit/8edf1063d308f36074e10d68cf8418d0f20665d6) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Prevent selection of incompatible providers when you switch models
 
 ## [v4.64.1]
 
-- [#1474](https://github.com/Kilo-Org/kilocode/pull/1474) [`7efe383`](https://github.com/Kilo-Org/kilocode/commit/7efe383628f91b7977c0cffcdfc0a7a226ab1f01) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Inline Assist Telemetry
+- [#1474](https://github.com/Nova-Org/novacode/pull/1474) [`7efe383`](https://github.com/Nova-Org/novacode/commit/7efe383628f91b7977c0cffcdfc0a7a226ab1f01) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Inline Assist Telemetry
 
 ## [v4.64.0]
 
-- [#1447](https://github.com/Kilo-Org/kilocode/pull/1447) [`38d135e`](https://github.com/Kilo-Org/kilocode/commit/38d135eafc395fe5c9883fbe9fcd79941a21e0ce) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - (retry) The Task view now shows per-request cost when using the Kilo Code provider
+- [#1447](https://github.com/Nova-Org/novacode/pull/1447) [`38d135e`](https://github.com/Nova-Org/novacode/commit/38d135eafc395fe5c9883fbe9fcd79941a21e0ce) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - (retry) The Task view now shows per-request cost when using the Nova Code provider
 
 ## [v4.63.2]
 
-- [#1462](https://github.com/Kilo-Org/kilocode/pull/1462) [`54f09c6`](https://github.com/Kilo-Org/kilocode/commit/54f09c6edbd9ea13ebbd645fad9de5a448d5a11d) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Kilo Code no longer uses Gemini 2.5 Pro after a fresh install/reset while showing Sonnet 3.7
+- [#1462](https://github.com/Nova-Org/novacode/pull/1462) [`54f09c6`](https://github.com/Nova-Org/novacode/commit/54f09c6edbd9ea13ebbd645fad9de5a448d5a11d) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Nova Code no longer uses Gemini 2.5 Pro after a fresh install/reset while showing Sonnet 3.7
 
-- [#1471](https://github.com/Kilo-Org/kilocode/pull/1471) [`d95b409`](https://github.com/Kilo-Org/kilocode/commit/d95b40981715fffbfe62d1fc4e54472195db1f2c) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix Kilo Code profile persist of Routing Provider
+- [#1471](https://github.com/Nova-Org/novacode/pull/1471) [`d95b409`](https://github.com/Nova-Org/novacode/commit/d95b40981715fffbfe62d1fc4e54472195db1f2c) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix Nova Code profile persist of Routing Provider
 
 ## [v4.63.1]
 
-- [#1460](https://github.com/Kilo-Org/kilocode/pull/1460) [`415ea90`](https://github.com/Kilo-Org/kilocode/commit/415ea904e8b9ddd35ce1e4a894411f3679c94922) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improve label of todo list toggle
+- [#1460](https://github.com/Nova-Org/novacode/pull/1460) [`415ea90`](https://github.com/Nova-Org/novacode/commit/415ea904e8b9ddd35ce1e4a894411f3679c94922) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improve label of todo list toggle
 
 ## [v4.63.0]
 
-- [#1451](https://github.com/Kilo-Org/kilocode/pull/1451) [`66b5892`](https://github.com/Kilo-Org/kilocode/commit/66b5892fbc56d88372ba2ad87118f8696ccbd366) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Add toggles that disable Inline Assist features to the Settings panel
+- [#1451](https://github.com/Nova-Org/novacode/pull/1451) [`66b5892`](https://github.com/Nova-Org/novacode/commit/66b5892fbc56d88372ba2ad87118f8696ccbd366) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Add toggles that disable Inline Assist features to the Settings panel
 
-- [#1450](https://github.com/Kilo-Org/kilocode/pull/1450) [`077dba2`](https://github.com/Kilo-Org/kilocode/commit/077dba2964ad99bea5f57d9db1718063abd08a18) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add todo list tool enable checkbox to provider advanced settings (thanks @daniel-lxs, @mrubens!)
+- [#1450](https://github.com/Nova-Org/novacode/pull/1450) [`077dba2`](https://github.com/Nova-Org/novacode/commit/077dba2964ad99bea5f57d9db1718063abd08a18) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add todo list tool enable checkbox to provider advanced settings (thanks @daniel-lxs, @mrubens!)
 
-- [#1443](https://github.com/Kilo-Org/kilocode/pull/1443) [`eba422a`](https://github.com/Kilo-Org/kilocode/commit/eba422acb01017cc9c7465f414836ff9f14bc86c) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Adds support for changing the Kilo Code providers routing strategy
+- [#1443](https://github.com/Nova-Org/novacode/pull/1443) [`eba422a`](https://github.com/Nova-Org/novacode/commit/eba422acb01017cc9c7465f414836ff9f14bc86c) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Adds support for changing the Nova Code providers routing strategy
 
-    You can now select the OpenRouter provider to process your Kilo Code requests.
+    You can now select the OpenRouter provider to process your Nova Code requests.
 
 ### Patch Changes
 
-- [#1454](https://github.com/Kilo-Org/kilocode/pull/1454) [`b34b55a`](https://github.com/Kilo-Org/kilocode/commit/b34b55a3f074f14bdfc28bb1998cd91fdf74b0b5) Thanks [@chainedcoder](https://github.com/chainedcoder)! - Load project ID from Gemini CLI's .env file
+- [#1454](https://github.com/Nova-Org/novacode/pull/1454) [`b34b55a`](https://github.com/Nova-Org/novacode/commit/b34b55a3f074f14bdfc28bb1998cd91fdf74b0b5) Thanks [@chainedcoder](https://github.com/chainedcoder)! - Load project ID from Gemini CLI's .env file
 
-- [#1448](https://github.com/Kilo-Org/kilocode/pull/1448) [`4e9118b`](https://github.com/Kilo-Org/kilocode/commit/4e9118b7c876c2d2620f2b72503ec17b85ec0539) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Removed language support for Filipino, Greek and Swedish because usage is very low. We can re-add these languages if there is demand.
+- [#1448](https://github.com/Nova-Org/novacode/pull/1448) [`4e9118b`](https://github.com/Nova-Org/novacode/commit/4e9118b7c876c2d2620f2b72503ec17b85ec0539) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Removed language support for Filipino, Greek and Swedish because usage is very low. We can re-add these languages if there is demand.
 
 ## [v4.62.0]
 
-- [#1386](https://github.com/Kilo-Org/kilocode/pull/1386) [`48fb539`](https://github.com/Kilo-Org/kilocode/commit/48fb5392a962279463d8db225559db42f32d4ad8) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Include changes from Roo Code v3.23.14
-
+- [#1386](https://github.com/Nova-Org/novacode/pull/1386) [`48fb539`](https://github.com/Nova-Org/novacode/commit/48fb5392a962279463d8db225559db42f32d4ad8) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Include changes from Roo Code v3.23.14
     - Fix Mermaid syntax warning (thanks @MuriloFP!)
     - Expand Vertex AI region config to include all available regions in GCP Vertex AI (thanks @shubhamgupta731!)
     - Handle Qdrant vector dimension mismatch when switching embedding models (thanks @daniel-lxs!)
@@ -2951,85 +2917,84 @@
 
 ### Patch Changes
 
-- [#1154](https://github.com/Kilo-Org/kilocode/pull/1154) [`d871e5e`](https://github.com/Kilo-Org/kilocode/commit/d871e5efb88050d2b4795e8b463e336342dbe550) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Update the Kilo code icon to adapt to light/dark themes
+- [#1154](https://github.com/Nova-Org/novacode/pull/1154) [`d871e5e`](https://github.com/Nova-Org/novacode/commit/d871e5efb88050d2b4795e8b463e336342dbe550) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Update the Nova code icon to adapt to light/dark themes
 
-- [#1396](https://github.com/Kilo-Org/kilocode/pull/1396) [`2c46e91`](https://github.com/Kilo-Org/kilocode/commit/2c46e913bba7699eb3bc1425dbe898217f7ee9fe) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Adds new Settings page for Inline Assist
+- [#1396](https://github.com/Nova-Org/novacode/pull/1396) [`2c46e91`](https://github.com/Nova-Org/novacode/commit/2c46e913bba7699eb3bc1425dbe898217f7ee9fe) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Adds new Settings page for Inline Assist
 
     You can now select the provider you'd like to use for `Inline Assist` commands
 
 ## [v4.61.1]
 
-- [#1435](https://github.com/Kilo-Org/kilocode/pull/1435) [`05b5bf4`](https://github.com/Kilo-Org/kilocode/commit/05b5bf400fd195109aa8b2bada01b843acc58318) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Revert "Show per-request cost for Kilo Code provider"
+- [#1435](https://github.com/Nova-Org/novacode/pull/1435) [`05b5bf4`](https://github.com/Nova-Org/novacode/commit/05b5bf400fd195109aa8b2bada01b843acc58318) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Revert "Show per-request cost for Nova Code provider"
 
 ## [v4.61.0]
 
-- [#1431](https://github.com/Kilo-Org/kilocode/pull/1431) [`97a9b97`](https://github.com/Kilo-Org/kilocode/commit/97a9b97de865e3f2d12a956ceaceda12c13505e3) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The Task view now shows per-request cost when using the Kilo Code provider
+- [#1431](https://github.com/Nova-Org/novacode/pull/1431) [`97a9b97`](https://github.com/Nova-Org/novacode/commit/97a9b97de865e3f2d12a956ceaceda12c13505e3) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The Task view now shows per-request cost when using the Nova Code provider
 
 ### Patch Changes
 
-- [#1408](https://github.com/Kilo-Org/kilocode/pull/1408) [`cb5132f`](https://github.com/Kilo-Org/kilocode/commit/cb5132f3faa1f7670c438a201274cbc249a8f68d) Thanks [@markijbema](https://github.com/markijbema)! - Log out kilo code provider when resetting data
+- [#1408](https://github.com/Nova-Org/novacode/pull/1408) [`cb5132f`](https://github.com/Nova-Org/novacode/commit/cb5132f3faa1f7670c438a201274cbc249a8f68d) Thanks [@markijbema](https://github.com/markijbema)! - Log out nova code provider when resetting data
 
-- [#1421](https://github.com/Kilo-Org/kilocode/pull/1421) [`841bca9`](https://github.com/Kilo-Org/kilocode/commit/841bca9348434db5d3a5a7fa1c7a821816a23a3f) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed an issue where Kilo Code would inadvertently steal focus
+- [#1421](https://github.com/Nova-Org/novacode/pull/1421) [`841bca9`](https://github.com/Nova-Org/novacode/commit/841bca9348434db5d3a5a7fa1c7a821816a23a3f) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed an issue where Nova Code would inadvertently steal focus
 
 ## [v4.60.0]
 
-- [#1354](https://github.com/Kilo-Org/kilocode/pull/1354) [`e6d031d`](https://github.com/Kilo-Org/kilocode/commit/e6d031d77621d38769efd612c04e03137db084de) Thanks [@hassoncs](https://github.com/hassoncs)! - Commit message generation now works with multi-root workspaces
+- [#1354](https://github.com/Nova-Org/novacode/pull/1354) [`e6d031d`](https://github.com/Nova-Org/novacode/commit/e6d031d77621d38769efd612c04e03137db084de) Thanks [@hassoncs](https://github.com/hassoncs)! - Commit message generation now works with multi-root workspaces
 
 ### Patch Changes
 
-- [#1377](https://github.com/Kilo-Org/kilocode/pull/1377) [`185f068`](https://github.com/Kilo-Org/kilocode/commit/185f06891fd1b62114252c10c13ca875321ebe42) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Kilo Code no longer binds to the Ctrl+Shift+K combination
+- [#1377](https://github.com/Nova-Org/novacode/pull/1377) [`185f068`](https://github.com/Nova-Org/novacode/commit/185f06891fd1b62114252c10c13ca875321ebe42) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Nova Code no longer binds to the Ctrl+Shift+K combination
 
 ## [v4.59.2]
 
-- [#1364](https://github.com/Kilo-Org/kilocode/pull/1364) [`aaef06f`](https://github.com/Kilo-Org/kilocode/commit/aaef06f9923a31bf1054a06f249ea32d97459c7b) Thanks [@NyxJae](https://github.com/NyxJae)! - Improved some autocomplete-related non-English texts
+- [#1364](https://github.com/Nova-Org/novacode/pull/1364) [`aaef06f`](https://github.com/Nova-Org/novacode/commit/aaef06f9923a31bf1054a06f249ea32d97459c7b) Thanks [@NyxJae](https://github.com/NyxJae)! - Improved some autocomplete-related non-English texts
 
 ## [v4.59.1]
 
-- [#1362](https://github.com/Kilo-Org/kilocode/pull/1362) [`08486c4`](https://github.com/Kilo-Org/kilocode/commit/08486c4ac186da2ab7dc02cc8012e77dcae96cce) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed excessive "Kilo Code is having trouble" warnings when the browser tool is scrolling
+- [#1362](https://github.com/Nova-Org/novacode/pull/1362) [`08486c4`](https://github.com/Nova-Org/novacode/commit/08486c4ac186da2ab7dc02cc8012e77dcae96cce) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed excessive "Nova Code is having trouble" warnings when the browser tool is scrolling
 
 ## [v4.59.0]
 
-- [#1244](https://github.com/Kilo-Org/kilocode/pull/1244) [`8b50f8e`](https://github.com/Kilo-Org/kilocode/commit/8b50f8eb558dc7c3a8667086660ff3c2f5f29788) Thanks [@hassoncs](https://github.com/hassoncs)! - New: Inline Assist Commands
+- [#1244](https://github.com/Nova-Org/novacode/pull/1244) [`8b50f8e`](https://github.com/Nova-Org/novacode/commit/8b50f8eb558dc7c3a8667086660ff3c2f5f29788) Thanks [@hassoncs](https://github.com/hassoncs)! - New: Inline Assist Commands
 
-    We've added two new commands that allow you to get AI assistance directly in the code editor. There's no need to start a whole new Kilo task if you just need a quick result. You can even use this while a task is running, speeding up your workflow!
+    We've added two new commands that allow you to get AI assistance directly in the code editor. There's no need to start a whole new Nova task if you just need a quick result. You can even use this while a task is running, speeding up your workflow!
 
     ⚡️ Quick Inline Tasks (Cmd/Ctl+I)
     Only need a quick change? Select some code (or don't!) and hit Cmd+I. Describe your goal in plain English ("create a React component with these props", "add error handling to this function"), and get ready-to-use suggestions directly in your editor.
 
-    🧠 Let Kilo Decide (Cmd/Ctl+L)
-    Think the change you need is obvious? Just hit Cmd+L. Kilo will use the surrounding context to offer immediate improvements, keeping you in the flow.
+    🧠 Let Nova Decide (Cmd/Ctl+L)
+    Think the change you need is obvious? Just hit Cmd+L. Nova will use the surrounding context to offer immediate improvements, keeping you in the flow.
 
     ⌨️ Live in Your Keyboard
     Use your arrow keys (↑/↓) to cycle through the options and see a live diff of the changes. Happy with a suggestion? Hit Tab to apply it. That's it. No mouse needed.
 
 ### Patch Changes
 
-- [#1359](https://github.com/Kilo-Org/kilocode/pull/1359) [`fbff6cb`](https://github.com/Kilo-Org/kilocode/commit/fbff6cb78472c763b625356dc881ad66c044b0d3) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix positioning of send button in RTL languages
+- [#1359](https://github.com/Nova-Org/novacode/pull/1359) [`fbff6cb`](https://github.com/Nova-Org/novacode/commit/fbff6cb78472c763b625356dc881ad66c044b0d3) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix positioning of send button in RTL languages
 
 ## [v4.58.4]
 
-- [#1349](https://github.com/Kilo-Org/kilocode/pull/1349) [`9f5bb71`](https://github.com/Kilo-Org/kilocode/commit/9f5bb715a086676472f7a5674911b45d230cc970) Thanks [@hassoncs](https://github.com/hassoncs)! - Enhance Prompt feature now works with Claude Code provider
+- [#1349](https://github.com/Nova-Org/novacode/pull/1349) [`9f5bb71`](https://github.com/Nova-Org/novacode/commit/9f5bb715a086676472f7a5674911b45d230cc970) Thanks [@hassoncs](https://github.com/hassoncs)! - Enhance Prompt feature now works with Claude Code provider
 
 ## [v4.58.3]
 
-- [#1348](https://github.com/Kilo-Org/kilocode/pull/1348) [`f83d1d7`](https://github.com/Kilo-Org/kilocode/commit/f83d1d76fa5c42b11cf9821d6b577d5af3d60a79) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add enable/disable toggle for code indexing (thanks @daniel-lxs!)
+- [#1348](https://github.com/Nova-Org/novacode/pull/1348) [`f83d1d7`](https://github.com/Nova-Org/novacode/commit/f83d1d76fa5c42b11cf9821d6b577d5af3d60a79) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add enable/disable toggle for code indexing (thanks @daniel-lxs!)
 
-- [#1328](https://github.com/Kilo-Org/kilocode/pull/1328) [`584225a`](https://github.com/Kilo-Org/kilocode/commit/584225af82a42d840d7daab4a837f1c65ad675fc) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed "Kilo" being inadvertenly translated in some languages (e.g. Кіло, กิโล, キロ)
+- [#1328](https://github.com/Nova-Org/novacode/pull/1328) [`584225a`](https://github.com/Nova-Org/novacode/commit/584225af82a42d840d7daab4a837f1c65ad675fc) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed "Nova" being inadvertenly translated in some languages (e.g. Кіло, กิโล, キロ)
 
 ## [v4.58.2]
 
-- [#1340](https://github.com/Kilo-Org/kilocode/pull/1340) [`1a367c9`](https://github.com/Kilo-Org/kilocode/commit/1a367c943cd423f86c3ab25afe7b43f9d489147b) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add gemini-embedding-001 model to code-index service (thanks @daniel-lxs!)
+- [#1340](https://github.com/Nova-Org/novacode/pull/1340) [`1a367c9`](https://github.com/Nova-Org/novacode/commit/1a367c943cd423f86c3ab25afe7b43f9d489147b) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add gemini-embedding-001 model to code-index service (thanks @daniel-lxs!)
 
 ## [v4.58.1]
 
-- [#1305](https://github.com/Kilo-Org/kilocode/pull/1305) [`34456ee`](https://github.com/Kilo-Org/kilocode/commit/34456eebad9606e5aaee6bff4991a187e8f99573) Thanks [@cobra91](https://github.com/cobra91)! - French localization has been improved
+- [#1305](https://github.com/Nova-Org/novacode/pull/1305) [`34456ee`](https://github.com/Nova-Org/novacode/commit/34456eebad9606e5aaee6bff4991a187e8f99573) Thanks [@cobra91](https://github.com/cobra91)! - French localization has been improved
 
-- [#1332](https://github.com/Kilo-Org/kilocode/pull/1332) [`8863e50`](https://github.com/Kilo-Org/kilocode/commit/8863e505e48f80c3d244427b3249eca122791913) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix max_tokens limit for moonshotai/kimi-k2-instruct on Groq
+- [#1332](https://github.com/Nova-Org/novacode/pull/1332) [`8863e50`](https://github.com/Nova-Org/novacode/commit/8863e505e48f80c3d244427b3249eca122791913) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix max_tokens limit for moonshotai/kimi-k2-instruct on Groq
 
 ## [v4.58.0]
 
-- [#1272](https://github.com/Kilo-Org/kilocode/pull/1272) [`8026793`](https://github.com/Kilo-Org/kilocode/commit/80267936053b1fbaf4eaf00ef0cbf770cc619fcf) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.23.6
-
+- [#1272](https://github.com/Nova-Org/novacode/pull/1272) [`8026793`](https://github.com/Nova-Org/novacode/commit/80267936053b1fbaf4eaf00ef0cbf770cc619fcf) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.23.6
     - Move codebase indexing out of experimental (thanks @daniel-lxs and @MuriloFP!)
     - Add todo list tool (thanks @qdaxb!)
     - Fix code index secret persistence and improve settings UX (thanks @daniel-lxs!)
@@ -3074,112 +3039,111 @@
 
 ### Patch Changes
 
-- [#1324](https://github.com/Kilo-Org/kilocode/pull/1324) [`0ff6960`](https://github.com/Kilo-Org/kilocode/commit/0ff69600cefd24190c607ca9001de5e03d7c03a7) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add Kimi K2 model to Grok (thanks @mrubens)
+- [#1324](https://github.com/Nova-Org/novacode/pull/1324) [`0ff6960`](https://github.com/Nova-Org/novacode/commit/0ff69600cefd24190c607ca9001de5e03d7c03a7) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add Kimi K2 model to Grok (thanks @mrubens)
 
 ## [v4.57.4]
 
-- [#1293](https://github.com/Kilo-Org/kilocode/pull/1293) [`2371a08`](https://github.com/Kilo-Org/kilocode/commit/2371a086199503e68bb8b2a7a909c14da60a2532) Thanks [@Autumnlight02](https://github.com/Autumnlight02)! - A few Mistral models (including devstral) were added.
+- [#1293](https://github.com/Nova-Org/novacode/pull/1293) [`2371a08`](https://github.com/Nova-Org/novacode/commit/2371a086199503e68bb8b2a7a909c14da60a2532) Thanks [@Autumnlight02](https://github.com/Autumnlight02)! - A few Mistral models (including devstral) were added.
 
 ## [v4.57.3]
 
-- [#1297](https://github.com/Kilo-Org/kilocode/pull/1297) [`1dd349c`](https://github.com/Kilo-Org/kilocode/commit/1dd349ca12fe0a75f7b058ae1c2bd56955350c9b) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - More details are included in the "Cannot complete request, make sure you are connected and logged in with the selected provider" error message
+- [#1297](https://github.com/Nova-Org/novacode/pull/1297) [`1dd349c`](https://github.com/Nova-Org/novacode/commit/1dd349ca12fe0a75f7b058ae1c2bd56955350c9b) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - More details are included in the "Cannot complete request, make sure you are connected and logged in with the selected provider" error message
 
 ## [v4.57.2]
 
-- [#1274](https://github.com/Kilo-Org/kilocode/pull/1274) [`e9fe0da`](https://github.com/Kilo-Org/kilocode/commit/e9fe0daa60f2afdcf4ef2ce9680ca5f47faa26b2) Thanks [@raziel5746](https://github.com/raziel5746)! - ENAMETOOLONG error in Claude Code integration on Windows is resolved
+- [#1274](https://github.com/Nova-Org/novacode/pull/1274) [`e9fe0da`](https://github.com/Nova-Org/novacode/commit/e9fe0daa60f2afdcf4ef2ce9680ca5f47faa26b2) Thanks [@raziel5746](https://github.com/raziel5746)! - ENAMETOOLONG error in Claude Code integration on Windows is resolved
 
 ## [v4.57.1]
 
-- [#1280](https://github.com/Kilo-Org/kilocode/pull/1280) [`6954e16`](https://github.com/Kilo-Org/kilocode/commit/6954e1619bfd46904c80ec65ce945c5f17aa172a) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Show idea suggestions when there is no task history
+- [#1280](https://github.com/Nova-Org/novacode/pull/1280) [`6954e16`](https://github.com/Nova-Org/novacode/commit/6954e1619bfd46904c80ec65ce945c5f17aa172a) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Show idea suggestions when there is no task history
 
 ## [v4.57.0]
 
-- [#1265](https://github.com/Kilo-Org/kilocode/pull/1265) [`0b89829`](https://github.com/Kilo-Org/kilocode/commit/0b89829af4067acfaf2b7a13c5ee8e061d1ea6d6) Thanks [@hassoncs](https://github.com/hassoncs)! - Add 'max requests' section to the Auto-Approve Settings page
+- [#1265](https://github.com/Nova-Org/novacode/pull/1265) [`0b89829`](https://github.com/Nova-Org/novacode/commit/0b89829af4067acfaf2b7a13c5ee8e061d1ea6d6) Thanks [@hassoncs](https://github.com/hassoncs)! - Add 'max requests' section to the Auto-Approve Settings page
 
 ## [v4.56.4]
 
-- [#1263](https://github.com/Kilo-Org/kilocode/pull/1263) [`32685c1`](https://github.com/Kilo-Org/kilocode/commit/32685c128a35ce38e3d9c27c833c3592e61e5cc0) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The current time is now provided in ISO format, which is non-ambiguous and less likely to confuse the AI.
+- [#1263](https://github.com/Nova-Org/novacode/pull/1263) [`32685c1`](https://github.com/Nova-Org/novacode/commit/32685c128a35ce38e3d9c27c833c3592e61e5cc0) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The current time is now provided in ISO format, which is non-ambiguous and less likely to confuse the AI.
 
 ## [v4.56.3]
 
-- [#1259](https://github.com/Kilo-Org/kilocode/pull/1259) [`4d55c91`](https://github.com/Kilo-Org/kilocode/commit/4d55c9102cb72e927609b4ce07d78d1f32fe27b0) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix model dropdown to show Kilo Code preferred models for the Kilo Code provider first
+- [#1259](https://github.com/Nova-Org/novacode/pull/1259) [`4d55c91`](https://github.com/Nova-Org/novacode/commit/4d55c9102cb72e927609b4ce07d78d1f32fe27b0) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix model dropdown to show Nova Code preferred models for the Nova Code provider first
 
 ## [v4.56.2]
 
-- [#1255](https://github.com/Kilo-Org/kilocode/pull/1255) [`acc2aaf`](https://github.com/Kilo-Org/kilocode/commit/acc2aaf4fb56290424db0d6533caee507fedbd5b) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix autocomplete init with custom openrouter models
+- [#1255](https://github.com/Nova-Org/novacode/pull/1255) [`acc2aaf`](https://github.com/Nova-Org/novacode/commit/acc2aaf4fb56290424db0d6533caee507fedbd5b) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix autocomplete init with custom openrouter models
 
 ## [v4.56.1]
 
-- [#1242](https://github.com/Kilo-Org/kilocode/pull/1242) [`c0ec484`](https://github.com/Kilo-Org/kilocode/commit/c0ec4843a286d644580bd82d8db37d5a1e46394e) Thanks [@hassoncs](https://github.com/hassoncs)! - Continue to show commit message generation progress while waiting for LLM response
+- [#1242](https://github.com/Nova-Org/novacode/pull/1242) [`c0ec484`](https://github.com/Nova-Org/novacode/commit/c0ec4843a286d644580bd82d8db37d5a1e46394e) Thanks [@hassoncs](https://github.com/hassoncs)! - Continue to show commit message generation progress while waiting for LLM response
 
 ## [v4.56.0]
 
-- [#785](https://github.com/Kilo-Org/kilocode/pull/785) [`24cc186`](https://github.com/Kilo-Org/kilocode/commit/24cc1860fe6f220a0df95f7d81ffbd9e21022d7a) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add idea suggestion box to get you inspired with some ideas when starting out fresh
+- [#785](https://github.com/Nova-Org/novacode/pull/785) [`24cc186`](https://github.com/Nova-Org/novacode/commit/24cc1860fe6f220a0df95f7d81ffbd9e21022d7a) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add idea suggestion box to get you inspired with some ideas when starting out fresh
 
 ## [v4.55.3]
 
-- [#1238](https://github.com/Kilo-Org/kilocode/pull/1238) [`c0b075c`](https://github.com/Kilo-Org/kilocode/commit/c0b075cd73557f2a3af1a12fcf237f66ece97f34) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add Grok 4 support (thanks @mrubens!)
+- [#1238](https://github.com/Nova-Org/novacode/pull/1238) [`c0b075c`](https://github.com/Nova-Org/novacode/commit/c0b075cd73557f2a3af1a12fcf237f66ece97f34) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add Grok 4 support (thanks @mrubens!)
 
 ## [v4.55.2]
 
-- [#1183](https://github.com/Kilo-Org/kilocode/pull/1183) [`e3ba400`](https://github.com/Kilo-Org/kilocode/commit/e3ba400e17254a53b6be2147f70c4d107bdda576) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The default mode is now automatically selected if the previous mode doesn't exist anymore (this can happen with custom modes).
+- [#1183](https://github.com/Nova-Org/novacode/pull/1183) [`e3ba400`](https://github.com/Nova-Org/novacode/commit/e3ba400e17254a53b6be2147f70c4d107bdda576) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The default mode is now automatically selected if the previous mode doesn't exist anymore (this can happen with custom modes).
 
 ## [v4.55.1]
 
-- [#885](https://github.com/Kilo-Org/kilocode/pull/885) [`02288f5`](https://github.com/Kilo-Org/kilocode/commit/02288f5ca7fde811a0477ba99b6d4c33dc239afb) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Improve UI responsiveness when the user cancel the current operation
+- [#885](https://github.com/Nova-Org/novacode/pull/885) [`02288f5`](https://github.com/Nova-Org/novacode/commit/02288f5ca7fde811a0477ba99b6d4c33dc239afb) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Improve UI responsiveness when the user cancel the current operation
 
-- [#1203](https://github.com/Kilo-Org/kilocode/pull/1203) [`5c21b8b`](https://github.com/Kilo-Org/kilocode/commit/5c21b8bcab5d584683c5c643d4075c01cd7265fe) Thanks [@hassoncs](https://github.com/hassoncs)! - Kilocode rules will now be included in the commit message generation prompt
+- [#1203](https://github.com/Nova-Org/novacode/pull/1203) [`5c21b8b`](https://github.com/Nova-Org/novacode/commit/5c21b8bcab5d584683c5c643d4075c01cd7265fe) Thanks [@hassoncs](https://github.com/hassoncs)! - Novacode rules will now be included in the commit message generation prompt
 
 ## [v4.55.0]
 
-- [#1197](https://github.com/Kilo-Org/kilocode/pull/1197) [`2ceb643`](https://github.com/Kilo-Org/kilocode/commit/2ceb643a35f4a4c04680c119b14e0072d273ee13) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Kilo Code now optionally sends error and usage data to help us fix bugs and improve the extension. No code, prompts, or personal information is ever sent. You can always opt-out in the Settings.
+- [#1197](https://github.com/Nova-Org/novacode/pull/1197) [`2ceb643`](https://github.com/Nova-Org/novacode/commit/2ceb643a35f4a4c04680c119b14e0072d273ee13) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Nova Code now optionally sends error and usage data to help us fix bugs and improve the extension. No code, prompts, or personal information is ever sent. You can always opt-out in the Settings.
 
 ### Patch Changes
 
-- [#1191](https://github.com/Kilo-Org/kilocode/pull/1191) [`ce2b45a`](https://github.com/Kilo-Org/kilocode/commit/ce2b45aec7845719754f892717f2c2eee548bff2) Thanks [@NyxJae](https://github.com/NyxJae)! - Improve Chinese translations
+- [#1191](https://github.com/Nova-Org/novacode/pull/1191) [`ce2b45a`](https://github.com/Nova-Org/novacode/commit/ce2b45aec7845719754f892717f2c2eee548bff2) Thanks [@NyxJae](https://github.com/NyxJae)! - Improve Chinese translations
 
-- [#1194](https://github.com/Kilo-Org/kilocode/pull/1194) [`dee59c6`](https://github.com/Kilo-Org/kilocode/commit/dee59c6f8d8438fb5c8f7bf15ca7d58ed561f3be) Thanks [@markijbema](https://github.com/markijbema)! - Minor improvement to login process for Kilocode provider
+- [#1194](https://github.com/Nova-Org/novacode/pull/1194) [`dee59c6`](https://github.com/Nova-Org/novacode/commit/dee59c6f8d8438fb5c8f7bf15ca7d58ed561f3be) Thanks [@markijbema](https://github.com/markijbema)! - Minor improvement to login process for Novacode provider
 
-- [#1186](https://github.com/Kilo-Org/kilocode/pull/1186) [`e16aded`](https://github.com/Kilo-Org/kilocode/commit/e16aded354d5180fb651767c540267f3fdec70dc) Thanks [@hassoncs](https://github.com/hassoncs)! - Improve the progress bar during commit message generation
+- [#1186](https://github.com/Nova-Org/novacode/pull/1186) [`e16aded`](https://github.com/Nova-Org/novacode/commit/e16aded354d5180fb651767c540267f3fdec70dc) Thanks [@hassoncs](https://github.com/hassoncs)! - Improve the progress bar during commit message generation
 
 ## [v4.54.0]
 
-- [#1124](https://github.com/Kilo-Org/kilocode/pull/1124) [`468019d`](https://github.com/Kilo-Org/kilocode/commit/468019dc7c07e3994a5cac1103bae658befcf948) Thanks [@alexandrevilain](https://github.com/alexandrevilain)! - Allow configuring autocomplete API provider
+- [#1124](https://github.com/Nova-Org/novacode/pull/1124) [`468019d`](https://github.com/Nova-Org/novacode/commit/468019dc7c07e3994a5cac1103bae658befcf948) Thanks [@alexandrevilain](https://github.com/alexandrevilain)! - Allow configuring autocomplete API provider
 
 ### Patch Changes
 
-- [#1187](https://github.com/Kilo-Org/kilocode/pull/1187) [`53ed102`](https://github.com/Kilo-Org/kilocode/commit/53ed102ab42d98c43acc5a5faac773bf6e114a48) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix multiple broken documentation links
+- [#1187](https://github.com/Nova-Org/novacode/pull/1187) [`53ed102`](https://github.com/Nova-Org/novacode/commit/53ed102ab42d98c43acc5a5faac773bf6e114a48) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix multiple broken documentation links
 
 ## [v4.53.0]
 
-- [#1118](https://github.com/Kilo-Org/kilocode/pull/1118) [`a9f6464`](https://github.com/Kilo-Org/kilocode/commit/a9f6464a34398256427005354fe7cc85fe58e243) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Support MCP notifications (feature from Cline)
+- [#1118](https://github.com/Nova-Org/novacode/pull/1118) [`a9f6464`](https://github.com/Nova-Org/novacode/commit/a9f6464a34398256427005354fe7cc85fe58e243) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Support MCP notifications (feature from Cline)
 
 ### Patch Changes
 
-- [#1158](https://github.com/Kilo-Org/kilocode/pull/1158) [`359cf61`](https://github.com/Kilo-Org/kilocode/commit/359cf61618083546f1da7604480e4147f1e843f9) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Kilo Code provider config UI rework
+- [#1158](https://github.com/Nova-Org/novacode/pull/1158) [`359cf61`](https://github.com/Nova-Org/novacode/commit/359cf61618083546f1da7604480e4147f1e843f9) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Nova Code provider config UI rework
 
 ## [v4.52.0]
 
-- [#1084](https://github.com/Kilo-Org/kilocode/pull/1084) [`c97d2f5`](https://github.com/Kilo-Org/kilocode/commit/c97d2f59edd28a875881bf29da616361bfce6fad) Thanks [@hassoncs](https://github.com/hassoncs)! - Generate commit messages based on unstaged changes if there's nothing staged
+- [#1084](https://github.com/Nova-Org/novacode/pull/1084) [`c97d2f5`](https://github.com/Nova-Org/novacode/commit/c97d2f59edd28a875881bf29da616361bfce6fad) Thanks [@hassoncs](https://github.com/hassoncs)! - Generate commit messages based on unstaged changes if there's nothing staged
 
 ## [v4.51.2]
 
-- [#1164](https://github.com/Kilo-Org/kilocode/pull/1164) [`ceed4e3`](https://github.com/Kilo-Org/kilocode/commit/ceed4e3191557c6ad6adb91e705cc462edb08ea3) Thanks [@philipvas](https://github.com/philipvas)! - Fix browser mode JSON snippets appearing in chat
+- [#1164](https://github.com/Nova-Org/novacode/pull/1164) [`ceed4e3`](https://github.com/Nova-Org/novacode/commit/ceed4e3191557c6ad6adb91e705cc462edb08ea3) Thanks [@philipvas](https://github.com/philipvas)! - Fix browser mode JSON snippets appearing in chat
 
 ## [v4.51.1]
 
-- [#1163](https://github.com/Kilo-Org/kilocode/pull/1163) [`3f0592a`](https://github.com/Kilo-Org/kilocode/commit/3f0592a95282b6f2b6486b31146f322ea3324916) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Context condensing error messages are now more detailed
+- [#1163](https://github.com/Nova-Org/novacode/pull/1163) [`3f0592a`](https://github.com/Nova-Org/novacode/commit/3f0592a95282b6f2b6486b31146f322ea3324916) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Context condensing error messages are now more detailed
 
-- [#1165](https://github.com/Kilo-Org/kilocode/pull/1165) [`fe6ed81`](https://github.com/Kilo-Org/kilocode/commit/fe6ed81e73dd666043441c339e040d17dbb12aea) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix double scrollbar in dropdowns
+- [#1165](https://github.com/Nova-Org/novacode/pull/1165) [`fe6ed81`](https://github.com/Nova-Org/novacode/commit/fe6ed81e73dd666043441c339e040d17dbb12aea) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix double scrollbar in dropdowns
 
-- [#1155](https://github.com/Kilo-Org/kilocode/pull/1155) [`2cbd9f8`](https://github.com/Kilo-Org/kilocode/commit/2cbd9f80a3d0f535d9839fefcf4812e0c59eebab) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Customer Support email address link was replaced by a web link, which works more reliably.
+- [#1155](https://github.com/Nova-Org/novacode/pull/1155) [`2cbd9f8`](https://github.com/Nova-Org/novacode/commit/2cbd9f80a3d0f535d9839fefcf4812e0c59eebab) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Customer Support email address link was replaced by a web link, which works more reliably.
 
 ## [v4.51.0]
 
-- [#841](https://github.com/Kilo-Org/kilocode/pull/841) [`1615ec7`](https://github.com/Kilo-Org/kilocode/commit/1615ec74cec2198d49cf1cd6942d883c0b717f4f) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Quick model selector on the chatbox
+- [#841](https://github.com/Nova-Org/novacode/pull/841) [`1615ec7`](https://github.com/Nova-Org/novacode/commit/1615ec74cec2198d49cf1cd6942d883c0b717f4f) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Quick model selector on the chatbox
 
-- [#1149](https://github.com/Kilo-Org/kilocode/pull/1149) [`62786a8`](https://github.com/Kilo-Org/kilocode/commit/62786a8d09e42f51ac61c15216a168c172e87785) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.22.6
-
+- [#1149](https://github.com/Nova-Org/novacode/pull/1149) [`62786a8`](https://github.com/Nova-Org/novacode/commit/62786a8d09e42f51ac61c15216a168c172e87785) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.22.6
     - Add timer-based auto approve for follow up questions (thanks @liwilliam2021!)
     - Add import/export modes functionality
     - Add persistent version indicator on chat screen
@@ -3205,60 +3169,59 @@
 
 ## [v4.50.0]
 
-- [#1111](https://github.com/Kilo-Org/kilocode/pull/1111) [`fe40949`](https://github.com/Kilo-Org/kilocode/commit/fe4094938ffc14fdbc19fde874a45d80f0431c6c) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Make MCP server toggles easier accessible with button in the top bar
+- [#1111](https://github.com/Nova-Org/novacode/pull/1111) [`fe40949`](https://github.com/Nova-Org/novacode/commit/fe4094938ffc14fdbc19fde874a45d80f0431c6c) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Make MCP server toggles easier accessible with button in the top bar
 
 ### Patch Changes
 
-- [#967](https://github.com/Kilo-Org/kilocode/pull/967) [`cd574a5`](https://github.com/Kilo-Org/kilocode/commit/cd574a5d1076c671a7abe2ca5f0f6c45fd524cd7) Thanks [@catrielmuller](https://github.com/catrielmuller)! - System Notification Setting
+- [#967](https://github.com/Nova-Org/novacode/pull/967) [`cd574a5`](https://github.com/Nova-Org/novacode/commit/cd574a5d1076c671a7abe2ca5f0f6c45fd524cd7) Thanks [@catrielmuller](https://github.com/catrielmuller)! - System Notification Setting
 
 ## [v4.49.5]
 
-- [#1083](https://github.com/Kilo-Org/kilocode/pull/1083) [`d2f5c4f`](https://github.com/Kilo-Org/kilocode/commit/d2f5c4f3448bcf573663a8bef96a044b1f7f287e) Thanks [@IAmABear](https://github.com/IAmABear)! - Fix project mcp settings button not opening file
+- [#1083](https://github.com/Nova-Org/novacode/pull/1083) [`d2f5c4f`](https://github.com/Nova-Org/novacode/commit/d2f5c4f3448bcf573663a8bef96a044b1f7f287e) Thanks [@IAmABear](https://github.com/IAmABear)! - Fix project mcp settings button not opening file
 
-- [#1107](https://github.com/Kilo-Org/kilocode/pull/1107) [`77cdbc9`](https://github.com/Kilo-Org/kilocode/commit/77cdbc9c3f70393ca9f1de15898a1ef74c107834) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Exclude binary and cache files from rules compilation
+- [#1107](https://github.com/Nova-Org/novacode/pull/1107) [`77cdbc9`](https://github.com/Nova-Org/novacode/commit/77cdbc9c3f70393ca9f1de15898a1ef74c107834) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Exclude binary and cache files from rules compilation
 
 ## [v4.49.4]
 
-- [#942](https://github.com/Kilo-Org/kilocode/pull/942) [`873e6c8`](https://github.com/Kilo-Org/kilocode/commit/873e6c8f671f5505e6fca8c7ed19ac5e89c73d43) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix auto-generate commit message fails when git diff too large
+- [#942](https://github.com/Nova-Org/novacode/pull/942) [`873e6c8`](https://github.com/Nova-Org/novacode/commit/873e6c8f671f5505e6fca8c7ed19ac5e89c73d43) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix auto-generate commit message fails when git diff too large
 
     Now we automatically exclude lockfiles when generating commit message diffs to avoid overflowing the context window.
 
-- [#956](https://github.com/Kilo-Org/kilocode/pull/956) [`7219c34`](https://github.com/Kilo-Org/kilocode/commit/7219c342501d36b6e85a15ae09f3eed2796d0f7a) Thanks [@markijbema](https://github.com/markijbema)! - do not autocomplete when we are indenting a line
+- [#956](https://github.com/Nova-Org/novacode/pull/956) [`7219c34`](https://github.com/Nova-Org/novacode/commit/7219c342501d36b6e85a15ae09f3eed2796d0f7a) Thanks [@markijbema](https://github.com/markijbema)! - do not autocomplete when we are indenting a line
 
-- [#1060](https://github.com/Kilo-Org/kilocode/pull/1060) [`8b149e1`](https://github.com/Kilo-Org/kilocode/commit/8b149e1e54319d2b6737ad7ed5a65ad4e921240f) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix model search being prefilled in dropdown to prevent confusion in available models
+- [#1060](https://github.com/Nova-Org/novacode/pull/1060) [`8b149e1`](https://github.com/Nova-Org/novacode/commit/8b149e1e54319d2b6737ad7ed5a65ad4e921240f) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix model search being prefilled in dropdown to prevent confusion in available models
 
 ## [v4.49.3]
 
-- [#981](https://github.com/Kilo-Org/kilocode/pull/981) [`66a4d0f`](https://github.com/Kilo-Org/kilocode/commit/66a4d0f58821e4321f6c127bbbf95d96450ba054) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - No longer steal focus from the chat text area when a file is being edited.
+- [#981](https://github.com/Nova-Org/novacode/pull/981) [`66a4d0f`](https://github.com/Nova-Org/novacode/commit/66a4d0f58821e4321f6c127bbbf95d96450ba054) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - No longer steal focus from the chat text area when a file is being edited.
 
 ## [v4.49.2]
 
-- [#947](https://github.com/Kilo-Org/kilocode/pull/947) [`eae4b74`](https://github.com/Kilo-Org/kilocode/commit/eae4b74a68720013c30547865ad9423e0154b89a) Thanks [@kamilchm](https://github.com/kamilchm)! - Add support for project id set in env.GOOGLE_CLOUD_PROJECT for Gemini CLI (thanks @kamilchm!)
+- [#947](https://github.com/Nova-Org/novacode/pull/947) [`eae4b74`](https://github.com/Nova-Org/novacode/commit/eae4b74a68720013c30547865ad9423e0154b89a) Thanks [@kamilchm](https://github.com/kamilchm)! - Add support for project id set in env.GOOGLE_CLOUD_PROJECT for Gemini CLI (thanks @kamilchm!)
 
 ## [v4.49.1]
 
-- [#949](https://github.com/Kilo-Org/kilocode/pull/949) [`1043c8b`](https://github.com/Kilo-Org/kilocode/commit/1043c8b3484bfe18baa0a0267f3a967469a84b4c) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Mermaid diagram toolbar is now light in light mode (bugfix)
+- [#949](https://github.com/Nova-Org/novacode/pull/949) [`1043c8b`](https://github.com/Nova-Org/novacode/commit/1043c8b3484bfe18baa0a0267f3a967469a84b4c) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Mermaid diagram toolbar is now light in light mode (bugfix)
 
-- [#945](https://github.com/Kilo-Org/kilocode/pull/945) [`e3580b8`](https://github.com/Kilo-Org/kilocode/commit/e3580b83cdf59cec0e2b0ae22975d87cd0218329) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved Arabic translation by AL38lAlmdbeR
+- [#945](https://github.com/Nova-Org/novacode/pull/945) [`e3580b8`](https://github.com/Nova-Org/novacode/commit/e3580b83cdf59cec0e2b0ae22975d87cd0218329) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Improved Arabic translation by AL38lAlmdbeR
 
 ## [v4.49.0]
 
-- [#894](https://github.com/Kilo-Org/kilocode/pull/894) [`421d57e`](https://github.com/Kilo-Org/kilocode/commit/421d57e44537b13760551e0a1484aae1e8735bc7) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Kilo Code will no longer process file reads or MCP tool outputs if the estimated size is over 80% of the context window. If this behavior breaks your workflow, it can be re-enabled by checking Settings > Context > Allow very large file reads.
+- [#894](https://github.com/Nova-Org/novacode/pull/894) [`421d57e`](https://github.com/Nova-Org/novacode/commit/421d57e44537b13760551e0a1484aae1e8735bc7) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Nova Code will no longer process file reads or MCP tool outputs if the estimated size is over 80% of the context window. If this behavior breaks your workflow, it can be re-enabled by checking Settings > Context > Allow very large file reads.
 
-- [#929](https://github.com/Kilo-Org/kilocode/pull/929) [`641d264`](https://github.com/Kilo-Org/kilocode/commit/641d2647d57049b6633664d6f9b31c6986684e00) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Edit and resend user feedback messages
+- [#929](https://github.com/Nova-Org/novacode/pull/929) [`641d264`](https://github.com/Nova-Org/novacode/commit/641d2647d57049b6633664d6f9b31c6986684e00) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Edit and resend user feedback messages
 
 ### Patch Changes
 
-- [#938](https://github.com/Kilo-Org/kilocode/pull/938) [`a606053`](https://github.com/Kilo-Org/kilocode/commit/a606053a3b55b140bab9ebc4bf3ae53969380644) Thanks [@markijbema](https://github.com/markijbema)! - Add debugging info for when we cannot read a task file
+- [#938](https://github.com/Nova-Org/novacode/pull/938) [`a606053`](https://github.com/Nova-Org/novacode/commit/a606053a3b55b140bab9ebc4bf3ae53969380644) Thanks [@markijbema](https://github.com/markijbema)! - Add debugging info for when we cannot read a task file
 
-- [#943](https://github.com/Kilo-Org/kilocode/pull/943) [`8178463`](https://github.com/Kilo-Org/kilocode/commit/81784632209960e93ffedf9c9b08235a12c238d5) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix checkpoints do not always include a revert option
+- [#943](https://github.com/Nova-Org/novacode/pull/943) [`8178463`](https://github.com/Nova-Org/novacode/commit/81784632209960e93ffedf9c9b08235a12c238d5) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix checkpoints do not always include a revert option
 
 ## [v4.48.0]
 
-- [#926](https://github.com/Kilo-Org/kilocode/pull/926) [`75b6c80`](https://github.com/Kilo-Org/kilocode/commit/75b6c80878f61f9f5d2b0c7499bee56eb8f09d06) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Arabic translation added (support for right-to-left languages is experimental)
+- [#926](https://github.com/Nova-Org/novacode/pull/926) [`75b6c80`](https://github.com/Nova-Org/novacode/commit/75b6c80878f61f9f5d2b0c7499bee56eb8f09d06) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Arabic translation added (support for right-to-left languages is experimental)
 
-- [#930](https://github.com/Kilo-Org/kilocode/pull/930) [`047b30e`](https://github.com/Kilo-Org/kilocode/commit/047b30ec1ca8b30c86ad7708dea16bf404ed94f8) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.22.4
-
+- [#930](https://github.com/Nova-Org/novacode/pull/930) [`047b30e`](https://github.com/Nova-Org/novacode/commit/047b30ec1ca8b30c86ad7708dea16bf404ed94f8) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.22.4
     - Fix: resolve E2BIG error by passing large prompts via stdin to Claude CLI (thanks @Fovty!)
     - Add optional mode suggestions to follow-up questions
     - Restore JSON backwards compatibility for .roomodes files (thanks @daniel-lxs!)
@@ -3271,7 +3234,7 @@
     - Use upstream_inference_cost for OpenRouter BYOK cost calculation and show cached token count (thanks @chrarnoldus!)
     - Update maxTokens value for qwen/qwen3-32b model on Groq (thanks @KanTakahiro!)
     - Standardize tooltip delays to 300ms
-    - Add support for loading rules from a global .kilocode directory (thanks @samhvw8!)
+    - Add support for loading rules from a global .novacode directory (thanks @samhvw8!)
     - Modes selector improvements (thanks @brunobergher!)
     - Use safeWriteJson for all JSON file writes to avoid task history corruption (thanks @KJ7LNW!)
     - Improve YAML error handling when editing modes
@@ -3290,68 +3253,67 @@
 
 ### Patch Changes
 
-- [#931](https://github.com/Kilo-Org/kilocode/pull/931) [`351ebde`](https://github.com/Kilo-Org/kilocode/commit/351ebdec10833328ec9069ddacb41ea37660eae8) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The /newtask command now starts a task more reliably.
+- [#931](https://github.com/Nova-Org/novacode/pull/931) [`351ebde`](https://github.com/Nova-Org/novacode/commit/351ebdec10833328ec9069ddacb41ea37660eae8) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The /newtask command now starts a task more reliably.
 
 ## [v4.47.0]
 
-- [#905](https://github.com/Kilo-Org/kilocode/pull/905) [`4224ba9`](https://github.com/Kilo-Org/kilocode/commit/4224ba978c4ebd5eeee7bc879bc3d860f36a64fb) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Improve MCP marketplace and installed MCP servers views (thanks Roo Code!)
+- [#905](https://github.com/Nova-Org/novacode/pull/905) [`4224ba9`](https://github.com/Nova-Org/novacode/commit/4224ba978c4ebd5eeee7bc879bc3d860f36a64fb) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Improve MCP marketplace and installed MCP servers views (thanks Roo Code!)
 
 ## [v4.46.0]
 
-- [#921](https://github.com/Kilo-Org/kilocode/pull/921) [`4d0d1ed`](https://github.com/Kilo-Org/kilocode/commit/4d0d1ed6081266a24b3b715f3450a5bd82718dbb) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Enable browser tool for Gemini, GPT and all other models that can read images
+- [#921](https://github.com/Nova-Org/novacode/pull/921) [`4d0d1ed`](https://github.com/Nova-Org/novacode/commit/4d0d1ed6081266a24b3b715f3450a5bd82718dbb) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Enable browser tool for Gemini, GPT and all other models that can read images
 
 ### Patch Changes
 
-- [#889](https://github.com/Kilo-Org/kilocode/pull/889) [`7f72a33`](https://github.com/Kilo-Org/kilocode/commit/7f72a33278100f3a7679d7b2761f1380a54bfc90) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Refresh CodeIndex Services (Qdrant) when change the configuration
+- [#889](https://github.com/Nova-Org/novacode/pull/889) [`7f72a33`](https://github.com/Nova-Org/novacode/commit/7f72a33278100f3a7679d7b2761f1380a54bfc90) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Refresh CodeIndex Services (Qdrant) when change the configuration
 
-- [#911](https://github.com/Kilo-Org/kilocode/pull/911) [`ef17629`](https://github.com/Kilo-Org/kilocode/commit/ef17629f278e759345ae4aa4bb3ea27006ff7918) Thanks [@NyxJae](https://github.com/NyxJae)! - Improve Chinese translation: Kilo Code should be a proper noun
+- [#911](https://github.com/Nova-Org/novacode/pull/911) [`ef17629`](https://github.com/Nova-Org/novacode/commit/ef17629f278e759345ae4aa4bb3ea27006ff7918) Thanks [@NyxJae](https://github.com/NyxJae)! - Improve Chinese translation: Nova Code should be a proper noun
 
-- [#910](https://github.com/Kilo-Org/kilocode/pull/910) [`91ce5a6`](https://github.com/Kilo-Org/kilocode/commit/91ce5a649f7b2d9cb0911b3b5c4fcf3a133b420a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix not being able to open Mermaid diagrams in a tab or save them
+- [#910](https://github.com/Nova-Org/novacode/pull/910) [`91ce5a6`](https://github.com/Nova-Org/novacode/commit/91ce5a649f7b2d9cb0911b3b5c4fcf3a133b420a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix not being able to open Mermaid diagrams in a tab or save them
 
 ## [v4.45.0]
 
-- [#867](https://github.com/Kilo-Org/kilocode/pull/867) [`717823f`](https://github.com/Kilo-Org/kilocode/commit/717823f40419bda32813b3e1f9f357fdabfa89df) Thanks [@Juice10](https://github.com/Juice10)! - Add copy prompt button to task actions. Based on [@vultrnerd's feedback](https://github.com/Kilo-Org/kilocode/discussions/850).
+- [#867](https://github.com/Nova-Org/novacode/pull/867) [`717823f`](https://github.com/Nova-Org/novacode/commit/717823f40419bda32813b3e1f9f357fdabfa89df) Thanks [@Juice10](https://github.com/Juice10)! - Add copy prompt button to task actions. Based on [@vultrnerd's feedback](https://github.com/Nova-Org/novacode/discussions/850).
 
 ### Patch Changes
 
-- [#890](https://github.com/Kilo-Org/kilocode/pull/890) [`1a35cfe`](https://github.com/Kilo-Org/kilocode/commit/1a35cfe2c0dbfee68c09c7abeb42199e8713095f) Thanks [@hassoncs](https://github.com/hassoncs)! - Only show the colorful gutter bars when hovering over the Task Timeline
+- [#890](https://github.com/Nova-Org/novacode/pull/890) [`1a35cfe`](https://github.com/Nova-Org/novacode/commit/1a35cfe2c0dbfee68c09c7abeb42199e8713095f) Thanks [@hassoncs](https://github.com/hassoncs)! - Only show the colorful gutter bars when hovering over the Task Timeline
 
 ## [v4.44.1]
 
 ### Patch Changes
 
-- [#887](https://github.com/Kilo-Org/kilocode/pull/887) [`df10163`](https://github.com/Kilo-Org/kilocode/commit/df101636d0f9851b2f3ee4820c84cb09b3c41f33) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Update text on welcome screen
+- [#887](https://github.com/Nova-Org/novacode/pull/887) [`df10163`](https://github.com/Nova-Org/novacode/commit/df101636d0f9851b2f3ee4820c84cb09b3c41f33) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Update text on welcome screen
 
-- [#886](https://github.com/Kilo-Org/kilocode/pull/886) [`084cee7`](https://github.com/Kilo-Org/kilocode/commit/084cee76dc59a2f83ddf36dfdf71666f89a2898a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed crashes with the error message "Bad substitution" and "Cannot read properties of undefined (reading 'includes')"
+- [#886](https://github.com/Nova-Org/novacode/pull/886) [`084cee7`](https://github.com/Nova-Org/novacode/commit/084cee76dc59a2f83ddf36dfdf71666f89a2898a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed crashes with the error message "Bad substitution" and "Cannot read properties of undefined (reading 'includes')"
 
 ## [v4.44.0]
 
-- [#881](https://github.com/Kilo-Org/kilocode/pull/881) [`30836f4`](https://github.com/Kilo-Org/kilocode/commit/30836f4d11a02769787af91c552789c14118ebdf) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add support for Gemini CLI provider (thanks Roo & Cline!)
+- [#881](https://github.com/Nova-Org/novacode/pull/881) [`30836f4`](https://github.com/Nova-Org/novacode/commit/30836f4d11a02769787af91c552789c14118ebdf) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add support for Gemini CLI provider (thanks Roo & Cline!)
 
 ## [v4.43.1]
 
-- [#842](https://github.com/Kilo-Org/kilocode/pull/842) [`32e4c30`](https://github.com/Kilo-Org/kilocode/commit/32e4c304506b4042b76265446a3169206eb243a5) Thanks [@markijbema](https://github.com/markijbema)! - add a button to fix mermaid syntax errors by calling the LLM
+- [#842](https://github.com/Nova-Org/novacode/pull/842) [`32e4c30`](https://github.com/Nova-Org/novacode/commit/32e4c304506b4042b76265446a3169206eb243a5) Thanks [@markijbema](https://github.com/markijbema)! - add a button to fix mermaid syntax errors by calling the LLM
 
 ## [v4.43.0]
 
-- [#871](https://github.com/Kilo-Org/kilocode/pull/871) [`52f216d`](https://github.com/Kilo-Org/kilocode/commit/52f216de21ea5be0366976a9108e3c9edd993620) Thanks [@hassoncs](https://github.com/hassoncs)! - Add a colorful gutter to chat messages corresponding to the Task Timeline
+- [#871](https://github.com/Nova-Org/novacode/pull/871) [`52f216d`](https://github.com/Nova-Org/novacode/commit/52f216de21ea5be0366976a9108e3c9edd993620) Thanks [@hassoncs](https://github.com/hassoncs)! - Add a colorful gutter to chat messages corresponding to the Task Timeline
 
-- [#861](https://github.com/Kilo-Org/kilocode/pull/861) [`8e9df82`](https://github.com/Kilo-Org/kilocode/commit/8e9df820f22b3ea833a00dc490ad05bfaa6f1645) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add language support for Filipino, Thai, Ukrainian, Czech, Greek and Swedish
+- [#861](https://github.com/Nova-Org/novacode/pull/861) [`8e9df82`](https://github.com/Nova-Org/novacode/commit/8e9df820f22b3ea833a00dc490ad05bfaa6f1645) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Add language support for Filipino, Thai, Ukrainian, Czech, Greek and Swedish
 
-- [#847](https://github.com/Kilo-Org/kilocode/pull/847) [`fbe3c75`](https://github.com/Kilo-Org/kilocode/commit/fbe3c75c1fbaf2b16cea43554cf7e9be2ef8849f) Thanks [@hassoncs](https://github.com/hassoncs)! - Highlight the context window progress bar red when near the limit
+- [#847](https://github.com/Nova-Org/novacode/pull/847) [`fbe3c75`](https://github.com/Nova-Org/novacode/commit/fbe3c75c1fbaf2b16cea43554cf7e9be2ef8849f) Thanks [@hassoncs](https://github.com/hassoncs)! - Highlight the context window progress bar red when near the limit
 
 ### Patch Changes
 
-- [#853](https://github.com/Kilo-Org/kilocode/pull/853) [`e9452f1`](https://github.com/Kilo-Org/kilocode/commit/e9452f11035c8daa40c5afd752bad4c18f7f3f64) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix @ mentions not working after slash commands
+- [#853](https://github.com/Nova-Org/novacode/pull/853) [`e9452f1`](https://github.com/Nova-Org/novacode/commit/e9452f11035c8daa40c5afd752bad4c18f7f3f64) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix @ mentions not working after slash commands
 
-- [#854](https://github.com/Kilo-Org/kilocode/pull/854) [`81d8b06`](https://github.com/Kilo-Org/kilocode/commit/81d8b0657ec045efa67b41bb7af493ef4753a8ae) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix allowed commands export/import
+- [#854](https://github.com/Nova-Org/novacode/pull/854) [`81d8b06`](https://github.com/Nova-Org/novacode/commit/81d8b0657ec045efa67b41bb7af493ef4753a8ae) Thanks [@catrielmuller](https://github.com/catrielmuller)! - Fix allowed commands export/import
 
-- [#871](https://github.com/Kilo-Org/kilocode/pull/871) [`52f216d`](https://github.com/Kilo-Org/kilocode/commit/52f216de21ea5be0366976a9108e3c9edd993620) Thanks [@hassoncs](https://github.com/hassoncs)! - Enable the Task Timeline by default
+- [#871](https://github.com/Nova-Org/novacode/pull/871) [`52f216d`](https://github.com/Nova-Org/novacode/commit/52f216de21ea5be0366976a9108e3c9edd993620) Thanks [@hassoncs](https://github.com/hassoncs)! - Enable the Task Timeline by default
 
 ## [v4.42.0]
 
-- [#844](https://github.com/Kilo-Org/kilocode/pull/844) [`8f33721`](https://github.com/Kilo-Org/kilocode/commit/8f3372102d8a06cfbe0dd2889287befea6a347a4) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.21.5
-
+- [#844](https://github.com/Nova-Org/novacode/pull/844) [`8f33721`](https://github.com/Nova-Org/novacode/commit/8f3372102d8a06cfbe0dd2889287befea6a347a4) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.21.5
     - Fix Qdrant URL prefix handling for QdrantClient initialization (thanks @CW-B-W!)
     - Improve LM Studio model detection to show all downloaded models (thanks @daniel-lxs!)
     - Resolve Claude Code provider JSON parsing and reasoning block display
@@ -3379,14 +3341,13 @@
 
 ### Patch Changes
 
-- [#845](https://github.com/Kilo-Org/kilocode/pull/845) [`8e53c23`](https://github.com/Kilo-Org/kilocode/commit/8e53c237151787523f7338037d5442e9e0225e94) Thanks [@hassoncs](https://github.com/hassoncs)! - Improved Task Timeline tooltips
+- [#845](https://github.com/Nova-Org/novacode/pull/845) [`8e53c23`](https://github.com/Nova-Org/novacode/commit/8e53c237151787523f7338037d5442e9e0225e94) Thanks [@hassoncs](https://github.com/hassoncs)! - Improved Task Timeline tooltips
 
-- [#825](https://github.com/Kilo-Org/kilocode/pull/825) [`b7b7f8c`](https://github.com/Kilo-Org/kilocode/commit/b7b7f8c165a0b85f504076432e2fa4ce695077b8) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Show number of cache reads for Gemini models
+- [#825](https://github.com/Nova-Org/novacode/pull/825) [`b7b7f8c`](https://github.com/Nova-Org/novacode/commit/b7b7f8c165a0b85f504076432e2fa4ce695077b8) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Show number of cache reads for Gemini models
 
 ## [v4.41.0]
 
-- [#794](https://github.com/Kilo-Org/kilocode/pull/794) [`7113260`](https://github.com/Kilo-Org/kilocode/commit/711326037cbb38db49f6a2d12671c7974a981787) Thanks [@markijbema](https://github.com/markijbema)! - Include changes from Roo Code v3.21.1
-
+- [#794](https://github.com/Nova-Org/novacode/pull/794) [`7113260`](https://github.com/Nova-Org/novacode/commit/711326037cbb38db49f6a2d12671c7974a981787) Thanks [@markijbema](https://github.com/markijbema)! - Include changes from Roo Code v3.21.1
     - Fix tree-sitter issues that were preventing codebase indexing from working correctly
     - Improve error handling for codebase search embeddings
     - Resolve MCP server execution on Windows with node version managers
@@ -3411,19 +3372,19 @@
 
 ### Patch Changes
 
-- [#829](https://github.com/Kilo-Org/kilocode/pull/829) [`8fbae6b`](https://github.com/Kilo-Org/kilocode/commit/8fbae6bf6adc6ad7f7db5a2ce5aaa8a449cc417c) Thanks [@hassoncs](https://github.com/hassoncs)! - Fixed issue causing workflows and rules not to load immediately when the extension loads
+- [#829](https://github.com/Nova-Org/novacode/pull/829) [`8fbae6b`](https://github.com/Nova-Org/novacode/commit/8fbae6bf6adc6ad7f7db5a2ce5aaa8a449cc417c) Thanks [@hassoncs](https://github.com/hassoncs)! - Fixed issue causing workflows and rules not to load immediately when the extension loads
 
 ## [v4.40.1]
 
-- [#801](https://github.com/Kilo-Org/kilocode/pull/801) [`e64e172`](https://github.com/Kilo-Org/kilocode/commit/e64e172b7ccc21e7d3e1e278c3ada368b19ab43f) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix minor task timeline layout shift from hidden scrollbar
+- [#801](https://github.com/Nova-Org/novacode/pull/801) [`e64e172`](https://github.com/Nova-Org/novacode/commit/e64e172b7ccc21e7d3e1e278c3ada368b19ab43f) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix minor task timeline layout shift from hidden scrollbar
 
-- [#812](https://github.com/Kilo-Org/kilocode/pull/812) [`40bb083`](https://github.com/Kilo-Org/kilocode/commit/40bb0838bdeae01a044f91579a9ce2007df390f7) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix TelemetryService not initialized error when applying diff fails
+- [#812](https://github.com/Nova-Org/novacode/pull/812) [`40bb083`](https://github.com/Nova-Org/novacode/commit/40bb0838bdeae01a044f91579a9ce2007df390f7) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix TelemetryService not initialized error when applying diff fails
 
 ## [v4.40.0]
 
 ### Minor Changes
 
-- [#770](https://github.com/Kilo-Org/kilocode/pull/770) [`f2fe2f1`](https://github.com/Kilo-Org/kilocode/commit/f2fe2f1f93a97f49004072ae3feaa25edafe2b78) Thanks [@hassoncs](https://github.com/hassoncs)! - Add $WORKSPACE_ROOT environment variable to terminal sessions for easier workspace navigation
+- [#770](https://github.com/Nova-Org/novacode/pull/770) [`f2fe2f1`](https://github.com/Nova-Org/novacode/commit/f2fe2f1f93a97f49004072ae3feaa25edafe2b78) Thanks [@hassoncs](https://github.com/hassoncs)! - Add $WORKSPACE_ROOT environment variable to terminal sessions for easier workspace navigation
 
     Terminal sessions now automatically include a `$WORKSPACE_ROOT` environment variable that points to your current workspace root directory. This makes it easier for the agent to run terminal commands in sub-directories, for example, running just one directory's tests: `cd $WORKSPACE_ROOT && npx jest`.
 
@@ -3433,20 +3394,19 @@
 
 ### Patch Changes
 
-- [#788](https://github.com/Kilo-Org/kilocode/pull/788) [`120f6ce`](https://github.com/Kilo-Org/kilocode/commit/120f6cee1dac1a1e05a715eee82b0bd12f127344) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix cache read stats not being shown in the Chat window
+- [#788](https://github.com/Nova-Org/novacode/pull/788) [`120f6ce`](https://github.com/Nova-Org/novacode/commit/120f6cee1dac1a1e05a715eee82b0bd12f127344) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix cache read stats not being shown in the Chat window
 
 ## [v4.39.1]
 
 ### Patch Changes
 
-- [#773](https://github.com/Kilo-Org/kilocode/pull/773) [`28b90f1`](https://github.com/Kilo-Org/kilocode/commit/28b90f14b50526c414cdc22872a9095a67d90b5c) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Rename Roo to Kilo in the diff view
+- [#773](https://github.com/Nova-Org/novacode/pull/773) [`28b90f1`](https://github.com/Nova-Org/novacode/commit/28b90f14b50526c414cdc22872a9095a67d90b5c) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Rename Roo to Nova in the diff view
 
 ## [v4.39.0]
 
-- [#777](https://github.com/Kilo-Org/kilocode/pull/777) [`b04ad66`](https://github.com/Kilo-Org/kilocode/commit/b04ad661e195ca42430bd7d1c6f5a247cf3ff49b) Thanks [@markijbema](https://github.com/markijbema)! - Added Cerebras API provider (from Cline)
+- [#777](https://github.com/Nova-Org/novacode/pull/777) [`b04ad66`](https://github.com/Nova-Org/novacode/commit/b04ad661e195ca42430bd7d1c6f5a247cf3ff49b) Thanks [@markijbema](https://github.com/markijbema)! - Added Cerebras API provider (from Cline)
 
-- [#768](https://github.com/Kilo-Org/kilocode/pull/768) [`fc7a357`](https://github.com/Kilo-Org/kilocode/commit/fc7a357fa6460d54eec58800af60d335fbc71a96) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.20.3
-
+- [#768](https://github.com/Nova-Org/novacode/pull/768) [`fc7a357`](https://github.com/Nova-Org/novacode/commit/fc7a357fa6460d54eec58800af60d335fbc71a96) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.20.3
     - Resolve diff editor race condition in multi-monitor setups (thanks @daniel-lxs!)
     - Add logic to prevent auto-approving edits of configuration files
     - Adjust searching and listing files outside of the workspace to respect the auto-approve settings
@@ -3486,7 +3446,7 @@
     - Fix terminal busy state reset after manual commands complete
     - Fix undefined output on multi-file apply_diff operations (thanks @daniel-lxs!)
 
-- [#769](https://github.com/Kilo-Org/kilocode/pull/769) [`d12f4a3`](https://github.com/Kilo-Org/kilocode/commit/d12f4a358af696fa8f8877446661345125c4bb52) Thanks [@hassoncs](https://github.com/hassoncs)! - Add task timeline visualization to help you navigate chat history
+- [#769](https://github.com/Nova-Org/novacode/pull/769) [`d12f4a3`](https://github.com/Nova-Org/novacode/commit/d12f4a358af696fa8f8877446661345125c4bb52) Thanks [@hassoncs](https://github.com/hassoncs)! - Add task timeline visualization to help you navigate chat history
 
     We've added a new task timeline that gives you a visual overview of your conversation flow. You can click on timeline messages to quickly jump to specific points in your chat history, making it much easier to understand what happened during your session and navigate back to important moments.
 
@@ -3494,39 +3454,36 @@
 
 ## [v4.38.1]
 
-- [#747](https://github.com/Kilo-Org/kilocode/pull/747) [`943c7dd`](https://github.com/Kilo-Org/kilocode/commit/943c7ddb671ed19bb4b9a35ec32ee7898424bf31) Thanks [@markijbema](https://github.com/markijbema)! - Close the browsertool properly when a remote browser is configured but a fallback local one is used
+- [#747](https://github.com/Nova-Org/novacode/pull/747) [`943c7dd`](https://github.com/Nova-Org/novacode/commit/943c7ddb671ed19bb4b9a35ec32ee7898424bf31) Thanks [@markijbema](https://github.com/markijbema)! - Close the browsertool properly when a remote browser is configured but a fallback local one is used
 
-- [#746](https://github.com/Kilo-Org/kilocode/pull/746) [`701db76`](https://github.com/Kilo-Org/kilocode/commit/701db768e4bb7006cd4601983cf8ad0ab9579cda) Fix possible CSP error when loading OpenRouter endpoints from custom URL
+- [#746](https://github.com/Nova-Org/novacode/pull/746) [`701db76`](https://github.com/Nova-Org/novacode/commit/701db768e4bb7006cd4601983cf8ad0ab9579cda) Fix possible CSP error when loading OpenRouter endpoints from custom URL
 
 ## [v4.38.0]
 
-- [#719](https://github.com/Kilo-Org/kilocode/pull/719) [`cc77370`](https://github.com/Kilo-Org/kilocode/commit/cc77370eb451348d3929ab1b94ca34af4de517f3) Thanks [@hassoncs](https://github.com/hassoncs)! - ## New Features
+- [#719](https://github.com/Nova-Org/novacode/pull/719) [`cc77370`](https://github.com/Nova-Org/novacode/commit/cc77370eb451348d3929ab1b94ca34af4de517f3) Thanks [@hassoncs](https://github.com/hassoncs)! - ## New Features
 
     Add ability to customize git commit generation prompt and provider
 
     ### Customized Commit Message Generation Prompts & Providers
-
     - **Custom API Configuration**: Added support for selecting a specific API configuration for commit message generation in Settings > Prompts
     - **Enhanced Commit Message Support**: Introduced a new `COMMIT_MESSAGE` support prompt type with comprehensive conventional commit format guidance
 
     ### Bug Fixes
-
     - The support prompts can now be saved/discarded like other settings
 
 ### Patch Changes
 
-- [#706](https://github.com/Kilo-Org/kilocode/pull/706) [`48af442`](https://github.com/Kilo-Org/kilocode/commit/48af4429e0815eb6366cfa3a37015eadbd1df126) Thanks [@cobra91](https://github.com/cobra91)! - The OpenRouter provider now uses the custom base URL when fetching the model list.
+- [#706](https://github.com/Nova-Org/novacode/pull/706) [`48af442`](https://github.com/Nova-Org/novacode/commit/48af4429e0815eb6366cfa3a37015eadbd1df126) Thanks [@cobra91](https://github.com/cobra91)! - The OpenRouter provider now uses the custom base URL when fetching the model list.
 
 ## [v4.37.0]
 
 ### Minor Changes
 
-- [#724](https://github.com/Kilo-Org/kilocode/pull/724) [`a3d70ac`](https://github.com/Kilo-Org/kilocode/commit/a3d70ac457c41ccb01f892237c948156cea20b86) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Added support for Excel (.xlsx) files
+- [#724](https://github.com/Nova-Org/novacode/pull/724) [`a3d70ac`](https://github.com/Nova-Org/novacode/commit/a3d70ac457c41ccb01f892237c948156cea20b86) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Added support for Excel (.xlsx) files
 
 ## [v4.36.0]
 
-- [#690](https://github.com/Kilo-Org/kilocode/pull/690) [`9b1451a`](https://github.com/Kilo-Org/kilocode/commit/9b1451a47bd2bc567646a4a0c2a12b42826ab9d1) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.19.7:
-
+- [#690](https://github.com/Nova-Org/novacode/pull/690) [`9b1451a`](https://github.com/Nova-Org/novacode/commit/9b1451a47bd2bc567646a4a0c2a12b42826ab9d1) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.19.7:
     - Fix McpHub sidebar focus behavior to prevent unwanted focus grabbing
     - Disable checkpoint functionality when nested git repositories are detected to prevent conflicts
     - Remove unused Storybook components and dependencies to reduce bundle size
@@ -3559,198 +3516,197 @@
     - Get rid of "partial" component in names referencing not necessarily partial messages (thanks @wkordalski!)
     - Improve feature request template (thanks @elianiva!)
 
-- [#592](https://github.com/Kilo-Org/kilocode/pull/592) [`68c3d6e`](https://github.com/Kilo-Org/kilocode/commit/68c3d6e7a1250e08e2bd2b9cbbbd6b4312bad045) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Workflow and rules configuration screen added
+- [#592](https://github.com/Nova-Org/novacode/pull/592) [`68c3d6e`](https://github.com/Nova-Org/novacode/commit/68c3d6e7a1250e08e2bd2b9cbbbd6b4312bad045) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Workflow and rules configuration screen added
 
 ### Patch Changes
 
-- [#697](https://github.com/Kilo-Org/kilocode/pull/697) [`9514f22`](https://github.com/Kilo-Org/kilocode/commit/9514f22a9d77b2d838ddcb97b5f2c5909aaea68a) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add correct path to walkthrough files to show walkthrough on first load (thanks for the report @adamhill!)
+- [#697](https://github.com/Nova-Org/novacode/pull/697) [`9514f22`](https://github.com/Nova-Org/novacode/commit/9514f22a9d77b2d838ddcb97b5f2c5909aaea68a) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add correct path to walkthrough files to show walkthrough on first load (thanks for the report @adamhill!)
 
 ## [v4.35.1]
 
-- [#695](https://github.com/Kilo-Org/kilocode/pull/695) [`a7910eb`](https://github.com/Kilo-Org/kilocode/commit/a7910eba54a4ede296bfa82beddae71a1d9f77c5) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix: Feedback button overlaps new mode creation dialog
+- [#695](https://github.com/Nova-Org/novacode/pull/695) [`a7910eb`](https://github.com/Nova-Org/novacode/commit/a7910eba54a4ede296bfa82beddae71a1d9f77c5) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix: Feedback button overlaps new mode creation dialog
 
-- [#693](https://github.com/Kilo-Org/kilocode/pull/693) [`2a9edf8`](https://github.com/Kilo-Org/kilocode/commit/2a9edf85ca2062d0b296430348ebac967f28febb) Thanks [@hassoncs](https://github.com/hassoncs)! - Temporarily remove .kilocode/rule loading for commit message generation until it works better
+- [#693](https://github.com/Nova-Org/novacode/pull/693) [`2a9edf8`](https://github.com/Nova-Org/novacode/commit/2a9edf85ca2062d0b296430348ebac967f28febb) Thanks [@hassoncs](https://github.com/hassoncs)! - Temporarily remove .novacode/rule loading for commit message generation until it works better
 
 ## [v4.35.0]
 
-- [#633](https://github.com/Kilo-Org/kilocode/pull/633) [`347cf9e`](https://github.com/Kilo-Org/kilocode/commit/347cf9e6dc10d5b8706af5e111ccc854f7742566) Thanks [@hassoncs](https://github.com/hassoncs)! - # AI-Powered Git Commit Message Generation
+- [#633](https://github.com/Nova-Org/novacode/pull/633) [`347cf9e`](https://github.com/Nova-Org/novacode/commit/347cf9e6dc10d5b8706af5e111ccc854f7742566) Thanks [@hassoncs](https://github.com/hassoncs)! - # AI-Powered Git Commit Message Generation
 
     Automatically generate meaningful Git commit messages using AI
 
     ## How It Works
-
     1. Stage your changes in Git as usual
-    2. Click the [KILO] square icon in the Source Control panel
+    2. Click the [NOVA] square icon in the Source Control panel
     3. The AI analyzes your staged changes and generates an appropriate commit message
     4. The generated message is automatically populated in the commit input box
 
-- [#638](https://github.com/Kilo-Org/kilocode/pull/638) [`3d2e749`](https://github.com/Kilo-Org/kilocode/commit/3d2e749d51797681c018bc390757fdabefd60620) Thanks [@tru-kilo](https://github.com/tru-kilo)! - Added ability to favorite tasks
+- [#638](https://github.com/Nova-Org/novacode/pull/638) [`3d2e749`](https://github.com/Nova-Org/novacode/commit/3d2e749d51797681c018bc390757fdabefd60620) Thanks [@tru-nova](https://github.com/tru-nova)! - Added ability to favorite tasks
 
 ## [v4.34.1]
 
 ### Patch Changes
 
-- [#612](https://github.com/Kilo-Org/kilocode/pull/612) [`793cfdd`](https://github.com/Kilo-Org/kilocode/commit/793cfdd4fc1411c63c818e14b0b6ca8c5225a859) Thanks [@HadesArchitect](https://github.com/HadesArchitect)! - - #611 Customer Support Visibility (Added links to contact customer support)
+- [#612](https://github.com/Nova-Org/novacode/pull/612) [`793cfdd`](https://github.com/Nova-Org/novacode/commit/793cfdd4fc1411c63c818e14b0b6ca8c5225a859) Thanks [@HadesArchitect](https://github.com/HadesArchitect)! - - #611 Customer Support Visibility (Added links to contact customer support)
 
-- [#672](https://github.com/Kilo-Org/kilocode/pull/672) [`c3d955c`](https://github.com/Kilo-Org/kilocode/commit/c3d955c2280258601d5f4b05101710e34d540075) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed response times for gemini-2.5-pro-preview being very slow (minutes instead of seconds)
+- [#672](https://github.com/Nova-Org/novacode/pull/672) [`c3d955c`](https://github.com/Nova-Org/novacode/commit/c3d955c2280258601d5f4b05101710e34d540075) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fixed response times for gemini-2.5-pro-preview being very slow (minutes instead of seconds)
 
-- [#671](https://github.com/Kilo-Org/kilocode/pull/671) [`e0a3740`](https://github.com/Kilo-Org/kilocode/commit/e0a37406fe8102b1acd4f8e9005652e828a14e36) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - OpenRouter bring-your-own-key models now have much more accurate cost estimates.
+- [#671](https://github.com/Nova-Org/novacode/pull/671) [`e0a3740`](https://github.com/Nova-Org/novacode/commit/e0a37406fe8102b1acd4f8e9005652e828a14e36) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - OpenRouter bring-your-own-key models now have much more accurate cost estimates.
 
 ## [v4.34.0]
 
 ### Minor Changes
 
-- [#636](https://github.com/Kilo-Org/kilocode/pull/636) [`6193029`](https://github.com/Kilo-Org/kilocode/commit/6193029fb1d5e5ec09dd57acb9547179ff01c2b1) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.19.4
+- [#636](https://github.com/Nova-Org/novacode/pull/636) [`6193029`](https://github.com/Nova-Org/novacode/commit/6193029fb1d5e5ec09dd57acb9547179ff01c2b1) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.19.4
 
 ## [v4.33.2]
 
 ### Patch Changes
 
-- [#628](https://github.com/Kilo-Org/kilocode/pull/628) [`3bfd49e`](https://github.com/Kilo-Org/kilocode/commit/3bfd49e495400d2be89f9754255a0af32db8f942) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add clarification about adding context and how to add files/images
+- [#628](https://github.com/Nova-Org/novacode/pull/628) [`3bfd49e`](https://github.com/Nova-Org/novacode/commit/3bfd49e495400d2be89f9754255a0af32db8f942) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add clarification about adding context and how to add files/images
 
 ## [v4.33.1]
 
 ### Patch Changes
 
-- [#614](https://github.com/Kilo-Org/kilocode/pull/614) [`1753220`](https://github.com/Kilo-Org/kilocode/commit/1753220ef0dc9e56d4017c82153c7c022609ad21) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix issue with attempt_completion wanting to initialize telemetry (Roo leftover), we don't want telemetry
+- [#614](https://github.com/Nova-Org/novacode/pull/614) [`1753220`](https://github.com/Nova-Org/novacode/commit/1753220ef0dc9e56d4017c82153c7c022609ad21) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Fix issue with attempt_completion wanting to initialize telemetry (Roo leftover), we don't want telemetry
 
 ## [v4.33.0]
 
-- [#597](https://github.com/Kilo-Org/kilocode/pull/597) [`7e9789c`](https://github.com/Kilo-Org/kilocode/commit/7e9789ce160f6fa82365b8bc8b5331ea99848f73) Thanks [@hassoncs](https://github.com/hassoncs)! - Experimental Autocomplete
+- [#597](https://github.com/Nova-Org/novacode/pull/597) [`7e9789c`](https://github.com/Nova-Org/novacode/commit/7e9789ce160f6fa82365b8bc8b5331ea99848f73) Thanks [@hassoncs](https://github.com/hassoncs)! - Experimental Autocomplete
 
-    Introduces early support for "Kilo Complete", Kilo Code's new autocomplete engine. In this initial release, the Kilo Code provider is required and model selection isn’t yet configurable. Stay tuned for additional features, improvements to the completions, and customization options coming soon!
+    Introduces early support for "Nova Complete", Nova Code's new autocomplete engine. In this initial release, the Nova Code provider is required and model selection isn’t yet configurable. Stay tuned for additional features, improvements to the completions, and customization options coming soon!
 
-- [#610](https://github.com/Kilo-Org/kilocode/pull/610) [`9aabc2c`](https://github.com/Kilo-Org/kilocode/commit/9aabc2cf5214408d54124c97d0309c06396ad641) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add way to go back to active agent session from profile page, resolves #556 (thanks for the issue @karrots)
+- [#610](https://github.com/Nova-Org/novacode/pull/610) [`9aabc2c`](https://github.com/Nova-Org/novacode/commit/9aabc2cf5214408d54124c97d0309c06396ad641) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add way to go back to active agent session from profile page, resolves #556 (thanks for the issue @karrots)
 
-- [#603](https://github.com/Kilo-Org/kilocode/pull/603) [`99cb0a4`](https://github.com/Kilo-Org/kilocode/commit/99cb0a49e681b259c1089da07c9d3624a329b2a9) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.19.3
+- [#603](https://github.com/Nova-Org/novacode/pull/603) [`99cb0a4`](https://github.com/Nova-Org/novacode/commit/99cb0a49e681b259c1089da07c9d3624a329b2a9) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.19.3
 
 ### Patch Changes
 
-- [#541](https://github.com/Kilo-Org/kilocode/pull/541) [`6e14fce`](https://github.com/Kilo-Org/kilocode/commit/6e14fce02686c16482b0d5181c8fde9e4c3a7ca5) Thanks [@tru-kilo](https://github.com/tru-kilo)! - Fixed double scrollbars in profile dropdown
+- [#541](https://github.com/Nova-Org/novacode/pull/541) [`6e14fce`](https://github.com/Nova-Org/novacode/commit/6e14fce02686c16482b0d5181c8fde9e4c3a7ca5) Thanks [@tru-nova](https://github.com/tru-nova)! - Fixed double scrollbars in profile dropdown
 
-- [#584](https://github.com/Kilo-Org/kilocode/pull/584) [`0b8b9ae`](https://github.com/Kilo-Org/kilocode/commit/0b8b9ae0cb4819d93691a6552e140197355fc980) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix being unable to select certain Kilo Code Provider Models (a similarly named but different model would be selected instead)
+- [#584](https://github.com/Nova-Org/novacode/pull/584) [`0b8b9ae`](https://github.com/Nova-Org/novacode/commit/0b8b9ae0cb4819d93691a6552e140197355fc980) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix being unable to select certain Nova Code Provider Models (a similarly named but different model would be selected instead)
 
 ## [v4.32.0]
 
 ### Minor Changes
 
-- [#566](https://github.com/Kilo-Org/kilocode/pull/566) [`1cd5234`](https://github.com/Kilo-Org/kilocode/commit/1cd5234d01e46a53956dd22637a14a96a68b3a90) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.18.5
+- [#566](https://github.com/Nova-Org/novacode/pull/566) [`1cd5234`](https://github.com/Nova-Org/novacode/commit/1cd5234d01e46a53956dd22637a14a96a68b3a90) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.18.5
 
 ### Patch Changes
 
-- [#568](https://github.com/Kilo-Org/kilocode/pull/568) [`d1afa39`](https://github.com/Kilo-Org/kilocode/commit/d1afa392c0285b79ce6133ed49d250baed99938a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix Claude not supporting computer use
+- [#568](https://github.com/Nova-Org/novacode/pull/568) [`d1afa39`](https://github.com/Nova-Org/novacode/commit/d1afa392c0285b79ce6133ed49d250baed99938a) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix Claude not supporting computer use
 
 ### Minor Changes
 
-- [#561](https://github.com/Kilo-Org/kilocode/pull/561) [`4e8c7f2`](https://github.com/Kilo-Org/kilocode/commit/4e8c7f2394af0e0bef642a209acc6d6572602297) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Revert previous update, we found some issues, apologies
+- [#561](https://github.com/Nova-Org/novacode/pull/561) [`4e8c7f2`](https://github.com/Nova-Org/novacode/commit/4e8c7f2394af0e0bef642a209acc6d6572602297) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Revert previous update, we found some issues, apologies
 
 ## [v4.30.0]
 
 ### Minor Changes
 
-- [#546](https://github.com/Kilo-Org/kilocode/pull/546) [`3895af3`](https://github.com/Kilo-Org/kilocode/commit/3895af359e969c60572f50d9bb89f0be1a1fa3f6) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.18.5
+- [#546](https://github.com/Nova-Org/novacode/pull/546) [`3895af3`](https://github.com/Nova-Org/novacode/commit/3895af359e969c60572f50d9bb89f0be1a1fa3f6) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.18.5
 
-- [#554](https://github.com/Kilo-Org/kilocode/pull/554) [`e8a6759`](https://github.com/Kilo-Org/kilocode/commit/e8a675935cb6470f5d9c0bcb84862f76c64f1e5f) Thanks [@seuros](https://github.com/seuros)! - Add fallback Support for Root-Level .mcp.json (thanks @seuros!)
+- [#554](https://github.com/Nova-Org/novacode/pull/554) [`e8a6759`](https://github.com/Nova-Org/novacode/commit/e8a675935cb6470f5d9c0bcb84862f76c64f1e5f) Thanks [@seuros](https://github.com/seuros)! - Add fallback Support for Root-Level .mcp.json (thanks @seuros!)
 
 ### Patch Changes
 
-- [#558](https://github.com/Kilo-Org/kilocode/pull/558) [`d5a0dad`](https://github.com/Kilo-Org/kilocode/commit/d5a0dad04263db3a38169b35c7bdd65600ee07e9) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Some text on the Providers Settings tab has been translated into languages other than English.
+- [#558](https://github.com/Nova-Org/novacode/pull/558) [`d5a0dad`](https://github.com/Nova-Org/novacode/commit/d5a0dad04263db3a38169b35c7bdd65600ee07e9) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Some text on the Providers Settings tab has been translated into languages other than English.
 
-- [#539](https://github.com/Kilo-Org/kilocode/pull/539) [`a5958c9`](https://github.com/Kilo-Org/kilocode/commit/a5958c9b4c361fbd84fac0e03d495f8e0c7b600e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Include changes from Roo Code v3.18.1
+- [#539](https://github.com/Nova-Org/novacode/pull/539) [`a5958c9`](https://github.com/Nova-Org/novacode/commit/a5958c9b4c361fbd84fac0e03d495f8e0c7b600e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Include changes from Roo Code v3.18.1
 
-- [#551](https://github.com/Kilo-Org/kilocode/pull/551) [`b6bc484`](https://github.com/Kilo-Org/kilocode/commit/b6bc4845b9e545d913bc76db2dae63fb744f87d1) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Kilo Code now has a menu item label on the right side panel
+- [#551](https://github.com/Nova-Org/novacode/pull/551) [`b6bc484`](https://github.com/Nova-Org/novacode/commit/b6bc4845b9e545d913bc76db2dae63fb744f87d1) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Nova Code now has a menu item label on the right side panel
 
 ## [v4.29.2]
 
-- [#524](https://github.com/Kilo-Org/kilocode/pull/524) [`e1d59f1`](https://github.com/Kilo-Org/kilocode/commit/e1d59f1278916b98ac4f1fa8a02cb694633b475e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix menu stops working when Kilo Code is moved between primary and secondary sidebars
+- [#524](https://github.com/Nova-Org/novacode/pull/524) [`e1d59f1`](https://github.com/Nova-Org/novacode/commit/e1d59f1278916b98ac4f1fa8a02cb694633b475e) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Fix menu stops working when Nova Code is moved between primary and secondary sidebars
 
 ## [v4.29.1]
 
-- [#520](https://github.com/Kilo-Org/kilocode/pull/520) [`2e53902`](https://github.com/Kilo-Org/kilocode/commit/2e539020b1d4d19beba9c9a5929055cacd11f292) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Change recommended model to Claude 4 Sonnet
+- [#520](https://github.com/Nova-Org/novacode/pull/520) [`2e53902`](https://github.com/Nova-Org/novacode/commit/2e539020b1d4d19beba9c9a5929055cacd11f292) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Change recommended model to Claude 4 Sonnet
 
 ## [v4.29.0]
 
 ### Minor Changes
 
-- [#514](https://github.com/Kilo-Org/kilocode/pull/514) [`c3581e9`](https://github.com/Kilo-Org/kilocode/commit/c3581e9edc18b9a1d6c6a5c5465078027b5669d9) Thanks [@PeterDaveHello](https://github.com/PeterDaveHello)! - Update xAI grok-3 with non-beta versions
+- [#514](https://github.com/Nova-Org/novacode/pull/514) [`c3581e9`](https://github.com/Nova-Org/novacode/commit/c3581e9edc18b9a1d6c6a5c5465078027b5669d9) Thanks [@PeterDaveHello](https://github.com/PeterDaveHello)! - Update xAI grok-3 with non-beta versions
 
-- [#513](https://github.com/Kilo-Org/kilocode/pull/513) [`67aa950`](https://github.com/Kilo-Org/kilocode/commit/67aa950a0db745fab5490ee8245f9286fdb9dfeb) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Include changes from Roo Code v3.18.0
+- [#513](https://github.com/Nova-Org/novacode/pull/513) [`67aa950`](https://github.com/Nova-Org/novacode/commit/67aa950a0db745fab5490ee8245f9286fdb9dfeb) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - Include changes from Roo Code v3.18.0
 
-- [#490](https://github.com/Kilo-Org/kilocode/pull/490) [`c9693d7`](https://github.com/Kilo-Org/kilocode/commit/c9693d788b33eb7c52ffa919cc96e0f43125c971) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add Indonesian language support
+- [#490](https://github.com/Nova-Org/novacode/pull/490) [`c9693d7`](https://github.com/Nova-Org/novacode/commit/c9693d788b33eb7c52ffa919cc96e0f43125c971) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add Indonesian language support
 
 ### Patch Changes
 
-- [#507](https://github.com/Kilo-Org/kilocode/pull/507) [`6734fd9`](https://github.com/Kilo-Org/kilocode/commit/6734fd903eaa8617369dd2a07a1a03610970017e) Thanks [@daliovic](https://github.com/daliovic)! - Also include support for claude 4 models via the Anthropic provider
+- [#507](https://github.com/Nova-Org/novacode/pull/507) [`6734fd9`](https://github.com/Nova-Org/novacode/commit/6734fd903eaa8617369dd2a07a1a03610970017e) Thanks [@daliovic](https://github.com/daliovic)! - Also include support for claude 4 models via the Anthropic provider
 
 ## [v4.28.1]
 
-- [#488](https://github.com/Kilo-Org/kilocode/pull/488) [`cd22ade`](https://github.com/Kilo-Org/kilocode/commit/cd22adee2290bb45951973584f37ed731065c63b) Thanks [@EamonNerbonne](https://github.com/EamonNerbonne)! - Enable caching for the new anthropic models
+- [#488](https://github.com/Nova-Org/novacode/pull/488) [`cd22ade`](https://github.com/Nova-Org/novacode/commit/cd22adee2290bb45951973584f37ed731065c63b) Thanks [@EamonNerbonne](https://github.com/EamonNerbonne)! - Enable caching for the new anthropic models
 
 ## [v4.28.0]
 
 ### Minor Changes
 
-- [#483](https://github.com/Kilo-Org/kilocode/pull/483) [`29cb981`](https://github.com/Kilo-Org/kilocode/commit/29cb981650b11bd9772e2b140f9739457ee6c850) Thanks [@drakonen](https://github.com/drakonen)! - Added cline's workflow tool
+- [#483](https://github.com/Nova-Org/novacode/pull/483) [`29cb981`](https://github.com/Nova-Org/novacode/commit/29cb981650b11bd9772e2b140f9739457ee6c850) Thanks [@drakonen](https://github.com/drakonen)! - Added cline's workflow tool
 
 ### Patch Changes
 
-- [#484](https://github.com/Kilo-Org/kilocode/pull/484) [`dd15860`](https://github.com/Kilo-Org/kilocode/commit/dd158603d42a996094de6bce7ead5bcc5077c754) Thanks [@RSO](https://github.com/RSO)! - Fixed rendering of avatars in the Profile section
+- [#484](https://github.com/Nova-Org/novacode/pull/484) [`dd15860`](https://github.com/Nova-Org/novacode/commit/dd158603d42a996094de6bce7ead5bcc5077c754) Thanks [@RSO](https://github.com/RSO)! - Fixed rendering of avatars in the Profile section
 
 ## [v4.27.0]
 
 ### Minor Changes
 
-- [#470](https://github.com/Kilo-Org/kilocode/pull/470) [`1715429`](https://github.com/Kilo-Org/kilocode/commit/17154292feeaa3cb364258a09e1a44916292ec3a) Thanks [@RSO](https://github.com/RSO)! - Added a profile view that shows your current Kilo Code balance
+- [#470](https://github.com/Nova-Org/novacode/pull/470) [`1715429`](https://github.com/Nova-Org/novacode/commit/17154292feeaa3cb364258a09e1a44916292ec3a) Thanks [@RSO](https://github.com/RSO)! - Added a profile view that shows your current Nova Code balance
 
-- [#476](https://github.com/Kilo-Org/kilocode/pull/476) [`262e7a2`](https://github.com/Kilo-Org/kilocode/commit/262e7a23c6c8f28742d11160982454762240940e) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add /smol command (thanks Cline and @0xToshii)
+- [#476](https://github.com/Nova-Org/novacode/pull/476) [`262e7a2`](https://github.com/Nova-Org/novacode/commit/262e7a23c6c8f28742d11160982454762240940e) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add /smol command (thanks Cline and @0xToshii)
 
 ## [v4.26.0]
 
 ### Minor Changes
 
-- [#473](https://github.com/Kilo-Org/kilocode/pull/473) [`9be2dc0`](https://github.com/Kilo-Org/kilocode/commit/9be2dc0773a00ca254d3e2f7dc92e5e06621e4d1) Thanks [@tru-kilo](https://github.com/tru-kilo)! - Added a slash reportbug command to report bugs directly from the extension to the kilocode repo
+- [#473](https://github.com/Nova-Org/novacode/pull/473) [`9be2dc0`](https://github.com/Nova-Org/novacode/commit/9be2dc0773a00ca254d3e2f7dc92e5e06621e4d1) Thanks [@tru-nova](https://github.com/tru-nova)! - Added a slash reportbug command to report bugs directly from the extension to the novacode repo
 
-- [#437](https://github.com/Kilo-Org/kilocode/pull/437) [`84a7f07`](https://github.com/Kilo-Org/kilocode/commit/84a7f07ef529c4c5a70926ae90fae5023b637fc9) Thanks [@tru-kilo](https://github.com/tru-kilo)! - Added a slash newrule command
+- [#437](https://github.com/Nova-Org/novacode/pull/437) [`84a7f07`](https://github.com/Nova-Org/novacode/commit/84a7f07ef529c4c5a70926ae90fae5023b637fc9) Thanks [@tru-nova](https://github.com/tru-nova)! - Added a slash newrule command
 
-- [#442](https://github.com/Kilo-Org/kilocode/pull/442) [`b1b0f58`](https://github.com/Kilo-Org/kilocode/commit/b1b0f5857a5d86ac6b8fd455171c6fcdaef31722) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The Kilo Code Provider now supports web-based IDEs, such as FireBase Studio, through an alternative authentication flow. The user should copy and paste the API Key manually in this case.
+- [#442](https://github.com/Nova-Org/novacode/pull/442) [`b1b0f58`](https://github.com/Nova-Org/novacode/commit/b1b0f5857a5d86ac6b8fd455171c6fcdaef31722) Thanks [@chrarnoldus](https://github.com/chrarnoldus)! - The Nova Code Provider now supports web-based IDEs, such as FireBase Studio, through an alternative authentication flow. The user should copy and paste the API Key manually in this case.
 
 ## [v4.25.0]
 
 ### Minor Changes
 
-- [#432](https://github.com/Kilo-Org/kilocode/pull/432) [`adfed7c`](https://github.com/Kilo-Org/kilocode/commit/adfed7c6df8cd9979df4ed152df8bda4017dc997) Thanks [@seuros](https://github.com/seuros)! - Support Streamable HTTP for MCP according to the [2025-03-26](https://modelcontextprotocol.io/specification/2025-03-26) spec
+- [#432](https://github.com/Nova-Org/novacode/pull/432) [`adfed7c`](https://github.com/Nova-Org/novacode/commit/adfed7c6df8cd9979df4ed152df8bda4017dc997) Thanks [@seuros](https://github.com/seuros)! - Support Streamable HTTP for MCP according to the [2025-03-26](https://modelcontextprotocol.io/specification/2025-03-26) spec
 
-- [#440](https://github.com/Kilo-Org/kilocode/pull/440) [`64adc9c`](https://github.com/Kilo-Org/kilocode/commit/64adc9cc5ac5ea8cbe03305d586de24dc7a989cc) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.17.2
+- [#440](https://github.com/Nova-Org/novacode/pull/440) [`64adc9c`](https://github.com/Nova-Org/novacode/commit/64adc9cc5ac5ea8cbe03305d586de24dc7a989cc) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.17.2
 
 ### Patch Changes
 
-- [#430](https://github.com/Kilo-Org/kilocode/pull/430) [`44ed7ad`](https://github.com/Kilo-Org/kilocode/commit/44ed7adf365d1103bed76e94458f6a661b4e382e) Thanks [@drakonen](https://github.com/drakonen)! - Added a notification when using non-kilocode-rules files
+- [#430](https://github.com/Nova-Org/novacode/pull/430) [`44ed7ad`](https://github.com/Nova-Org/novacode/commit/44ed7adf365d1103bed76e94458f6a661b4e382e) Thanks [@drakonen](https://github.com/drakonen)! - Added a notification when using non-novacode-rules files
 
-- [#436](https://github.com/Kilo-Org/kilocode/pull/436) [`c6f54b7`](https://github.com/Kilo-Org/kilocode/commit/c6f54b76be170b841bfce9c36f4565f40d868979) Thanks [@RSO](https://github.com/RSO)! - Make the prompts view accessible through the topbar
+- [#436](https://github.com/Nova-Org/novacode/pull/436) [`c6f54b7`](https://github.com/Nova-Org/novacode/commit/c6f54b76be170b841bfce9c36f4565f40d868979) Thanks [@RSO](https://github.com/RSO)! - Make the prompts view accessible through the topbar
 
-- [#434](https://github.com/Kilo-Org/kilocode/pull/434) [`f38e83c`](https://github.com/Kilo-Org/kilocode/commit/f38e83c3b640772bb376504ed65804e2da921fa0) Thanks [@RSO](https://github.com/RSO)! - Fixed bug in SettingsView that caused issues with detecting/saving changes
+- [#434](https://github.com/Nova-Org/novacode/pull/434) [`f38e83c`](https://github.com/Nova-Org/novacode/commit/f38e83c3b640772bb376504ed65804e2da921fa0) Thanks [@RSO](https://github.com/RSO)! - Fixed bug in SettingsView that caused issues with detecting/saving changes
 
 ## [v4.24.0]
 
 ### Minor Changes
 
-- [#401](https://github.com/Kilo-Org/kilocode/pull/401) [`d077452`](https://github.com/Kilo-Org/kilocode/commit/d0774527bbedad4478ce3767fae6cff7de864e50) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add ability to attach an image from within the context menu
+- [#401](https://github.com/Nova-Org/novacode/pull/401) [`d077452`](https://github.com/Nova-Org/novacode/commit/d0774527bbedad4478ce3767fae6cff7de864e50) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Add ability to attach an image from within the context menu
 
 - Include changes from Roo Code v3.16.6
 
 ### Patch Changes
 
-- [#386](https://github.com/Kilo-Org/kilocode/pull/386) [`5caba61`](https://github.com/Kilo-Org/kilocode/commit/5caba61f49a0f87dabf1e50fcf2b6111452a45e0) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Clearly display Kilo Code recommended models
+- [#386](https://github.com/Nova-Org/novacode/pull/386) [`5caba61`](https://github.com/Nova-Org/novacode/commit/5caba61f49a0f87dabf1e50fcf2b6111452a45e0) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Clearly display Nova Code recommended models
 
-- [#354](https://github.com/Kilo-Org/kilocode/pull/354) [`106b722`](https://github.com/Kilo-Org/kilocode/commit/106b722e747f98edb15b5a8e7a65e19db31028db) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix wrong model after login (#213)
+- [#354](https://github.com/Nova-Org/novacode/pull/354) [`106b722`](https://github.com/Nova-Org/novacode/commit/106b722e747f98edb15b5a8e7a65e19db31028db) Thanks [@hassoncs](https://github.com/hassoncs)! - Fix wrong model after login (#213)
 
 ## [v4.23.0]
 
 ### Minor Changes
 
-- [#381](https://github.com/Kilo-Org/kilocode/pull/381) [`60892c8`](https://github.com/Kilo-Org/kilocode/commit/60892c86cb88ff509e5fb38a80fdfd6b85b793b7) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.16.3
+- [#381](https://github.com/Nova-Org/novacode/pull/381) [`60892c8`](https://github.com/Nova-Org/novacode/commit/60892c86cb88ff509e5fb38a80fdfd6b85b793b7) Thanks [@kevinvandijk](https://github.com/kevinvandijk)! - Include changes from Roo Code v3.16.3
 
-- [#303](https://github.com/Kilo-Org/kilocode/pull/303) [`b69a57e`](https://github.com/Kilo-Org/kilocode/commit/b69a57e316a740470a8be40d77dad50efde5c35c) Thanks [@drakonen](https://github.com/drakonen)! - Kilo Code Provider can now do all the OpenRouter models
+- [#303](https://github.com/Nova-Org/novacode/pull/303) [`b69a57e`](https://github.com/Nova-Org/novacode/commit/b69a57e316a740470a8be40d77dad50efde5c35c) Thanks [@drakonen](https://github.com/drakonen)! - Nova Code Provider can now do all the OpenRouter models
 
 ## [v4.22.0]
 
@@ -3760,7 +3716,7 @@
 
 ### Patch Changes
 
-- Fixed UI Issue - Unreadable transparent section at bottom of chat textArea. Thanks to @agape-apps for reporting this issue! See [Kilo-Org/kilocode#306](https://github.com/Kilo-Org/kilocode/issues/306)
+- Fixed UI Issue - Unreadable transparent section at bottom of chat textArea. Thanks to @agape-apps for reporting this issue! See [Nova-Org/novacode#306](https://github.com/Nova-Org/novacode/issues/306)
 - Fix feedback button overlapping selection action button in history view
 
 ## [v4.21.0]
@@ -3795,7 +3751,7 @@
 
 ### Minor Changes
 
-- Add easier way to add Kilo Code credit when balance is low
+- Add easier way to add Nova Code credit when balance is low
 
 ### Patch Changes
 
@@ -3843,7 +3799,7 @@
 ### Patch Changes
 
 - Fix confirmation dialog not closing in settings view
-- Add support for Gemini 2.5 Flash Preview for Kilo Code provider
+- Add support for Gemini 2.5 Flash Preview for Nova Code provider
 
 ## [v4.15.0]
 

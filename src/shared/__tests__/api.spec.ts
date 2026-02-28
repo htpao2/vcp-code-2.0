@@ -77,7 +77,7 @@ describe("getModelMaxOutputTokens", () => {
 		}
 
 		const result = getModelMaxOutputTokens({ modelId: anthropicModelId, model, settings })
-		expect(result).toBe(40_000 /*kilocode_change*/) // Should be 8192, not 64_000
+		expect(result).toBe(40_000 /*novacode_change*/) // Should be 8192, not 64_000
 	})
 
 	test("should return model.maxTokens for non-Anthropic models that support reasoning budget but aren't using it", () => {
@@ -211,7 +211,7 @@ describe("getModelMaxOutputTokens", () => {
 		})
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	test("should cap qwen3-max-thinking to provider max output limit of 32,768", () => {
 		const model: ModelInfo = {
 			contextWindow: 300_000,
@@ -247,7 +247,7 @@ describe("getModelMaxOutputTokens", () => {
 		// 20% cap is 20,000 which is lower than 32,768.
 		expect(result).toBe(20_000)
 	})
-	// kilocode_change end
+	// novacode_change end
 
 	test("should handle GPT-5 models with various max token configurations", () => {
 		const testCases = [

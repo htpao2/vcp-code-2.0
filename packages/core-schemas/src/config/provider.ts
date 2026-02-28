@@ -5,17 +5,17 @@ const baseProviderSchema = z.object({
 	id: z.string(),
 })
 
-// Kilocode provider
-export const kilocodeProviderSchema = baseProviderSchema.extend({
-	provider: z.literal("kilocode"),
-	kilocodeModel: z.string().optional(),
-	kilocodeToken: z.string().optional(),
-	kilocodeOrganizationId: z.string().optional(),
+// Novacode provider
+export const novacodeProviderSchema = baseProviderSchema.extend({
+	provider: z.literal("novacode"),
+	novacodeModel: z.string().optional(),
+	novacodeToken: z.string().optional(),
+	novacodeOrganizationId: z.string().optional(),
 	openRouterSpecificProvider: z.string().optional(),
 	openRouterProviderDataCollection: z.enum(["allow", "deny"]).optional(),
 	openRouterProviderSort: z.enum(["price", "throughput", "latency"]).optional(),
 	openRouterZdr: z.boolean().optional(),
-	kilocodeTesterWarningsDisabledUntil: z.number().optional(),
+	novacodeTesterWarningsDisabledUntil: z.number().optional(),
 })
 
 // Anthropic provider
@@ -37,13 +37,13 @@ export const openAINativeProviderSchema = baseProviderSchema.extend({
 	openAiNativeServiceTier: z.enum(["auto", "default", "flex", "priority"]).optional(),
 })
 
-// kilocode_change start
+// novacode_change start
 // OpenAI Codex provider (ChatGPT Plus/Pro)
 export const openAICodexProviderSchema = baseProviderSchema.extend({
 	provider: z.literal("openai-codex"),
 	apiModelId: z.string().optional(),
 })
-// kilocode_change end
+// novacode_change end
 
 // OpenAI provider
 export const openAIProviderSchema = baseProviderSchema.extend({
@@ -59,7 +59,7 @@ export const openAIProviderSchema = baseProviderSchema.extend({
 	openAiHeaders: z.record(z.string(), z.string()).optional(),
 })
 
-// kilocode_change start
+// novacode_change start
 // OpenAI Responses provider
 export const openAIResponsesProviderSchema = baseProviderSchema.extend({
 	provider: z.literal("openai-responses"),
@@ -73,7 +73,7 @@ export const openAIResponsesProviderSchema = baseProviderSchema.extend({
 	openAiStreamingEnabled: z.boolean().optional(),
 	openAiHeaders: z.record(z.string(), z.string()).optional(),
 })
-// kilocode_change end
+// novacode_change end
 
 // OpenRouter provider
 export const openRouterProviderSchema = baseProviderSchema.extend({
@@ -88,7 +88,7 @@ export const openRouterProviderSchema = baseProviderSchema.extend({
 	openRouterZdr: z.boolean().optional(),
 })
 
-// kilocode_change start
+// novacode_change start
 // ZenMux provider
 export const zenmuxProviderSchema = baseProviderSchema.extend({
 	provider: z.literal("zenmux"),
@@ -101,7 +101,7 @@ export const zenmuxProviderSchema = baseProviderSchema.extend({
 	zenmuxProviderSort: z.enum(["price", "throughput", "latency"]).optional(),
 	zenmuxZdr: z.boolean().optional(),
 })
-// kilocode_change end
+// novacode_change end
 
 // Ollama provider
 export const ollamaProviderSchema = baseProviderSchema.extend({
@@ -145,14 +145,14 @@ export const deepInfraProviderSchema = baseProviderSchema.extend({
 	deepInfraApiKey: z.string().optional(),
 })
 
-// kilocode_change start
+// novacode_change start
 // Poe provider
 export const poeProviderSchema = baseProviderSchema.extend({
 	provider: z.literal("poe"),
 	poeModelId: z.string().optional(),
 	poeApiKey: z.string().optional(),
 })
-// kilocode_change end
+// novacode_change end
 
 // Unbound provider
 export const unboundProviderSchema = baseProviderSchema.extend({
@@ -424,20 +424,20 @@ export const fakeAIProviderSchema = baseProviderSchema.extend({
 
 // Discriminated union of all provider configs
 export const providerConfigSchema = z.discriminatedUnion("provider", [
-	kilocodeProviderSchema,
+	novacodeProviderSchema,
 	anthropicProviderSchema,
 	openAINativeProviderSchema,
-	openAICodexProviderSchema, // kilocode_change
+	openAICodexProviderSchema, // novacode_change
 	openAIProviderSchema,
-	openAIResponsesProviderSchema, // kilocode_change
+	openAIResponsesProviderSchema, // novacode_change
 	openRouterProviderSchema,
-	zenmuxProviderSchema, // kilocode_change
+	zenmuxProviderSchema, // novacode_change
 	ollamaProviderSchema,
 	lmStudioProviderSchema,
 	glamaProviderSchema,
 	liteLLMProviderSchema,
 	deepInfraProviderSchema,
-	poeProviderSchema, // kilocode_change
+	poeProviderSchema, // novacode_change
 	unboundProviderSchema,
 	requestyProviderSchema,
 	vercelAiGatewayProviderSchema,
@@ -472,20 +472,20 @@ export const providerConfigSchema = z.discriminatedUnion("provider", [
 ])
 
 // Inferred types
-export type KilocodeProviderConfig = z.infer<typeof kilocodeProviderSchema>
+export type NovacodeProviderConfig = z.infer<typeof novacodeProviderSchema>
 export type AnthropicProviderConfig = z.infer<typeof anthropicProviderSchema>
 export type OpenAINativeProviderConfig = z.infer<typeof openAINativeProviderSchema>
-export type OpenAICodexProviderConfig = z.infer<typeof openAICodexProviderSchema> // kilocode_change
+export type OpenAICodexProviderConfig = z.infer<typeof openAICodexProviderSchema> // novacode_change
 export type OpenAIProviderConfig = z.infer<typeof openAIProviderSchema>
-export type OpenAIResponsesProviderConfig = z.infer<typeof openAIResponsesProviderSchema> // kilocode_change
+export type OpenAIResponsesProviderConfig = z.infer<typeof openAIResponsesProviderSchema> // novacode_change
 export type OpenRouterProviderConfig = z.infer<typeof openRouterProviderSchema>
-export type ZenmuxProviderConfig = z.infer<typeof zenmuxProviderSchema> // kilocode_change
+export type ZenmuxProviderConfig = z.infer<typeof zenmuxProviderSchema> // novacode_change
 export type OllamaProviderConfig = z.infer<typeof ollamaProviderSchema>
 export type LMStudioProviderConfig = z.infer<typeof lmStudioProviderSchema>
 export type GlamaProviderConfig = z.infer<typeof glamaProviderSchema>
 export type LiteLLMProviderConfig = z.infer<typeof liteLLMProviderSchema>
 export type DeepInfraProviderConfig = z.infer<typeof deepInfraProviderSchema>
-export type PoeProviderConfig = z.infer<typeof poeProviderSchema> // kilocode_change
+export type PoeProviderConfig = z.infer<typeof poeProviderSchema> // novacode_change
 export type UnboundProviderConfig = z.infer<typeof unboundProviderSchema>
 export type RequestyProviderConfig = z.infer<typeof requestyProviderSchema>
 export type VercelAiGatewayProviderConfig = z.infer<typeof vercelAiGatewayProviderSchema>

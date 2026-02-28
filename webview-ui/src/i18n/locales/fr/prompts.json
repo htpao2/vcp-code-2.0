@@ -8,8 +8,8 @@
 		"noMatchFound": "Aucun mode trouvé",
 		"editModesConfig": "Modifier la configuration des modes",
 		"editGlobalModes": "Modifier les modes globaux",
-		"editProjectModes": "Modifier les modes du projet (.kilocodemodes)",
-		"createModeHelpText": "Les modes sont des personas spécialisés qui adaptent le comportement de Kilo Code. <0>En savoir plus sur l'utilisation des modes</0> ou <1>la personnalisation des modes.</1>",
+		"editProjectModes": "Modifier les modes du projet (.novacodemodes)",
+		"createModeHelpText": "Les modes sont des personas spécialisés qui adaptent le comportement de Nova Code. <0>En savoir plus sur l'utilisation des modes</0> ou <1>la personnalisation des modes.</1>",
 		"selectMode": "Rechercher les modes"
 	},
 	"apiConfiguration": {
@@ -18,7 +18,7 @@
 	},
 	"organizationMode": {
 		"title": "Mode d'organisation",
-		"description": "Ce mode est fourni par ton organisation et ne peut pas être modifié ici. Pour modifier ce mode, visite le <dashboardLink>Kilo Code Dashboard</dashboardLink>.",
+		"description": "Ce mode est fourni par ton organisation et ne peut pas être modifié ici. Pour modifier ce mode, visite le <dashboardLink>Nova Code Dashboard</dashboardLink>.",
 		"cannotEdit": "Les modes d'organisation ne peuvent pas être modifiés"
 	},
 	"tools": {
@@ -39,7 +39,7 @@
 	"roleDefinition": {
 		"title": "Définition du rôle",
 		"resetToDefault": "Réinitialiser aux valeurs par défaut",
-		"description": "Définissez l'expertise et la personnalité de Kilo Code pour ce mode. Cette description façonne la manière dont Kilo Code se présente et aborde les tâches."
+		"description": "Définissez l'expertise et la personnalité de Nova Code pour ce mode. Cette description façonne la manière dont Nova Code se présente et aborde les tâches."
 	},
 	"description": {
 		"title": "Description courte (pour humains)",
@@ -55,11 +55,11 @@
 		"title": "Instructions personnalisées spécifiques au mode (optionnel)",
 		"resetToDefault": "Réinitialiser aux valeurs par défaut",
 		"description": "Ajoutez des directives comportementales spécifiques au mode {{modeName}}.",
-		"loadFromFile": "Les instructions personnalisées spécifiques au mode {{mode}} peuvent également être chargées depuis le dossier <span>.kilocode/rules-{{slug}}/</span> dans votre espace de travail ou depuis le global <0>.kilocode/rules-{{slug}}/</0> (.kilocoderules-{{slug}} et .clinerules-{{slug}} sont obsolètes et cesseront de fonctionner bientôt)."
+		"loadFromFile": "Les instructions personnalisées spécifiques au mode {{mode}} peuvent également être chargées depuis le dossier <span>.novacode/rules-{{slug}}/</span> dans votre espace de travail ou depuis le global <0>.novacode/rules-{{slug}}/</0> (.novacoderules-{{slug}} et .clinerules-{{slug}} sont obsolètes et cesseront de fonctionner bientôt)."
 	},
 	"exportMode": {
 		"title": "Exporter le mode",
-		"description": "Exporte ce mode avec les règles du dossier .kilocode/rules-{{slug}}/ combinées dans un fichier YAML partageable. Les fichiers originaux restent inchangés.",
+		"description": "Exporte ce mode avec les règles du dossier .novacode/rules-{{slug}}/ combinées dans un fichier YAML partageable. Les fichiers originaux restent inchangés.",
 		"exporting": "Exportation..."
 	},
 	"importMode": {
@@ -68,11 +68,11 @@
 		"importing": "Importation...",
 		"global": {
 			"label": "Niveau global",
-			"description": "Disponible dans tous les projets. Si le mode exporté contenait des fichiers de règles, ils seront recréés dans le dossier global .kilocode/rules-{slug}/."
+			"description": "Disponible dans tous les projets. Si le mode exporté contenait des fichiers de règles, ils seront recréés dans le dossier global .novacode/rules-{slug}/."
 		},
 		"project": {
 			"label": "Niveau projet",
-			"description": "Disponible uniquement dans cet espace de travail. Si le mode exporté contenait des fichiers de règles, ils seront recréés dans le dossier .kilocode/rules-{slug}/."
+			"description": "Disponible uniquement dans cet espace de travail. Si le mode exporté contenait des fichiers de règles, ils seront recréés dans le dossier .novacode/rules-{slug}/."
 		}
 	},
 	"advanced": {
@@ -81,7 +81,7 @@
 	"globalCustomInstructions": {
 		"title": "Instructions personnalisées pour tous les modes",
 		"description": "Ces instructions s'appliquent à tous les modes. Elles fournissent un ensemble de comportements de base qui peuvent être améliorés par des instructions spécifiques au mode ci-dessous. <0>En savoir plus</0>",
-		"loadFromFile": "Les instructions peuvent également être chargées depuis le dossier <span>.kilocode/rules/</span> dans votre espace de travail ou depuis le global <0>.kilocode/rules/</0> (.kilocoderules et .clinerules sont obsolètes et cesseront de fonctionner bientôt)."
+		"loadFromFile": "Les instructions peuvent également être chargées depuis le dossier <span>.novacode/rules/</span> dans votre espace de travail ou depuis le global <0>.novacode/rules/</0> (.novacoderules et .clinerules sont obsolètes et cesseront de fonctionner bientôt)."
 	},
 	"systemPrompt": {
 		"preview": "Aperçu du prompt système",
@@ -110,7 +110,7 @@
 		"types": {
 			"ENHANCE": {
 				"label": "Améliorer le prompt",
-				"description": "Utilisez l'amélioration de prompt pour obtenir des suggestions ou des améliorations personnalisées pour vos entrées. Cela garantit que Kilo Code comprend votre intention et fournit les meilleures réponses possibles. Disponible via l'icône ✨ dans le chat."
+				"description": "Utilisez l'amélioration de prompt pour obtenir des suggestions ou des améliorations personnalisées pour vos entrées. Cela garantit que Nova Code comprend votre intention et fournit les meilleures réponses possibles. Disponible via l'icône ✨ dans le chat."
 			},
 			"CONDENSE": {
 				"label": "Condensation du contexte",
@@ -160,7 +160,7 @@
 	},
 	"advancedSystemPrompt": {
 		"title": "Avancé : Remplacer le prompt système",
-		"description": "<2>⚠️ Attention :</2> Cette fonctionnalité avancée contourne les mesures de protection. <1>LISEZ CECI AVANT UTILISATION !</1>Remplacez le prompt système par défaut en créant un fichier à l'emplacement <span>.kilocode/system-prompt-{{slug}}</span>."
+		"description": "<2>⚠️ Attention :</2> Cette fonctionnalité avancée contourne les mesures de protection. <1>LISEZ CECI AVANT UTILISATION !</1>Remplacez le prompt système par défaut en créant un fichier à l'emplacement <span>.novacode/system-prompt-{{slug}}</span>."
 	},
 	"createModeDialog": {
 		"title": "Créer un nouveau mode",
@@ -181,13 +181,13 @@
 				"description": "Disponible dans tous les espaces de travail"
 			},
 			"project": {
-				"label": "Spécifique au projet (.kilocodemodes)",
+				"label": "Spécifique au projet (.novacodemodes)",
 				"description": "Disponible uniquement dans cet espace de travail, a priorité sur le global"
 			}
 		},
 		"roleDefinition": {
 			"label": "Définition du rôle",
-			"description": "Définissez l'expertise et la personnalité de Kilo Code pour ce mode."
+			"description": "Définissez l'expertise et la personnalité de Nova Code pour ce mode."
 		},
 		"whenToUse": {
 			"label": "Quand utiliser (optionnel)",

@@ -2205,7 +2205,7 @@ describe("summarizeConversation with custom settings", () => {
 	/**
 	 * Test that telemetry is called for custom prompt usage
 	 */
-	// kilocode_change: skip
+	// novacode_change: skip
 	it.skip("should capture telemetry when using custom prompt", async () => {
 		await summarizeConversation(
 			sampleMessages,
@@ -2229,7 +2229,7 @@ describe("summarizeConversation with custom settings", () => {
 	/**
 	 * Test that telemetry is called for custom API handler usage
 	 */
-	// kilocode_change: skip
+	// novacode_change: skip
 	it.skip("should capture telemetry when using custom API handler", async () => {
 		await summarizeConversation(
 			sampleMessages,
@@ -2254,7 +2254,7 @@ describe("summarizeConversation with custom settings", () => {
 	/**
 	 * Test that telemetry is called with both custom prompt and API handler
 	 */
-	// kilocode_change: skip
+	// novacode_change: skip
 	it.skip("should capture telemetry when using both custom prompt and API handler", async () => {
 		await summarizeConversation(
 			sampleMessages,
@@ -2277,7 +2277,7 @@ describe("summarizeConversation with custom settings", () => {
 	})
 })
 
-// kilocode_change start
+// novacode_change start
 describe("hasIncompatibleSummaryForExtendedThinking", () => {
 	const extendedThinkingModel = { supportsReasoningBudget: true } as any
 	const regularModel = { supportsReasoningBudget: false } as any
@@ -2468,4 +2468,4 @@ describe("uncondenseForExtendedThinking", () => {
 		expect(hidden2?.condenseParent).toBeUndefined()
 	})
 })
-// kilocode_change end
+// novacode_change end

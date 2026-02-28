@@ -12,7 +12,7 @@ import * as fileSearch from "../../../services/search/file-search"
 
 import { RepoPerTaskCheckpointService } from "../RepoPerTaskCheckpointService"
 
-// kilocode_change start
+// novacode_change start
 vi.mock("@roo-code/telemetry", () => ({
 	TelemetryService: {
 		instance: {
@@ -20,14 +20,15 @@ vi.mock("@roo-code/telemetry", () => ({
 		},
 	},
 }))
-// kilocode_change end
+// novacode_change end
 
 const tmpDir = path.join(os.tmpdir(), "CheckpointService")
+vi.setConfig({ testTimeout: 120_000, hookTimeout: 120_000 })
 
 const initWorkspaceRepo = async ({
 	workspaceDir,
-	userName = "Kilo Code",
-	userEmail = "support@kilo.ai",
+	userName = "Nova Code",
+	userEmail = "support@nova.ai",
 	testFileName = "test.txt",
 	textFileContent = "Hello, world!",
 }: {

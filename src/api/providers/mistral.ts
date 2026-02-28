@@ -1,4 +1,4 @@
-import { Anthropic } from "@anthropic-ai/sdk"
+﻿import { Anthropic } from "@anthropic-ai/sdk"
 import { Mistral } from "@mistralai/mistralai"
 import OpenAI from "openai"
 
@@ -19,10 +19,10 @@ import { handleProviderError } from "./utils/error-handler"
 
 import { BaseProvider } from "./base-provider"
 import type { SingleCompletionHandler, ApiHandlerCreateMessageMetadata } from "../index"
-import { DEFAULT_HEADERS } from "./constants" // kilocode_change
-import { streamSse } from "../../services/autocomplete/continuedev/core/fetch/stream" // kilocode_change
-import type { CompletionUsage } from "./openrouter" // kilocode_change
-import type { FimHandler } from "./kilocode/FimHandler" // kilocode_change
+import { DEFAULT_HEADERS } from "./constants" // novacode_change
+import { streamSse } from "../../services/autocomplete/continuedev/core/fetch/stream" // novacode_change
+import type { CompletionUsage } from "./openrouter" // novacode_change
+import type { FimHandler } from "./nova/FimHandler" // novacode_change
 
 // Type helper to handle thinking chunks from Mistral API
 // The SDK includes ThinkChunk but TypeScript has trouble with the discriminated union
@@ -230,7 +230,7 @@ export class MistralHandler extends BaseProvider implements SingleCompletionHand
 		}
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	fimSupport(): FimHandler | undefined {
 		const modelId = this.options.apiModelId ?? mistralDefaultModelId
 		if (!modelId.startsWith("codestral-")) {
@@ -312,5 +312,5 @@ export class MistralHandler extends BaseProvider implements SingleCompletionHand
 			}
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 }

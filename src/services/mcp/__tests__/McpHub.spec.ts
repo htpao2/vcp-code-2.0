@@ -1,4 +1,4 @@
-import fs from "fs/promises"
+﻿import fs from "fs/promises"
 
 import type { Mock } from "vitest"
 import type { ExtensionContext, Uri } from "vscode"
@@ -50,7 +50,7 @@ vi.mock("../../../utils/safeWriteJson", () => ({
 }))
 
 // Mock NotificationService
-vi.mock("../kilocode/NotificationService", () => ({
+vi.mock("../nova/NotificationService", () => ({
 	NotificationService: vi.fn().mockImplementation(() => ({
 		connect: vi.fn(),
 	})),
@@ -219,7 +219,7 @@ describe("McpHub", () => {
 				close: vi.fn().mockResolvedValue(undefined),
 				getInstructions: vi.fn().mockReturnValue("test instructions"),
 				request: vi.fn().mockResolvedValue({ tools: [], resources: [], resourceTemplates: [] }),
-				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // kilocode_change
+				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // novacode_change
 			}
 
 			Client.mockImplementation(() => mockClient)
@@ -353,6 +353,35 @@ describe("McpHub", () => {
 		})
 	})
 
+	describe("Transport retry policy and observability", () => {
+		it("should use transport-owned retry for SSE to avoid duplicate reconnect loops", () => {
+			expect((mcpHub as any).shouldScheduleReconnect("sse", "error")).toBe(false)
+			expect((mcpHub as any).shouldScheduleReconnect("sse", "close")).toBe(false)
+		})
+
+		it("should use close-only reconnect scheduling for streamable-http", () => {
+			expect((mcpHub as any).shouldScheduleReconnect("streamable-http", "error")).toBe(false)
+			expect((mcpHub as any).shouldScheduleReconnect("streamable-http", "close")).toBe(true)
+		})
+
+		it("should generate transport log metadata with requestId/provider/url", () => {
+			const meta = (mcpHub as any).createTransportLogMeta("meta-server", "global", {
+				type: "sse",
+				url: "https://example.com/sse",
+				headers: {},
+				timeout: 60,
+				alwaysAllow: [],
+				disabledTools: [],
+			})
+
+			expect(meta.requestId).toContain("mcp-sse-meta-server-")
+			expect(meta.provider).toBe("meta-server")
+			expect(meta.url).toBe("https://example.com/sse")
+			expect(meta.source).toBe("global")
+			expect(meta.transportType).toBe("sse")
+		})
+	})
+
 	describe("File watcher cleanup", () => {
 		it("should clean up file watchers when server is disabled", async () => {
 			// Get the mocked chokidar
@@ -388,7 +417,7 @@ describe("McpHub", () => {
 				close: vi.fn().mockResolvedValue(undefined),
 				getInstructions: vi.fn().mockReturnValue("test instructions"),
 				request: vi.fn().mockResolvedValue({ tools: [], resources: [], resourceTemplates: [] }),
-				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // kilocode_change
+				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // novacode_change
 			}
 
 			Client.mockImplementation(() => mockClient)
@@ -462,7 +491,7 @@ describe("McpHub", () => {
 				close: vi.fn().mockResolvedValue(undefined),
 				getInstructions: vi.fn().mockReturnValue("test instructions"),
 				request: vi.fn().mockResolvedValue({ tools: [], resources: [], resourceTemplates: [] }),
-				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // kilocode_change
+				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // novacode_change
 			}
 
 			Client.mockImplementation(() => mockClient)
@@ -673,7 +702,7 @@ describe("McpHub", () => {
 				close: vi.fn().mockResolvedValue(undefined),
 				getInstructions: vi.fn().mockReturnValue("test instructions"),
 				request: vi.fn().mockResolvedValue({ tools: [], resources: [], resourceTemplates: [] }),
-				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // kilocode_change
+				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // novacode_change
 			}
 
 			Client.mockImplementation(() => mockClient)
@@ -746,7 +775,7 @@ describe("McpHub", () => {
 				close: vi.fn().mockResolvedValue(undefined),
 				getInstructions: vi.fn().mockReturnValue("test instructions"),
 				request: vi.fn().mockResolvedValue({ tools: [], resources: [], resourceTemplates: [] }),
-				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // kilocode_change
+				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // novacode_change
 			}
 
 			Client.mockImplementation(() => mockClient)
@@ -1638,7 +1667,7 @@ describe("McpHub", () => {
 				close: vi.fn().mockResolvedValue(undefined),
 				getInstructions: vi.fn().mockReturnValue("test instructions"),
 				request: vi.fn().mockResolvedValue({ tools: [], resources: [], resourceTemplates: [] }),
-				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // kilocode_change
+				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // novacode_change
 			}
 
 			Client.mockImplementation(() => mockClient)
@@ -1759,7 +1788,7 @@ describe("McpHub", () => {
 				close: vi.fn().mockResolvedValue(undefined),
 				getInstructions: vi.fn().mockReturnValue("test instructions"),
 				request: vi.fn().mockResolvedValue({ tools: [], resources: [], resourceTemplates: [] }),
-				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // kilocode_change
+				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // novacode_change
 			}))
 
 			// Mock provider with mcpEnabled: true
@@ -1947,7 +1976,7 @@ describe("McpHub", () => {
 				close: vi.fn().mockResolvedValue(undefined),
 				getInstructions: vi.fn().mockReturnValue("test instructions"),
 				request: vi.fn().mockResolvedValue({ tools: [], resources: [], resourceTemplates: [] }),
-				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // kilocode_change
+				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // novacode_change
 			}))
 
 			// Create a new McpHub instance
@@ -2010,7 +2039,7 @@ describe("McpHub", () => {
 				close: vi.fn().mockResolvedValue(undefined),
 				getInstructions: vi.fn().mockReturnValue("test instructions"),
 				request: vi.fn().mockResolvedValue({ tools: [], resources: [], resourceTemplates: [] }),
-				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // kilocode_change
+				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // novacode_change
 			}))
 
 			// Create a new McpHub instance
@@ -2073,7 +2102,7 @@ describe("McpHub", () => {
 				close: vi.fn().mockResolvedValue(undefined),
 				getInstructions: vi.fn().mockReturnValue("test instructions"),
 				request: vi.fn().mockResolvedValue({ tools: [], resources: [], resourceTemplates: [] }),
-				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // kilocode_change
+				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // novacode_change
 			}))
 
 			// Create a new McpHub instance
@@ -2143,7 +2172,7 @@ describe("McpHub", () => {
 				close: vi.fn().mockResolvedValue(undefined),
 				getInstructions: vi.fn().mockReturnValue("test instructions"),
 				request: vi.fn().mockResolvedValue({ tools: [], resources: [], resourceTemplates: [] }),
-				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // kilocode_change
+				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // novacode_change
 			}))
 
 			// Create a new McpHub instance
@@ -2217,7 +2246,7 @@ describe("McpHub", () => {
 				close: vi.fn().mockResolvedValue(undefined),
 				getInstructions: vi.fn().mockReturnValue("test instructions"),
 				request: vi.fn().mockResolvedValue({ tools: [], resources: [], resourceTemplates: [] }),
-				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // kilocode_change
+				getServerCapabilities: vi.fn().mockResolvedValue({ tools: {} }), // novacode_change
 			}))
 
 			// Create a new McpHub instance

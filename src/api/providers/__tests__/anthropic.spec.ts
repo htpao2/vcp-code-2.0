@@ -13,7 +13,7 @@ vitest.mock("@roo-code/telemetry", () => ({
 }))
 
 const mockCreate = vitest.fn()
-const mockCountTokens = vitest.fn() // kilocode_change
+const mockCountTokens = vitest.fn() // novacode_change
 
 vitest.mock("@anthropic-ai/sdk", () => {
 	const mockAnthropicConstructor = vitest.fn().mockImplementation(() => ({
@@ -62,7 +62,7 @@ vitest.mock("@anthropic-ai/sdk", () => {
 					},
 				}
 			}),
-			countTokens: mockCountTokens, // kilocode_change
+			countTokens: mockCountTokens, // novacode_change
 		},
 	}))
 
@@ -190,7 +190,7 @@ describe("AnthropicHandler", () => {
 			expect(mockCreate).toHaveBeenCalled()
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("uses anthropicDeploymentName as the model for streaming calls when provided", async () => {
 			const handlerWithDeployment = new AnthropicHandler({
 				...mockOptions,
@@ -213,7 +213,7 @@ describe("AnthropicHandler", () => {
 			const lastCall = mockCreate.mock.calls[mockCreate.mock.calls.length - 1]?.[0]
 			expect(lastCall?.model).toBe("custom-deployment-model")
 		})
-		// kilocode_change end
+		// novacode_change end
 
 		it("should include 1M context beta header for Claude Sonnet 4.6 when enabled", async () => {
 			const sonnet46Handler = new AnthropicHandler({
@@ -252,7 +252,7 @@ describe("AnthropicHandler", () => {
 			})
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("uses anthropicDeploymentName as the model for non-streaming calls when provided", async () => {
 			const handlerWithDeployment = new AnthropicHandler({
 				...mockOptions,
@@ -270,7 +270,7 @@ describe("AnthropicHandler", () => {
 				stream: false,
 			})
 		})
-		// kilocode_change end
+		// novacode_change end
 
 		it("should handle API errors", async () => {
 			mockCreate.mockRejectedValueOnce(new Error("Anthropic completion error: API Error"))
@@ -839,7 +839,7 @@ describe("AnthropicHandler", () => {
 			})
 		})
 	})
-	// kilocode_change start
+	// novacode_change start
 	describe("countTokens", () => {
 		it("uses the internal model ID when no deployment name is provided", async () => {
 			mockCountTokens.mockResolvedValueOnce({ input_tokens: 123 })
@@ -872,5 +872,5 @@ describe("AnthropicHandler", () => {
 			expect(result).toBe(456)
 		})
 	})
-	// kilocode_change end
+	// novacode_change end
 })

@@ -13,11 +13,11 @@ interface ImageGenerationSettingsProps {
 	setImageGenerationProvider: (provider: ImageGenerationProvider) => void
 	setOpenRouterImageApiKey: (apiKey: string) => void
 	setImageGenerationSelectedModel: (model: string) => void
-	// kilocode_change start
-	kiloCodeImageApiKey?: string
-	setKiloCodeImageApiKey: (apiKey: string) => void
-	currentProfileKilocodeToken?: string
-	// kilocode_change end
+	// novacode_change start
+	novaCodeImageApiKey?: string
+	setNovaCodeImageApiKey: (apiKey: string) => void
+	currentProfileNovacodeToken?: string
+	// novacode_change end
 }
 
 export const ImageGenerationSettings = ({
@@ -29,11 +29,11 @@ export const ImageGenerationSettings = ({
 	setImageGenerationProvider,
 	setOpenRouterImageApiKey,
 	setImageGenerationSelectedModel,
-	// kilocode_change start
-	kiloCodeImageApiKey,
-	setKiloCodeImageApiKey,
-	currentProfileKilocodeToken,
-	// kilocode_change end
+	// novacode_change start
+	novaCodeImageApiKey,
+	setNovaCodeImageApiKey,
+	currentProfileNovacodeToken,
+	// novacode_change end
 }: ImageGenerationSettingsProps) => {
 	const { t } = useAppTranslation()
 
@@ -43,7 +43,7 @@ export const ImageGenerationSettings = ({
 		!!openRouterImageGenerationSelectedModel,
 	)
 
-	// kilocode_change start
+	// novacode_change start
 	useEffect(() => {
 		if (!enabled) {
 			return
@@ -52,7 +52,7 @@ export const ImageGenerationSettings = ({
 			setOpenRouterImageApiKey("")
 		}
 	}, [enabled, currentProvider, openRouterImageApiKey, setOpenRouterImageApiKey])
-	// kilocode_change end
+	// novacode_change end
 
 	const availableModels = useMemo(() => {
 		return IMAGE_GENERATION_MODELS.filter((model) => model.provider === currentProvider)
@@ -76,7 +76,7 @@ export const ImageGenerationSettings = ({
 	}, [openRouterImageGenerationSelectedModel, availableModels, currentProvider])
 
 	// Handle provider changes
-	// kilocode_change: unused for now
+	// novacode_change: unused for now
 	const handleProviderChange = (value: string) => {
 		const newProvider = value as ImageGenerationProvider
 		setImageGenerationProvider(newProvider)
@@ -105,8 +105,8 @@ export const ImageGenerationSettings = ({
 		setOpenRouterImageApiKey(value)
 	}
 
-	const handleKiloApiKeyChange = (value: string) => {
-		setKiloCodeImageApiKey(value)
+	const handleNovaApiKeyChange = (value: string) => {
+		setNovaCodeImageApiKey(value)
 	}
 
 	// Handle model selection changes
@@ -114,7 +114,7 @@ export const ImageGenerationSettings = ({
 		setImageGenerationSelectedModel(value)
 	}
 
-	const isConfigured = currentProvider === "openrouter" ? openRouterImageApiKey : kiloCodeImageApiKey // kilocode_change
+	const isConfigured = currentProvider === "openrouter" ? openRouterImageApiKey : novaCodeImageApiKey // novacode_change
 
 	return (
 		<div className="space-y-4">
@@ -140,8 +140,8 @@ export const ImageGenerationSettings = ({
 							value={currentProvider}
 							onChange={(e: any) => handleProviderChange(e.target.value)}
 							className="w-full">
-							<VSCodeOption value="kilocode" className="py-2 px-3">
-								Kilo Gateway
+							<VSCodeOption value="novacode" className="py-2 px-3">
+								Nova Gateway
 							</VSCodeOption>
 							<VSCodeOption value="openrouter" className="py-2 px-3">
 								OpenRouter
@@ -153,49 +153,49 @@ export const ImageGenerationSettings = ({
 					</div>
 
 					{/* {
-						// kilocode_change start
+						// novacode_change start
 						<div>
 							<label className="block font-medium mb-1">
 								{t("settings:experimental.IMAGE_GENERATION.apiProvider")}
 							</label>
 							<VSCodeDropdown
-								value={isUsingOpenRouter ? "openrouter" : "kilocode"}
+								value={isUsingOpenRouter ? "openrouter" : "novacode"}
 								onChange={(e: any) => {
 									console.log("onChange", Boolean(e.target.value))
 									setIsUsingOpenRouter(e.target.value === "openrouter")
 								}}
 								className="w-full">
-								<VSCodeOption className="py-2 px-3" value="kilocode">
-									Kilo Code
+								<VSCodeOption className="py-2 px-3" value="novacode">
+									Nova Code
 								</VSCodeOption>
 								<VSCodeOption className="py-2 px-3" value="openrouter">
 									OpenRouter
 								</VSCodeOption>
 							</VSCodeDropdown>
 						</div>
-						// kilocode_change end
+						// novacode_change end
 					} */}
 
 					{
-						// kilocode_change start
+						// novacode_change start
 						<div style={{ display: currentProvider === "openrouter" ? "none" : undefined }}>
 							<label className="block font-medium mb-1">
-								{t("settings:experimental.IMAGE_GENERATION.kiloCodeApiKeyLabel")}
+								{t("settings:experimental.IMAGE_GENERATION.novaCodeApiKeyLabel")}
 							</label>
 							<VSCodeTextField
-								value={kiloCodeImageApiKey}
-								onInput={(e: any) => handleKiloApiKeyChange(e.target.value)}
-								placeholder={t("settings:experimental.IMAGE_GENERATION.kiloCodeApiKeyPlaceholder")}
+								value={novaCodeImageApiKey}
+								onInput={(e: any) => handleNovaApiKeyChange(e.target.value)}
+								placeholder={t("settings:experimental.IMAGE_GENERATION.novaCodeApiKeyPlaceholder")}
 								className="w-full"
 								type="password"
 							/>
 							<p className="text-vscode-descriptionForeground text-xs mt-1">
-								{currentProfileKilocodeToken ? (
+								{currentProfileNovacodeToken ? (
 									<a
 										href="#"
-										onClick={() => handleKiloApiKeyChange(currentProfileKilocodeToken)}
+										onClick={() => handleNovaApiKeyChange(currentProfileNovacodeToken)}
 										className="text-vscode-textLink-foreground hover:text-vscode-textLink-activeForeground">
-										{t("settings:experimental.IMAGE_GENERATION.kiloCodeApiKeyPaste")}
+										{t("settings:experimental.IMAGE_GENERATION.novaCodeApiKeyPaste")}
 									</a>
 								) : (
 									<>
@@ -211,7 +211,7 @@ export const ImageGenerationSettings = ({
 								)}
 							</p>
 						</div>
-						// kilocode_change end
+						// novacode_change end
 					}
 
 					{/* API Key Configuration (only for OpenRouter) */}

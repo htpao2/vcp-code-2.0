@@ -1,6 +1,6 @@
 {
 	"extension": {
-		"name": "Kilo Code",
+		"name": "Nova Code",
 		"description": "開源 AI 編碼代理，可從自然語言產生程式碼、自動化工作並執行終端機命令。具有內嵌自動完成、瀏覽器自動化、自動重構以及用於規劃、編碼和除錯的自訂模式。支援 500 多種 AI 模型，包括 Claude (Anthropic)、Gemini、Grok、GPT、Codex 和 GLM。"
 	},
 	"number_format": {
@@ -165,7 +165,7 @@
 	"warnings": {
 		"no_terminal_content": "沒有選擇終端機內容",
 		"missing_task_files": "此任務的檔案遺失。您想從任務列表中刪除它嗎？",
-		"auto_import_failed": "自動匯入 Kilo Code 設定失敗：{{error}}"
+		"auto_import_failed": "自動匯入 Nova Code 設定失敗：{{error}}"
 	},
 	"info": {
 		"no_changes": "沒有找到更改。",
@@ -174,7 +174,7 @@
 		"custom_storage_path_set": "自訂儲存路徑已設定：{{path}}",
 		"default_storage_path": "已恢復使用預設儲存路徑",
 		"settings_imported": "設定已成功匯入。",
-		"auto_import_success": "已自動匯入 Kilo Code 設定：{{filename}}",
+		"auto_import_success": "已自動匯入 Nova Code 設定：{{filename}}",
 		"share_link_copied": "分享連結已複製到剪貼簿",
 		"image_copied_to_clipboard": "圖片資料 URI 已複製到剪貼簿",
 		"image_saved": "圖片已儲存至 {{path}}",
@@ -208,12 +208,12 @@
 	},
 	"storage": {
 		"prompt_custom_path": "輸入自定義對話記錄儲存路徑，留空以使用預設位置",
-		"path_placeholder": "D:\\KiloCodeStorage",
-		"enter_absolute_path": "請輸入絕對路徑（例如 D:\\KiloCodeStorage 或 /home/user/storage）",
+		"path_placeholder": "D:\\NovaCodeStorage",
+		"enter_absolute_path": "請輸入絕對路徑（例如 D:\\NovaCodeStorage 或 /home/user/storage）",
 		"enter_valid_path": "請輸入有效的路徑"
 	},
 	"input": {
-		"task_prompt": "Kilo Code 該做什麼？",
+		"task_prompt": "Nova Code 該做什麼？",
 		"task_placeholder": "在這裡輸入任務"
 	},
 	"settings": {
@@ -224,8 +224,8 @@
 	},
 	"customModes": {
 		"errors": {
-			"yamlParseError": ".kilocodemodes 檔案第 {{line}} 行 YAML 格式無效。請檢查：\n• 正確的縮排（使用空格，不要使用定位字元）\n• 匹配的引號和括號\n• 有效的 YAML 語法",
-			"schemaValidationError": ".kilocodemodes 中自訂模式格式無效：\n{{issues}}",
+			"yamlParseError": ".novacodemodes 檔案第 {{line}} 行 YAML 格式無效。請檢查：\n• 正確的縮排（使用空格，不要使用定位字元）\n• 匹配的引號和括號\n• 有效的 YAML 語法",
+			"schemaValidationError": ".novacodemodes 中自訂模式格式無效：\n{{issues}}",
 			"invalidFormat": "自訂模式格式無效。請確保你的設定遵循正確的 YAML 格式。",
 			"updateFailed": "更新自訂模式失敗：{{error}}",
 			"deleteFailed": "刪除自訂模式失敗：{{error}}",
@@ -274,7 +274,7 @@
 	},
 	"docsLink": {
 		"label": "Docs",
-		"url": "https://kilo.ai/docs"
+		"url": "https://nova.ai/docs"
 	},
 	"errorBoundary": {
 		"title": "錯誤",

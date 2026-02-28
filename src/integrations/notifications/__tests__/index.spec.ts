@@ -1,9 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
-import { execa } from "execa"
 import * as path from "path"
 
 // Mock execa
-vi.mock("execa")
+const mockedExeca = vi.fn()
+vi.mock("execa", () => ({
+	execa: mockedExeca,
+}))
 
 // Mock os module
 vi.mock("os", () => ({
@@ -30,7 +32,6 @@ vi.mock("vscode", () => ({
 import { showSystemNotification } from "../index"
 import * as os from "os"
 
-const mockedExeca = vi.mocked(execa)
 const mockedPlatform = vi.mocked(os.platform)
 
 describe("showSystemNotification", () => {
@@ -54,7 +55,7 @@ describe("showSystemNotification", () => {
 				message: "Test Message",
 			})
 
-			const expectedIconPath = path.join(__dirname, "..", "..", "..", "assets", "icons", "kilo.png")
+			const expectedIconPath = path.join(__dirname, "..", "..", "..", "assets", "icons", "nova.png")
 			expect(mockedExeca).toHaveBeenCalledWith("terminal-notifier", [
 				"-message",
 				"Test Message",
@@ -82,7 +83,7 @@ describe("showSystemNotification", () => {
 				message: "Test Message",
 			})
 
-			const expectedIconPath = path.join(__dirname, "..", "..", "..", "assets", "icons", "kilo.png")
+			const expectedIconPath = path.join(__dirname, "..", "..", "..", "assets", "icons", "nova.png")
 			expect(mockedExeca).toHaveBeenCalledTimes(2)
 			expect(mockedExeca).toHaveBeenNthCalledWith(1, "terminal-notifier", [
 				"-message",
@@ -109,12 +110,12 @@ describe("showSystemNotification", () => {
 				message: "Test Message",
 			})
 
-			const expectedIconPath = path.join(__dirname, "..", "..", "..", "assets", "icons", "kilo.png")
+			const expectedIconPath = path.join(__dirname, "..", "..", "..", "assets", "icons", "nova.png")
 			expect(mockedExeca).toHaveBeenCalledWith("terminal-notifier", [
 				"-message",
 				"Test Message",
 				"-title",
-				"Kilo Code",
+				"Nova Code",
 				"-sound",
 				"Tink",
 				"-appIcon",
@@ -130,7 +131,7 @@ describe("showSystemNotification", () => {
 				message: "Test Message",
 			})
 
-			const expectedIconPath = path.join(__dirname, "..", "..", "..", "assets", "icons", "kilo.png")
+			const expectedIconPath = path.join(__dirname, "..", "..", "..", "assets", "icons", "nova.png")
 			expect(mockedExeca).toHaveBeenCalledWith("terminal-notifier", [
 				"-message",
 				"Test Message",
@@ -152,7 +153,7 @@ describe("showSystemNotification", () => {
 				message: 'Message with "quotes"',
 			})
 
-			const expectedIconPath = path.join(__dirname, "..", "..", "..", "assets", "icons", "kilo.png")
+			const expectedIconPath = path.join(__dirname, "..", "..", "..", "assets", "icons", "nova.png")
 			expect(mockedExeca).toHaveBeenCalledWith("terminal-notifier", [
 				"-message",
 				'Message with \\"quotes\\"',
@@ -269,12 +270,12 @@ describe("showSystemNotification", () => {
 				message: "Test Message",
 			})
 
-			const expectedIconPath = path.join(__dirname, "..", "..", "..", "assets", "icons", "kilo.png")
+			const expectedIconPath = path.join(__dirname, "..", "..", "..", "assets", "icons", "nova.png")
 			expect(mockedExeca).toHaveBeenCalledWith("terminal-notifier", [
 				"-message",
 				"Test Message",
 				"-title",
-				"Kilo Code",
+				"Nova Code",
 				"-sound",
 				"Tink",
 				"-appIcon",

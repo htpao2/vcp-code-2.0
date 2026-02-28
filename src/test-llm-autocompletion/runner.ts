@@ -118,7 +118,7 @@ export class TestRunner {
 		const strategyName = tester.getName()
 
 		console.log("\n🚀 Starting LLM Autocompletion Tests\n")
-		console.log("Provider: kilocode")
+		console.log("Provider: novacode")
 		console.log("Model:", model)
 		console.log("Strategy:", strategyName)
 		if (numRuns > 1) {
@@ -500,17 +500,17 @@ async function main() {
 
 // Check for required environment variables
 function checkEnvironment() {
-	const provider = process.env.LLM_PROVIDER || "kilocode"
+	const provider = process.env.LLM_PROVIDER || "novacode"
 
-	if (provider !== "kilocode") {
-		console.error(`\n❌ Error: Only kilocode provider is supported. Got: ${provider}`)
+	if (provider !== "novacode") {
+		console.error(`\n❌ Error: Only novacode provider is supported. Got: ${provider}`)
 		process.exit(1)
 	}
 
-	if (!process.env.KILOCODE_API_KEY) {
-		console.error(`\n❌ Error: KILOCODE_API_KEY is not set`)
+	if (!process.env.NOVACODE_API_KEY) {
+		console.error(`\n❌ Error: NOVACODE_API_KEY is not set`)
 		console.log("\nPlease create a .env file with your API credentials.")
-		console.log("Example: KILOCODE_API_KEY=your-api-key-here\n")
+		console.log("Example: NOVACODE_API_KEY=your-api-key-here\n")
 		process.exit(1)
 	}
 }

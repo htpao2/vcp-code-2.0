@@ -9,7 +9,7 @@ cd src/test-llm-autocompletion
 cp .env.example .env
 ```
 
-Set your kilocode API key in `.env`.
+Set your novacode API key in `.env`.
 
 ## What “approval testing” means here
 

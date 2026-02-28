@@ -7,7 +7,7 @@
 		"imageWithSize": "Súbor obrázka ({{size}} KB)"
 	},
 	"toolRepetitionLimitReached": "Zdá sa, že model uviazol v slučke a opakovane sa pokúša o rovnakú akciu ({{toolName}}). To môže naznačovať problém s jeho súčasnou stratégiou. Skús úlohu preformulovať, poskytnúť konkrétnejšie pokyny alebo ho naviesť k inému prístupu.",
-	"unknownToolError": "Kilo sa pokúsil použiť neznámy nástroj: \"{{toolName}}\". Skúšam znova...",
+	"unknownToolError": "Nova sa pokúsil použiť neznámy nástroj: \"{{toolName}}\". Skúšam znova...",
 	"codebaseSearch": {
 		"approval": "Hľadanie '{{query}}' v kódovej základni..."
 	},
@@ -25,7 +25,7 @@
 		"invalidImageFormat": "Prijatý neplatný formát obrázka",
 		"unknownError": "Nastala neznáma chyba",
 		"roo": {
-			"authRequired": "Pre generovanie obrázkov je vyžadovaná autentizácia Kilo Code Cloud. Prihlás sa prosím do Kilo Code Cloud."
+			"authRequired": "Pre generovanie obrázkov je vyžadovaná autentizácia Nova Code Cloud. Prihlás sa prosím do Nova Code Cloud."
 		}
 	}
 }

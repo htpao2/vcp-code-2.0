@@ -1,0 +1,9 @@
+export const X_NOVACODE_VERSION = "X-NovaCode-Version"
+export const X_NOVACODE_ORGANIZATIONID = "X-NovaCode-OrganizationId"
+export const X_NOVACODE_TASKID = "X-NovaCode-TaskId"
+export const X_NOVACODE_PROJECTID = "X-NovaCode-ProjectId"
+export const X_NOVACODE_EDITORNAME = "X-NovaCode-EditorName"
+export const X_NOVACODE_MACHINEID = "X-NovaCode-MachineId"
+export const X_NOVACODE_MODE = "X-NovaCode-Mode"
+export const X_NOVACODE_TESTER = "X-NOVACODE-TESTER"
+export const X_NOVACODE_FEATURE = "X-NovaCode-Feature" // novacode_change

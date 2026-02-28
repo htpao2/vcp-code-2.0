@@ -8,11 +8,11 @@ vi.mock("vscode", () => ({
 		showErrorMessage: vi.fn(),
 		showWarningMessage: vi.fn(),
 		showInformationMessage: vi.fn(),
-		// kilocode_change start
+		// novacode_change start
 		createTextEditorDecorationType: vi.fn(() => ({
 			dispose: vi.fn(),
 		})),
-		// kilocode_change end
+		// novacode_change end
 	},
 	workspace: {
 		workspaceFolders: undefined,
@@ -81,10 +81,10 @@ describe("webviewMessageHandler - requestRouterModels provider filter", () => {
 					return { "requesty/model": { contextWindow: 8192, supportsPromptCache: false } }
 				case "deepinfra":
 					return { "deepinfra/model": { contextWindow: 8192, supportsPromptCache: false } }
-				// kilocode_change start
+				// novacode_change start
 				case "glama":
 					return { "glama/model": { contextWindow: 8192, supportsPromptCache: false } }
-				// kilocode_change end
+				// novacode_change end
 				case "unbound":
 					return { "unbound/model": { contextWindow: 8192, supportsPromptCache: false } }
 				case "vercel-ai-gateway":

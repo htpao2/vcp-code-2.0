@@ -85,12 +85,12 @@ export class OpenAiNativeHandler extends BaseProvider implements SingleCompletio
 		}
 		const apiKey = this.options.openAiNativeApiKey ?? "not-provided"
 		// Include originator, session_id, and User-Agent headers for API tracking and debugging
-		const userAgent = `kilo-code/${Package.version} (${os.platform()} ${os.release()}; ${os.arch()}) node/${process.version.slice(1)}`
+		const userAgent = `nova-code/${Package.version} (${os.platform()} ${os.release()}; ${os.arch()}) node/${process.version.slice(1)}`
 		this.client = new OpenAI({
 			baseURL: this.options.openAiNativeBaseUrl,
 			apiKey,
 			defaultHeaders: {
-				originator: "kilo-code",
+				originator: "nova-code",
 				session_id: this.sessionId,
 				"User-Agent": userAgent,
 			},
@@ -410,9 +410,9 @@ export class OpenAiNativeHandler extends BaseProvider implements SingleCompletio
 
 		// Build per-request headers using taskId when available, falling back to sessionId
 		const taskId = metadata?.taskId
-		const userAgent = `kilo-code/${Package.version} (${os.platform()} ${os.release()}; ${os.arch()}) node/${process.version.slice(1)}`
+		const userAgent = `nova-code/${Package.version} (${os.platform()} ${os.release()}; ${os.arch()}) node/${process.version.slice(1)}`
 		const requestHeaders: Record<string, string> = {
-			originator: "kilo-code",
+			originator: "nova-code",
 			session_id: taskId || this.sessionId,
 			"User-Agent": userAgent,
 		}
@@ -477,7 +477,7 @@ export class OpenAiNativeHandler extends BaseProvider implements SingleCompletio
 							content.push({ type: "input_text", text: block.text })
 						} else if (block.type === "image") {
 							const image = block as Anthropic.Messages.ImageBlockParam
-							// kilocode_change start
+							// novacode_change start
 							let imageUrl: string
 							if (image.source.type === "base64") {
 								// Base64ImageSource has media_type and data
@@ -486,7 +486,7 @@ export class OpenAiNativeHandler extends BaseProvider implements SingleCompletio
 								// URLImageSource only has url
 								imageUrl = image.source.url
 							}
-							// kilocode_change end
+							// novacode_change end
 							content.push({ type: "input_image", image_url: imageUrl })
 						} else if (block.type === "tool_result") {
 							// Map Anthropic tool_result to Responses API function_call_output item
@@ -567,7 +567,7 @@ export class OpenAiNativeHandler extends BaseProvider implements SingleCompletio
 
 		// Build per-request headers using taskId when available, falling back to sessionId
 		const taskId = metadata?.taskId
-		const userAgent = `kilo-code/${Package.version} (${os.platform()} ${os.release()}; ${os.arch()}) node/${process.version.slice(1)}`
+		const userAgent = `nova-code/${Package.version} (${os.platform()} ${os.release()}; ${os.arch()}) node/${process.version.slice(1)}`
 
 		try {
 			const response = await fetch(url, {
@@ -575,7 +575,7 @@ export class OpenAiNativeHandler extends BaseProvider implements SingleCompletio
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${apiKey}`,
-					originator: "kilo-code",
+					originator: "nova-code",
 					session_id: taskId || this.sessionId,
 					"User-Agent": userAgent,
 				},

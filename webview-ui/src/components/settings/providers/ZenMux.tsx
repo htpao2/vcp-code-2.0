@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { useCallback, useState } from "react"
 import { Trans } from "react-i18next"
 import { Checkbox } from "vscrui"
@@ -10,6 +10,7 @@ import type { RouterModels } from "@roo/api"
 
 import { useAppTranslation } from "@src/i18n/TranslationContext"
 import { VSCodeButtonLink } from "@src/components/common/VSCodeButtonLink"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@src/components/ui"
 
 import { inputEventTransform, noTransform } from "../transforms"
 
@@ -103,6 +104,59 @@ export const ZenMux = ({
 								a: <a href="https://zenmux.ai/docs/transforms" />,
 							}}
 						/>
+					</Checkbox>
+					<VSCodeTextField
+						value={apiConfiguration?.zenmuxSpecificProvider || ""}
+						onInput={handleInputChange("zenmuxSpecificProvider")}
+						placeholder="Optional provider slug (e.g. openai, anthropic)"
+						className="w-full">
+						<label className="block font-medium mb-1">ZenMux Specific Provider</label>
+					</VSCodeTextField>
+					<div>
+						<label className="block font-medium mb-1">ZenMux Provider Data Collection</label>
+						<Select
+							value={apiConfiguration?.zenmuxProviderDataCollection || "unset"}
+							onValueChange={(value) =>
+								setApiConfigurationField(
+									"zenmuxProviderDataCollection",
+									value === "unset" ? undefined : (value as "allow" | "deny"),
+								)
+							}>
+							<SelectTrigger className="w-full">
+								<SelectValue placeholder={t("settings:common.select")} />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="unset">Default</SelectItem>
+								<SelectItem value="allow">Allow</SelectItem>
+								<SelectItem value="deny">Deny</SelectItem>
+							</SelectContent>
+						</Select>
+					</div>
+					<div>
+						<label className="block font-medium mb-1">ZenMux Provider Sort</label>
+						<Select
+							value={apiConfiguration?.zenmuxProviderSort || "unset"}
+							onValueChange={(value) =>
+								setApiConfigurationField(
+									"zenmuxProviderSort",
+									value === "unset" ? undefined : (value as "price" | "throughput" | "latency"),
+								)
+							}>
+							<SelectTrigger className="w-full">
+								<SelectValue placeholder={t("settings:common.select")} />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="unset">Default</SelectItem>
+								<SelectItem value="price">Price</SelectItem>
+								<SelectItem value="throughput">Throughput</SelectItem>
+								<SelectItem value="latency">Latency</SelectItem>
+							</SelectContent>
+						</Select>
+					</div>
+					<Checkbox
+						checked={apiConfiguration?.zenmuxZdr ?? false}
+						onChange={handleInputChange("zenmuxZdr", noTransform)}>
+						ZenMux Zero Data Retention (ZDR)
 					</Checkbox>
 				</>
 			)}

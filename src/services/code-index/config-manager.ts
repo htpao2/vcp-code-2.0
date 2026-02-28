@@ -12,10 +12,10 @@ import { getDefaultModelId, getModelDimension, getModelScoreThreshold } from "..
 export class CodeIndexConfigManager {
 	private codebaseIndexEnabled: boolean = false
 	private embedderProvider: EmbedderProvider = "openai"
-	// kilocode_change - start
+	// novacode_change - start
 	private vectorStoreProvider: "lancedb" | "qdrant" = "qdrant"
 	private lancedbVectorStoreDirectory?: string
-	// kilocode_change - end
+	// novacode_change - end
 	private modelId?: string
 	private modelDimension?: number
 	private openAiOptions?: ApiHandlerOptions
@@ -26,55 +26,55 @@ export class CodeIndexConfigManager {
 	private vercelAiGatewayOptions?: { apiKey: string }
 	private bedrockOptions?: { region: string; profile?: string }
 	private openRouterOptions?: { apiKey: string; specificProvider?: string }
-	private voyageOptions?: { apiKey: string } // kilocode_change
+	private voyageOptions?: { apiKey: string } // novacode_change
 	private qdrantUrl?: string = "http://localhost:6333"
 	private qdrantApiKey?: string
 	private searchMinScore?: number
 	private searchMaxResults?: number
-	// kilocode_change start
+	// novacode_change start
 	private embeddingBatchSize?: number
 	private scannerMaxBatchRetries?: number
-	// kilocode_change end
+	// novacode_change end
 
-	// kilocode_change start: Kilo org indexing props
-	private _kiloOrgProps: {
+	// novacode_change start: Nova org indexing props
+	private _novaOrgProps: {
 		organizationId: string
-		kilocodeToken: string
+		novacodeToken: string
 		projectId: string
 	} | null = null
-	// kilocode_change end
+	// novacode_change end
 
 	constructor(private readonly contextProxy: ContextProxy) {
 		// Initialize with current configuration to avoid false restart triggers
 		this._loadAndSetConfiguration()
 	}
 
-	// kilocode_change start: Kilo org indexing methods
+	// novacode_change start: Nova org indexing methods
 	/**
-	 * Sets Kilo organization properties for cloud-based indexing
+	 * Sets Nova organization properties for cloud-based indexing
 	 */
-	public setKiloOrgProps(props: { organizationId: string; kilocodeToken: string; projectId: string }) {
-		this._kiloOrgProps = props
+	public setNovaOrgProps(props: { organizationId: string; novacodeToken: string; projectId: string }) {
+		this._novaOrgProps = props
 	}
 
 	/**
-	 * Gets Kilo organization properties
+	 * Gets Nova organization properties
 	 */
-	public getKiloOrgProps() {
-		return this._kiloOrgProps
+	public getNovaOrgProps() {
+		return this._novaOrgProps
 	}
 
 	/**
-	 * Checks if Kilo org mode is available (has valid credentials)
+	 * Checks if Nova org mode is available (has valid credentials)
 	 */
-	public get isKiloOrgMode(): boolean {
+	public get isNovaOrgMode(): boolean {
 		return !!(
-			this._kiloOrgProps?.organizationId &&
-			this._kiloOrgProps?.kilocodeToken &&
-			this._kiloOrgProps?.projectId
+			this._novaOrgProps?.organizationId &&
+			this._novaOrgProps?.novacodeToken &&
+			this._novaOrgProps?.projectId
 		)
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	/**
 	 * Gets the context proxy instance
@@ -93,18 +93,18 @@ export class CodeIndexConfigManager {
 			codebaseIndexEnabled: false,
 			codebaseIndexQdrantUrl: "http://localhost:6333",
 			codebaseIndexEmbedderProvider: "openai",
-			// kilocode_change - start
+			// novacode_change - start
 			codebaseIndexVectorStoreProvider: "qdrant",
 			codebaseIndexLancedbVectorStoreDirectory: undefined,
-			// kilocode_change - end
+			// novacode_change - end
 			codebaseIndexEmbedderBaseUrl: "",
 			codebaseIndexEmbedderModelId: "",
 			codebaseIndexSearchMinScore: undefined,
 			codebaseIndexSearchMaxResults: undefined,
-			// kilocode_change start
+			// novacode_change start
 			codebaseIndexEmbeddingBatchSize: undefined,
 			codebaseIndexScannerMaxBatchRetries: undefined,
-			// kilocode_change end
+			// novacode_change end
 			codebaseIndexBedrockRegion: "us-east-1",
 			codebaseIndexBedrockProfile: "",
 		}
@@ -115,15 +115,15 @@ export class CodeIndexConfigManager {
 			codebaseIndexEmbedderProvider,
 			codebaseIndexEmbedderBaseUrl,
 			codebaseIndexEmbedderModelId,
-			codebaseIndexLancedbVectorStoreDirectory, // kilocode_change
+			codebaseIndexLancedbVectorStoreDirectory, // novacode_change
 			codebaseIndexSearchMinScore,
 			codebaseIndexSearchMaxResults,
-			// kilocode_change start
+			// novacode_change start
 			codebaseIndexEmbeddingBatchSize,
 			codebaseIndexScannerMaxBatchRetries,
-			// kilocode_change end
+			// novacode_change end
 		} = codebaseIndexConfig
-		// kilocode_change
+		// novacode_change
 		const codebaseIndexVectorStoreProvider = codebaseIndexConfig.codebaseIndexVectorStoreProvider ?? "qdrant"
 
 		const openAiKey = this.contextProxy?.getSecret("codeIndexOpenAiKey") ?? ""
@@ -138,22 +138,22 @@ export class CodeIndexConfigManager {
 		const bedrockProfile = codebaseIndexConfig.codebaseIndexBedrockProfile ?? ""
 		const openRouterApiKey = this.contextProxy?.getSecret("codebaseIndexOpenRouterApiKey") ?? ""
 		const openRouterSpecificProvider = codebaseIndexConfig.codebaseIndexOpenRouterSpecificProvider ?? ""
-		const voyageApiKey = this.contextProxy?.getSecret("codebaseIndexVoyageApiKey") ?? "" // kilocode_change
+		const voyageApiKey = this.contextProxy?.getSecret("codebaseIndexVoyageApiKey") ?? "" // novacode_change
 
 		// Update instance variables with configuration
 		this.codebaseIndexEnabled = codebaseIndexEnabled ?? false
-		// kilocode_change - start
+		// novacode_change - start
 		this.vectorStoreProvider = codebaseIndexVectorStoreProvider ?? "qdrant"
 		this.lancedbVectorStoreDirectory = codebaseIndexLancedbVectorStoreDirectory
-		// kilocode_change - end
+		// novacode_change - end
 		this.qdrantUrl = codebaseIndexQdrantUrl
 		this.qdrantApiKey = qdrantApiKey ?? ""
 		this.searchMinScore = codebaseIndexSearchMinScore
 		this.searchMaxResults = codebaseIndexSearchMaxResults
-		// kilocode_change start
+		// novacode_change start
 		this.embeddingBatchSize = codebaseIndexEmbeddingBatchSize
 		this.scannerMaxBatchRetries = codebaseIndexScannerMaxBatchRetries
-		// kilocode_change end
+		// novacode_change end
 
 		// Validate and set model dimension
 		const rawDimension = codebaseIndexConfig.codebaseIndexEmbedderModelDimension
@@ -188,10 +188,10 @@ export class CodeIndexConfigManager {
 			this.embedderProvider = "bedrock"
 		} else if (codebaseIndexEmbedderProvider === "openrouter") {
 			this.embedderProvider = "openrouter"
-			// kilocode_change start
+			// novacode_change start
 		} else if (codebaseIndexEmbedderProvider === "voyage") {
 			this.embedderProvider = "voyage"
-			// kilocode_change end
+			// novacode_change end
 		} else {
 			this.embedderProvider = "openai"
 		}
@@ -220,7 +220,7 @@ export class CodeIndexConfigManager {
 		this.bedrockOptions = bedrockRegion
 			? { region: bedrockRegion, profile: bedrockProfile || undefined }
 			: undefined
-		this.voyageOptions = voyageApiKey ? { apiKey: voyageApiKey } : undefined // kilocode_change
+		this.voyageOptions = voyageApiKey ? { apiKey: voyageApiKey } : undefined // novacode_change
 	}
 
 	/**
@@ -252,10 +252,10 @@ export class CodeIndexConfigManager {
 			enabled: this.codebaseIndexEnabled,
 			configured: this.isConfigured(),
 			embedderProvider: this.embedderProvider,
-			// kilocode_change - start
+			// novacode_change - start
 			vectorStoreProvider: this.vectorStoreProvider,
 			lancedbVectorStoreDirectory: this.lancedbVectorStoreDirectory,
-			// kilocode_change - end
+			// novacode_change - end
 			modelId: this.modelId,
 			modelDimension: this.modelDimension,
 			openAiKey: this.openAiOptions?.openAiNativeApiKey ?? "",
@@ -269,7 +269,7 @@ export class CodeIndexConfigManager {
 			bedrockProfile: this.bedrockOptions?.profile ?? "",
 			openRouterApiKey: this.openRouterOptions?.apiKey ?? "",
 			openRouterSpecificProvider: this.openRouterOptions?.specificProvider ?? "",
-			voyageApiKey: this.voyageOptions?.apiKey ?? "", // kilocode_change
+			voyageApiKey: this.voyageOptions?.apiKey ?? "", // novacode_change
 			qdrantUrl: this.qdrantUrl ?? "",
 			qdrantApiKey: this.qdrantApiKey ?? "",
 		}
@@ -307,14 +307,14 @@ export class CodeIndexConfigManager {
 
 	/**
 	 * Checks if the service is properly configured based on the embedder type.
-	 * kilocode_change: Also returns true if Kilo org mode is available
+	 * novacode_change: Also returns true if Nova org mode is available
 	 */
 	public isConfigured(): boolean {
-		// kilocode_change start: Allow Kilo org mode as configured
-		if (this.isKiloOrgMode) {
+		// novacode_change start: Allow Nova org mode as configured
+		if (this.isNovaOrgMode) {
 			return true
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		if (this.embedderProvider === "openai") {
 			const openAiKey = this.openAiOptions?.openAiNativeApiKey
@@ -357,14 +357,14 @@ export class CodeIndexConfigManager {
 			const qdrantUrl = this.qdrantUrl
 			const isConfigured = !!(apiKey && qdrantUrl)
 			return isConfigured
-			// kilocode_change start
+			// novacode_change start
 		} else if (this.embedderProvider === "voyage") {
 			const apiKey = this.voyageOptions?.apiKey
 			const qdrantUrl = this.qdrantUrl
 			const isConfigured = !!(apiKey && qdrantUrl)
 			return isConfigured
 		}
-		// kilocode_change end
+		// novacode_change end
 		return false // Should not happen if embedderProvider is always set correctly
 	}
 
@@ -403,13 +403,13 @@ export class CodeIndexConfigManager {
 		const prevBedrockProfile = prev?.bedrockProfile ?? ""
 		const prevOpenRouterApiKey = prev?.openRouterApiKey ?? ""
 		const prevOpenRouterSpecificProvider = prev?.openRouterSpecificProvider ?? ""
-		const prevVoyageApiKey = prev?.voyageApiKey ?? "" // kilocode_change
+		const prevVoyageApiKey = prev?.voyageApiKey ?? "" // novacode_change
 		const prevQdrantUrl = prev?.qdrantUrl ?? ""
 		const prevQdrantApiKey = prev?.qdrantApiKey ?? ""
-		// kilocode_change - start
+		// novacode_change - start
 		const prevVectorStoreProvider = prev?.vectorStoreProvider ?? "qdrant"
 		const prevLocalDbPath = prev?.lancedbVectorStoreDirectory ?? ""
-		// kilocode_change - end
+		// novacode_change - end
 
 		// 1. Transition from disabled/unconfigured to enabled/configured
 		if ((!prevEnabled || !prevConfigured) && this.codebaseIndexEnabled && nowConfigured) {
@@ -437,7 +437,7 @@ export class CodeIndexConfigManager {
 			return true
 		}
 
-		// kilocode_change - start
+		// novacode_change - start
 		// Vector store provider change
 		if (prevVectorStoreProvider !== this.vectorStoreProvider) {
 			return true
@@ -447,7 +447,7 @@ export class CodeIndexConfigManager {
 		if (this.vectorStoreProvider === "lancedb" && prevLocalDbPath !== (this.lancedbVectorStoreDirectory ?? "")) {
 			return true
 		}
-		// kilocode_change - end
+		// novacode_change - end
 
 		// Authentication changes (API keys)
 		const currentOpenAiKey = this.openAiOptions?.openAiNativeApiKey ?? ""
@@ -462,7 +462,7 @@ export class CodeIndexConfigManager {
 		const currentBedrockProfile = this.bedrockOptions?.profile ?? ""
 		const currentOpenRouterApiKey = this.openRouterOptions?.apiKey ?? ""
 		const currentOpenRouterSpecificProvider = this.openRouterOptions?.specificProvider ?? ""
-		const currentVoyageApiKey = this.voyageOptions?.apiKey ?? "" // kilocode_change
+		const currentVoyageApiKey = this.voyageOptions?.apiKey ?? "" // novacode_change
 		const currentQdrantUrl = this.qdrantUrl ?? ""
 		const currentQdrantApiKey = this.qdrantApiKey ?? ""
 
@@ -506,12 +506,12 @@ export class CodeIndexConfigManager {
 			return true
 		}
 
-		// kilocode_change start
+		// novacode_change start
 		// Voyage API key change
 		if (prevVoyageApiKey !== currentVoyageApiKey) {
 			return true
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		// Check for model dimension changes (generic for all providers)
 		if (prevModelDimension !== currentModelDimension) {
@@ -563,10 +563,10 @@ export class CodeIndexConfigManager {
 		return {
 			isConfigured: this.isConfigured(),
 			embedderProvider: this.embedderProvider,
-			// kilocode_change - start
+			// novacode_change - start
 			vectorStoreProvider: this.vectorStoreProvider ?? "qdrant",
 			lancedbVectorStoreDirectoryPlaceholder: this.lancedbVectorStoreDirectory,
-			// kilocode_change - end
+			// novacode_change - end
 			modelId: this.modelId,
 			modelDimension: this.modelDimension,
 			openAiOptions: this.openAiOptions,
@@ -577,15 +577,15 @@ export class CodeIndexConfigManager {
 			vercelAiGatewayOptions: this.vercelAiGatewayOptions,
 			bedrockOptions: this.bedrockOptions,
 			openRouterOptions: this.openRouterOptions,
-			voyageOptions: this.voyageOptions, // kilocode_change
+			voyageOptions: this.voyageOptions, // novacode_change
 			qdrantUrl: this.qdrantUrl,
 			qdrantApiKey: this.qdrantApiKey,
 			searchMinScore: this.currentSearchMinScore,
 			searchMaxResults: this.currentSearchMaxResults,
-			// kilocode_change start
+			// novacode_change start
 			embeddingBatchSize: this.currentEmbeddingBatchSize,
 			scannerMaxBatchRetries: this.currentScannerMaxBatchRetries,
-			// kilocode_change end
+			// novacode_change end
 		}
 	}
 
@@ -668,7 +668,7 @@ export class CodeIndexConfigManager {
 		return this.searchMaxResults ?? DEFAULT_MAX_SEARCH_RESULTS
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	/**
 	 * Gets the configured embedding batch size.
 	 * Returns user setting if configured, otherwise returns undefined (will use default from constants).
@@ -684,5 +684,5 @@ export class CodeIndexConfigManager {
 	public get currentScannerMaxBatchRetries(): number | undefined {
 		return this.scannerMaxBatchRetries
 	}
-	// kilocode_change end
+	// novacode_change end
 }

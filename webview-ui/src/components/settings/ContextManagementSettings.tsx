@@ -25,7 +25,7 @@ type ContextManagementSettingsProps = HTMLAttributes<HTMLDivElement> & {
 	maxImageFileSize?: number
 	maxTotalImageSize?: number
 	maxConcurrentFileReads?: number
-	allowVeryLargeReads?: boolean // kilocode_change
+	allowVeryLargeReads?: boolean // novacode_change
 	profileThresholds?: Record<string, number>
 	includeDiagnosticMessages?: boolean
 	maxDiagnosticMessages?: number
@@ -44,7 +44,7 @@ type ContextManagementSettingsProps = HTMLAttributes<HTMLDivElement> & {
 		| "maxImageFileSize"
 		| "maxTotalImageSize"
 		| "maxConcurrentFileReads"
-		| "allowVeryLargeReads" // kilocode_change
+		| "allowVeryLargeReads" // novacode_change
 		| "profileThresholds"
 		| "includeDiagnosticMessages"
 		| "maxDiagnosticMessages"
@@ -68,7 +68,7 @@ export const ContextManagementSettings = ({
 	maxImageFileSize,
 	maxTotalImageSize,
 	maxConcurrentFileReads,
-	allowVeryLargeReads, // kilocode_change
+	allowVeryLargeReads, // novacode_change
 	profileThresholds = {},
 	includeDiagnosticMessages,
 	maxDiagnosticMessages,
@@ -244,7 +244,7 @@ export const ContextManagementSettings = ({
 								type="number"
 								pattern="-?[0-9]*"
 								className="w-24 bg-vscode-input-background text-vscode-input-foreground border border-vscode-input-border px-2 py-1 rounded text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none disabled:opacity-50"
-								value={maxReadFileLine ?? 500 /*kilocode_change*/}
+								value={maxReadFileLine ?? 500 /*novacode_change*/}
 								min={-1}
 								onChange={(e) => {
 									const newValue = parseInt(e.target.value, 10)
@@ -271,20 +271,20 @@ export const ContextManagementSettings = ({
 						{t("settings:contextManagement.maxReadFile.description")}
 					</div>
 				</SearchableSetting>
-				{/*kilocode_change start*/}
+				{/*novacode_change start*/}
 				<div>
 					<VSCodeCheckbox
 						checked={allowVeryLargeReads}
 						onChange={(e: any) => setCachedStateField("allowVeryLargeReads", e.target.checked)}>
 						<label className="block font-medium mb-1">
-							{t("kilocode:settings.contextManagement.allowVeryLargeReads.label")}
+							{t("novacode:settings.contextManagement.allowVeryLargeReads.label")}
 						</label>
 					</VSCodeCheckbox>
 					<div className="text-vscode-descriptionForeground text-sm mt-1 mb-3">
-						{t("kilocode:settings.contextManagement.allowVeryLargeReads.description")}
+						{t("novacode:settings.contextManagement.allowVeryLargeReads.description")}
 					</div>
 				</div>
-				{/*kilocode_change end*/}
+				{/*novacode_change end*/}
 				<SearchableSetting
 					settingId="context-max-image-file-size"
 					section="contextManagement"

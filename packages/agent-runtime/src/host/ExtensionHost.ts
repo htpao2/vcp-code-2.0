@@ -1,8 +1,9 @@
 import { EventEmitter } from "events"
 import { createVSCodeAPIMock, type IdentityInfo, type ExtensionContext } from "./VSCode.js"
 import { logs } from "../utils/logger.js"
-import type { ExtensionMessage, WebviewMessage, ExtensionState, ModeConfig, HistoryItem } from "../types/index.js" // kilocode_change
+import type { ExtensionMessage, WebviewMessage, ExtensionState, ModeConfig, HistoryItem } from "../types/index.js" // novacode_change
 import { argsToMessage } from "../utils/safe-stringify.js"
+import { Package } from "../constants/package.js"
 
 export interface ExtensionHostOptions {
 	workspacePath: string
@@ -19,12 +20,12 @@ export interface ExtensionHostOptions {
 
 // Extension module interface
 interface ExtensionModule {
-	activate: (context: unknown) => Promise<KiloCodeAPI> | KiloCodeAPI
+	activate: (context: unknown) => Promise<NovaCodeAPI> | NovaCodeAPI
 	deactivate?: () => Promise<void> | void
 }
 
-// KiloCode API interface returned by extension activation
-interface KiloCodeAPI {
+// NovaCode API interface returned by extension activation
+interface NovaCodeAPI {
 	startNewTask?: (task: string, images?: string[]) => Promise<void>
 	sendMessage?: (message: ExtensionMessage) => void
 	cancelTask?: () => Promise<void>
@@ -57,7 +58,7 @@ export class ExtensionHost extends EventEmitter {
 	private isActivated = false
 	private currentState: ExtensionState | null = null
 	private extensionModule: ExtensionModule | null = null
-	private extensionAPI: KiloCodeAPI | null = null
+	private extensionAPI: NovaCodeAPI | null = null
 	private vscodeAPI: VSCodeAPIMock | null = null
 	private webviewProviders: Map<string, WebviewProvider> = new Map()
 	private webviewInitialized = false
@@ -343,7 +344,9 @@ export class ExtensionHost extends EventEmitter {
 
 			// Forward message directly to the webview provider instead of emitting event
 			// This prevents duplicate handling (event listener + direct call)
-			const webviewProvider = this.webviewProviders.get("kilo-code.SidebarProvider")
+			const webviewProvider =
+				this.webviewProviders.get(`${Package.name}.SidebarProvider`) ??
+				this.webviewProviders.get("nova-code.SidebarProvider")
 
 			if (webviewProvider && typeof webviewProvider.handleCLIMessage === "function") {
 				await webviewProvider.handleCLIMessage(message)
@@ -393,7 +396,7 @@ export class ExtensionHost extends EventEmitter {
 		;(global as unknown as { __extensionHost: ExtensionHost }).__extensionHost = this
 
 		// Set environment variables to disable problematic features in CLI mode
-		process.env.KILO_CLI_MODE = "true"
+		process.env.NOVA_CLI_MODE = "true"
 		process.env.NODE_ENV = process.env.NODE_ENV || "production"
 
 		logs.debug("VSCode API mock setup complete", "ExtensionHost")
@@ -777,10 +780,10 @@ export class ExtensionHost extends EventEmitter {
 		const apiConfiguration = this.options.providerSettings
 			? (this.options.providerSettings as ExtensionState["apiConfiguration"])
 			: {
-					apiProvider: "kilocode" as const,
-					kilocodeToken: "",
-					kilocodeModel: "",
-					kilocodeOrganizationId: "",
+					apiProvider: "novacode" as const,
+					novacodeToken: "",
+					novacodeModel: "",
+					novacodeOrganizationId: "",
 				}
 
 		const customModes = this.options.customModes || []
@@ -1147,7 +1150,7 @@ export class ExtensionHost extends EventEmitter {
 		this.broadcastStateUpdate()
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	/**
 	 * Inject secrets (e.g. OAuth credentials) into the extension context's SecretStorage.
 	 * Used by the agent process so that providers like OpenAI Codex can access credentials
@@ -1164,7 +1167,7 @@ export class ExtensionHost extends EventEmitter {
 			keys: Object.keys(secrets),
 		})
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	/**
 	 * Write task history files to local storage so showTaskWithId can load them.
@@ -1248,7 +1251,7 @@ export class ExtensionHost extends EventEmitter {
 			throw new Error("Cannot add history item: globalState not available")
 		}
 
-		// kilocode_change start
+		// novacode_change start
 		// Get existing task history
 		type ResumeHistoryItem = Partial<HistoryItem> & { mentionCount?: number } & Record<string, unknown>
 		const taskHistory = ((globalState.get("taskHistory") as ResumeHistoryItem[]) || []).slice()
@@ -1280,7 +1283,7 @@ export class ExtensionHost extends EventEmitter {
 			mentionCount: getExistingNumber(existingItem?.mentionCount) ?? 0,
 			isFavorited: getExistingBoolean(existingItem?.isFavorited) ?? false,
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		if (existingIndex >= 0) {
 			// Update existing entry

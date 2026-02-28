@@ -1,5 +1,5 @@
 # Plugin basic information
-pluginGroup=ai.kilocode.jetbrains
+pluginGroup=ai.novacode.jetbrains
 pluginVersion={{VERSION}}
 
 # Platform basic information

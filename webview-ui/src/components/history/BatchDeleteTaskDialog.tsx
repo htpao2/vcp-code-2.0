@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react"
+﻿import { useCallback, useMemo, useState } from "react"
 import { useAppTranslation } from "@/i18n/TranslationContext"
 import {
 	AlertDialog,
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui"
 import { vscode } from "@/utils/vscode"
 import { AlertDialogProps } from "@radix-ui/react-alert-dialog"
-import { useTaskWithId } from "@/kilocode/hooks/useTaskHistory"
+import { useTaskWithId } from "@/nova/hooks/useTaskHistory"
 
 interface BatchDeleteTaskDialogProps extends AlertDialogProps {
 	taskIds: string[]
@@ -21,22 +21,22 @@ interface BatchDeleteTaskDialogProps extends AlertDialogProps {
 
 export const BatchDeleteTaskDialog = ({ taskIds, ...props }: BatchDeleteTaskDialogProps) => {
 	const { t } = useAppTranslation()
-	const { data: tasks } = useTaskWithId(taskIds) // kilocode_change
+	const { data: tasks } = useTaskWithId(taskIds) // novacode_change
 	const { onOpenChange } = props
-	const [includeFavorited, setIncludeFavorited] = useState(false) // kilocode_change
+	const [includeFavorited, setIncludeFavorited] = useState(false) // novacode_change
 
-	const favoritedTasks = tasks?.filter((task) => taskIds.includes(task.id) && task.isFavorited) ?? [] // kilocode_change
-	const hasFavoritedTasks = favoritedTasks.length > 0 // kilocode_change
-	const nonFavoritedTaskIds = taskIds.filter((id) => !favoritedTasks.some((task) => task.id === id)) // kilocode_change
+	const favoritedTasks = tasks?.filter((task) => taskIds.includes(task.id) && task.isFavorited) ?? [] // novacode_change
+	const hasFavoritedTasks = favoritedTasks.length > 0 // novacode_change
+	const nonFavoritedTaskIds = taskIds.filter((id) => !favoritedTasks.some((task) => task.id === id)) // novacode_change
 
-	// kilocode_change start
+	// novacode_change start
 	const deleteTaskIds = useMemo(() => {
 		if (!hasFavoritedTasks) {
 			return taskIds
 		}
 		return includeFavorited ? taskIds : nonFavoritedTaskIds
 	}, [hasFavoritedTasks, includeFavorited, nonFavoritedTaskIds, taskIds])
-	// kilocode_change end
+	// novacode_change end
 
 	const onDelete = useCallback(() => {
 		if (deleteTaskIds.length > 0) {
@@ -61,7 +61,7 @@ export const BatchDeleteTaskDialog = ({ taskIds, ...props }: BatchDeleteTaskDial
 						</div>
 					</AlertDialogDescription>
 				</AlertDialogHeader>
-				{/* kilocode_change start */}
+				{/* novacode_change start */}
 				{hasFavoritedTasks && (
 					<label className="inline-flex items-center gap-2 text-sm text-vscode-foreground mb-2 w-fit">
 						<Checkbox
@@ -89,7 +89,7 @@ export const BatchDeleteTaskDialog = ({ taskIds, ...props }: BatchDeleteTaskDial
 						</Button>
 					</div>
 				</AlertDialogFooter>
-				{/* kilocode_change end */}
+				{/* novacode_change end */}
 			</AlertDialogContent>
 		</AlertDialog>
 	)

@@ -33,7 +33,7 @@ export const AutoApproveDropdown = ({ disabled = false, triggerClassName = "" }:
 		setAutoApprovalEnabled,
 		setAlwaysAllowReadOnly,
 		setAlwaysAllowWrite,
-		setAlwaysAllowDelete, // kilocode_change
+		setAlwaysAllowDelete, // novacode_change
 		setAlwaysAllowExecute,
 		setAlwaysAllowBrowser,
 		setAlwaysAllowMcp,
@@ -55,7 +55,7 @@ export const AutoApproveDropdown = ({ disabled = false, triggerClassName = "" }:
 				case "alwaysAllowWrite":
 					setAlwaysAllowWrite(value)
 					break
-				case "alwaysAllowDelete": // kilocode_change
+				case "alwaysAllowDelete": // novacode_change
 					setAlwaysAllowDelete(value)
 					break
 				case "alwaysAllowExecute":
@@ -88,7 +88,7 @@ export const AutoApproveDropdown = ({ disabled = false, triggerClassName = "" }:
 			autoApprovalEnabled,
 			setAlwaysAllowReadOnly,
 			setAlwaysAllowWrite,
-			setAlwaysAllowDelete, // kilocode_change
+			setAlwaysAllowDelete, // novacode_change
 			setAlwaysAllowExecute,
 			setAlwaysAllowBrowser,
 			setAlwaysAllowMcp,

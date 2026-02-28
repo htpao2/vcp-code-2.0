@@ -149,7 +149,7 @@ export abstract class OpenAICompatibleHandler extends BaseProvider implements Si
 		return maxTokens ?? undefined
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	/**
 	 * Get the temperature to use for a request.
 	 * Subclasses can override this to enforce provider/model-specific behavior.
@@ -168,7 +168,7 @@ export abstract class OpenAICompatibleHandler extends BaseProvider implements Si
 	): StreamTextProviderOptions {
 		return undefined
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	/**
 	 * Create a message stream using the AI SDK.
@@ -197,14 +197,14 @@ export abstract class OpenAICompatibleHandler extends BaseProvider implements Si
 			maxOutputTokens: this.getMaxOutputTokens(),
 			tools: aiSdkTools,
 			toolChoice: this.mapToolChoice(metadata?.tool_choice),
-			// kilocode_change
+			// novacode_change
 			providerOptions: this.getProviderOptions(model, metadata),
 		}
 
 		// Use streamText for streaming responses
 		const result = streamText(requestOptions)
 
-		// kilocode_change start
+		// novacode_change start
 		// Moonshot/Kimi can stream tool calls as tool-input-* events without a final tool-call event.
 		// Accumulate these events and emit a complete tool_call chunk so Task can execute tools reliably.
 		const pendingToolInputs = new Map<string, { toolName: string; input: string }>()
@@ -228,11 +228,11 @@ export abstract class OpenAICompatibleHandler extends BaseProvider implements Si
 				arguments: pending?.input || "{}",
 			}
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		// Process the full stream to get all events
 		for await (const part of result.fullStream) {
-			// kilocode_change start
+			// novacode_change start
 			if (part.type === "tool-input-start") {
 				const existing = pendingToolInputs.get(part.id)
 				pendingToolInputs.set(part.id, {
@@ -266,7 +266,7 @@ export abstract class OpenAICompatibleHandler extends BaseProvider implements Si
 				emittedToolCallIds.add(part.toolCallId)
 				pendingToolInputs.delete(part.toolCallId)
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			// Use the processAiSdkStreamPart utility to convert stream parts
 			for (const chunk of processAiSdkStreamPart(part)) {
@@ -274,7 +274,7 @@ export abstract class OpenAICompatibleHandler extends BaseProvider implements Si
 			}
 		}
 
-		// kilocode_change start
+		// novacode_change start
 		// Flush any unfinished tool-input streams at end-of-stream.
 		for (const toolCallId of pendingToolInputs.keys()) {
 			const toolCallChunk = emitToolCallFromPendingInput(toolCallId)
@@ -282,7 +282,7 @@ export abstract class OpenAICompatibleHandler extends BaseProvider implements Si
 				yield toolCallChunk
 			}
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		// Yield usage metrics at the end
 		const usage = await result.usage
@@ -303,7 +303,7 @@ export abstract class OpenAICompatibleHandler extends BaseProvider implements Si
 			prompt,
 			maxOutputTokens: this.getMaxOutputTokens(),
 			temperature: this.getRequestTemperature(model),
-			// kilocode_change
+			// novacode_change
 			providerOptions: this.getProviderOptions(model),
 		})
 

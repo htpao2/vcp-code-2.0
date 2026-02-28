@@ -16,21 +16,21 @@ vi.mock("vscode", () => ({
 			get: vi.fn(),
 		})),
 	},
-	// kilocode_change start
+	// novacode_change start
 	window: {
 		createTextEditorDecorationType: vi.fn(() => ({ dispose: vi.fn() })),
 	},
-	// kilocode_change end
+	// novacode_change end
 }))
 
 // Mock Package module
 vi.mock("../../../shared/package", () => ({
 	Package: {
-		name: "kilo-code",
+		name: "nova-code",
 	},
 }))
 
-// kilocode_change start - Mock i18n for translated suggestion strings
+// novacode_change start - Mock i18n for translated suggestion strings
 vi.mock("../../../i18n", () => ({
 	t: vi.fn((key: string) => {
 		const translations: Record<string, string> = {
@@ -39,7 +39,7 @@ vi.mock("../../../i18n", () => ({
 		return translations[key] ?? key
 	}),
 }))
-// kilocode_change end
+// novacode_change end
 
 import { attemptCompletionTool, AttemptCompletionCallbacks, getCompletionSuggestions } from "../AttemptCompletionTool"
 import { Task } from "../../task/Task"
@@ -490,7 +490,7 @@ describe("attemptCompletionTool", () => {
 		})
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	describe("completion suggestions", () => {
 		function createMockTaskWithMode(mode: string): Partial<Task> {
 			return {
@@ -533,5 +533,5 @@ describe("attemptCompletionTool", () => {
 			expect(suggestions).toBeUndefined()
 		})
 	})
-	// kilocode_change end
+	// novacode_change end
 })

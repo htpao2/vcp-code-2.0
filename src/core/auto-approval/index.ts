@@ -13,11 +13,11 @@ import { isWriteToolAction, isReadOnlyToolAction } from "./tools"
 import { isMcpToolAlwaysAllowed } from "./mcp"
 import { getCommandDecision } from "./commands"
 
-// We have 11 different actions that can be auto-approved. // kilocode_change
+// We have 11 different actions that can be auto-approved. // novacode_change
 export type AutoApprovalState =
 	| "alwaysAllowReadOnly"
 	| "alwaysAllowWrite"
-	| "alwaysAllowDelete" // kilocode_change
+	| "alwaysAllowDelete" // novacode_change
 	| "alwaysAllowBrowser"
 	| "alwaysAllowMcp"
 	| "alwaysAllowModeSwitch"
@@ -187,11 +187,11 @@ export async function checkAutoApproval({
 				: { decision: "ask" }
 		}
 
-		// kilocode_change start
+		// novacode_change start
 		if (tool.tool === "deleteFile") {
 			return state.alwaysAllowDelete === true ? { decision: "approve" } : { decision: "ask" }
 		}
-		// kilocode_change end
+		// novacode_change end
 	}
 
 	return { decision: "ask" }

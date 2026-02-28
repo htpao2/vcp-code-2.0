@@ -1,6 +1,6 @@
 // npx vitest run src/api/providers/__tests__/sambanova.spec.ts
 
-// kilocode_change start
+// novacode_change start
 vitest.mock("vscode", () => ({
 	workspace: {
 		getConfiguration: vitest.fn().mockReturnValue({
@@ -8,7 +8,7 @@ vitest.mock("vscode", () => ({
 		}),
 	},
 }))
-// kilocode_change end
+// novacode_change end
 
 import OpenAI from "openai"
 import { Anthropic } from "@anthropic-ai/sdk"

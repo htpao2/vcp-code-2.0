@@ -1,12 +1,12 @@
-import { type Language, isLanguage } from "@roo-code/types"
-import { kiloLanguages } from "./kilocode/kiloLanguages"
+﻿import { type Language, isLanguage } from "@roo-code/types"
+import { novaLanguages } from "./nova/novaLanguages"
 
 /**
  * Language name mapping from ISO codes to full language names.
  */
 
 export const LANGUAGES: Record<Language, string> = {
-	...kiloLanguages,
+	...novaLanguages,
 	ca: "Català",
 	de: "Deutsch",
 	en: "English",

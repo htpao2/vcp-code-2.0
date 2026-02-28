@@ -67,7 +67,7 @@ describe("PostHogTelemetryClient", () => {
 				"isEventCapturable",
 			).bind(client)
 
-			expect(isEventCapturable(TelemetryEventName.TASK_MESSAGE /*kilocode_change*/)).toBe(false)
+			expect(isEventCapturable(TelemetryEventName.TASK_MESSAGE /*novacode_change*/)).toBe(false)
 		})
 	})
 
@@ -101,7 +101,7 @@ describe("PostHogTelemetryClient", () => {
 				(propertyName: string, allProperties: Record<string, unknown>) => boolean
 			>(client, "isPropertyCapturable").bind(client)
 
-			const orgProperties = { appVersion: "1.0.0", kilocodeOrganizationId: "org-123" }
+			const orgProperties = { appVersion: "1.0.0", novacodeOrganizationId: "org-123" }
 
 			// Error properties should be filtered out for org users
 			expect(isPropertyCapturable("errorMessage", orgProperties)).toBe(false)
@@ -233,7 +233,7 @@ describe("PostHogTelemetryClient", () => {
 					editorName: "vscode",
 					language: "en",
 					mode: "code",
-					kilocodeOrganizationId: "org-123",
+					novacodeOrganizationId: "org-123",
 				}),
 			}
 
@@ -258,7 +258,7 @@ describe("PostHogTelemetryClient", () => {
 				editorName: "vscode",
 				language: "en",
 				mode: "code",
-				kilocodeOrganizationId: "org-123",
+				novacodeOrganizationId: "org-123",
 				customProp: "value",
 			})
 		})
@@ -269,7 +269,7 @@ describe("PostHogTelemetryClient", () => {
 			const mockProvider: TelemetryPropertiesProvider = {
 				getTelemetryProperties: vi.fn().mockResolvedValue({
 					appVersion: "1.0.0",
-					kilocodeOrganizationId: "org-from-provider",
+					novacodeOrganizationId: "org-from-provider",
 				}),
 			}
 
@@ -282,12 +282,12 @@ describe("PostHogTelemetryClient", () => {
 			const result = await getEventProperties({
 				event: TelemetryEventName.TASK_CREATED,
 				properties: {
-					kilocodeOrganizationId: "org-from-event",
+					novacodeOrganizationId: "org-from-event",
 				},
 			})
 
 			// Event property should take precedence
-			expect(result.kilocodeOrganizationId).toBe("org-from-event")
+			expect(result.novacodeOrganizationId).toBe("org-from-event")
 		})
 
 		it("should handle missing organization ID gracefully", async () => {
@@ -315,7 +315,7 @@ describe("PostHogTelemetryClient", () => {
 			})
 
 			// Should not have organization ID
-			expect(result).not.toHaveProperty("kilocodeOrganizationId")
+			expect(result).not.toHaveProperty("novacodeOrganizationId")
 			expect(result).toEqual({
 				appVersion: "1.0.0",
 				vscodeVersion: "1.60.0",
@@ -388,7 +388,7 @@ describe("PostHogTelemetryClient", () => {
 			client.updateTelemetryState(true)
 
 			await client.capture({
-				event: TelemetryEventName.TASK_MESSAGE, // This is in the exclude list. // kilocode_change
+				event: TelemetryEventName.TASK_MESSAGE, // This is in the exclude list. // novacode_change
 				properties: { test: "value" },
 			})
 
@@ -481,7 +481,7 @@ describe("PostHogTelemetryClient", () => {
 					editorName: "vscode",
 					language: "en",
 					mode: "code",
-					kilocodeOrganizationId: "org-456",
+					novacodeOrganizationId: "org-456",
 				}),
 			}
 
@@ -498,13 +498,13 @@ describe("PostHogTelemetryClient", () => {
 				properties: expect.objectContaining({
 					appVersion: "1.0.0",
 					test: "value",
-					kilocodeOrganizationId: "org-456",
+					novacodeOrganizationId: "org-456",
 				}),
 			})
 
 			// Verify organization ID is included
 			const captureCall = mockPostHogClient.capture.mock.calls[0][0]
-			expect(captureCall.properties.kilocodeOrganizationId).toBe("org-456")
+			expect(captureCall.properties.novacodeOrganizationId).toBe("org-456")
 		})
 
 		it("should capture events without organization ID when not provided", async () => {
@@ -537,7 +537,7 @@ describe("PostHogTelemetryClient", () => {
 
 			// Verify organization ID is not included
 			const captureCall = mockPostHogClient.capture.mock.calls[0][0]
-			expect(captureCall.properties).not.toHaveProperty("kilocodeOrganizationId")
+			expect(captureCall.properties).not.toHaveProperty("novacodeOrganizationId")
 		})
 	})
 
@@ -581,7 +581,7 @@ describe("PostHogTelemetryClient", () => {
 		})
 	})
 
-	// kilocode_change: we have our own version of this
+	// novacode_change: we have our own version of this
 	describe.skip("captureException", () => {
 		it("should not capture exceptions when telemetry is disabled", async () => {
 			const client = new PostHogTelemetryClient()
@@ -644,7 +644,7 @@ describe("PostHogTelemetryClient", () => {
 		})
 	})
 
-	// kilocode_change: we have a different method
+	// novacode_change: we have a different method
 	describe.skip("captureException error filtering", () => {
 		it("should filter out 429 rate limit errors (via status property)", () => {
 			const client = new PostHogTelemetryClient()
@@ -692,7 +692,7 @@ describe("PostHogTelemetryClient", () => {
 			expect(mockPostHogClient.captureException).not.toHaveBeenCalled()
 		})
 
-		// kilocode_change: we have a different captureException method
+		// novacode_change: we have a different captureException method
 		it.skip("should capture non-rate-limit errors", () => {
 			const client = new PostHogTelemetryClient()
 			client.updateTelemetryState(true)

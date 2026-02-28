@@ -14,7 +14,7 @@ try {
 
 import type { CloudUserInfo, AuthState } from "@roo-code/types"
 import { CloudService, BridgeOrchestrator } from "@roo-code/cloud"
-import { TelemetryService, PostHogTelemetryClient, DebugTelemetryClient } from "@roo-code/telemetry" // kilocode_change: added DebugTelemetryClient
+import { TelemetryService, PostHogTelemetryClient, DebugTelemetryClient } from "@roo-code/telemetry" // novacode_change: added DebugTelemetryClient
 import { customToolRegistry } from "@roo-code/core"
 
 import "./utils/path" // Necessary to have access to String.prototype.toPosix.
@@ -46,21 +46,22 @@ import {
 	CodeActionProvider,
 } from "./activate"
 import { initializeI18n } from "./i18n"
-import { registerAutocompleteProvider } from "./services/autocomplete" // kilocode_change
-import { registerMainThreadForwardingLogger } from "./utils/fowardingLogger" // kilocode_change
-import { getKiloCodeWrapperProperties } from "./core/kilocode/wrapper" // kilocode_change
-import { checkAnthropicApiKeyConflict } from "./utils/anthropicApiKeyWarning" // kilocode_change
-import { SettingsSyncService } from "./services/settings-sync/SettingsSyncService" // kilocode_change
-import { ManagedIndexer } from "./services/code-index/managed/ManagedIndexer" // kilocode_change
+import { registerAutocompleteProvider } from "./services/autocomplete" // novacode_change
+import { registerMainThreadForwardingLogger } from "./utils/fowardingLogger" // novacode_change
+import { getNovaCodeWrapperProperties } from "./core/nova/wrapper" // novacode_change
+import { checkAnthropicApiKeyConflict } from "./utils/anthropicApiKeyWarning" // novacode_change
+import { SettingsSyncService } from "./services/settings-sync/SettingsSyncService" // novacode_change
+import { ManagedIndexer } from "./services/code-index/managed/ManagedIndexer" // novacode_change
 import { flushModels, getModels, initializeModelCacheRefresh, refreshModels } from "./api/providers/fetchers/modelCache"
-import { kilo_initializeSessionManager } from "./shared/kilocode/cli-sessions/extension/session-manager-utils" // kilocode_change
-import { fetchKilocodeNotificationsOnStartup } from "./core/kilocode/webview/webviewMessageHandlerUtils" // kilocode_change
+import { nova_initializeSessionManager } from "./shared/nova/cli-sessions/extension/session-manager-utils" // novacode_change
+import { fetchNovacodeNotificationsOnStartup } from "./core/nova/webview/webviewMessageHandlerUtils" // novacode_change
+import { focusSidebarProvider } from "./utils/commandFallback"
 
-// kilocode_change start
-async function findKilocodeTokenFromAnyProfile(provider: ClineProvider): Promise<string | undefined> {
+// novacode_change start
+async function findNovacodeTokenFromAnyProfile(provider: ClineProvider): Promise<string | undefined> {
 	const { apiConfiguration } = await provider.getState()
-	if (apiConfiguration.kilocodeToken) {
-		return apiConfiguration.kilocodeToken
+	if (apiConfiguration.novacodeToken) {
+		return apiConfiguration.novacodeToken
 	}
 
 	const profiles = await provider.providerSettingsManager.listConfig()
@@ -68,8 +69,8 @@ async function findKilocodeTokenFromAnyProfile(provider: ClineProvider): Promise
 	for (const profile of profiles) {
 		try {
 			const fullProfile = await provider.providerSettingsManager.getProfile({ name: profile.name })
-			if (fullProfile.kilocodeToken) {
-				return fullProfile.kilocodeToken
+			if (fullProfile.novacodeToken) {
+				return fullProfile.novacodeToken
 			}
 		} catch {
 			continue
@@ -78,7 +79,7 @@ async function findKilocodeTokenFromAnyProfile(provider: ClineProvider): Promise
 
 	return undefined
 }
-// kilocode_change end
+// novacode_change end
 
 /**
  * Built using https://github.com/microsoft/vscode-webview-ui-toolkit
@@ -96,11 +97,81 @@ let authStateChangedHandler: ((data: { state: AuthState; previousState: AuthStat
 let settingsUpdatedHandler: (() => void) | undefined
 let userInfoHandler: ((data: { userInfo: CloudUserInfo }) => Promise<void>) | undefined
 
+const LEGACY_CONFIGURATION_NAMESPACE = "nova-code"
+
+async function migrateLegacyConfigurationNamespace(
+	context: vscode.ExtensionContext,
+	outputChannel: vscode.OutputChannel,
+): Promise<void> {
+	const migrationKey = "legacyConfigurationNamespaceMigratedV1"
+	if (context.globalState.get<boolean>(migrationKey)) {
+		return
+	}
+
+	const extensionPackageJson = (context as Partial<vscode.ExtensionContext>).extension?.packageJSON as
+		| {
+				contributes?: { configuration?: { properties?: Record<string, unknown> } }
+		  }
+		| undefined
+	if (!extensionPackageJson?.contributes?.configuration?.properties) {
+		await context.globalState.update(migrationKey, true)
+		return
+	}
+
+	const packageJson = extensionPackageJson as {
+		contributes?: { configuration?: { properties?: Record<string, unknown> } }
+	}
+	const propertyKeys = Object.keys(packageJson.contributes?.configuration?.properties ?? {})
+	const newNamespace = Package.name
+	const newConfig = vscode.workspace.getConfiguration(newNamespace)
+	const legacyConfig = vscode.workspace.getConfiguration(LEGACY_CONFIGURATION_NAMESPACE)
+	const migratedKeys: string[] = []
+
+	for (const propertyKey of propertyKeys) {
+		if (!propertyKey.startsWith(`${newNamespace}.`)) {
+			continue
+		}
+
+		const suffix = propertyKey.slice(newNamespace.length + 1)
+		const newInspect = newConfig.inspect<unknown>(suffix)
+		const hasNewExplicitValue =
+			newInspect?.globalValue !== undefined ||
+			newInspect?.workspaceValue !== undefined ||
+			newInspect?.workspaceFolderValue !== undefined
+		if (hasNewExplicitValue) {
+			continue
+		}
+
+		const legacyInspect = legacyConfig.inspect<unknown>(suffix)
+		if (!legacyInspect) {
+			continue
+		}
+
+		if (legacyInspect.globalValue !== undefined) {
+			await newConfig.update(suffix, legacyInspect.globalValue, vscode.ConfigurationTarget.Global)
+			migratedKeys.push(suffix)
+			continue
+		}
+
+		if (legacyInspect.workspaceValue !== undefined) {
+			await newConfig.update(suffix, legacyInspect.workspaceValue, vscode.ConfigurationTarget.Workspace)
+			migratedKeys.push(suffix)
+		}
+	}
+
+	if (migratedKeys.length > 0) {
+		outputChannel.appendLine(
+			`Migrated ${migratedKeys.length} legacy settings from '${LEGACY_CONFIGURATION_NAMESPACE}' to '${newNamespace}'`,
+		)
+	}
+	await context.globalState.update(migrationKey, true)
+}
+
 // This method is called when your extension is activated.
 // Your extension is activated the very first time the command is executed.
 export async function activate(context: vscode.ExtensionContext) {
 	extensionContext = context
-	outputChannel = vscode.window.createOutputChannel("Kilo-Code")
+	outputChannel = vscode.window.createOutputChannel("Nova-Code")
 	context.subscriptions.push(outputChannel)
 	outputChannel.appendLine(`${Package.name} extension activated - ${JSON.stringify(Package)}`)
 
@@ -114,18 +185,19 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// Migrate old settings to new
 	await migrateSettings(context, outputChannel)
+	await migrateLegacyConfigurationNamespace(context, outputChannel)
 
 	// Initialize telemetry service.
 	const telemetryService = TelemetryService.createInstance()
 
-	// kilocode_change start: use DebugTelemetryClient in development mode, optionally also PostHog if API key is present
+	// novacode_change start: use DebugTelemetryClient in development mode, optionally also PostHog if API key is present
 	try {
 		if (process.env.NODE_ENV === "development") {
 			telemetryService.register(new DebugTelemetryClient())
 			console.info("[DebugTelemetry] Using DebugTelemetryClient for development")
 
 			// Also register PostHog if API key is present for local testing
-			if (process.env.KILOCODE_POSTHOG_API_KEY) {
+			if (process.env.NOVACODE_POSTHOG_API_KEY) {
 				telemetryService.register(new PostHogTelemetryClient())
 				console.info("[Telemetry] Also using PostHogTelemetryClient (API key present)")
 			}
@@ -135,12 +207,12 @@ export async function activate(context: vscode.ExtensionContext) {
 	} catch (error) {
 		console.warn("Failed to register TelemetryClient:", error.message)
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	// Create logger for cloud services.
 	const cloudLogger = createDualLogger(createOutputChannelLogger(outputChannel))
 
-	// kilocode_change start: no Roo cloud service
+	// novacode_change start: no Roo cloud service
 	// Initialize Roo Code Cloud service.
 	// const cloudService = await CloudService.createInstance(context, cloudLogger)
 
@@ -164,7 +236,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// // Add to subscriptions for proper cleanup on deactivate
 	// context.subscriptions.push(cloudService)
-	// kilocode_change end
+	// novacode_change end
 
 	// Initialize MDM service
 	const mdmService = await MdmService.createInstance(cloudLogger)
@@ -217,10 +289,10 @@ export async function activate(context: vscode.ExtensionContext) {
 	// Initialize the provider *before* the Roo Code Cloud service.
 	const provider = new ClineProvider(context, outputChannel, "sidebar", contextProxy, mdmService)
 
-	// kilocode_change start: Initialize ManagedIndexer
+	// novacode_change start: Initialize ManagedIndexer
 	const managedIndexer = new ManagedIndexer(contextProxy)
 	context.subscriptions.push(managedIndexer)
-	// kilocode_change end
+	// novacode_change end
 
 	// Initialize Roo Code Cloud service.
 	const postStateListener = () => ClineProvider.getVisibleInstance()?.postStateToWebview()
@@ -263,7 +335,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 
 		if (data.state === "active-session" || data.state === "logged-out") {
-			// kilocode_change start: disable
+			// novacode_change start: disable
 			// await handleRooModelsCache()
 			// // Apply stored provider model to API configuration if present
 			// if (data.state === "active-session") {
@@ -289,7 +361,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			// 		)
 			// 	}
 			// }
-			// kilocode_change end
+			// novacode_change end
 		}
 	}
 
@@ -334,7 +406,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	try {
 		if (cloudService.telemetryClient) {
-			// TelemetryService.instance.register(cloudService.telemetryClient) kilocode_change
+			// TelemetryService.instance.register(cloudService.telemetryClient) novacode_change
 		}
 	} catch (error) {
 		outputChannel.appendLine(
@@ -354,13 +426,13 @@ export async function activate(context: vscode.ExtensionContext) {
 		)
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	try {
-		const kiloToken = await findKilocodeTokenFromAnyProfile(provider)
+		const novaToken = await findNovacodeTokenFromAnyProfile(provider)
 
-		await kilo_initializeSessionManager({
+		await nova_initializeSessionManager({
 			context: context,
-			kiloToken,
+			novaToken,
 			log: provider.log.bind(provider),
 			outputChannel,
 			provider,
@@ -370,7 +442,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			`[SessionManager] Failed to initialize SessionManager: ${error instanceof Error ? error.message : String(error)}`,
 		)
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	// Finish initializing the provider.
 	TelemetryService.instance.setProvider(provider)
@@ -381,29 +453,37 @@ export async function activate(context: vscode.ExtensionContext) {
 		}),
 	)
 
-	// kilocode_change start
+	// novacode_change start
 	if (!context.globalState.get("firstInstallCompleted")) {
-		outputChannel.appendLine("First installation detected, opening Kilo Code sidebar!")
+		outputChannel.appendLine("First installation detected, opening Nova Code sidebar!")
 		try {
-			await vscode.commands.executeCommand("kilo-code.SidebarProvider.focus")
+			await focusSidebarProvider()
 
-			outputChannel.appendLine("Opening Kilo Code walkthrough")
+			outputChannel.appendLine("Opening Nova Code walkthrough")
 
 			// this can crash, see:
 			// https://discord.com/channels/1349288496988160052/1395865796026040470
-			await vscode.commands.executeCommand(
-				"workbench.action.openWalkthrough",
-				"kilocode.kilo-code#kiloCodeWalkthrough",
-				false,
-			)
+			try {
+				await vscode.commands.executeCommand(
+					"workbench.action.openWalkthrough",
+					`${Package.publisher}.${Package.name}#novaCodeWalkthrough`,
+					false,
+				)
+			} catch {
+				await vscode.commands.executeCommand(
+					"workbench.action.openWalkthrough",
+					"novacode.nova-code#novaCodeWalkthrough",
+					false,
+				)
+			}
 
 			// Enable autocomplete by default for new installs, but not for JetBrains IDEs
 			// JetBrains users can manually enable it if they want to test the feature
-			const { kiloCodeWrapperJetbrains } = getKiloCodeWrapperProperties()
+			const { novaCodeWrapperJetbrains } = getNovaCodeWrapperProperties()
 			const currentAutocompleteSettings = contextProxy.getValue("ghostServiceSettings")
 			await contextProxy.setValue("ghostServiceSettings", {
 				...currentAutocompleteSettings,
-				enableAutoTrigger: !kiloCodeWrapperJetbrains,
+				enableAutoTrigger: !novaCodeWrapperJetbrains,
 				enableSmartInlineTaskKeybinding: true,
 			})
 		} catch (error) {
@@ -412,7 +492,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			await context.globalState.update("firstInstallCompleted", true)
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	// Auto-import configuration if specified in settings
 	try {
@@ -427,17 +507,17 @@ export async function activate(context: vscode.ExtensionContext) {
 		)
 	}
 
-	// kilocode_change start: Fetch Kilo Code notifications on startup
+	// novacode_change start: Fetch Nova Code notifications on startup
 	try {
-		void fetchKilocodeNotificationsOnStartup(contextProxy, outputChannel.appendLine.bind(outputChannel))
+		void fetchNovacodeNotificationsOnStartup(contextProxy, outputChannel.appendLine.bind(outputChannel))
 	} catch (error) {
 		outputChannel.appendLine(
 			`[Notifications] Error fetching notifications on startup: ${error instanceof Error ? error.message : String(error)}`,
 		)
 	}
-	// kilocode_change end
+	// novacode_change end
 
-	// kilocode_change start
+	// novacode_change start
 	// Check for env var conflicts that might confuse users
 	try {
 		checkAnthropicApiKeyConflict()
@@ -469,7 +549,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			`[SettingsSync] Error during settings sync initialization: ${error instanceof Error ? error.message : String(error)}`,
 		)
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	registerCommands({ context, outputChannel, provider })
 
@@ -508,27 +588,27 @@ export async function activate(context: vscode.ExtensionContext) {
 		}),
 	)
 
-	// kilocode_change start - Kilo Code specific registrations
-	const { kiloCodeWrapped, kiloCodeWrapperCode } = getKiloCodeWrapperProperties()
-	if (kiloCodeWrapped) {
+	// novacode_change start - Nova Code specific registrations
+	const { novaCodeWrapped, novaCodeWrapperCode } = getNovaCodeWrapperProperties()
+	if (novaCodeWrapped) {
 		// Only foward logs in Jetbrains
 		registerMainThreadForwardingLogger(context)
 	}
 	// Don't register the autocomplete provider for the CLI
-	if (kiloCodeWrapperCode !== "cli") {
+	if (novaCodeWrapperCode !== "cli") {
 		registerAutocompleteProvider(context, provider)
 	}
-	registerCommitMessageProvider(context, outputChannel) // kilocode_change
-	// kilocode_change end - Kilo Code specific registrations
+	registerCommitMessageProvider(context, outputChannel) // novacode_change
+	// novacode_change end - Nova Code specific registrations
 
 	registerCodeActions(context)
 	registerTerminalActions(context)
 
-	// Allows other extensions to activate once Kilo Code is ready.
+	// Allows other extensions to activate once Nova Code is ready.
 	vscode.commands.executeCommand(`${Package.name}.activationCompleted`)
 
 	// Implements the `RooCodeAPI` interface.
-	const socketPath = process.env.KILO_IPC_SOCKET_PATH ?? process.env.ROO_CODE_IPC_SOCKET_PATH // kilocode_change
+	const socketPath = process.env.NOVA_IPC_SOCKET_PATH ?? process.env.ROO_CODE_IPC_SOCKET_PATH // novacode_change
 	const enableLogging = typeof socketPath === "string"
 
 	// Watch the core files and automatically reload the extension host.
@@ -583,14 +663,14 @@ export async function activate(context: vscode.ExtensionContext) {
 		})
 	}
 
-	// kilocode_change start: Initialize ManagedIndexer
+	// novacode_change start: Initialize ManagedIndexer
 	void managedIndexer.start().catch((error) => {
 		outputChannel.appendLine(
 			`Failed to start ManagedIndexer: ${error instanceof Error ? error.message : String(error)}`,
 		)
 	})
 	await checkAndRunAutoLaunchingTask(context)
-	// kilocode_change end
+	// novacode_change end
 	// Initialize background model cache refresh
 	initializeModelCacheRefresh()
 

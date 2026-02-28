@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 // pnpm --filter @roo-code/vscode-webview test src/components/chat/__tests__/ChatView.completion-suggestions.spec.tsx
 
 import React from "react"

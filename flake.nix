@@ -1,5 +1,5 @@
 {
-  description = "Kilo Code development environment";
+  description = "Nova Code development environment";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
@@ -21,7 +21,7 @@
           pkgs = import nixpkgs { inherit system; };
         in
         pkgs.mkShell {
-          name = "kilo-code";
+          name = "nova-code";
 
           packages = with pkgs; [
             nodejs_20

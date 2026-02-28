@@ -7,24 +7,24 @@ SPDX-License-Identifier: Apache-2.0
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
-    <id>ai.kilocode.jetbrains</id>
+    <id>ai.novacode.jetbrains</id>
 
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
-    <name>Kilo Code</name>
+    <name>Nova Code</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor url="https://kilo.ai">Kilo Code</vendor>
+    <vendor url="https://nova.ai">Nova Code</vendor>
 
     <!-- Resource bundles for internationalization -->
     <resource-bundle>messages.JetbrainsBundle</resource-bundle>
-    <resource-bundle>messages.KilocodeBundle</resource-bundle>
+    <resource-bundle>messages.NovacodeBundle</resource-bundle>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-        <h1>Kilo Code AI Agent</h1>
+        <h1>Nova Code AI Agent</h1>
         <p>Open Source AI coding assistant for planning, building, and fixing code.</p>
    ]]></description>
    
@@ -41,79 +41,79 @@ SPDX-License-Identifier: Apache-2.0
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <projectService serviceImplementation="ai.kilocode.jetbrains.plugin.WecoderPluginService"/>
-        <jbProtocolCommand implementation="ai.kilocode.jetbrains.commands.KiloCodeAuthProtocolCommand" />
-        <postStartupActivity implementation="ai.kilocode.jetbrains.plugin.WecoderPlugin"/>
-        <editorFactoryListener implementation="ai.kilocode.jetbrains.editor.EditorListener"/>
-        <toolWindow factoryClass="ai.kilocode.jetbrains.ui.RooToolWindowFactory"
-                    id="Kilo Code"
+        <projectService serviceImplementation="ai.novacode.jetbrains.plugin.WecoderPluginService"/>
+        <jbProtocolCommand implementation="ai.novacode.jetbrains.commands.NovaCodeAuthProtocolCommand" />
+        <postStartupActivity implementation="ai.novacode.jetbrains.plugin.WecoderPlugin"/>
+        <editorFactoryListener implementation="ai.novacode.jetbrains.editor.EditorListener"/>
+        <toolWindow factoryClass="ai.novacode.jetbrains.ui.RooToolWindowFactory"
+                    id="Nova Code"
                     secondary="true"
-                    icon="/icons/kilo-dark.svg"
+                    icon="/icons/nova-dark.svg"
                     anchor="right" />
         <notificationGroup
-                    id="kilocode"
+                    id="novacode"
                     displayType="BALLOON"
         />
-        <checkinHandlerFactory implementation="ai.kilocode.jetbrains.git.CommitMessageHandlerFactory"/>
-        <applicationService serviceImplementation="ai.kilocode.jetbrains.git.CommitMessageService"/>
-        <applicationService serviceImplementation="ai.kilocode.jetbrains.inline.InlineCompletionService"/>
+        <checkinHandlerFactory implementation="ai.novacode.jetbrains.git.CommitMessageHandlerFactory"/>
+        <applicationService serviceImplementation="ai.novacode.jetbrains.git.CommitMessageService"/>
+        <applicationService serviceImplementation="ai.novacode.jetbrains.inline.InlineCompletionService"/>
     </extensions>
 
     <extensions defaultExtensionNs="org.jetbrains.plugins.terminal">
-        <localTerminalCustomizer implementation="ai.kilocode.jetbrains.terminal.WeCoderTerminalCustomizer"/>
+        <localTerminalCustomizer implementation="ai.novacode.jetbrains.terminal.WeCoderTerminalCustomizer"/>
     </extensions>
 
     <actions>
-        <action id="kilocode.plusButtonClicked"
+        <action id="novacode.plusButtonClicked"
                 icon="AllIcons.General.Add"
-                class="ai.kilocode.jetbrains.actions.PlusButtonClickAction"
+                class="ai.novacode.jetbrains.actions.PlusButtonClickAction"
                 text="New Task"
                 description="New task">
             <override-text place="GoToAction" text="New Task" />
         </action>
 
-        <action id="kilocode.historyButtonClicked"
+        <action id="novacode.historyButtonClicked"
                 icon="AllIcons.Vcs.History"
-                class="ai.kilocode.jetbrains.actions.HistoryButtonClickAction"
+                class="ai.novacode.jetbrains.actions.HistoryButtonClickAction"
                 text="History"
                 description="History">
             <override-text place="GoToAction" text="History" />
         </action>
 
-        <action id="kilocode.profileButtonClicked"
+        <action id="novacode.profileButtonClicked"
                 icon="AllIcons.General.User"
-                class="ai.kilocode.jetbrains.actions.ProfileButtonClickAction"
+                class="ai.novacode.jetbrains.actions.ProfileButtonClickAction"
                 text="Profile"
                 description="Profile">
             <override-text place="GoToAction" text="Profile" />
         </action>
 
-        <action id="kilocode.settingsButtonClicked"
+        <action id="novacode.settingsButtonClicked"
                 icon="AllIcons.General.Settings"
-                class="ai.kilocode.jetbrains.actions.SettingsButtonClickAction"
+                class="ai.novacode.jetbrains.actions.SettingsButtonClickAction"
                 text="Settings"
                 description="Setting">
             <override-text place="GoToAction" text="Setting" />
         </action>
 
-        <action id="kilocode.generateCommitMessage"
-                icon="/icons/kilo-dark-small.svg"
-                class="ai.kilocode.jetbrains.actions.GitCommitMessageAction"
+        <action id="novacode.generateCommitMessage"
+                icon="/icons/nova-dark-small.svg"
+                class="ai.novacode.jetbrains.actions.GitCommitMessageAction"
                 text="Generate Commit Message"
                 description="Generate AI-powered commit message">
             <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
         </action>
 
         <group id="WecoderToolbarGroup">
-            <reference ref="kilocode.plusButtonClicked" />
-            <reference ref="kilocode.historyButtonClicked" />
-            <reference ref="kilocode.profileButtonClicked" />
-            <reference ref="kilocode.settingsButtonClicked" />
+            <reference ref="novacode.plusButtonClicked" />
+            <reference ref="novacode.historyButtonClicked" />
+            <reference ref="novacode.profileButtonClicked" />
+            <reference ref="novacode.settingsButtonClicked" />
         </group>
 
-        <group id="kilocode.RightClickMenu" text="Kilo Code" description="kilocode main menu"  icon="/icons/kilo-dark-small.svg" popup="true">
-            <group id="kilocode.RightClick.Chat" class="ai.kilocode.jetbrains.actions.RightClickChatActionGroup"
-                   text="Chat" description="kilocode chat tool"/>
+        <group id="novacode.RightClickMenu" text="Nova Code" description="novacode main menu"  icon="/icons/nova-dark-small.svg" popup="true">
+            <group id="novacode.RightClick.Chat" class="ai.novacode.jetbrains.actions.RightClickChatActionGroup"
+                   text="Chat" description="novacode chat tool"/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </group>
     </actions>

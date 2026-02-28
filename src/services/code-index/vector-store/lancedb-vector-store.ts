@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 
 import { createHash } from "crypto"
 import * as path from "path"

@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import * as path from "path"
 import { CommitMessageRequest, CommitMessageResult } from "./types/core"
 import { GitExtensionService, GitChange } from "./GitExtensionService"
@@ -29,10 +29,10 @@ export class CommitMessageOrchestrator {
 		let gitService: GitExtensionService | null = null
 
 		try {
-			integration.reportProgress?.(5, t("kilocode:commitMessage.initializing"))
+			integration.reportProgress?.(5, t("novacode:commitMessage.initializing"))
 			gitService = new GitExtensionService(request.workspacePath)
 
-			integration.reportProgress?.(15, t("kilocode:commitMessage.discoveringFiles"))
+			integration.reportProgress?.(15, t("novacode:commitMessage.discoveringFiles"))
 			const resolution = await this.resolveCommitChanges(gitService, request.selectedFiles, integration)
 
 			if (resolution.changes.length === 0) {
@@ -43,14 +43,14 @@ export class CommitMessageOrchestrator {
 
 			integration.reportProgress?.(
 				25,
-				t("kilocode:commitMessage.foundChanges", { count: resolution.changes.length }),
+				t("novacode:commitMessage.foundChanges", { count: resolution.changes.length }),
 			)
 
 			if (!resolution.usedStaged && resolution.files.length > 0) {
 				integration.showMessage?.("Generating commit message from unstaged changes", "info")
 			}
 
-			integration.reportProgress?.(40, t("kilocode:commitMessage.gettingContext"))
+			integration.reportProgress?.(40, t("novacode:commitMessage.gettingContext"))
 
 			const gitContext = await gitService.getCommitContext(
 				resolution.changes,
@@ -58,7 +58,7 @@ export class CommitMessageOrchestrator {
 				resolution.files,
 			)
 
-			integration.reportProgress?.(70, t("kilocode:commitMessage.generating"))
+			integration.reportProgress?.(70, t("novacode:commitMessage.generating"))
 
 			const message = await messageGenerator.generateMessage({
 				workspacePath: request.workspacePath,
@@ -76,7 +76,7 @@ export class CommitMessageOrchestrator {
 			const result = { message }
 			await integration.handleResult(result)
 
-			integration.reportProgress?.(100, t("kilocode:commitMessage.generated"))
+			integration.reportProgress?.(100, t("novacode:commitMessage.generated"))
 			return result
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : "Unknown error occurred"

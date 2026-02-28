@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 
 export function escapeHtml(text: string) {
 	return text

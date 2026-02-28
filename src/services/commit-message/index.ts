@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import * as vscode from "vscode"
 import { CommitMessageProvider } from "./CommitMessageProvider"
 import { t } from "../../i18n"
@@ -15,9 +15,9 @@ export function registerCommitMessageProvider(
 	context.subscriptions.push(commitProvider)
 
 	commitProvider.activate().catch((error) => {
-		outputChannel.appendLine(t("kilocode:commitMessage.activationFailed", { error: error.message }))
+		outputChannel.appendLine(t("novacode:commitMessage.activationFailed", { error: error.message }))
 		console.error("Commit message provider activation failed:", error)
 	})
 
-	outputChannel.appendLine(t("kilocode:commitMessage.providerRegistered"))
+	outputChannel.appendLine(t("novacode:commitMessage.providerRegistered"))
 }

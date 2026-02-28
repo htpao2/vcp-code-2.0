@@ -10,7 +10,7 @@ export * from "./doubao.js"
 export * from "./featherless.js"
 export * from "./fireworks.js"
 export * from "./gemini.js"
-// kilocode_change start
+// novacode_change start
 export * from "./ovhcloud.js"
 export * from "./synthetic.js"
 export * from "./inception.js"
@@ -19,7 +19,7 @@ export * from "./glama.js"
 export * from "./aihubmix.js"
 export * from "./apertis.js"
 export * from "./zenmux.js"
-// kilocode_change end
+// novacode_change end
 export * from "./groq.js"
 export * from "./huggingface.js"
 export * from "./io-intelligence.js"
@@ -27,20 +27,20 @@ export * from "./lite-llm.js"
 export * from "./lm-studio.js"
 export * from "./mistral.js"
 export * from "./moonshot.js"
-export * from "./nano-gpt.js" // kilocode_change
+export * from "./nano-gpt.js" // novacode_change
 export * from "./ollama.js"
 export * from "./openai.js"
 export * from "./openai-codex.js"
 export * from "./openai-codex-rate-limits.js"
 export * from "./openrouter.js"
-export * from "./poe.js" // kilocode_change
+export * from "./poe.js" // novacode_change
 export * from "./qwen-code.js"
 export * from "./requesty.js"
 export * from "./roo.js"
 export * from "./sambanova.js"
 export * from "./unbound.js"
 export * from "./vertex.js"
-export * from "./kilocode-vscode-llm.js"
+export * from "./novacode-vscode-llm.js"
 export * from "./xai.js"
 export * from "./vercel-ai-gateway.js"
 export * from "./zai.js"
@@ -59,10 +59,10 @@ import { doubaoDefaultModelId } from "./doubao.js"
 import { featherlessDefaultModelId } from "./featherless.js"
 import { fireworksDefaultModelId } from "./fireworks.js"
 import { geminiDefaultModelId } from "./gemini.js"
-import { glamaDefaultModelId } from "./glama.js" // kilocode_change
-import { aihubmixDefaultModelId } from "./aihubmix.js" // kilocode_change
-import { apertisDefaultModelId } from "./apertis.js" // kilocode_change
-import { zenmuxDefaultModelId } from "./zenmux.js" // kilocode_change
+import { glamaDefaultModelId } from "./glama.js" // novacode_change
+import { aihubmixDefaultModelId } from "./aihubmix.js" // novacode_change
+import { apertisDefaultModelId } from "./apertis.js" // novacode_change
+import { zenmuxDefaultModelId } from "./zenmux.js" // novacode_change
 import { groqDefaultModelId } from "./groq.js"
 import { ioIntelligenceDefaultModelId } from "./io-intelligence.js"
 import { litellmDefaultModelId } from "./lite-llm.js"
@@ -70,7 +70,7 @@ import { mistralDefaultModelId } from "./mistral.js"
 import { moonshotDefaultModelId } from "./moonshot.js"
 import { openAiCodexDefaultModelId } from "./openai-codex.js"
 import { openRouterDefaultModelId } from "./openrouter.js"
-import { poeDefaultModelId } from "./poe.js" // kilocode_change
+import { poeDefaultModelId } from "./poe.js" // novacode_change
 import { qwenCodeDefaultModelId } from "./qwen-code.js"
 import { requestyDefaultModelId } from "./requesty.js"
 import { rooDefaultModelId } from "./roo.js"
@@ -99,20 +99,20 @@ export function getProviderDefaultModelId(
 	switch (provider) {
 		case "openrouter":
 			return openRouterDefaultModelId
-		case "poe": // kilocode_change
-			return poeDefaultModelId // kilocode_change
-		case "zenmux": // kilocode_change
-			return zenmuxDefaultModelId // kilocode_change
+		case "poe": // novacode_change
+			return poeDefaultModelId // novacode_change
+		case "zenmux": // novacode_change
+			return zenmuxDefaultModelId // novacode_change
 		case "requesty":
 			return requestyDefaultModelId
-		// kilocode_change start
+		// novacode_change start
 		case "glama":
 			return glamaDefaultModelId
 		case "aihubmix":
 			return aihubmixDefaultModelId
 		case "apertis":
 			return apertisDefaultModelId
-		// kilocode_change end
+		// novacode_change end
 		case "unbound":
 			return unboundDefaultModelId
 		case "litellm":
@@ -147,8 +147,8 @@ export function getProviderDefaultModelId(
 			return options?.isChina ? mainlandZAiDefaultModelId : internationalZAiDefaultModelId
 		case "openai-native":
 			return "gpt-4o" // Based on openai-native patterns
-		case "openai-responses": // kilocode_change
-			return "gpt-4o" // OpenAI-compatible Responses API // kilocode_change
+		case "openai-responses": // novacode_change
+			return "gpt-4o" // OpenAI-compatible Responses API // novacode_change
 		case "openai-codex":
 			return openAiCodexDefaultModelId
 		case "mistral":

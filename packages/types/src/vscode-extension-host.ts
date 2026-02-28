@@ -1,4 +1,4 @@
-import { z } from "zod"
+﻿import { z } from "zod"
 
 import type { GlobalSettings, RooCodeSettings, GlobalState } from "./global-settings.js"
 import type { ProviderSettings, ProviderSettingsEntry } from "./provider-settings.js"
@@ -20,10 +20,10 @@ import type { SerializedCustomToolDefinition } from "./custom-tool.js"
 import type { GitCommit } from "./git.js"
 import type { McpServer } from "./mcp.js"
 import type { ModelRecord, RouterModels, ModelInfo } from "./model.js"
-import type { CommitRange } from "./kilocode/kilocode.js"
+import type { CommitRange } from "./nova/novacode.js"
 import type { OpenAiCodexRateLimitInfo } from "./providers/openai-codex-rate-limits.js"
 
-// kilocode_change start: Type definitions for Kilo Code-specific features
+// novacode_change start: Type definitions for Nova Code-specific features
 // SAP AI Core deployment types
 export type DeploymentRecord = Record<
 	string,
@@ -62,7 +62,7 @@ export interface McpMarketplaceCatalog {
 }
 
 export interface McpDownloadResponse {
-	// kilocode_change: This payload is used both for the marketplace download details
+	// novacode_change: This payload is used both for the marketplace download details
 	// modal and for older install flows. Keep it permissive for backwards compatibility.
 	mcpId: string
 	// Marketplace download details (preferred)
@@ -83,13 +83,13 @@ export interface McpDownloadResponse {
 export type ClineRulesToggles = Record<string, boolean>
 
 // Wrapper properties
-export interface KiloCodeWrapperProperties {
-	kiloCodeWrapped: boolean
+export interface NovaCodeWrapperProperties {
+	novaCodeWrapped: boolean
 	wrapperName?: string
 	wrapperVersion?: string
 	wrapperTitle?: string
 }
-// kilocode_change end
+// novacode_change end
 
 // Command interface for frontend/backend communication
 export interface Command {
@@ -154,13 +154,13 @@ export interface ExtensionMessage {
 		| "lmStudioModels"
 		| "vsCodeLmModels"
 		| "huggingFaceModels"
-		| "sapAiCoreModels" // kilocode_change
-		| "sapAiCoreDeployments" // kilocode_change
+		| "sapAiCoreModels" // novacode_change
+		| "sapAiCoreDeployments" // novacode_change
 		| "vsCodeLmApiAvailable"
 		| "updatePrompt"
 		| "systemPrompt"
 		| "autoApprovalEnabled"
-		| "yoloMode" // kilocode_change
+		| "yoloMode" // novacode_change
 		| "updateCustomMode"
 		| "deleteCustomMode"
 		| "exportModeResult"
@@ -169,7 +169,7 @@ export interface ExtensionMessage {
 		| "deleteCustomModeCheck"
 		| "currentCheckpointUpdated"
 		| "checkpointInitWarning"
-		| "insertTextToChatArea" // kilocode_change
+		| "insertTextToChatArea" // novacode_change
 		| "showHumanRelayDialog"
 		| "humanRelayResponse"
 		| "humanRelayCancel"
@@ -181,28 +181,28 @@ export interface ExtensionMessage {
 		| "maxReadFileLine"
 		| "fileSearchResults"
 		| "toggleApiConfigPin"
-		| "mcpMarketplaceCatalog" // kilocode_change
-		| "mcpDownloadDetails" // kilocode_change
-		| "showSystemNotification" // kilocode_change
-		| "openInBrowser" // kilocode_change
+		| "mcpMarketplaceCatalog" // novacode_change
+		| "mcpDownloadDetails" // novacode_change
+		| "showSystemNotification" // novacode_change
+		| "openInBrowser" // novacode_change
 		| "acceptInput"
-		| "focusChatInput" // kilocode_change
-		| "stt:started" // kilocode_change: STT session started
-		| "stt:transcript" // kilocode_change: STT transcript update
-		| "stt:volume" // kilocode_change: STT volume level
-		| "stt:stopped" // kilocode_change: STT session stopped
-		| "stt:statusResponse" // kilocode_change: Response to stt:checkAvailability request
-		| "stt:devices" // kilocode_change: Microphone devices list
-		| "stt:deviceSelected" // kilocode_change: Device selection confirmation
-		| "settingsImported" // kilocode_change
+		| "focusChatInput" // novacode_change
+		| "stt:started" // novacode_change: STT session started
+		| "stt:transcript" // novacode_change: STT transcript update
+		| "stt:volume" // novacode_change: STT volume level
+		| "stt:stopped" // novacode_change: STT session stopped
+		| "stt:statusResponse" // novacode_change: Response to stt:checkAvailability request
+		| "stt:devices" // novacode_change: Microphone devices list
+		| "stt:deviceSelected" // novacode_change: Device selection confirmation
+		| "settingsImported" // novacode_change
 		| "setHistoryPreviewCollapsed"
 		| "commandExecutionStatus"
 		| "mcpExecutionStatus"
 		| "vsCodeSetting"
-		| "profileDataResponse" // kilocode_change
-		| "balanceDataResponse" // kilocode_change
-		| "updateProfileData" // kilocode_change
-		| "profileConfigurationForEditing" // kilocode_change: Response with profile config for editing
+		| "profileDataResponse" // novacode_change
+		| "balanceDataResponse" // novacode_change
+		| "updateProfileData" // novacode_change
+		| "profileConfigurationForEditing" // novacode_change: Response with profile config for editing
 		| "authenticatedUser"
 		| "condenseTaskContextStarted"
 		| "condenseTaskContextResponse"
@@ -211,58 +211,58 @@ export interface ExtensionMessage {
 		| "indexingStatusUpdate"
 		| "indexCleared"
 		| "codebaseIndexConfig"
-		| "rulesData" // kilocode_change
+		| "rulesData" // novacode_change
 		| "marketplaceInstallResult"
 		| "marketplaceRemoveResult"
 		| "marketplaceData"
-		| "mermaidFixResponse" // kilocode_change
-		| "tasksByIdResponse" // kilocode_change
-		| "taskHistoryResponse" // kilocode_change
+		| "mermaidFixResponse" // novacode_change
+		| "tasksByIdResponse" // novacode_change
+		| "taskHistoryResponse" // novacode_change
 		| "shareTaskSuccess"
 		| "codeIndexSettingsSaved"
 		| "codeIndexSecretStatus"
 		| "showDeleteMessageDialog"
 		| "showEditMessageDialog"
-		| "kilocodeNotificationsResponse" // kilocode_change
-		| "usageDataResponse" // kilocode_change
-		| "keybindingsResponse" // kilocode_change
-		| "autoPurgeEnabled" // kilocode_change
-		| "autoPurgeDefaultRetentionDays" // kilocode_change
-		| "autoPurgeFavoritedTaskRetentionDays" // kilocode_change
-		| "autoPurgeCompletedTaskRetentionDays" // kilocode_change
-		| "autoPurgeIncompleteTaskRetentionDays" // kilocode_change
-		| "manualPurge" // kilocode_change
+		| "novacodeNotificationsResponse" // novacode_change
+		| "usageDataResponse" // novacode_change
+		| "keybindingsResponse" // novacode_change
+		| "autoPurgeEnabled" // novacode_change
+		| "autoPurgeDefaultRetentionDays" // novacode_change
+		| "autoPurgeFavoritedTaskRetentionDays" // novacode_change
+		| "autoPurgeCompletedTaskRetentionDays" // novacode_change
+		| "autoPurgeIncompleteTaskRetentionDays" // novacode_change
+		| "manualPurge" // novacode_change
 		| "commands"
 		| "insertTextIntoTextarea"
 		| "dismissedUpsells"
 		| "interactionRequired"
-		| "managedIndexerState" // kilocode_change
-		| "managedIndexerEnabled" // kilocode_change
+		| "managedIndexerState" // novacode_change
+		| "managedIndexerEnabled" // novacode_change
 		| "browserSessionUpdate"
 		| "browserSessionNavigate"
 		| "organizationSwitchResult"
-		| "showTimestamps" // kilocode_change
-		| "showDiffStats" // kilocode_change
-		| "apiMessagesSaved" // kilocode_change: File save event for API messages
-		| "taskMessagesSaved" // kilocode_change: File save event for task messages
-		| "taskMetadataSaved" // kilocode_change: File save event for task metadata
-		| "managedIndexerState" // kilocode_change
-		| "singleCompletionResult" // kilocode_change
-		| "deviceAuthStarted" // kilocode_change: Device auth initiated
-		| "deviceAuthPolling" // kilocode_change: Device auth polling update
-		| "deviceAuthComplete" // kilocode_change: Device auth successful
-		| "deviceAuthFailed" // kilocode_change: Device auth failed
-		| "deviceAuthCancelled" // kilocode_change: Device auth cancelled
-		| "chatCompletionResult" // kilocode_change: FIM completion result for chat text area
+		| "showTimestamps" // novacode_change
+		| "showDiffStats" // novacode_change
+		| "apiMessagesSaved" // novacode_change: File save event for API messages
+		| "taskMessagesSaved" // novacode_change: File save event for task messages
+		| "taskMetadataSaved" // novacode_change: File save event for task metadata
+		| "managedIndexerState" // novacode_change
+		| "singleCompletionResult" // novacode_change
+		| "deviceAuthStarted" // novacode_change: Device auth initiated
+		| "deviceAuthPolling" // novacode_change: Device auth polling update
+		| "deviceAuthComplete" // novacode_change: Device auth successful
+		| "deviceAuthFailed" // novacode_change: Device auth failed
+		| "deviceAuthCancelled" // novacode_change: Device auth cancelled
+		| "chatCompletionResult" // novacode_change: FIM completion result for chat text area
 		| "claudeCodeRateLimits"
 		| "customToolsResult"
 		| "modes"
 		| "taskWithAggregatedCosts"
 		| "skillsData"
-		| "askReviewScope" // kilocode_change: Review mode scope selection
+		| "askReviewScope" // novacode_change: Review mode scope selection
 		| "openAiCodexRateLimits"
 	text?: string
-	// kilocode_change start
+	// novacode_change start
 	completionRequestId?: string // Correlation ID from request
 	completionText?: string // The completed text
 	completionError?: string // Error message if failed
@@ -272,7 +272,7 @@ export interface ExtensionMessage {
 		| TasksByIdResponsePayload
 		| TaskHistoryResponsePayload
 		| [string, string] // For file save events [taskId, filePath]
-	// kilocode_change end
+	// novacode_change end
 	// Checkpoint warning message
 	checkpointWarning?: {
 		type: "WAIT_TIMEOUT" | "INIT_TIMEOUT"
@@ -282,14 +282,14 @@ export interface ExtensionMessage {
 		| "chatButtonClicked"
 		| "settingsButtonClicked"
 		| "historyButtonClicked"
-		| "promptsButtonClicked" // kilocode_change
-		| "profileButtonClicked" // kilocode_change
+		| "promptsButtonClicked" // novacode_change
+		| "profileButtonClicked" // novacode_change
 		| "marketplaceButtonClicked"
 		| "cloudButtonClicked"
 		| "didBecomeVisible"
 		| "focusInput"
 		| "switchTab"
-		| "focusChatInput" // kilocode_change
+		| "focusChatInput" // novacode_change
 		| "toggleAutoApprove"
 	invoke?: "newChat" | "sendMessage" | "primaryButtonClick" | "secondaryButtonClick" | "setChatBoxMessage"
 	state?: ExtensionState
@@ -323,20 +323,20 @@ export interface ExtensionMessage {
 			}
 		}>
 	}>
-	sapAiCoreModels?: ModelRecord // kilocode_change
-	sapAiCoreDeployments?: DeploymentRecord // kilocode_change
+	sapAiCoreModels?: ModelRecord // novacode_change
+	sapAiCoreDeployments?: DeploymentRecord // novacode_change
 	mcpServers?: McpServer[]
 	commits?: GitCommit[]
 	listApiConfig?: ProviderSettingsEntry[]
-	apiConfiguration?: ProviderSettings // kilocode_change: For profileConfigurationForEditing response
-	sessionId?: string // kilocode_change: STT session ID
-	segments?: STTSegment[] // kilocode_change: STT transcript segments (complete state)
-	isFinal?: boolean // kilocode_change: STT transcript is final
-	level?: number // kilocode_change: STT volume level (0-1)
-	reason?: "completed" | "cancelled" | "error" // kilocode_change: STT stop reason
-	speechToTextStatus?: { available: boolean; reason?: "openaiKeyMissing" | "ffmpegNotInstalled" } // kilocode_change: Speech-to-text availability status response
-	devices?: MicrophoneDevice[] // kilocode_change: Microphone devices list
-	device?: MicrophoneDevice | null // kilocode_change: Selected microphone device
+	apiConfiguration?: ProviderSettings // novacode_change: For profileConfigurationForEditing response
+	sessionId?: string // novacode_change: STT session ID
+	segments?: STTSegment[] // novacode_change: STT transcript segments (complete state)
+	isFinal?: boolean // novacode_change: STT transcript is final
+	level?: number // novacode_change: STT volume level (0-1)
+	reason?: "completed" | "cancelled" | "error" // novacode_change: STT stop reason
+	speechToTextStatus?: { available: boolean; reason?: "openaiKeyMissing" | "ffmpegNotInstalled" } // novacode_change: Speech-to-text availability status response
+	devices?: MicrophoneDevice[] // novacode_change: Microphone devices list
+	device?: MicrophoneDevice | null // novacode_change: Selected microphone device
 	mode?: string
 	customMode?: ModeConfig
 	slug?: string
@@ -350,15 +350,15 @@ export interface ExtensionMessage {
 		| { path: string; type: "file" | "folder"; label?: string }[]
 		| { name: string; description?: string; argumentHint?: string; source: "global" | "project" | "built-in" }[]
 	error?: string
-	mcpMarketplaceCatalog?: McpMarketplaceCatalog // kilocode_change
-	mcpDownloadDetails?: McpDownloadResponse // kilocode_change
+	mcpMarketplaceCatalog?: McpMarketplaceCatalog // novacode_change
+	mcpDownloadDetails?: McpDownloadResponse // novacode_change
 	notificationOptions?: {
 		title?: string
 		subtitle?: string
 		message: string
-	} // kilocode_change
-	url?: string // kilocode_change
-	keybindings?: Record<string, string> // kilocode_change
+	} // novacode_change
+	url?: string // novacode_change
+	keybindings?: Record<string, string> // novacode_change
 	setting?: string
 	value?: any // eslint-disable-line @typescript-eslint/no-explicit-any
 	hasContent?: boolean
@@ -366,7 +366,7 @@ export interface ExtensionMessage {
 	userInfo?: CloudUserInfo
 	organizationAllowList?: OrganizationAllowList
 	tab?: string
-	// kilocode_change: Rules data
+	// novacode_change: Rules data
 	globalRules?: ClineRulesToggles
 	localRules?: ClineRulesToggles
 	globalWorkflows?: ClineRulesToggles
@@ -374,7 +374,7 @@ export interface ExtensionMessage {
 	marketplaceItems?: MarketplaceItem[]
 	organizationMcps?: MarketplaceItem[]
 	marketplaceInstalledMetadata?: MarketplaceInstalledMetadata
-	fixedCode?: string | null // For mermaidFixResponse // kilocode_change
+	fixedCode?: string | null // For mermaidFixResponse // novacode_change
 	errors?: string[]
 	visibility?: ShareVisibility
 	rulesFolderPath?: string
@@ -382,7 +382,7 @@ export interface ExtensionMessage {
 	messageTs?: number
 	hasCheckpoint?: boolean
 	context?: string
-	// kilocode_change start: Notifications
+	// novacode_change start: Notifications
 	notifications?: Array<{
 		id: string
 		title: string
@@ -392,10 +392,10 @@ export interface ExtensionMessage {
 			actionURL: string
 		}
 	}>
-	// kilocode_change end
+	// novacode_change end
 	commands?: Command[]
 	skills?: Array<{
-		// kilocode_change: Skills data
+		// novacode_change: Skills data
 		name: string
 		description: string
 		path: string
@@ -405,7 +405,7 @@ export interface ExtensionMessage {
 	queuedMessages?: QueuedMessage[]
 	list?: string[] // For dismissedUpsells
 	organizationId?: string | null // For organizationSwitchResult
-	// kilocode_change start: Managed Indexer
+	// novacode_change start: Managed Indexer
 	managedIndexerEnabled?: boolean
 	managedIndexerState?: Array<{
 		workspaceFolderPath: string
@@ -426,11 +426,11 @@ export interface ExtensionMessage {
 				operation?: string
 			}
 		}
-	}> // kilocode_change end: Managed Indexer
+	}> // novacode_change end: Managed Indexer
 	browserSessionMessages?: ClineMessage[] // For browser session panel updates
 	isBrowserSessionActive?: boolean // For browser session panel updates
 	stepIndex?: number // For browserSessionNavigate: the target step index to display
-	// kilocode_change start: Device auth data
+	// novacode_change start: Device auth data
 	deviceAuthCode?: string
 	deviceAuthVerificationUrl?: string
 	deviceAuthExpiresIn?: number
@@ -438,7 +438,7 @@ export interface ExtensionMessage {
 	deviceAuthToken?: string
 	deviceAuthUserEmail?: string
 	deviceAuthError?: string
-	// kilocode_change end: Device auth data
+	// novacode_change end: Device auth data
 	tools?: SerializedCustomToolDefinition[] // For customToolsResult
 	modes?: { slug: string; name: string }[] // For modes response
 	aggregatedCosts?: {
@@ -448,7 +448,7 @@ export interface ExtensionMessage {
 		childrenCost: number
 	}
 	historyItem?: HistoryItem
-	// kilocode_change start: Review mode
+	// novacode_change start: Review mode
 	reviewScopeInfo?: {
 		uncommitted: {
 			available: boolean
@@ -464,7 +464,7 @@ export interface ExtensionMessage {
 		}
 		error?: string
 	}
-	// kilocode_change end: Review mode
+	// novacode_change end: Review mode
 }
 
 export interface OpenAiCodexRateLimitsMessage {
@@ -481,13 +481,13 @@ export type ExtensionState = Pick<
 	| "customInstructions"
 	| "dismissedUpsells"
 	| "autoApprovalEnabled"
-	| "yoloMode" // kilocode_change
+	| "yoloMode" // novacode_change
 	| "alwaysAllowReadOnly"
 	| "alwaysAllowReadOnlyOutsideWorkspace"
 	| "alwaysAllowWrite"
 	| "alwaysAllowWriteOutsideWorkspace"
 	| "alwaysAllowWriteProtected"
-	| "alwaysAllowDelete" // kilocode_change
+	| "alwaysAllowDelete" // novacode_change
 	| "alwaysAllowBrowser"
 	| "alwaysAllowMcp"
 	| "alwaysAllowModeSwitch"
@@ -501,8 +501,8 @@ export type ExtensionState = Pick<
 	| "allowedMaxCost"
 	| "browserToolEnabled"
 	| "browserViewportSize"
-	| "showAutoApproveMenu" // kilocode_change
-	| "hideCostBelowThreshold" // kilocode_change
+	| "showAutoApproveMenu" // novacode_change
+	| "hideCostBelowThreshold" // novacode_change
 	| "screenshotQuality"
 	| "remoteBrowserEnabled"
 	| "cachedChromeHostUrl"
@@ -512,7 +512,7 @@ export type ExtensionState = Pick<
 	| "soundEnabled"
 	| "soundVolume"
 	| "maxConcurrentFileReads"
-	| "allowVeryLargeReads" // kilocode_change
+	| "allowVeryLargeReads" // novacode_change
 	| "terminalOutputLineLimit"
 	| "terminalOutputCharacterLimit"
 	| "terminalShellIntegrationTimeout"
@@ -527,36 +527,36 @@ export type ExtensionState = Pick<
 	| "diagnosticsEnabled"
 	| "diffEnabled"
 	| "fuzzyMatchThreshold"
-	| "morphApiKey" // kilocode_change: Morph fast apply - global setting
-	| "fastApplyModel" // kilocode_change: Fast Apply model selection
-	| "fastApplyApiProvider" // kilocode_change: Fast Apply model api base url
+	| "morphApiKey" // novacode_change: Morph fast apply - global setting
+	| "fastApplyModel" // novacode_change: Fast Apply model selection
+	| "fastApplyApiProvider" // novacode_change: Fast Apply model api base url
 	// | "experiments" // Optional in GlobalSettings, required here.
 	| "language"
 	| "modeApiConfigs"
 	| "customModePrompts"
 	| "customSupportPrompts"
 	| "enhancementApiConfigId"
-	| "localWorkflowToggles" // kilocode_change
-	| "globalRulesToggles" // kilocode_change
-	| "localRulesToggles" // kilocode_change
-	| "globalWorkflowToggles" // kilocode_change
-	| "commitMessageApiConfigId" // kilocode_change
-	| "terminalCommandApiConfigId" // kilocode_change
-	| "dismissedNotificationIds" // kilocode_change
-	| "ghostServiceSettings" // kilocode_change
-	| "autoPurgeEnabled" // kilocode_change
-	| "autoPurgeDefaultRetentionDays" // kilocode_change
-	| "autoPurgeFavoritedTaskRetentionDays" // kilocode_change
-	| "autoPurgeCompletedTaskRetentionDays" // kilocode_change
-	| "autoPurgeIncompleteTaskRetentionDays" // kilocode_change
-	| "autoPurgeLastRunTimestamp" // kilocode_change
+	| "localWorkflowToggles" // novacode_change
+	| "globalRulesToggles" // novacode_change
+	| "localRulesToggles" // novacode_change
+	| "globalWorkflowToggles" // novacode_change
+	| "commitMessageApiConfigId" // novacode_change
+	| "terminalCommandApiConfigId" // novacode_change
+	| "dismissedNotificationIds" // novacode_change
+	| "ghostServiceSettings" // novacode_change
+	| "autoPurgeEnabled" // novacode_change
+	| "autoPurgeDefaultRetentionDays" // novacode_change
+	| "autoPurgeFavoritedTaskRetentionDays" // novacode_change
+	| "autoPurgeCompletedTaskRetentionDays" // novacode_change
+	| "autoPurgeIncompleteTaskRetentionDays" // novacode_change
+	| "autoPurgeLastRunTimestamp" // novacode_change
 	| "condensingApiConfigId"
 	| "customCondensingPrompt"
-	| "yoloGatekeeperApiConfigId" // kilocode_change: AI gatekeeper for YOLO mode
+	| "yoloGatekeeperApiConfigId" // novacode_change: AI gatekeeper for YOLO mode
 	| "codebaseIndexConfig"
 	| "codebaseIndexModels"
 	| "profileThresholds"
-	| "systemNotificationsEnabled" // kilocode_change
+	| "systemNotificationsEnabled" // novacode_change
 	| "includeDiagnosticMessages"
 	| "maxDiagnosticMessages"
 	| "imageGenerationProvider"
@@ -568,25 +568,25 @@ export type ExtensionState = Pick<
 	| "includeCurrentCost"
 	| "maxGitStatusFiles"
 	| "requestDelaySeconds"
-	| "selectedMicrophoneDevice" // kilocode_change: Selected microphone device for STT
+	| "selectedMicrophoneDevice" // novacode_change: Selected microphone device for STT
 > & {
 	version: string
 	clineMessages: ClineMessage[]
 	currentTaskItem?: HistoryItem
 	currentTaskTodos?: TodoItem[] // Initial todos for the current task
-	currentTaskCumulativeCost?: number // kilocode_change: cumulative cost including deleted messages
+	currentTaskCumulativeCost?: number // novacode_change: cumulative cost including deleted messages
 	apiConfiguration: ProviderSettings
 	uriScheme?: string
-	uiKind?: string // kilocode_change
+	uiKind?: string // novacode_change
 
-	kiloCodeWrapperProperties?: KiloCodeWrapperProperties // kilocode_change: Wrapper information
+	novaCodeWrapperProperties?: NovaCodeWrapperProperties // novacode_change: Wrapper information
 
-	kilocodeDefaultModel: string
+	novacodeDefaultModel: string
 	shouldShowAnnouncement: boolean
 
-	taskHistory?: HistoryItem[] // kilocode_change: Task history items
-	taskHistoryFullLength: number // kilocode_change
-	taskHistoryVersion: number // kilocode_change
+	taskHistory?: HistoryItem[] // novacode_change: Task history items
+	taskHistoryFullLength: number // novacode_change
+	taskHistoryVersion: number // novacode_change
 
 	writeDelayMs: number
 
@@ -594,10 +594,10 @@ export type ExtensionState = Pick<
 	checkpointTimeout: number // Timeout for checkpoint initialization in seconds (default: 15)
 	maxOpenTabsContext: number // Maximum number of VSCode open tabs to include in context (0-500)
 	maxWorkspaceFiles: number // Maximum number of files to include in current working directory details (0-500)
-	showRooIgnoredFiles: boolean // Whether to show .kilocodeignore'd files in listings
+	showRooIgnoredFiles: boolean // Whether to show .novacodeignore'd files in listings
 	enableSubfolderRules: boolean // Whether to load rules from subdirectories
 	maxReadFileLine: number // Maximum number of lines to read from a file before truncating
-	showAutoApproveMenu: boolean // kilocode_change: Whether to show the auto-approve menu in the chat view
+	showAutoApproveMenu: boolean // novacode_change: Whether to show the auto-approve menu in the chat view
 	maxImageFileSize: number // Maximum size of image files to process in MB
 	maxTotalImageSize: number // Maximum total size for all images in a single read operation in MB
 
@@ -618,9 +618,9 @@ export type ExtensionState = Pick<
 	renderContext: "sidebar" | "editor"
 	settingsImportedAt?: number
 	historyPreviewCollapsed?: boolean
-	showTaskTimeline?: boolean // kilocode_change
-	sendMessageOnEnter?: boolean // kilocode_change
-	hideCostBelowThreshold?: number // kilocode_change
+	showTaskTimeline?: boolean // novacode_change
+	sendMessageOnEnter?: boolean // novacode_change
+	hideCostBelowThreshold?: number // novacode_change
 
 	cloudUserInfo: CloudUserInfo | null
 	cloudIsAuthenticated: boolean
@@ -641,9 +641,9 @@ export type ExtensionState = Pick<
 	marketplaceInstalledMetadata?: { project: Record<string, any>; global: Record<string, any> }
 	profileThresholds: Record<string, number>
 	hasOpenedModeSelector: boolean
-	hasCompletedOnboarding?: boolean // kilocode_change: Track if user has completed onboarding flow
+	hasCompletedOnboarding?: boolean // novacode_change: Track if user has completed onboarding flow
 	openRouterImageApiKey?: string
-	kiloCodeImageApiKey?: string
+	novaCodeImageApiKey?: string
 	openRouterUseMiddleOutTransform?: boolean
 	messageQueue?: QueuedMessage[]
 	lastShownAnnouncementId?: string
@@ -654,14 +654,14 @@ export type ExtensionState = Pick<
 	remoteControlEnabled: boolean
 	taskSyncEnabled: boolean
 	featureRoomoteControlEnabled: boolean
-	virtualQuotaActiveModel?: { id: string; info: ModelInfo; activeProfileNumber?: number } // kilocode_change: Add virtual quota active model for UI display with profile number
-	showTimestamps?: boolean // kilocode_change: Show timestamps in chat messages
-	showDiffStats?: boolean // kilocode_change: Show diff stats in task header
+	virtualQuotaActiveModel?: { id: string; info: ModelInfo; activeProfileNumber?: number } // novacode_change: Add virtual quota active model for UI display with profile number
+	showTimestamps?: boolean // novacode_change: Show timestamps in chat messages
+	showDiffStats?: boolean // novacode_change: Show diff stats in task header
 	claudeCodeIsAuthenticated?: boolean
 	openAiCodexIsAuthenticated?: boolean
 	debug?: boolean
-	speechToTextStatus?: { available: boolean; reason?: "openaiKeyMissing" | "ffmpegNotInstalled" } // kilocode_change: Speech-to-text availability status with failure reason
-	appendSystemPrompt?: string // kilocode_change: Custom text to append to system prompt (CLI only)
+	speechToTextStatus?: { available: boolean; reason?: "openaiKeyMissing" | "ffmpegNotInstalled" } // novacode_change: Speech-to-text availability status with failure reason
+	appendSystemPrompt?: string // novacode_change: Custom text to append to system prompt (CLI only)
 }
 
 export interface Command {
@@ -682,7 +682,7 @@ export type ClineAskResponse =
 	| "noButtonClicked"
 	| "messageResponse"
 	| "objectResponse"
-	| "retry_clicked" // kilocode_change: Added retry_clicked for payment required dialog
+	| "retry_clicked" // novacode_change: Added retry_clicked for payment required dialog
 
 export type AudioType = "notification" | "celebration" | "progress_loop"
 
@@ -693,14 +693,14 @@ export interface UpdateTodoListPayload {
 
 export type EditQueuedMessagePayload = Pick<QueuedMessage, "id" | "text" | "images">
 
-// kilocode_change start: Type-safe global state update message
+// novacode_change start: Type-safe global state update message
 export type GlobalStateValue<K extends keyof GlobalState> = GlobalState[K]
 export type UpdateGlobalStateMessage<K extends keyof GlobalState = keyof GlobalState> = {
 	type: "updateGlobalState"
 	stateKey: K
 	stateValue: GlobalStateValue<K>
 }
-// kilocode_change end: Type-safe global state update message
+// novacode_change end: Type-safe global state update message
 
 export interface WebviewMessage {
 	type:
@@ -712,7 +712,7 @@ export interface WebviewMessage {
 		| "deleteApiConfiguration"
 		| "loadApiConfiguration"
 		| "loadApiConfigurationById"
-		| "getProfileConfigurationForEditing" // kilocode_change: Request to get profile config without activating
+		| "getProfileConfigurationForEditing" // novacode_change: Request to get profile config without activating
 		| "renameApiConfiguration"
 		| "getListApiConfiguration"
 		| "customInstructions"
@@ -740,8 +740,8 @@ export interface WebviewMessage {
 		| "requestRooCreditBalance"
 		| "requestVsCodeLmModels"
 		| "requestHuggingFaceModels"
-		| "requestSapAiCoreModels" // kilocode_change
-		| "requestSapAiCoreDeployments" // kilocode_change
+		| "requestSapAiCoreModels" // novacode_change
+		| "requestSapAiCoreDeployments" // novacode_change
 		| "openImage"
 		| "saveImage"
 		| "openFile"
@@ -752,7 +752,7 @@ export interface WebviewMessage {
 		| "getVSCodeSetting"
 		| "vsCodeSetting"
 		| "updateCondensingPrompt"
-		| "yoloGatekeeperApiConfigId" // kilocode_change: AI gatekeeper for YOLO mode
+		| "yoloGatekeeperApiConfigId" // novacode_change: AI gatekeeper for YOLO mode
 		| "playSound"
 		| "playTts"
 		| "stopTts"
@@ -767,12 +767,12 @@ export interface WebviewMessage {
 		| "toggleToolEnabledForPrompt"
 		| "toggleMcpServer"
 		| "updateMcpTimeout"
-		| "fuzzyMatchThreshold" // kilocode_change
-		| "morphApiKey" // kilocode_change: Morph fast apply - global setting
-		| "fastApplyModel" // kilocode_change: Fast Apply model selection
-		| "fastApplyApiProvider" // kilocode_change: Fast Apply model api base url
-		| "writeDelayMs" // kilocode_change
-		| "diagnosticsEnabled" // kilocode_change
+		| "fuzzyMatchThreshold" // novacode_change
+		| "morphApiKey" // novacode_change: Morph fast apply - global setting
+		| "fastApplyModel" // novacode_change: Fast Apply model selection
+		| "fastApplyApiProvider" // novacode_change: Fast Apply model api base url
+		| "writeDelayMs" // novacode_change
+		| "diagnosticsEnabled" // novacode_change
 		| "enhancePrompt"
 		| "enhancedPrompt"
 		| "draggedImages"
@@ -791,62 +791,62 @@ export interface WebviewMessage {
 		| "copySystemPrompt"
 		| "systemPrompt"
 		| "enhancementApiConfigId"
-		| "commitMessageApiConfigId" // kilocode_change
-		| "terminalCommandApiConfigId" // kilocode_change
-		| "ghostServiceSettings" // kilocode_change
-		| "stt:start" // kilocode_change: Start STT recording
-		| "stt:stop" // kilocode_change: Stop STT recording
-		| "stt:cancel" // kilocode_change: Cancel STT recording
-		| "stt:checkAvailability" // kilocode_change: Check STT availability on demand
-		| "stt:listDevices" // kilocode_change: List microphone devices
-		| "stt:selectDevice" // kilocode_change: Select microphone device
-		| "includeTaskHistoryInEnhance" // kilocode_change
-		| "snoozeAutocomplete" // kilocode_change
+		| "commitMessageApiConfigId" // novacode_change
+		| "terminalCommandApiConfigId" // novacode_change
+		| "ghostServiceSettings" // novacode_change
+		| "stt:start" // novacode_change: Start STT recording
+		| "stt:stop" // novacode_change: Stop STT recording
+		| "stt:cancel" // novacode_change: Cancel STT recording
+		| "stt:checkAvailability" // novacode_change: Check STT availability on demand
+		| "stt:listDevices" // novacode_change: List microphone devices
+		| "stt:selectDevice" // novacode_change: Select microphone device
+		| "includeTaskHistoryInEnhance" // novacode_change
+		| "snoozeAutocomplete" // novacode_change
 		| "autoApprovalEnabled"
-		| "yoloMode" // kilocode_change
+		| "yoloMode" // novacode_change
 		| "updateCustomMode"
 		| "deleteCustomMode"
 		| "setopenAiCustomModelInfo"
 		| "openCustomModesSettings"
 		| "checkpointDiff"
 		| "checkpointRestore"
-		| "requestCheckpointRestoreApproval" // kilocode_change: Request approval for checkpoint restore
-		| "seeNewChanges" // kilocode_change
+		| "requestCheckpointRestoreApproval" // novacode_change: Request approval for checkpoint restore
+		| "seeNewChanges" // novacode_change
 		| "deleteMcpServer"
-		| "mcpServerOAuthSignIn" // kilocode_change: Initiate OAuth sign-in for an MCP server
-		| "insertTextToChatArea" // kilocode_change
-		| "humanRelayResponse" // kilocode_change
-		| "humanRelayCancel" // kilocode_change
+		| "mcpServerOAuthSignIn" // novacode_change: Initiate OAuth sign-in for an MCP server
+		| "insertTextToChatArea" // novacode_change
+		| "humanRelayResponse" // novacode_change
+		| "humanRelayCancel" // novacode_change
 		| "codebaseIndexEnabled"
 		| "telemetrySetting"
 		| "testBrowserConnection"
 		| "browserConnectionResult"
-		| "allowVeryLargeReads" // kilocode_change
-		| "showFeedbackOptions" // kilocode_change
-		| "fetchMcpMarketplace" // kilocode_change
-		| "silentlyRefreshMcpMarketplace" // kilocode_change
-		| "fetchLatestMcpServersFromHub" // kilocode_change
-		| "downloadMcp" // kilocode_change
-		| "showSystemNotification" // kilocode_change
-		| "showAutoApproveMenu" // kilocode_change
-		| "reportBug" // kilocode_change
-		| "profileButtonClicked" // kilocode_change
-		| "fetchProfileDataRequest" // kilocode_change
-		| "profileDataResponse" // kilocode_change
-		| "fetchBalanceDataRequest" // kilocode_change
-		| "shopBuyCredits" // kilocode_change
-		| "balanceDataResponse" // kilocode_change
-		| "updateProfileData" // kilocode_change
-		| "condense" // kilocode_change
-		| "toggleWorkflow" // kilocode_change
-		| "refreshRules" // kilocode_change
-		| "toggleRule" // kilocode_change
-		| "createRuleFile" // kilocode_change
-		| "deleteRuleFile" // kilocode_change
+		| "allowVeryLargeReads" // novacode_change
+		| "showFeedbackOptions" // novacode_change
+		| "fetchMcpMarketplace" // novacode_change
+		| "silentlyRefreshMcpMarketplace" // novacode_change
+		| "fetchLatestMcpServersFromHub" // novacode_change
+		| "downloadMcp" // novacode_change
+		| "showSystemNotification" // novacode_change
+		| "showAutoApproveMenu" // novacode_change
+		| "reportBug" // novacode_change
+		| "profileButtonClicked" // novacode_change
+		| "fetchProfileDataRequest" // novacode_change
+		| "profileDataResponse" // novacode_change
+		| "fetchBalanceDataRequest" // novacode_change
+		| "shopBuyCredits" // novacode_change
+		| "balanceDataResponse" // novacode_change
+		| "updateProfileData" // novacode_change
+		| "condense" // novacode_change
+		| "toggleWorkflow" // novacode_change
+		| "refreshRules" // novacode_change
+		| "toggleRule" // novacode_change
+		| "createRuleFile" // novacode_change
+		| "deleteRuleFile" // novacode_change
 		| "searchFiles"
 		| "toggleApiConfigPin"
 		| "hasOpenedModeSelector"
-		| "hasCompletedOnboarding" // kilocode_change: Mark onboarding as completed
+		| "hasCompletedOnboarding" // novacode_change: Mark onboarding as completed
 		| "clearCloudAuthSkipModel"
 		| "cloudButtonClicked"
 		| "rooCloudSignIn"
@@ -861,28 +861,28 @@ export interface WebviewMessage {
 		| "condenseTaskContextRequest"
 		| "requestIndexingStatus"
 		| "startIndexing"
-		| "cancelIndexing" // kilocode_change
+		| "cancelIndexing" // novacode_change
 		| "clearIndexData"
 		| "indexingStatusUpdate"
 		| "indexCleared"
 		| "focusPanelRequest"
-		| "clearUsageData" // kilocode_change
-		| "getUsageData" // kilocode_change
-		| "usageDataResponse" // kilocode_change
-		| "showTaskTimeline" // kilocode_change
-		| "sendMessageOnEnter" // kilocode_change
-		| "showTimestamps" // kilocode_change
-		| "showDiffStats" // kilocode_change
-		| "hideCostBelowThreshold" // kilocode_change
-		| "toggleTaskFavorite" // kilocode_change
-		| "fixMermaidSyntax" // kilocode_change
-		| "mermaidFixResponse" // kilocode_change
-		| "openGlobalKeybindings" // kilocode_change
-		| "getKeybindings" // kilocode_change
-		| "setHistoryPreviewCollapsed" // kilocode_change
-		| "setReasoningBlockCollapsed" // kilocode_change
+		| "clearUsageData" // novacode_change
+		| "getUsageData" // novacode_change
+		| "usageDataResponse" // novacode_change
+		| "showTaskTimeline" // novacode_change
+		| "sendMessageOnEnter" // novacode_change
+		| "showTimestamps" // novacode_change
+		| "showDiffStats" // novacode_change
+		| "hideCostBelowThreshold" // novacode_change
+		| "toggleTaskFavorite" // novacode_change
+		| "fixMermaidSyntax" // novacode_change
+		| "mermaidFixResponse" // novacode_change
+		| "openGlobalKeybindings" // novacode_change
+		| "getKeybindings" // novacode_change
+		| "setHistoryPreviewCollapsed" // novacode_change
+		| "setReasoningBlockCollapsed" // novacode_change
 		| "openExternal"
-		| "openInBrowser" // kilocode_change
+		| "openInBrowser" // novacode_change
 		| "filterMarketplaceItems"
 		| "marketplaceButtonClicked"
 		| "installMarketplaceItem"
@@ -892,21 +892,21 @@ export interface WebviewMessage {
 		| "marketplaceInstallResult"
 		| "fetchMarketplaceData"
 		| "switchTab"
-		| "profileThresholds" // kilocode_change
-		| "editMessage" // kilocode_change
-		| "systemNotificationsEnabled" // kilocode_change
-		| "dismissNotificationId" // kilocode_change
-		| "fetchKilocodeNotifications" // kilocode_change
-		| "tasksByIdRequest" // kilocode_change
-		| "taskHistoryRequest" // kilocode_change
-		| "updateGlobalState" // kilocode_change
-		| "autoPurgeEnabled" // kilocode_change
-		| "autoPurgeDefaultRetentionDays" // kilocode_change
-		| "autoPurgeFavoritedTaskRetentionDays" // kilocode_change
-		| "autoPurgeCompletedTaskRetentionDays" // kilocode_change
-		| "autoPurgeIncompleteTaskRetentionDays" // kilocode_change
-		| "manualPurge" // kilocode_change
-		| "shareTaskSuccess" // kilocode_change
+		| "profileThresholds" // novacode_change
+		| "editMessage" // novacode_change
+		| "systemNotificationsEnabled" // novacode_change
+		| "dismissNotificationId" // novacode_change
+		| "fetchNovacodeNotifications" // novacode_change
+		| "tasksByIdRequest" // novacode_change
+		| "taskHistoryRequest" // novacode_change
+		| "updateGlobalState" // novacode_change
+		| "autoPurgeEnabled" // novacode_change
+		| "autoPurgeDefaultRetentionDays" // novacode_change
+		| "autoPurgeFavoritedTaskRetentionDays" // novacode_change
+		| "autoPurgeCompletedTaskRetentionDays" // novacode_change
+		| "autoPurgeIncompleteTaskRetentionDays" // novacode_change
+		| "manualPurge" // novacode_change
+		| "shareTaskSuccess" // novacode_change
 		| "shareTaskSuccess"
 		| "exportMode"
 		| "exportModeResult"
@@ -923,7 +923,7 @@ export interface WebviewMessage {
 		| "insertTextIntoTextarea"
 		| "showMdmAuthRequiredNotification"
 		| "imageGenerationSettings"
-		| "kiloCodeImageApiKey" // kilocode_change
+		| "novaCodeImageApiKey" // novacode_change
 		| "queueMessage"
 		| "removeQueuedMessage"
 		| "editQueuedMessage"
@@ -931,7 +931,7 @@ export interface WebviewMessage {
 		| "getDismissedUpsells"
 		| "openMarkdownPreview"
 		| "updateSettings"
-		| "requestManagedIndexerState" // kilocode_change
+		| "requestManagedIndexerState" // novacode_change
 		| "allowedCommands"
 		| "getTaskWithAggregatedCosts"
 		| "deniedCommands"
@@ -940,21 +940,21 @@ export interface WebviewMessage {
 		| "showBrowserSessionPanelAtStep"
 		| "refreshBrowserSessionPanel"
 		| "browserPanelDidLaunch"
-		| "addTaskToHistory" // kilocode_change
-		| "sessionShare" // kilocode_change
-		| "shareTaskSession" // kilocode_change
-		| "sessionFork" // kilocode_change
-		| "sessionShow" // kilocode_change
-		| "sessionSelect" // kilocode_change
-		| "singleCompletion" // kilocode_change
-		| "openExtensionSettings" // kilocode_change: Open extension settings from CLI
+		| "addTaskToHistory" // novacode_change
+		| "sessionShare" // novacode_change
+		| "shareTaskSession" // novacode_change
+		| "sessionFork" // novacode_change
+		| "sessionShow" // novacode_change
+		| "sessionSelect" // novacode_change
+		| "singleCompletion" // novacode_change
+		| "openExtensionSettings" // novacode_change: Open extension settings from CLI
 		| "openDebugApiHistory"
 		| "openDebugUiHistory"
-		| "startDeviceAuth" // kilocode_change: Start device auth flow
-		| "cancelDeviceAuth" // kilocode_change: Cancel device auth flow
-		| "deviceAuthCompleteWithProfile" // kilocode_change: Device auth complete with specific profile
-		| "requestChatCompletion" // kilocode_change: Request FIM completion for chat text area
-		| "chatCompletionAccepted" // kilocode_change: User accepted a chat completion suggestion
+		| "startDeviceAuth" // novacode_change: Start device auth flow
+		| "cancelDeviceAuth" // novacode_change: Cancel device auth flow
+		| "deviceAuthCompleteWithProfile" // novacode_change: Device auth complete with specific profile
+		| "requestChatCompletion" // novacode_change: Request FIM completion for chat text area
+		| "chatCompletionAccepted" // novacode_change: User accepted a chat completion suggestion
 		| "downloadErrorDiagnostics"
 		| "requestClaudeCodeRateLimits"
 		| "requestOpenAiCodexRateLimits"
@@ -963,14 +963,14 @@ export interface WebviewMessage {
 		| "switchMode"
 		| "debugSetting"
 		| "refreshSkills"
-		| "reviewScopeSelected" // kilocode_change: Review mode scope selection
+		| "reviewScopeSelected" // novacode_change: Review mode scope selection
 	text?: string
-	suggestionLength?: number // kilocode_change: Length of accepted suggestion for telemetry
-	completionRequestId?: string // kilocode_change
-	shareId?: string // kilocode_change - for sessionFork
-	sessionId?: string // kilocode_change - for sessionSelect
+	suggestionLength?: number // novacode_change: Length of accepted suggestion for telemetry
+	completionRequestId?: string // novacode_change
+	shareId?: string // novacode_change - for sessionFork
+	sessionId?: string // novacode_change - for sessionSelect
 	editedMessageContent?: string
-	tab?: "settings" | "history" | "mcp" | "modes" | "chat" | "marketplace" | "cloud" | "auth" // kilocode_change
+	tab?: "settings" | "history" | "mcp" | "modes" | "chat" | "marketplace" | "cloud" | "auth" // novacode_change
 	disabled?: boolean
 	context?: string
 	dataUri?: string
@@ -984,7 +984,7 @@ export interface WebviewMessage {
 	forceShow?: boolean
 	commands?: string[]
 	audioType?: AudioType
-	// kilocode_change begin
+	// novacode_change begin
 	notificationOptions?: {
 		title?: string
 		subtitle?: string
@@ -993,15 +993,15 @@ export interface WebviewMessage {
 	mcpId?: string
 	toolNames?: string[]
 	autoApprove?: boolean
-	workflowPath?: string // kilocode_change
-	enabled?: boolean // kilocode_change
-	rulePath?: string // kilocode_change
-	isGlobal?: boolean // kilocode_change
-	filename?: string // kilocode_change
-	ruleType?: string // kilocode_change
-	notificationId?: string // kilocode_change
-	commandIds?: string[] // kilocode_change: For getKeybindings
-	// kilocode_change end
+	workflowPath?: string // novacode_change
+	enabled?: boolean // novacode_change
+	rulePath?: string // novacode_change
+	isGlobal?: boolean // novacode_change
+	filename?: string // novacode_change
+	ruleType?: string // novacode_change
+	notificationId?: string // novacode_change
+	commandIds?: string[] // novacode_change: For getKeybindings
+	// novacode_change end
 	serverName?: string
 	toolName?: string
 	alwaysAllow?: boolean
@@ -1016,15 +1016,15 @@ export interface WebviewMessage {
 	query?: string
 	setting?: string
 	slug?: string
-	device?: MicrophoneDevice | null // kilocode_change: Microphone device for stt:selectDevice
-	language?: string // kilocode_change: Optional language hint for stt:start
+	device?: MicrophoneDevice | null // novacode_change: Microphone device for stt:selectDevice
+	language?: string // novacode_change: Optional language hint for stt:start
 	modeConfig?: ModeConfig
 	timeout?: number
 	payload?: WebViewMessagePayload
 	source?: "global" | "project"
 	requestId?: string
 	ids?: string[]
-	excludeFavorites?: boolean // kilocode_change: For batch delete to exclude favorited tasks
+	excludeFavorites?: boolean // novacode_change: For batch delete to exclude favorited tasks
 	hasSystemPromptOverride?: boolean
 	terminalOperation?: "continue" | "abort"
 	messageTs?: number
@@ -1045,7 +1045,7 @@ export interface WebviewMessage {
 	list?: string[] // For dismissedUpsells response
 	organizationId?: string | null // For organization switching
 	useProviderSignup?: boolean // For rooCloudSignIn to use provider signup flow
-	historyItem?: HistoryItem // kilocode_change For addTaskToHistory
+	historyItem?: HistoryItem // novacode_change For addTaskToHistory
 	codeIndexSettings?: {
 		// Global state settings
 		codebaseIndexEnabled: boolean
@@ -1059,9 +1059,9 @@ export interface WebviewMessage {
 			| "vercel-ai-gateway"
 			| "bedrock"
 			| "openrouter"
-			| "voyage" // kilocode_change
-		codebaseIndexVectorStoreProvider?: "lancedb" | "qdrant" // kilocode_change
-		codebaseIndexLancedbVectorStoreDirectory?: string // kilocode_change
+			| "voyage" // novacode_change
+		codebaseIndexVectorStoreProvider?: "lancedb" | "qdrant" // novacode_change
+		codebaseIndexLancedbVectorStoreDirectory?: string // novacode_change
 		codebaseIndexEmbedderBaseUrl?: string
 		codebaseIndexEmbedderModelId: string
 		codebaseIndexEmbedderModelDimension?: number // Generic dimension for all providers
@@ -1070,10 +1070,10 @@ export interface WebviewMessage {
 		codebaseIndexBedrockProfile?: string
 		codebaseIndexSearchMaxResults?: number
 		codebaseIndexSearchMinScore?: number
-		// kilocode_change start
+		// novacode_change start
 		codebaseIndexEmbeddingBatchSize?: number
 		codebaseIndexScannerMaxBatchRetries?: number
-		// kilocode_change end
+		// novacode_change end
 		codebaseIndexOpenRouterSpecificProvider?: string // OpenRouter provider routing
 
 		// Secret settings
@@ -1084,18 +1084,18 @@ export interface WebviewMessage {
 		codebaseIndexMistralApiKey?: string
 		codebaseIndexVercelAiGatewayApiKey?: string
 		codebaseIndexOpenRouterApiKey?: string
-		codebaseIndexVoyageApiKey?: string // kilocode_change
+		codebaseIndexVoyageApiKey?: string // novacode_change
 	}
 	updatedSettings?: RooCodeSettings
-	// kilocode_change start: Review mode
+	// novacode_change start: Review mode
 	reviewScope?: "uncommitted" | "branch"
-	// kilocode_change end: Review mode
+	// novacode_change end: Review mode
 }
 
-// kilocode_change: Create discriminated union for type-safe messages
+// novacode_change: Create discriminated union for type-safe messages
 export type MaybeTypedWebviewMessage = WebviewMessage | UpdateGlobalStateMessage
 
-// kilocode_change begin
+// novacode_change begin
 export type OrganizationRole = "owner" | "admin" | "member"
 
 export type UserOrganizationWithApiKey = {
@@ -1107,7 +1107,7 @@ export type UserOrganizationWithApiKey = {
 }
 
 export type ProfileData = {
-	kilocodeToken: string
+	novacodeToken: string
 	user: {
 		id: string
 		name: string
@@ -1160,7 +1160,7 @@ export interface TaskHistoryResponsePayload {
 	pageCount: number
 	totalItems: number
 }
-// kilocode_change end
+// novacode_change end
 
 export interface RequestOpenAiCodexRateLimitsMessage {
 	type: "requestOpenAiCodexRateLimits"
@@ -1183,7 +1183,7 @@ export const checkoutRestorePayloadSchema = z.object({
 
 export type CheckpointRestorePayload = z.infer<typeof checkoutRestorePayloadSchema>
 
-// kilocode_change start
+// novacode_change start
 export const requestCheckpointRestoreApprovalPayloadSchema = z.object({
 	commitHash: z.string(),
 	checkpointTs: z.number(),
@@ -1192,7 +1192,7 @@ export const requestCheckpointRestoreApprovalPayloadSchema = z.object({
 })
 
 export type RequestCheckpointRestoreApprovalPayload = z.infer<typeof requestCheckpointRestoreApprovalPayloadSchema>
-// kilocode_change end
+// novacode_change end
 
 export interface IndexingStatusPayload {
 	state: "Standby" | "Indexing" | "Indexed" | "Error"
@@ -1214,14 +1214,14 @@ export type InstallMarketplaceItemWithParametersPayload = z.infer<
 >
 
 export type WebViewMessagePayload =
-	// kilocode_change start
+	// novacode_change start
 	| ProfileDataResponsePayload
 	| BalanceDataResponsePayload
 	| SeeNewChangesPayload
 	| TasksByIdRequestPayload
 	| TaskHistoryRequestPayload
 	| RequestCheckpointRestoreApprovalPayload
-	// kilocode_change end
+	// novacode_change end
 	| CheckpointDiffPayload
 	| CheckpointRestorePayload
 	| IndexingStatusPayload
@@ -1269,7 +1269,7 @@ export interface ClineSayTool {
 		| "imageGenerated"
 		| "runSlashCommand"
 		| "updateTodoList"
-		| "deleteFile" // kilocode_change: Handles both files and directories
+		| "deleteFile" // novacode_change: Handles both files and directories
 	path?: string
 	diff?: string
 	content?: string
@@ -1284,14 +1284,14 @@ export interface ClineSayTool {
 	additionalFileCount?: number // Number of additional files in the same read_file request
 	lineNumber?: number
 	query?: string
-	// kilocode_change start: Directory stats - only present when deleting directories
+	// novacode_change start: Directory stats - only present when deleting directories
 	stats?: {
 		files: number
 		directories: number
 		size: number
 		isComplete: boolean
 	}
-	// kilocode_change end
+	// novacode_change end
 	batchFiles?: Array<{
 		path: string
 		lineSnippet: string
@@ -1312,14 +1312,14 @@ export interface ClineSayTool {
 		}>
 	}>
 	question?: string
-	// kilocode_change start
+	// novacode_change start
 	fastApplyResult?: {
 		description?: string
 		tokensIn?: number
 		tokensOut?: number
 		cost?: number
 	}
-	// kilocode_change end
+	// novacode_change end
 	imageData?: string // Base64 encoded image data for generated images
 	// Properties for runSlashCommand tool
 	command?: string
@@ -1377,10 +1377,10 @@ export interface ClineApiReqInfo {
 	cacheWrites?: number
 	cacheReads?: number
 	cost?: number
-	// kilocode_change
+	// novacode_change
 	usageMissing?: boolean
 	inferenceProvider?: string
-	// kilocode_change end
+	// novacode_change end
 	cancelReason?: ClineApiReqCancelReason
 	streamingFailedMessage?: string
 	apiProtocol?: "anthropic" | "openai"

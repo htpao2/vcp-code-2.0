@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react"
+﻿import React, { useState, useEffect, useMemo } from "react"
 import { Database } from "lucide-react"
 
 import type { IndexingStatus, IndexingStatusUpdateMessage } from "@roo-code/types"
@@ -10,9 +10,9 @@ import { useAppTranslation } from "@/i18n/TranslationContext"
 import { useExtensionState } from "@src/context/ExtensionStateContext"
 import { PopoverTrigger, StandardTooltip, Button } from "@src/components/ui"
 
-import { CodeIndexPopover } from "./CodeIndexPopover" // kilocode_change
-import { useManagedIndexerState, useIsIndexing } from "./hooks/useManagedIndexerState" // kilocode_change
-import { ManagedCodeIndexPopover } from "./kilocode/ManagedCodeIndexPopover" // kilocode_change
+import { CodeIndexPopover } from "./CodeIndexPopover" // novacode_change
+import { useManagedIndexerState, useIsIndexing } from "./hooks/useManagedIndexerState" // novacode_change
+import { ManagedCodeIndexPopover } from "./nova/ManagedCodeIndexPopover" // novacode_change
 
 interface IndexingStatusBadgeProps {
 	className?: string
@@ -23,8 +23,8 @@ export const IndexingStatusBadge: React.FC<IndexingStatusBadgeProps> = ({ classN
 	const { cwd } = useExtensionState()
 
 	// Get managed indexer state
-	const managedIndexerState = useManagedIndexerState() // kilocode_change
-	const isManagedIndexing = useIsIndexing() // kilocode_change
+	const managedIndexerState = useManagedIndexerState() // novacode_change
+	const isManagedIndexing = useIsIndexing() // novacode_change
 
 	const [localIndexingStatus, setLocalIndexingStatus] = useState<IndexingStatus>({
 		systemStatus: "Standby",
@@ -133,7 +133,7 @@ export const IndexingStatusBadge: React.FC<IndexingStatusBadgeProps> = ({ classN
 	}, [indexingStatus.systemStatus])
 
 	// Use ManagedCodeIndexPopover when organization is available, otherwise use regular CodeIndexPopover
-	const PopoverComponent = managedIndexerState.isEnabled ? ManagedCodeIndexPopover : CodeIndexPopover // kilocode_change
+	const PopoverComponent = managedIndexerState.isEnabled ? ManagedCodeIndexPopover : CodeIndexPopover // novacode_change
 
 	return (
 		<PopoverComponent indexingStatus={indexingStatus}>
@@ -145,7 +145,7 @@ export const IndexingStatusBadge: React.FC<IndexingStatusBadgeProps> = ({ classN
 						aria-label={tooltipText}
 						className={cn(
 							"relative h-5 w-5 p-0",
-							"text-vscode-foreground opacity-60", // kilocode_change: opacity to match paperclip
+							"text-vscode-foreground opacity-60", // novacode_change: opacity to match paperclip
 							"hover:opacity-100 hover:bg-[rgba(255,255,255,0.03)]",
 							"focus:outline-none focus-visible:ring-1 focus-visible:ring-vscode-focusBorder",
 							className,

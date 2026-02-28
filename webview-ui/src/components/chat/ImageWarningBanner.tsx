@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import React, { useEffect } from "react"
 import { TriangleAlert, X } from "lucide-react"
 

@@ -21,11 +21,11 @@ export const Anthropic = ({ apiConfiguration, setApiConfigurationField }: Anthro
 	const selectedModel = useSelectedModel(apiConfiguration)
 
 	const [anthropicBaseUrlSelected, setAnthropicBaseUrlSelected] = useState(!!apiConfiguration?.anthropicBaseUrl)
-	// kilocode_change start
+	// novacode_change start
 	const [anthropicDeploymentSelected, setAnthropicDeploymentSelected] = useState(
 		!!apiConfiguration?.anthropicDeploymentName,
 	)
-	// kilocode_change end
+	// novacode_change end
 
 	// Check if the current model supports 1M context beta
 	const supports1MContextBeta =
@@ -94,7 +94,7 @@ export const Anthropic = ({ apiConfiguration, setApiConfigurationField }: Anthro
 					</>
 				)}
 			</div>
-			{/* kilocode_change start */}
+			{/* novacode_change start */}
 			<div className="mt-2">
 				<Checkbox
 					checked={anthropicDeploymentSelected}
@@ -116,7 +116,7 @@ export const Anthropic = ({ apiConfiguration, setApiConfigurationField }: Anthro
 					/>
 				)}
 			</div>
-			{/* kilocode_change end */}
+			{/* novacode_change end */}
 			{supports1MContextBeta && (
 				<div>
 					<Checkbox

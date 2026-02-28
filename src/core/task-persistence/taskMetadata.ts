@@ -30,13 +30,13 @@ export type TaskMetadataOptions = {
 	 * continue using this protocol even if user settings change.
 	 */
 	toolProtocol?: ToolProtocol
-	// kilocode_change start
+	// novacode_change start
 	/**
 	 * cumulative total cost including deleted messages.
 	 * if provided, this overrides the calculated totalCost from messages.
 	 */
 	cumulativeTotalCost?: number
-	// kilocode_change end
+	// novacode_change end
 }
 
 export async function taskMetadata({
@@ -51,7 +51,7 @@ export async function taskMetadata({
 	apiConfigName,
 	initialStatus,
 	toolProtocol,
-	cumulativeTotalCost, // kilocode_change
+	cumulativeTotalCost, // novacode_change
 }: TaskMetadataOptions) {
 	const taskDir = await getTaskDirectoryPath(globalStoragePath, id)
 
@@ -122,7 +122,7 @@ export async function taskMetadata({
 		tokensOut: tokenUsage.totalTokensOut,
 		cacheWrites: tokenUsage.totalCacheWrites,
 		cacheReads: tokenUsage.totalCacheReads,
-		totalCost: cumulativeTotalCost !== undefined ? cumulativeTotalCost : tokenUsage.totalCost, // kilocode_change
+		totalCost: cumulativeTotalCost !== undefined ? cumulativeTotalCost : tokenUsage.totalCost, // novacode_change
 		size: taskDirSize,
 		workspace,
 		mode,

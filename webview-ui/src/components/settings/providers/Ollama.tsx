@@ -20,7 +20,7 @@ export const Ollama = ({ apiConfiguration, setApiConfigurationField }: OllamaPro
 
 	const [ollamaModels, setOllamaModels] = useState<ModelRecord>({})
 	const routerModels = useRouterModels({
-		ollamaBaseUrl: apiConfiguration?.ollamaBaseUrl, // kilocode_change
+		ollamaBaseUrl: apiConfiguration?.ollamaBaseUrl, // novacode_change
 	})
 
 	const handleInputChange = useCallback(

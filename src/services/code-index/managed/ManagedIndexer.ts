@@ -1,15 +1,15 @@
-// kilocode_change new file
+﻿// novacode_change new file
 
 import * as vscode from "vscode"
 import * as path from "path"
 import { promises as fs } from "fs"
 import pMap from "p-map"
 import { ContextProxy } from "../../../core/config/ContextProxy"
-import { KiloOrganization } from "../../../shared/kilocode/organization"
-import { OrganizationService } from "../../kilocode/OrganizationService"
+import { NovaOrganization } from "../../../shared/nova/organization"
+import { OrganizationService } from "../../nova/OrganizationService"
 import { GitWatcher, GitWatcherEvent } from "../../../shared/GitWatcher"
 import { getCurrentBranch, isGitRepository, getCurrentCommitSha, getBaseBranch } from "./git-utils"
-import { getKilocodeConfig } from "../../../utils/kilo-config-file"
+import { getNovacodeConfig } from "../../../utils/nova-config-file"
 import { getGitRepositoryInfo } from "../../../utils/git"
 import { getServerManifest, searchCode, upsertFile, deleteFiles, isEnabled } from "./api-client"
 import { ServerManifest } from "./types"
@@ -22,9 +22,9 @@ import { TelemetryEventName } from "@roo-code/types"
 import { shouldIgnoreFile } from "./ignore-list"
 
 interface ManagedIndexerConfig {
-	kilocodeToken: string | null
-	kilocodeOrganizationId: string | null
-	kilocodeTesterWarningsDisabledUntil: number | null
+	novacodeToken: string | null
+	novacodeOrganizationId: string | null
+	novacodeTesterWarningsDisabledUntil: number | null
 }
 
 /**
@@ -143,10 +143,10 @@ export class ManagedIndexer implements vscode.Disposable {
 
 	// Handle changes to vscode workspace folder changes
 	workspaceFoldersListener: vscode.Disposable | null = null
-	// kilocode_change: Listen to configuration changes from ContextProxy
+	// novacode_change: Listen to configuration changes from ContextProxy
 	configChangeListener: vscode.Disposable | undefined | null = null
 	config: ManagedIndexerConfig | null = null
-	organization: KiloOrganization | null = null
+	organization: NovaOrganization | null = null
 	isActive = false
 
 	/**
@@ -160,9 +160,9 @@ export class ManagedIndexer implements vscode.Disposable {
 
 	private async onConfigurationChange(config: ManagedIndexerConfig): Promise<void> {
 		console.info("[ManagedIndexer] Configuration changed, restarting...", {
-			hasToken: !!config.kilocodeToken,
-			hasOrgId: !!config.kilocodeOrganizationId,
-			testerWarningsDisabled: config.kilocodeTesterWarningsDisabledUntil,
+			hasToken: !!config.novacodeToken,
+			hasOrgId: !!config.novacodeOrganizationId,
+			testerWarningsDisabled: config.novacodeTesterWarningsDisabledUntil,
 		})
 		this.config = config
 		this.dispose()
@@ -176,15 +176,15 @@ export class ManagedIndexer implements vscode.Disposable {
 	// on proper memoization/invalidation techniques
 
 	fetchConfig(): ManagedIndexerConfig {
-		// kilocode_change: Read directly from ContextProxy instead of ClineProvider
-		const kilocodeToken = this.contextProxy?.getSecret("kilocodeToken")
-		const kilocodeOrganizationId = this.contextProxy?.getValue("kilocodeOrganizationId")
-		const kilocodeTesterWarningsDisabledUntil = this.contextProxy?.getValue("kilocodeTesterWarningsDisabledUntil")
+		// novacode_change: Read directly from ContextProxy instead of ClineProvider
+		const novacodeToken = this.contextProxy?.getSecret("novacodeToken")
+		const novacodeOrganizationId = this.contextProxy?.getValue("novacodeOrganizationId")
+		const novacodeTesterWarningsDisabledUntil = this.contextProxy?.getValue("novacodeTesterWarningsDisabledUntil")
 
 		this.config = {
-			kilocodeToken: kilocodeToken ?? null,
-			kilocodeOrganizationId: kilocodeOrganizationId ?? null,
-			kilocodeTesterWarningsDisabledUntil: kilocodeTesterWarningsDisabledUntil ?? null,
+			novacodeToken: novacodeToken ?? null,
+			novacodeOrganizationId: novacodeOrganizationId ?? null,
+			novacodeTesterWarningsDisabledUntil: novacodeTesterWarningsDisabledUntil ?? null,
 		}
 
 		return this.config
@@ -234,10 +234,10 @@ export class ManagedIndexer implements vscode.Disposable {
 		console.log("[ManagedIndexer] Starting ManagedIndexer")
 
 		this.fetchConfig()
-		const { kilocodeOrganizationId, kilocodeToken } = this.config ?? {}
+		const { novacodeOrganizationId, novacodeToken } = this.config ?? {}
 
-		if (!kilocodeToken) {
-			console.log("[ManagedIndexer] No Kilocode token found, skipping managed indexing")
+		if (!novacodeToken) {
+			console.log("[ManagedIndexer] No Novacode token found, skipping managed indexing")
 			return
 		}
 
@@ -261,13 +261,13 @@ export class ManagedIndexer implements vscode.Disposable {
 		}
 
 		for (const folder of vscode.workspace.workspaceFolders ?? []) {
-			const config = await getKilocodeConfig(folder.uri.fsPath)
+			const config = await getNovacodeConfig(folder.uri.fsPath)
 			if (config?.project?.managedIndexingEnabled === false) {
 				this.disabledViaConfig = true
 			}
 		}
 
-		this.enabledViaApi = await isEnabled(kilocodeToken, kilocodeOrganizationId ?? null)
+		this.enabledViaApi = await isEnabled(novacodeToken, novacodeOrganizationId ?? null)
 		console.debug(
 			`[ManagedIndexer] Starting indexer. config disabled: ${this.disabledViaConfig}, API: ${this.enabledViaApi}`,
 		)
@@ -317,7 +317,7 @@ export class ManagedIndexer implements vscode.Disposable {
 					state.repositoryUrl = repositoryUrl
 
 					// Step 2: Get project configuration
-					const config = await getKilocodeConfig(cwd, repositoryUrl)
+					const config = await getNovacodeConfig(cwd, repositoryUrl)
 					const projectId = config?.project?.id
 
 					// if managed indexing is specifically disabled in the config, skip this folder
@@ -334,10 +334,10 @@ export class ManagedIndexer implements vscode.Disposable {
 					// Step 3: Fetch server manifest
 					try {
 						state.manifest = await getServerManifest(
-							kilocodeOrganizationId ?? null,
+							novacodeOrganizationId ?? null,
 							projectId,
 							gitBranch,
-							kilocodeToken,
+							novacodeToken,
 							state.currentAbortController?.signal,
 						)
 					} catch (error) {
@@ -414,7 +414,7 @@ export class ManagedIndexer implements vscode.Disposable {
 	}
 
 	dispose() {
-		// kilocode_change: Dispose configuration change listener
+		// novacode_change: Dispose configuration change listener
 		this.configChangeListener?.dispose()
 		this.configChangeListener = null
 
@@ -454,7 +454,7 @@ export class ManagedIndexer implements vscode.Disposable {
 		state.manifestFetchPromise = (async () => {
 			try {
 				// Recalculate projectId as it might have changed with the branch
-				const config = await getKilocodeConfig(state.workspaceFolder.uri.fsPath, state.repositoryUrl)
+				const config = await getNovacodeConfig(state.workspaceFolder.uri.fsPath, state.repositoryUrl)
 				const projectId = config?.project?.id
 
 				if (!projectId) {
@@ -463,15 +463,15 @@ export class ManagedIndexer implements vscode.Disposable {
 				state.projectId = projectId
 
 				// Ensure we have the necessary configuration
-				if (!this.config?.kilocodeToken) {
+				if (!this.config?.novacodeToken) {
 					throw new Error("Missing required configuration for manifest fetch")
 				}
 
 				const manifest = await getServerManifest(
-					this.config.kilocodeOrganizationId,
+					this.config.novacodeOrganizationId,
 					state.projectId,
 					branch,
-					this.config.kilocodeToken,
+					this.config.novacodeToken,
 				)
 
 				state.manifest = manifest
@@ -583,7 +583,7 @@ export class ManagedIndexer implements vscode.Disposable {
 				return
 			}
 
-			if (!this.config?.kilocodeToken || !state.projectId) {
+			if (!this.config?.novacodeToken || !state.projectId) {
 				console.warn("[ManagedIndexer] Missing token, organization ID, or project ID, skipping file upsert")
 				return
 			}
@@ -644,7 +644,7 @@ export class ManagedIndexer implements vscode.Disposable {
 					try {
 						// Ensure we have the necessary configuration
 						// check again inside loop as this can change mid-flight
-						if (!this.config?.kilocodeToken || !state.projectId) {
+						if (!this.config?.novacodeToken || !state.projectId) {
 							return
 						}
 						const projectId = state.projectId
@@ -681,9 +681,9 @@ export class ManagedIndexer implements vscode.Disposable {
 								filePath: relativeFilePath,
 								gitBranch: event.branch,
 								isBaseBranch: event.isBaseBranch,
-								organizationId: this.config.kilocodeOrganizationId,
+								organizationId: this.config.novacodeOrganizationId,
 								projectId,
-								kilocodeToken: this.config.kilocodeToken,
+								novacodeToken: this.config.novacodeToken,
 							},
 							signal,
 						)
@@ -741,11 +741,11 @@ export class ManagedIndexer implements vscode.Disposable {
 				try {
 					await deleteFiles(
 						{
-							organizationId: this.config.kilocodeOrganizationId,
+							organizationId: this.config.novacodeOrganizationId,
 							projectId: state.projectId,
 							gitBranch: event.branch,
 							filePaths: filesToDelete,
-							kilocodeToken: this.config.kilocodeToken,
+							novacodeToken: this.config.novacodeToken,
 						},
 						signal,
 					)
@@ -792,10 +792,10 @@ export class ManagedIndexer implements vscode.Disposable {
 	}
 
 	public async search(query: string, directoryPrefix?: string): Promise<VectorStoreSearchResult[]> {
-		const { kilocodeOrganizationId, kilocodeToken } = this.config ?? {}
+		const { novacodeOrganizationId, novacodeToken } = this.config ?? {}
 
-		if (!kilocodeToken) {
-			throw new Error("Kilocode token is required for managed index search")
+		if (!novacodeToken) {
+			throw new Error("Novacode token is required for managed index search")
 		}
 
 		const results = await Promise.all(
@@ -807,7 +807,7 @@ export class ManagedIndexer implements vscode.Disposable {
 				return await searchCode(
 					{
 						query,
-						organizationId: kilocodeOrganizationId ?? null,
+						organizationId: novacodeOrganizationId ?? null,
 						projectId: state.projectId,
 						preferBranch: state.gitBranch,
 						fallbackBranch: "main",
@@ -815,7 +815,7 @@ export class ManagedIndexer implements vscode.Disposable {
 						excludeFiles: [],
 						path: directoryPrefix,
 					},
-					kilocodeToken,
+					novacodeToken,
 				)
 			}),
 		)

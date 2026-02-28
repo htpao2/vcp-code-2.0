@@ -18,7 +18,7 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "./preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
-@import "./kilocode.css";
+@import "./novacode.css";
 @import "katex/dist/katex.min.css";
 
 @plugin "tailwindcss-animate";
@@ -184,11 +184,11 @@
 		--vscode-input-border: var(--border);
 	}
 
-	/* kilocode_change start */
+	/* novacode_change start */
 	a {
 		color: var(--vscode-textLink-foreground);
 	}
-	/* kilocode_change end */
+	/* novacode_change end */
 }
 
 @layer components {
@@ -238,7 +238,7 @@
 	}
 }
 
-/* kilocode_change start: Cursor blink animation for voice recording */
+/* novacode_change start: Cursor blink animation for voice recording */
 @keyframes blink {
 	0%,
 	100% {
@@ -248,7 +248,7 @@
 		opacity: 0;
 	}
 }
-/* kilocode_change end */
+/* novacode_change end */
 
 /* Form Element Focus States */
 
@@ -566,13 +566,13 @@ input[cmdk-input]:focus {
 	background-color: color-mix(in srgb, var(--vscode-editorGroup-border) 100%, transparent);
 }
 
-/* kilocode_change start - STT preview text styling */
+/* novacode_change start - STT preview text styling */
 .stt-preview-text {
 	color: var(--vscode-descriptionForeground);
 	font-style: italic;
 	opacity: 0.7;
 }
-/* kilocode_change end - STT preview text styling */
+/* novacode_change end - STT preview text styling */
 @keyframes ground-slide {
 	0% {
 		transform: translateX(0);

@@ -20,7 +20,7 @@ import { MistralEmbedder } from "./embedders/mistral"
 import { VercelAiGatewayEmbedder } from "./embedders/vercel-ai-gateway"
 import { BedrockEmbedder } from "./embedders/bedrock"
 import { OpenRouterEmbedder } from "./embedders/openrouter"
-import { VoyageEmbedder } from "./embedders/voyage" // kilocode_change
+import { VoyageEmbedder } from "./embedders/voyage" // novacode_change
 import { QdrantVectorStore } from "./vector-store/qdrant-client"
 import { LanceDBVectorStore } from "./vector-store/lancedb-vector-store"
 import { codeParser, DirectoryScanner, FileWatcher } from "./processors"
@@ -66,7 +66,7 @@ export class CodeIndexServiceFactory {
 			return new CodeIndexOllamaEmbedder({
 				...config.ollamaOptions,
 				ollamaModelId: config.modelId,
-				ollamaNumCtx: config.modelDimension, // kilocode_change
+				ollamaNumCtx: config.modelDimension, // novacode_change
 			})
 		} else if (provider === "openai-compatible") {
 			if (!config.openAiCompatibleOptions?.baseUrl || !config.openAiCompatibleOptions?.apiKey) {
@@ -108,14 +108,14 @@ export class CodeIndexServiceFactory {
 				undefined, // maxItemTokens
 				config.openRouterOptions.specificProvider,
 			)
-			// kilocode_change start
+			// novacode_change start
 		} else if (provider === "voyage") {
 			if (!config.voyageOptions?.apiKey) {
 				throw new Error(t("embeddings:serviceFactory.voyageConfigMissing"))
 			}
 			return new VoyageEmbedder(config.voyageOptions.apiKey, config.modelId)
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		throw new Error(
 			t("embeddings:serviceFactory.invalidEmbedderType", { embedderProvider: config.embedderProvider }),
@@ -177,7 +177,7 @@ export class CodeIndexServiceFactory {
 			}
 		}
 
-		// kilocode_change - start
+		// novacode_change - start
 		// Use LanceDB
 		if (config.vectorStoreProvider === "lancedb") {
 			const { workspacePath } = this
@@ -191,7 +191,7 @@ export class CodeIndexServiceFactory {
 				new LanceDBManager(globalStorageUri),
 			)
 		}
-		// kilocode_change - end
+		// novacode_change - end
 
 		// Use Qdrant
 		if (!config.qdrantUrl) {
@@ -211,7 +211,7 @@ export class CodeIndexServiceFactory {
 		parser: ICodeParser,
 		ignoreInstance: Ignore,
 	): DirectoryScanner {
-		// kilocode_change start: Get the configurable batch size and max retries from config manager
+		// novacode_change start: Get the configurable batch size and max retries from config manager
 		const config = this.configManager.getConfig()
 		const batchSize = config.embeddingBatchSize
 		const maxBatchRetries = config.scannerMaxBatchRetries
@@ -224,7 +224,7 @@ export class CodeIndexServiceFactory {
 			batchSize,
 			maxBatchRetries,
 		)
-		// kilocode_change end
+		// novacode_change end
 	}
 
 	/**
@@ -238,7 +238,7 @@ export class CodeIndexServiceFactory {
 		ignoreInstance: Ignore,
 		rooIgnoreController?: RooIgnoreController,
 	): IFileWatcher {
-		// kilocode_change start: Get the configurable batch size from config manager
+		// novacode_change start: Get the configurable batch size from config manager
 		const config = this.configManager.getConfig()
 		const batchSize = config.embeddingBatchSize
 		const maxBatchRetries = config.scannerMaxBatchRetries
@@ -254,7 +254,7 @@ export class CodeIndexServiceFactory {
 			batchSize,
 			maxBatchRetries,
 		)
-		// kilocode_change end
+		// novacode_change end
 	}
 
 	/**

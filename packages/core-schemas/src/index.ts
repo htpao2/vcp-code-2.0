@@ -1,5 +1,5 @@
 /**
- * @kilocode/core-schemas
+ * @novacode/core-schemas
  *
  * Zod schemas and inferred types for CLI configuration and runtime data.
  * This package provides runtime validation and type inference for the CLI.

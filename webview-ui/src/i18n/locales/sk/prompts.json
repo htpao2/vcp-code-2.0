@@ -7,8 +7,8 @@
 		"importMode": "Importovať režim",
 		"editModesConfig": "Upraviť konfiguráciu režimov",
 		"editGlobalModes": "Upraviť Global Modes",
-		"editProjectModes": "Upraviť Project Modes (.kilocodemodes)",
-		"createModeHelpText": "Režimy sú špecializované persony, ktoré prispôsobujú správanie Kilo Code. <0>Zisti viac o Používaní režimov</0> alebo <1>Prispôsobení režimov.</1>",
+		"editProjectModes": "Upraviť Project Modes (.novacodemodes)",
+		"createModeHelpText": "Režimy sú špecializované persony, ktoré prispôsobujú správanie Nova Code. <0>Zisti viac o Používaní režimov</0> alebo <1>Prispôsobení režimov.</1>",
 		"selectMode": "Hľadať režimy",
 		"noMatchFound": "Žiadne režimy nenájdené"
 	},
@@ -18,7 +18,7 @@
 	},
 	"organizationMode": {
 		"title": "Režim organizácie",
-		"description": "Tento režim je poskytovaný tvojou organizáciou a nie je možné ho tu upravovať. Pre úpravu tohto režimu navštív <dashboardLink>Kilo Code Dashboard</dashboardLink>.",
+		"description": "Tento režim je poskytovaný tvojou organizáciou a nie je možné ho tu upravovať. Pre úpravu tohto režimu navštív <dashboardLink>Nova Code Dashboard</dashboardLink>.",
 		"cannotEdit": "Režimy organizácie nie je možné upravovať"
 	},
 	"tools": {
@@ -39,7 +39,7 @@
 	"roleDefinition": {
 		"title": "Definícia roly",
 		"resetToDefault": "Obnoviť predvolené",
-		"description": "Definuj odbornosť a osobnosť Kilo Code pre tento režim. Tento popis formuje, ako sa Kilo Code prezentuje a ako pristupuje k úlohám."
+		"description": "Definuj odbornosť a osobnosť Nova Code pre tento režim. Tento popis formuje, ako sa Nova Code prezentuje a ako pristupuje k úlohám."
 	},
 	"description": {
 		"title": "Krátky popis (pre ľudí)",
@@ -55,11 +55,11 @@
 		"title": "Vlastné inštrukcie pre režim (voliteľné)",
 		"resetToDefault": "Obnoviť predvolené",
 		"description": "Pridaj pokyny pre správanie špecifické pre režim {{modeName}}.",
-		"loadFromFile": "Vlastné inštrukcie špecifické pre režim {{mode}} je možné tiež načítať zo zložky <span>.kilocode/rules/</span> v tvojom pracovnom priestore (.kilocoderules-{{slug}} je zastarané a čoskoro prestane fungovať)."
+		"loadFromFile": "Vlastné inštrukcie špecifické pre režim {{mode}} je možné tiež načítať zo zložky <span>.novacode/rules/</span> v tvojom pracovnom priestore (.novacoderules-{{slug}} je zastarané a čoskoro prestane fungovať)."
 	},
 	"exportMode": {
 		"title": "Exportovať režim",
-		"description": "Exportuj tento režim s pravidlami zo zložky .kilocode/rules-{{slug}}/ skombinovanými do zdieľateľného YAML súboru. Pôvodné súbory zostanú nezmenené.",
+		"description": "Exportuj tento režim s pravidlami zo zložky .novacode/rules-{{slug}}/ skombinovanými do zdieľateľného YAML súboru. Pôvodné súbory zostanú nezmenené.",
 		"exporting": "Exportovanie..."
 	},
 	"importMode": {
@@ -68,11 +68,11 @@
 		"importing": "Importovanie...",
 		"global": {
 			"label": "Globálna úroveň",
-			"description": "Dostupné naprieč všetkými projektmi. Ak exportovaný režim obsahoval súbory pravidiel, budú znovu vytvorené v globálnej zložke .kilocode/rules-{slug}/."
+			"description": "Dostupné naprieč všetkými projektmi. Ak exportovaný režim obsahoval súbory pravidiel, budú znovu vytvorené v globálnej zložke .novacode/rules-{slug}/."
 		},
 		"project": {
 			"label": "Úroveň projektu",
-			"description": "Dostupné iba v tomto pracovnom priestore. Ak exportovaný režim obsahoval súbory pravidiel, budú znovu vytvorené v zložke .kilocode/rules-{slug}/."
+			"description": "Dostupné iba v tomto pracovnom priestore. Ak exportovaný režim obsahoval súbory pravidiel, budú znovu vytvorené v zložke .novacode/rules-{slug}/."
 		}
 	},
 	"advanced": {
@@ -81,7 +81,7 @@
 	"globalCustomInstructions": {
 		"title": "Vlastné inštrukcie pre všetky režimy",
 		"description": "Tieto inštrukcie platia pre všetky režimy. Poskytujú základnú sadu správania, ktorá môže byť rozšírená inštrukciami špecifickými pre režim nižšie. <0>Zistiť viac</0>",
-		"loadFromFile": "Inštrukcie je možné tiež načítať zo zložky <span>.kilocode/rules/</span> v tvojom pracovnom priestore (.kilocoderules je zastarané a čoskoro prestane fungovať)."
+		"loadFromFile": "Inštrukcie je možné tiež načítať zo zložky <span>.novacode/rules/</span> v tvojom pracovnom priestore (.novacoderules je zastarané a čoskoro prestane fungovať)."
 	},
 	"systemPrompt": {
 		"preview": "Náhľad System Prompt",
@@ -110,7 +110,7 @@
 		"types": {
 			"ENHANCE": {
 				"label": "Vylepšiť Prompt",
-				"description": "Použi vylepšenie promptu na získanie prispôsobených návrhov alebo vylepšení pre tvoje vstupy. To zaisťuje, že Kilo Code rozumie tvojmu zámeru a poskytuje najlepšie možné odpovede. Dostupné cez ikonu ✨ v chate."
+				"description": "Použi vylepšenie promptu na získanie prispôsobených návrhov alebo vylepšení pre tvoje vstupy. To zaisťuje, že Nova Code rozumie tvojmu zámeru a poskytuje najlepšie možné odpovede. Dostupné cez ikonu ✨ v chate."
 			},
 			"CONDENSE": {
 				"label": "Kondenzácia kontextu",
@@ -160,7 +160,7 @@
 	},
 	"advancedSystemPrompt": {
 		"title": "Pokročilé: Prepísať System Prompt",
-		"description": "<2>⚠️ Varovanie:</2> Táto pokročilá funkcia obchádza bezpečnostné opatrenia. <1>PREČÍTAJ SI TOTO PRED POUŽITÍM!</1>Prepíš predvolený system prompt vytvorením súboru v <span>.kilocode/system-prompt-{{slug}}</span>."
+		"description": "<2>⚠️ Varovanie:</2> Táto pokročilá funkcia obchádza bezpečnostné opatrenia. <1>PREČÍTAJ SI TOTO PRED POUŽITÍM!</1>Prepíš predvolený system prompt vytvorením súboru v <span>.novacode/system-prompt-{{slug}}</span>."
 	},
 	"createModeDialog": {
 		"title": "Vytvoriť nový režim",
@@ -181,13 +181,13 @@
 				"description": "Dostupné vo všetkých pracovných priestoroch"
 			},
 			"project": {
-				"label": "Špecifické pre projekt (.kilocodemodes)",
+				"label": "Špecifické pre projekt (.novacodemodes)",
 				"description": "Dostupné iba v tomto pracovnom priestore, má prednosť pred globálnym"
 			}
 		},
 		"roleDefinition": {
 			"label": "Definícia roly",
-			"description": "Definuj odbornosť a osobnosť Kilo Code pre tento režim."
+			"description": "Definuj odbornosť a osobnosť Nova Code pre tento režim."
 		},
 		"description": {
 			"label": "Krátky popis (pre ľudí)",

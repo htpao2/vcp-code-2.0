@@ -37,7 +37,7 @@ describe("ProviderSettingsManager", () => {
 
 		providerSettingsManager = new ProviderSettingsManager(mockContext)
 
-		//kilocode_change start: this is a REAL ugly hack to keep tests running
+		//novacode_change start: this is a REAL ugly hack to keep tests running
 		// The roo tests here rely on instantiating ProviderSettingsManager in the beforeEach,
 		// then in some tests alter the mocks in ways that would have influenced initialization
 		// then reinitializing, and spying on internals of said initialization.
@@ -45,7 +45,7 @@ describe("ProviderSettingsManager", () => {
 		// Also this override resets itself, but fortunately no test required triple initialization...
 
 		// Wait for the first manager's initialization to complete, then clear mock calls
-		// This is needed because new users get the default kilocode config stored
+		// This is needed because new users get the default novacode config stored
 		await providerSettingsManager.initialize()
 		vi.clearAllMocks()
 
@@ -53,25 +53,25 @@ describe("ProviderSettingsManager", () => {
 			providerSettingsManager = new ProviderSettingsManager(mockContext)
 			await providerSettingsManager.initialize()
 		}
-		//kilocode_change end
+		//novacode_change end
 	})
 
 	describe("initialize", () => {
-		// kilocode_change start: test updated to expect kilocode default profile for new users
-		it("should initialize kilocode default profile when secrets.get returns null", async () => {
+		// novacode_change start: test updated to expect novacode default profile for new users
+		it("should initialize novacode default profile when secrets.get returns null", async () => {
 			// Mock readConfig to return null
 			mockSecrets.get.mockResolvedValueOnce(null)
 
 			await providerSettingsManager.initialize()
 
-			// Should write to storage with default kilocode profile for new users
+			// Should write to storage with default novacode profile for new users
 			expect(mockSecrets.store).toHaveBeenCalled()
 			const calls = mockSecrets.store.mock.calls
 			const storedConfig = JSON.parse(calls[calls.length - 1][1])
-			expect(storedConfig.apiConfigs.default.apiProvider).toBe("kilocode")
-			expect(storedConfig.apiConfigs.default.kilocodeModel).toBe("minimax/minimax-m2.1:free")
+			expect(storedConfig.apiConfigs.default.apiProvider).toBe("novacode")
+			expect(storedConfig.apiConfigs.default.novacodeModel).toBe("minimax/minimax-m2.1:free")
 		})
-		// kilocode_change end
+		// novacode_change end
 
 		it("should not initialize config if it exists and migrations are complete", async () => {
 			mockSecrets.get.mockResolvedValue(
@@ -132,7 +132,7 @@ describe("ProviderSettingsManager", () => {
 			expect(storedConfig.apiConfigs.test.id).toBeTruthy()
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("should not change anything when no duplicated ids exist", async () => {
 			mockSecrets.get.mockResolvedValue(
 				JSON.stringify({
@@ -182,7 +182,7 @@ describe("ProviderSettingsManager", () => {
 					},
 				}),
 			)
-			// kilocode_change end
+			// novacode_change end
 
 			await providerSettingsManager.initialize()
 

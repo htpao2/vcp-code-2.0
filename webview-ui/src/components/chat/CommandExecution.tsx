@@ -1,4 +1,4 @@
-import { useCallback, useState, memo, useMemo } from "react"
+﻿import { useCallback, useState, memo, useMemo } from "react"
 import { useEvent } from "react-use"
 import { t } from "i18next"
 import { ChevronDown, OctagonX } from "lucide-react"
@@ -15,7 +15,7 @@ import { useExtensionState } from "@src/context/ExtensionStateContext"
 import { cn } from "@src/lib/utils"
 
 import { Button, StandardTooltip } from "@src/components/ui"
-import CodeBlock from "../kilocode/common/CodeBlock" // kilocode_change
+import CodeBlock from "../nova/common/CodeBlock" // novacode_change
 import { CommandPatternSelector } from "./CommandPatternSelector"
 
 interface CommandPattern {
@@ -32,7 +32,7 @@ interface CommandExecutionProps {
 
 export const CommandExecution = ({ executionId, text, icon, title }: CommandExecutionProps) => {
 	const {
-		terminalShellIntegrationDisabled = true, // kilocode_change: default
+		terminalShellIntegrationDisabled = true, // novacode_change: default
 		allowedCommands = [],
 		deniedCommands = [],
 		setAllowedCommands,

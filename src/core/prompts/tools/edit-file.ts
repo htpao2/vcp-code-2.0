@@ -1,4 +1,4 @@
-// kilocode_change: Morph fast apply - file added
+// novacode_change: Morph fast apply - file added
 
 export function getFastApplyEditingInstructions(modelType: "Morph" | "Relace"): string {
 	return `- **${modelType} FastApply is enabled.** You have access to the \`fast_edit_file\` tool which uses a specialized model optimized for intelligent code understanding and modification.
@@ -49,5 +49,5 @@ ALWAYS make all edits to a file in a single fast_edit_file instead of multiple f
 **ALL THREE PARAMETERS (target_file, instructions, code_edit) ARE MANDATORY**`
 }
 
-// kilocode_change: Backward-compatible export name
+// novacode_change: Backward-compatible export name
 export const getEditFileDescription = getFastEditFileDescription

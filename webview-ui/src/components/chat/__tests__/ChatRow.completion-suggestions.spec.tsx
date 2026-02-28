@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import React from "react"
 import { render, screen } from "@/utils/test-utils"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"

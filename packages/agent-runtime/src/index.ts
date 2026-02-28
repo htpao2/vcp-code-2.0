@@ -1,8 +1,8 @@
 /**
- * @kilocode/agent-runtime
+ * @novacode/agent-runtime
  *
- * Core agent runtime for Kilo Code - enables running agents without CLI.
- * This package provides the essential components for running the Kilo Code extension
+ * Core agent runtime for Nova Code - enables running agents without CLI.
+ * This package provides the essential components for running the Nova Code extension
  * in a Node.js environment without VS Code.
  */
 
@@ -50,7 +50,7 @@ export { MessageBridge, IPCChannel, createMessageBridge } from "./communication/
 export type { IPCMessage, IPCOptions } from "./communication/ipc.js"
 
 // ============================================
-// Models API (replaces `kilocode models --json`)
+// Models API (replaces `novacode models --json`)
 // ============================================
 export { getAvailableModels, fetchRouterModels } from "./models/index.js"
 export type { FetchRouterModelsOptions } from "./models/index.js"
@@ -88,7 +88,7 @@ export type {
 export { logs, setLogger, getLogger, createIPCLogger } from "./utils/logger.js"
 export type { Logger } from "./utils/logger.js"
 
-export { KiloCodePaths } from "./utils/paths.js"
+export { NovaCodePaths } from "./utils/paths.js"
 export { resolveExtensionPaths } from "./utils/extension-paths.js"
 export type { ExtensionPaths } from "./utils/extension-paths.js"
 

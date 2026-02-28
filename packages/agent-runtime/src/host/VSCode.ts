@@ -3,7 +3,7 @@ import * as os from "os"
 import * as path from "path"
 import * as crypto from "crypto"
 import { logs } from "../utils/logger.js"
-import { KiloCodePaths } from "../utils/paths.js"
+import { NovaCodePaths } from "../utils/paths.js"
 import { Package } from "../constants/package.js"
 // Use default import for CommonJS module compatibility
 import nodeMachineId from "node-machine-id"
@@ -654,9 +654,12 @@ export enum EndOfLine {
 // WorkspaceEdit class
 export class WorkspaceEdit {
 	private _edits: Map<string, TextEdit[]> = new Map()
+	private _uris: Map<string, Uri> = new Map()
 
 	set(uri: Uri, edits: TextEdit[]): void {
-		this._edits.set(uri.toString(), edits)
+		const key = uri.toString()
+		this._uris.set(key, uri)
+		this._edits.set(key, edits)
 	}
 
 	get(uri: Uri): TextEdit[] {
@@ -669,6 +672,7 @@ export class WorkspaceEdit {
 
 	delete(uri: Uri, range: Range): void {
 		const key = uri.toString()
+		this._uris.set(key, uri)
 		if (!this._edits.has(key)) {
 			this._edits.set(key, [])
 		}
@@ -677,6 +681,7 @@ export class WorkspaceEdit {
 
 	insert(uri: Uri, position: Position, newText: string): void {
 		const key = uri.toString()
+		this._uris.set(key, uri)
 		if (!this._edits.has(key)) {
 			this._edits.set(key, [])
 		}
@@ -685,6 +690,7 @@ export class WorkspaceEdit {
 
 	replace(uri: Uri, range: Range, newText: string): void {
 		const key = uri.toString()
+		this._uris.set(key, uri)
 		if (!this._edits.has(key)) {
 			this._edits.set(key, [])
 		}
@@ -696,7 +702,10 @@ export class WorkspaceEdit {
 	}
 
 	entries(): [Uri, TextEdit[]][] {
-		return Array.from(this._edits.entries()).map(([uriString, edits]) => [Uri.parse(uriString), edits])
+		return Array.from(this._edits.entries()).map(([uriString, edits]) => [
+			this._uris.get(uriString) ?? Uri.parse(uriString),
+			edits,
+		])
 	}
 }
 
@@ -859,7 +868,13 @@ export class Uri {
 
 	static parse(value: string): Uri {
 		const url = new URL(value)
-		return new Uri(url.protocol.slice(0, -1), url.hostname, url.pathname, url.search.slice(1), url.hash.slice(1))
+		return new Uri(
+			url.protocol.slice(0, -1),
+			url.hostname,
+			decodeURIComponent(url.pathname),
+			url.search.slice(1),
+			url.hash.slice(1),
+		)
 	}
 
 	static joinPath(base: Uri, ...pathSegments: string[]): Uri {
@@ -878,7 +893,7 @@ export class Uri {
 	}
 
 	get fsPath(): string {
-		return this.path
+		return decodeURIComponent(this.path)
 	}
 
 	toString(): string {
@@ -955,7 +970,7 @@ export class ExtensionContext {
 			// Each agent gets a unique session ID for isolation
 			// Config comes via IPC, so persistence isn't needed - temp dir is cleaned by OS
 			const sessionId = process.env.AGENT_SESSION_ID || crypto.randomUUID()
-			const tempBase = path.join(os.tmpdir(), "kilocode-agent", sessionId)
+			const tempBase = path.join(os.tmpdir(), "novacode-agent", sessionId)
 
 			this.globalStoragePath = tempBase
 			this.globalStorageUri = Uri.file(tempBase)
@@ -973,11 +988,11 @@ export class ExtensionContext {
 			this.secrets = new InMemorySecretStorage()
 		} else {
 			// Use file-backed storage (CLI mode)
-			KiloCodePaths.initializeWorkspace(workspacePath)
+			NovaCodePaths.initializeWorkspace(workspacePath)
 
-			const globalStoragePath = KiloCodePaths.getGlobalStorageDir()
-			const workspaceStoragePath = KiloCodePaths.getWorkspaceStorageDir(workspacePath)
-			const logPath = KiloCodePaths.getLogsDir()
+			const globalStoragePath = NovaCodePaths.getGlobalStorageDir()
+			const workspaceStoragePath = NovaCodePaths.getWorkspaceStorageDir(workspacePath)
+			const logPath = NovaCodePaths.getLogsDir()
 
 			this.globalStoragePath = globalStoragePath
 			this.globalStorageUri = Uri.file(globalStoragePath)
@@ -1637,8 +1652,8 @@ export class MockWorkspaceConfiguration implements WorkspaceConfiguration {
 			this.workspaceMemento = context.workspaceState as unknown as MemoryMemento
 		} else {
 			// Fallback: create our own mementos (shouldn't happen in normal usage)
-			const globalStoragePath = KiloCodePaths.getGlobalStorageDir()
-			const workspaceStoragePath = KiloCodePaths.getWorkspaceStorageDir(process.cwd())
+			const globalStoragePath = NovaCodePaths.getGlobalStorageDir()
+			const workspaceStoragePath = NovaCodePaths.getWorkspaceStorageDir(process.cwd())
 
 			this.ensureDirectoryExists(globalStoragePath)
 			this.ensureDirectoryExists(workspaceStoragePath)
@@ -2611,7 +2626,7 @@ export function createVSCodeAPIMock(
 			all: [],
 			getExtension: (extensionId: string) => {
 				// Mock the extension object with extensionUri for theme loading
-				if (extensionId === "kilocode.kilo-code") {
+				if (extensionId === "novacode.nova-code" || extensionId === "novacode.nova-code") {
 					return {
 						id: extensionId,
 						extensionUri: context.extensionUri,

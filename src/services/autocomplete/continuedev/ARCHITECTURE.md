@@ -1,8 +1,8 @@
 # Architecture Documentation
 
-Technical architecture documentation for the ContinueDev library within the Kilocode monorepo.
+Technical architecture documentation for the ContinueDev library within the Novacode monorepo.
 
-> **Note**: This library is a streamlined extraction from the [Continue](https://github.com/continuedev/continue) project, containing only autocomplete and NextEdit functionality. All GUI, chat, agents, and other features have been removed. It's integrated into Kilocode as a TypeScript service library at `src/services/continuedev/`.
+> **Note**: This library is a streamlined extraction from the [Continue](https://github.com/continuedev/continue) project, containing only autocomplete and NextEdit functionality. All GUI, chat, agents, and other features have been removed. It's integrated into Novacode as a TypeScript service library at `src/services/continuedev/`.
 
 ## Table of Contents
 
@@ -121,19 +121,16 @@ graph TB
 #### Key Components
 
 1. **CompletionProvider** ([`core/autocomplete/CompletionProvider.ts`](core/autocomplete/CompletionProvider.ts))
-
     - Main orchestrator for autocomplete
     - Coordinates all sub-systems
     - Manages completion lifecycle
 
 2. **ContextRetrievalService** ([`core/autocomplete/context/ContextRetrievalService.ts`](core/autocomplete/context/ContextRetrievalService.ts))
-
     - Gathers relevant code context
     - Collects recently edited files
     - Retrieves LSP definitions
 
 3. **CompletionStreamer** ([`core/autocomplete/generation/CompletionStreamer.ts`](core/autocomplete/generation/CompletionStreamer.ts))
-
     - Streams completions from LLM
     - Applies real-time filters
     - Handles abort signals
@@ -202,19 +199,16 @@ graph TB
 #### Key Components
 
 1. **NextEditProvider** ([`core/nextEdit/NextEditProvider.ts`](core/nextEdit/NextEditProvider.ts))
-
     - Main orchestrator for NextEdit
     - Coordinates edit prediction workflow
     - Manages provider selection
 
 2. **BaseNextEditProvider** ([`core/nextEdit/providers/BaseNextEditProvider.ts`](core/nextEdit/providers/BaseNextEditProvider.ts))
-
     - Abstract base for model-specific providers
     - Defines provider interface
     - Implements common functionality
 
 3. **NextEditEditableRegionCalculator** ([`core/nextEdit/NextEditEditableRegionCalculator.ts`](core/nextEdit/NextEditEditableRegionCalculator.ts))
-
     - Calculates editable regions
     - Determines edit scope
     - Supports full-file and partial-file modes

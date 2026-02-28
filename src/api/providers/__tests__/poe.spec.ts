@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 // npx vitest run src/api/providers/__tests__/poe.spec.ts
 
 import { Anthropic } from "@anthropic-ai/sdk"
@@ -72,10 +72,10 @@ describe("PoeHandler", () => {
 				baseURL: POE_BASE_URL,
 				apiKey: mockOptions.poeApiKey,
 				defaultHeaders: {
-					"HTTP-Referer": "https://kilocode.ai",
-					"X-Title": "Kilo Code",
-					"X-KiloCode-Version": Package.version,
-					"User-Agent": `Kilo-Code/${Package.version}`,
+					"HTTP-Referer": "https://novacode.ai",
+					"X-Title": "Nova Code",
+					"X-NovaCode-Version": Package.version,
+					"User-Agent": `Nova-Code/${Package.version}`,
 				},
 			})
 		})

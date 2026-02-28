@@ -65,10 +65,10 @@ describe("RequestyHandler", () => {
 			baseURL: "https://router.requesty.ai/v1",
 			apiKey: mockOptions.requestyApiKey,
 			defaultHeaders: {
-				"HTTP-Referer": "https://kilocode.ai",
-				"X-Title": "Kilo Code",
-				"X-KiloCode-Version": Package.version,
-				"User-Agent": `Kilo-Code/${Package.version}`,
+				"HTTP-Referer": "https://novacode.ai",
+				"X-Title": "Nova Code",
+				"X-NovaCode-Version": Package.version,
+				"User-Agent": `Nova-Code/${Package.version}`,
 			},
 		})
 	})
@@ -81,10 +81,10 @@ describe("RequestyHandler", () => {
 			baseURL: "https://custom.requesty.ai/v1",
 			apiKey: mockOptions.requestyApiKey,
 			defaultHeaders: {
-				"HTTP-Referer": "https://kilocode.ai",
-				"X-Title": "Kilo Code",
-				"X-KiloCode-Version": Package.version,
-				"User-Agent": `Kilo-Code/${Package.version}`,
+				"HTTP-Referer": "https://novacode.ai",
+				"X-Title": "Nova Code",
+				"X-NovaCode-Version": Package.version,
+				"User-Agent": `Nova-Code/${Package.version}`,
 			},
 		})
 	})

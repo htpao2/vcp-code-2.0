@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 
 /**
  * Minimal safe JSON parse helper for webview code.

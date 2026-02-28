@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 export * from "./webview-helpers"
 export * from "./console-logging"
 export * from "./test-setup-helpers"

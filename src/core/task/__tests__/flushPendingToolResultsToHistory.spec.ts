@@ -215,7 +215,7 @@ describe("flushPendingToolResultsToHistory", () => {
 
 	it("should not save anything when userMessageContent is empty", async () => {
 		const task = new Task({
-			context: mockExtensionContext, // kilocode_change
+			context: mockExtensionContext, // novacode_change
 			provider: mockProvider,
 			apiConfiguration: mockApiConfig,
 			task: "test task",
@@ -235,7 +235,7 @@ describe("flushPendingToolResultsToHistory", () => {
 
 	it("should save user message when userMessageContent has pending tool results", async () => {
 		const task = new Task({
-			context: mockExtensionContext, // kilocode_change
+			context: mockExtensionContext, // novacode_change
 			provider: mockProvider,
 			apiConfiguration: mockApiConfig,
 			task: "test task",
@@ -266,7 +266,7 @@ describe("flushPendingToolResultsToHistory", () => {
 
 	it("should clear userMessageContent after flushing", async () => {
 		const task = new Task({
-			context: mockExtensionContext, // kilocode_change
+			context: mockExtensionContext, // novacode_change
 			provider: mockProvider,
 			apiConfiguration: mockApiConfig,
 			task: "test task",
@@ -290,7 +290,7 @@ describe("flushPendingToolResultsToHistory", () => {
 
 	it("should handle multiple tool results in a single flush", async () => {
 		const task = new Task({
-			context: mockExtensionContext, // kilocode_change
+			context: mockExtensionContext, // novacode_change
 			provider: mockProvider,
 			apiConfiguration: mockApiConfig,
 			task: "test task",
@@ -323,7 +323,7 @@ describe("flushPendingToolResultsToHistory", () => {
 
 	it("should add timestamp to saved messages", async () => {
 		const task = new Task({
-			context: mockExtensionContext, // kilocode_change
+			context: mockExtensionContext, // novacode_change
 			provider: mockProvider,
 			apiConfiguration: mockApiConfig,
 			task: "test task",

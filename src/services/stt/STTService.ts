@@ -1,4 +1,4 @@
-// kilocode_change - new file: Consolidated STT service - manages OpenAI Realtime transcription lifecycle
+// novacode_change - new file: Consolidated STT service - manages OpenAI Realtime transcription lifecycle
 import { STTProviderConfig, STTEventEmitter, VisibleCodeGlossary, VADConfig, DEFAULT_VAD_CONFIG } from "./types"
 import { STTSegment } from "../../shared/sttContract"
 import { ProviderSettingsManager } from "../../core/config/ProviderSettingsManager"

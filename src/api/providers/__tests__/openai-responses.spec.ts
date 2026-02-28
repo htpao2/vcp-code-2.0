@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 // npx vitest run api/providers/__tests__/openai-responses.spec.ts
 
 import { Anthropic } from "@anthropic-ai/sdk"

@@ -75,7 +75,7 @@ export const groqModels = {
 		maxTokens: 32766,
 		contextWindow: 131072,
 		supportsImages: false,
-		supportsPromptCache: true, // kilocode_change
+		supportsPromptCache: true, // novacode_change
 		supportsNativeTools: true,
 		defaultToolProtocol: "native",
 		inputPrice: 0.15,
@@ -87,7 +87,7 @@ export const groqModels = {
 		maxTokens: 32768,
 		contextWindow: 131072,
 		supportsImages: false,
-		supportsPromptCache: true, // kilocode_change
+		supportsPromptCache: true, // novacode_change
 		supportsNativeTools: true,
 		defaultToolProtocol: "native",
 		inputPrice: 0.1,

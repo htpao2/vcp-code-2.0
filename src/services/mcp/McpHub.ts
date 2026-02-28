@@ -1,4 +1,4 @@
-import * as fs from "fs/promises"
+﻿import * as fs from "fs/promises"
 import * as path from "path"
 
 import * as vscode from "vscode"
@@ -28,7 +28,7 @@ import type {
 	McpToolCallResponse,
 } from "@roo-code/types"
 
-import { McpAuthStatus, McpAuthDebugInfo } from "../../shared/mcp" // kilocode_change
+import { McpAuthStatus, McpAuthDebugInfo } from "../../shared/mcp" // novacode_change
 import { t } from "../../i18n"
 
 import { ClineProvider } from "../../core/webview/ClineProvider"
@@ -38,12 +38,12 @@ import { GlobalFileNames } from "../../shared/globalFileNames"
 import { fileExistsAtPath } from "../../utils/fs"
 import { arePathsEqual, getWorkspacePath } from "../../utils/path"
 import { injectVariables } from "../../utils/config"
-import { NotificationService } from "./kilocode/NotificationService"
+import { NotificationService } from "./nova/NotificationService"
 import { safeWriteJson } from "../../utils/safeWriteJson"
 import { sanitizeMcpName } from "../../utils/mcp-name"
-// kilocode_change start - MCP OAuth Authorization
+// novacode_change start - MCP OAuth Authorization
 import { McpOAuthService, OAuthTokens } from "./oauth"
-// kilocode_change end
+// novacode_change end
 // Discriminated union for connection states
 export type ConnectedMcpConnection = {
 	type: "connected"
@@ -61,6 +61,15 @@ export type DisconnectedMcpConnection = {
 
 export type McpConnection = ConnectedMcpConnection | DisconnectedMcpConnection
 
+type McpTransportType = "stdio" | "sse" | "streamable-http"
+type McpTransportLogMeta = {
+	requestId: string
+	provider: string
+	url: string
+	source: "global" | "project"
+	transportType: McpTransportType
+}
+
 // Enum for disable reasons
 export enum DisableReason {
 	MCP_DISABLED = "mcpDisabled",
@@ -68,7 +77,7 @@ export enum DisableReason {
 }
 
 // OAuth configuration schema for HTTP-based transports
-// kilocode_change start - MCP OAuth Authorization
+// novacode_change start - MCP OAuth Authorization
 const OAuthConfigSchema = z
 	.object({
 		// Override client_id if pre-registered
@@ -82,7 +91,7 @@ const OAuthConfigSchema = z
 		disabled: z.boolean().optional(),
 	})
 	.optional()
-// kilocode_change end
+// novacode_change end
 
 // Base configuration schema for common settings
 const BaseConfigSchema = z.object({
@@ -130,7 +139,7 @@ const createServerTypeSchema = () => {
 			type: z.enum(["sse"]).optional(),
 			url: z.string().url("URL must be a valid URL format"),
 			headers: z.record(z.string()).optional(),
-			oauth: OAuthConfigSchema, // kilocode_change - MCP OAuth Authorization
+			oauth: OAuthConfigSchema, // novacode_change - MCP OAuth Authorization
 			// Ensure no stdio fields are present
 			command: z.undefined().optional(),
 			args: z.undefined().optional(),
@@ -146,7 +155,7 @@ const createServerTypeSchema = () => {
 			type: z.enum(["streamable-http"]).optional(),
 			url: z.string().url("URL must be a valid URL format"),
 			headers: z.record(z.string()).optional(),
-			oauth: OAuthConfigSchema, // kilocode_change - MCP OAuth Authorization
+			oauth: OAuthConfigSchema, // novacode_change - MCP OAuth Authorization
 			// Ensure no stdio fields are present
 			command: z.undefined().optional(),
 			args: z.undefined().optional(),
@@ -179,28 +188,28 @@ export class McpHub {
 	private isDisposed: boolean = false
 	connections: McpConnection[] = []
 	isConnecting: boolean = false
-	readonly kiloNotificationService = new NotificationService()
+	readonly novaNotificationService = new NotificationService()
 	private refCount: number = 0 // Reference counter for active clients
 	private configChangeDebounceTimers: Map<string, NodeJS.Timeout> = new Map()
 	private isProgrammaticUpdate: boolean = false
 	private flagResetTimer?: NodeJS.Timeout
 	private sanitizedNameRegistry: Map<string, string> = new Map()
-	// kilocode_change start - MCP OAuth Authorization
+	// novacode_change start - MCP OAuth Authorization
 	private oauthService?: McpOAuthService
-	// kilocode_change end
-	// kilocode_change start - Auto-reconnect on disconnect
+	// novacode_change end
+	// novacode_change start - Auto-reconnect on disconnect
 	private reconnectAttempts: Map<string, number> = new Map()
 	private reconnectTimers: Map<string, NodeJS.Timeout> = new Map()
 	private static readonly MAX_RECONNECT_ATTEMPTS = 5
 	private static readonly INITIAL_RECONNECT_DELAY_MS = 1000
 	private static readonly MAX_RECONNECT_DELAY_MS = 30000
-	// kilocode_change end
+	// novacode_change end
 
 	constructor(provider: ClineProvider) {
 		this.providerRef = new WeakRef(provider)
-		// kilocode_change start - MCP OAuth Authorization
+		// novacode_change start - MCP OAuth Authorization
 		this.initializeOAuthService()
-		// kilocode_change end
+		// novacode_change end
 		this.watchMcpSettingsFile()
 		this.watchProjectMcpFile().catch(console.error)
 		this.setupWorkspaceFoldersWatcher()
@@ -208,7 +217,7 @@ export class McpHub {
 		this.initializeProjectMcpServers()
 	}
 
-	// kilocode_change start - MCP OAuth Authorization
+	// novacode_change start - MCP OAuth Authorization
 	/**
 	 * Initializes the OAuth service if a context is available
 	 */
@@ -612,7 +621,61 @@ export class McpHub {
 		const key = `${source}-${serverName}`
 		this.reconnectAttempts.delete(key)
 	}
-	// kilocode_change end
+
+	private createMcpRequestId(prefix: string): string {
+		return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
+	}
+
+	private createTransportLogMeta(
+		serverName: string,
+		source: "global" | "project",
+		config: z.infer<typeof ServerConfigSchema>,
+	): McpTransportLogMeta {
+		const transportType = config.type
+		const url = transportType === "stdio" ? `stdio://${config.command}` : config.url
+
+		return {
+			requestId: this.createMcpRequestId(`mcp-${transportType}-${serverName}`),
+			provider: serverName,
+			url,
+			source,
+			transportType,
+		}
+	}
+
+	private logTransportEvent(
+		level: "log" | "warn" | "error",
+		context: string,
+		meta: McpTransportLogMeta,
+		error?: unknown,
+	) {
+		const message = `[McpHub:${context}] requestId=${meta.requestId} provider=${meta.provider} url=${meta.url} source=${meta.source} transport=${meta.transportType}`
+
+		if (level === "error") {
+			console.error(message, error)
+			return
+		}
+		if (level === "warn") {
+			console.warn(message, error)
+			return
+		}
+		console.log(message)
+	}
+
+	private shouldScheduleReconnect(transportType: McpTransportType, reason: "error" | "close"): boolean {
+		// SSE transport already owns retry (ReconnectingEventSource), avoid duplicate retry storms.
+		if (transportType === "sse") {
+			return false
+		}
+
+		// Streamable HTTP retries are handled on close to keep a single reconnect trigger.
+		if (transportType === "streamable-http" && reason === "error") {
+			return false
+		}
+
+		return true
+	}
+	// novacode_change end
 	/**
 	 * Registers a client (e.g., ClineProvider) using this hub.
 	 * Increments the reference count.
@@ -808,7 +871,7 @@ export class McpHub {
 		}
 
 		const workspaceFolder = this.providerRef.deref()?.cwd ?? getWorkspacePath()
-		const projectMcpPattern = new vscode.RelativePattern(workspaceFolder, ".kilocode/mcp.json")
+		const projectMcpPattern = new vscode.RelativePattern(workspaceFolder, ".novacode/mcp.json")
 
 		// Create a file system watcher for the project MCP file pattern
 		this.projectMcpWatcher = vscode.workspace.createFileSystemWatcher(projectMcpPattern)
@@ -1022,7 +1085,7 @@ export class McpHub {
 		await this.initializeMcpServers("global")
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	// Check alternative MCP configuration paths (for compatibility with other tools)
 	private async checkAlternativeMcpPaths(workspacePath: string): Promise<string | null> {
 		const alternativePaths = [
@@ -1041,22 +1104,22 @@ export class McpHub {
 
 		return null
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	// Get project-level MCP configuration path
 	private async getProjectMcpPath(): Promise<string | null> {
 		const workspacePath = this.providerRef.deref()?.cwd ?? getWorkspacePath()
-		const projectMcpDir = path.join(workspacePath, ".kilocode")
+		const projectMcpDir = path.join(workspacePath, ".novacode")
 		const projectMcpPath = path.join(projectMcpDir, "mcp.json")
 
 		try {
 			await fs.access(projectMcpPath)
 			return projectMcpPath
 		} catch {
-			// kilocode_change
+			// novacode_change
 			return this.checkAlternativeMcpPaths(workspacePath)
 
-			// If not found in .kilocode/, fall back to .mcp.json in root directory
+			// If not found in .novacode/, fall back to .mcp.json in root directory
 			const rootMcpPath = path.join(workspacePath, ".mcp.json")
 			try {
 				await fs.access(rootMcpPath)
@@ -1150,7 +1213,7 @@ export class McpHub {
 		try {
 			const client = new Client(
 				{
-					name: "Kilo Code",
+					name: "Nova Code",
 					version: this.providerRef.deref()?.context.extension?.packageJSON?.version ?? "1.0.0",
 				},
 				{
@@ -1196,25 +1259,37 @@ export class McpHub {
 
 				// Set up stdio specific error handling
 				transport.onerror = async (error) => {
-					console.error(`Transport error for "${name}":`, error)
+					const logMeta = this.createTransportLogMeta(name, source, configInjected)
+					this.logTransportEvent("warn", "transport-error", logMeta, error)
 					const connection = this.findConnection(name, source)
 					if (connection) {
 						connection.server.status = "disconnected"
-						this.appendErrorMessage(connection, error instanceof Error ? error.message : `${error}`)
+						this.appendErrorMessage(
+							connection,
+							`[${logMeta.requestId}] ${error instanceof Error ? error.message : `${error}`}`,
+						)
 					}
 					await this.notifyWebviewOfServerChanges()
-					// kilocode_change - Schedule auto-reconnect on error
-					this.scheduleReconnect(name, source)
+					if (this.shouldScheduleReconnect(configInjected.type, "error")) {
+						this.scheduleReconnect(name, source)
+					} else {
+						this.logTransportEvent("log", "transport-degraded-manual-recovery", logMeta)
+					}
 				}
 
 				transport.onclose = async () => {
+					const logMeta = this.createTransportLogMeta(name, source, configInjected)
+					this.logTransportEvent("warn", "transport-close", logMeta)
 					const connection = this.findConnection(name, source)
 					if (connection) {
 						connection.server.status = "disconnected"
 					}
 					await this.notifyWebviewOfServerChanges()
-					// kilocode_change - Schedule auto-reconnect on close
-					this.scheduleReconnect(name, source)
+					if (this.shouldScheduleReconnect(configInjected.type, "close")) {
+						this.scheduleReconnect(name, source)
+					} else {
+						this.logTransportEvent("log", "transport-degraded-manual-recovery", logMeta)
+					}
 				}
 
 				// transport.stderr is only available after the process has been started. However we can't start it separately from the .connect() call because it also starts the transport. And we can't place this after the connect call since we need to capture the stderr stream before the connection is established, in order to capture errors during the connection process.
@@ -1247,7 +1322,7 @@ export class McpHub {
 				}
 			} else if (configInjected.type === "streamable-http") {
 				// Streamable HTTP connection
-				// kilocode_change start - MCP OAuth Authorization: Inject OAuth tokens if available
+				// novacode_change start - MCP OAuth Authorization: Inject OAuth tokens if available
 				let httpHeaders: Record<string, string> = { ...(configInjected.headers || {}) }
 				const oauthConfig = (configInjected as any).oauth
 				if (!oauthConfig?.disabled) {
@@ -1257,7 +1332,7 @@ export class McpHub {
 							`${this.normalizeTokenType(oauthTokens.tokenType)} ${oauthTokens.accessToken}`
 					}
 				}
-				// kilocode_change end
+				// novacode_change end
 
 				transport = new StreamableHTTPClientTransport(new URL(configInjected.url), {
 					requestInit: {
@@ -1267,29 +1342,43 @@ export class McpHub {
 
 				// Set up Streamable HTTP specific error handling
 				transport.onerror = async (error) => {
-					console.error(`Transport error for "${name}" (streamable-http):`, error)
+					const logMeta = this.createTransportLogMeta(name, source, configInjected)
+					this.logTransportEvent("warn", "transport-error", logMeta, error)
 					const connection = this.findConnection(name, source)
 					if (connection) {
-						connection.server.status = "disconnected"
-						this.appendErrorMessage(connection, error instanceof Error ? error.message : `${error}`)
+						// Keep streamable HTTP in connecting state on transient errors.
+						connection.server.status = "connecting"
+						this.appendErrorMessage(
+							connection,
+							`[${logMeta.requestId}] ${error instanceof Error ? error.message : `${error}`}`,
+							"warn",
+						)
 					}
 					await this.notifyWebviewOfServerChanges()
-					// kilocode_change - Schedule auto-reconnect on error
-					this.scheduleReconnect(name, source)
+					if (this.shouldScheduleReconnect(configInjected.type, "error")) {
+						this.scheduleReconnect(name, source)
+					} else {
+						this.logTransportEvent("log", "transport-degraded-manual-recovery", logMeta)
+					}
 				}
 
 				transport.onclose = async () => {
+					const logMeta = this.createTransportLogMeta(name, source, configInjected)
+					this.logTransportEvent("warn", "transport-close", logMeta)
 					const connection = this.findConnection(name, source)
 					if (connection) {
 						connection.server.status = "disconnected"
 					}
 					await this.notifyWebviewOfServerChanges()
-					// kilocode_change - Schedule auto-reconnect on close
-					this.scheduleReconnect(name, source)
+					if (this.shouldScheduleReconnect(configInjected.type, "close")) {
+						this.scheduleReconnect(name, source)
+					} else {
+						this.logTransportEvent("log", "transport-degraded-manual-recovery", logMeta)
+					}
 				}
 			} else if (configInjected.type === "sse") {
 				// SSE connection
-				// kilocode_change start - MCP OAuth Authorization: Inject OAuth tokens if available
+				// novacode_change start - MCP OAuth Authorization: Inject OAuth tokens if available
 				let sseHeaders: Record<string, string> = { ...(configInjected.headers || {}) }
 				const sseOauthConfig = (configInjected as any).oauth
 				if (!sseOauthConfig?.disabled) {
@@ -1299,7 +1388,7 @@ export class McpHub {
 							`${this.normalizeTokenType(sseOauthTokens.tokenType)} ${sseOauthTokens.accessToken}`
 					}
 				}
-				// kilocode_change end
+				// novacode_change end
 
 				const sseOptions = {
 					requestInit: {
@@ -1329,25 +1418,40 @@ export class McpHub {
 
 				// Set up SSE specific error handling
 				transport.onerror = async (error) => {
-					console.error(`Transport error for "${name}":`, error)
+					const logMeta = this.createTransportLogMeta(name, source, configInjected)
+					this.logTransportEvent("warn", "transport-error", logMeta, error)
 					const connection = this.findConnection(name, source)
 					if (connection) {
-						connection.server.status = "disconnected"
-						this.appendErrorMessage(connection, error instanceof Error ? error.message : `${error}`)
+						// Keep SSE in connecting state and rely on transport-level reconnect.
+						connection.server.status = "connecting"
+						this.appendErrorMessage(
+							connection,
+							`[${logMeta.requestId}] ${error instanceof Error ? error.message : `${error}`}`,
+							"warn",
+						)
 					}
 					await this.notifyWebviewOfServerChanges()
-					// kilocode_change - Schedule auto-reconnect on error
-					this.scheduleReconnect(name, source)
+					if (this.shouldScheduleReconnect(configInjected.type, "error")) {
+						this.scheduleReconnect(name, source)
+					} else {
+						this.logTransportEvent("log", "transport-degraded-manual-recovery", logMeta)
+					}
 				}
 
 				transport.onclose = async () => {
+					const logMeta = this.createTransportLogMeta(name, source, configInjected)
+					this.logTransportEvent("warn", "transport-close", logMeta)
 					const connection = this.findConnection(name, source)
 					if (connection) {
-						connection.server.status = "disconnected"
+						// Keep connecting to indicate transport-level retry is still active.
+						connection.server.status = "connecting"
 					}
 					await this.notifyWebviewOfServerChanges()
-					// kilocode_change - Schedule auto-reconnect on close
-					this.scheduleReconnect(name, source)
+					if (this.shouldScheduleReconnect(configInjected.type, "close")) {
+						this.scheduleReconnect(name, source)
+					} else {
+						this.logTransportEvent("log", "transport-degraded-manual-recovery", logMeta)
+					}
 				}
 			} else {
 				// Should not happen if validateServerConfig is correct
@@ -1359,7 +1463,7 @@ export class McpHub {
 				transport.start = async () => {}
 			}
 
-			// kilocode_change start - MCP OAuth Authorization: Build auth status for HTTP-based transports
+			// novacode_change start - MCP OAuth Authorization: Build auth status for HTTP-based transports
 			let authStatus: McpAuthStatus | undefined
 			if (configInjected.type === "streamable-http" || configInjected.type === "sse") {
 				const httpOauthConfig = (configInjected as any).oauth
@@ -1391,7 +1495,7 @@ export class McpHub {
 					debugInfo,
 				)
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			// Create a connected connection
 			const connection: ConnectedMcpConnection = {
@@ -1404,9 +1508,9 @@ export class McpHub {
 					source,
 					projectPath: source === "project" ? vscode.workspace.workspaceFolders?.[0]?.uri.fsPath : undefined,
 					errorHistory: [],
-					// kilocode_change start - MCP OAuth Authorization
+					// novacode_change start - MCP OAuth Authorization
 					authStatus,
-					// kilocode_change end
+					// novacode_change end
 				},
 				client,
 				transport,
@@ -1418,15 +1522,15 @@ export class McpHub {
 			connection.server.status = "connected"
 			connection.server.error = ""
 			connection.server.instructions = client.getInstructions()
-			// kilocode_change - Reset reconnect attempts on successful connection
+			// novacode_change - Reset reconnect attempts on successful connection
 			this.resetReconnectAttempts(name, source)
 
-			this.kiloNotificationService.connect(name, connection.client)
+			this.novaNotificationService.connect(name, connection.client)
 
 			// Initial fetch of tools and resources
-			await this.fetchAvailableServerCapabilities(name, source) // kilocode_change: logic moved into method
+			await this.fetchAvailableServerCapabilities(name, source) // novacode_change: logic moved into method
 		} catch (error) {
-			// kilocode_change start - MCP OAuth Authorization: Handle 401 errors
+			// novacode_change start - MCP OAuth Authorization: Handle 401 errors
 			// Check if this is an HTTP-based transport and if the error indicates OAuth is required
 			// Instead of automatically opening the auth flow, we just set the status to "required"
 			// and let the user click "Sign in" to trigger the OAuth flow
@@ -1454,7 +1558,7 @@ export class McpHub {
 				await this.notifyWebviewOfServerChanges()
 				return
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			// Update status with error
 			const connection = this.findConnection(name, source)
@@ -1518,7 +1622,7 @@ export class McpHub {
 		)
 	}
 
-	// kilocode_change start: method added
+	// novacode_change start: method added
 	/**
 	 * Helper method to set the supported server capabilities
 	 * @param serverName The name of the server to find
@@ -1540,7 +1644,7 @@ export class McpHub {
 			connection.server.resourceTemplates = await this.fetchResourceTemplatesList(serverName, source)
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 	/**
 	 * Find a connection by sanitized server name.
 	 * This is used when parsing MCP tool responses where the server name has been
@@ -1566,12 +1670,12 @@ export class McpHub {
 				return []
 			}
 
-			// kilocode_change start
+			// novacode_change start
 			// Only proceed of the server defined the tools capability.
 			if (!connection.client.getServerCapabilities()?.tools) {
 				return []
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			const response = await connection.client.request({ method: "tools/list" }, ListToolsResultSchema)
 
@@ -1628,12 +1732,12 @@ export class McpHub {
 				return []
 			}
 
-			// kilocode_change start
+			// novacode_change start
 			// Only proceed of the server defined the resources capability.
 			if (!connection.client.getServerCapabilities()?.resources) {
 				return []
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			const response = await connection.client.request({ method: "resources/list" }, ListResourcesResultSchema)
 			return response?.resources || []
@@ -1653,12 +1757,12 @@ export class McpHub {
 				return []
 			}
 
-			// kilocode_change start
+			// novacode_change start
 			// Only proceed of the server defined the resources capability.
 			if (!connection.client.getServerCapabilities()?.resources) {
 				return []
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			const response = await connection.client.request(
 				{ method: "resources/templates/list" },
@@ -1675,7 +1779,7 @@ export class McpHub {
 		// Clean up file watchers for this server
 		this.removeFileWatchersForServer(name)
 
-		// kilocode_change - Cancel any pending reconnect attempts
+		// novacode_change - Cancel any pending reconnect attempts
 		if (source) {
 			this.cancelReconnect(name, source)
 		} else {
@@ -1692,7 +1796,7 @@ export class McpHub {
 		for (const connection of connections) {
 			try {
 				if (connection.type === "connected") {
-					// kilocode_change start
+					// novacode_change start
 					// Fire-and-forget: don't await close() calls as they can block
 					// waiting for the subprocess to exit. The MCP SDK's transport.close()
 					// waits up to 2 seconds for the process to exit gracefully before
@@ -1704,7 +1808,7 @@ export class McpHub {
 					connection.client.close().catch((err) => {
 						console.error(`Error closing client for ${name}:`, err)
 					})
-					// kilocode_change end
+					// novacode_change end
 				}
 			} catch (error) {
 				console.error(`Failed to close transport for ${name}:`, error)
@@ -1775,7 +1879,7 @@ export class McpHub {
 					this.showErrorMessage(`Failed to connect to new MCP server ${name}`, error)
 				}
 			} else if (
-				/* kilocode_change start */
+				/* novacode_change start */
 				!deepEqual(
 					JSON.parse(currentConnection.server.config),
 					await injectVariables(validatedConfig, {
@@ -1783,7 +1887,7 @@ export class McpHub {
 						workspaceFolder: vscode.workspace.workspaceFolders?.[0]?.uri.fsPath ?? "",
 					}),
 				)
-				/* kilocode_change end */
+				/* novacode_change end */
 			) {
 				// Existing server with changed config
 				try {
@@ -2096,7 +2200,7 @@ export class McpHub {
 						await this.connectToServer(serverName, updatedConfig, serverSource)
 					} else if (connection.server.status === "connected") {
 						// Only refresh capabilities if connected
-						await this.fetchAvailableServerCapabilities(serverName, serverSource) // kilocode_change: logic moved into method
+						await this.fetchAvailableServerCapabilities(serverName, serverSource) // novacode_change: logic moved into method
 					}
 				} catch (error) {
 					console.error(`Failed to refresh capabilities for ${serverName}:`, error)
@@ -2593,13 +2697,13 @@ export class McpHub {
 		}
 
 		this.isProgrammaticUpdate = false
-		// kilocode_change start: - Clear all reconnect timers
+		// novacode_change start: - Clear all reconnect timers
 		for (const timer of this.reconnectTimers.values()) {
 			clearTimeout(timer)
 		}
 		this.reconnectTimers.clear()
 		this.reconnectAttempts.clear()
-		// kilocode_change end
+		// novacode_change end
 
 		this.removeAllFileWatchers()
 

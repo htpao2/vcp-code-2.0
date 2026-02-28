@@ -16,7 +16,7 @@ import { t } from "../../i18n"
 const CEREBRAS_BASE_URL = "https://api.cerebras.ai/v1"
 const CEREBRAS_DEFAULT_TEMPERATURE = 0
 
-// kilocode_change start
+// novacode_change start
 /**
  * Conservative max_tokens for Cerebras to avoid premature rate limiting.
  * Cerebras rate limiter estimates token consumption using max_completion_tokens upfront,
@@ -25,8 +25,8 @@ const CEREBRAS_DEFAULT_TEMPERATURE = 0
  */
 const CEREBRAS_DEFAULT_MAX_TOKENS = 8_192
 const CEREBRAS_INTEGRATION_HEADER = "X-Cerebras-3rd-Party-Integration"
-const CEREBRAS_INTEGRATION_NAME = "kilocode"
-// kilocode_change end
+const CEREBRAS_INTEGRATION_NAME = "novacode"
+// novacode_change end
 
 /**
  * Removes thinking tokens from text to prevent model confusion when processing conversation history.
@@ -208,13 +208,13 @@ export class CerebrasHandler extends BaseProvider implements SingleCompletionHan
 
 		// Prepare request body following Cerebras API specification exactly
 		// Use conservative default to avoid premature rate limiting (Cerebras reserves quota upfront)
-		const effectiveMaxTokens = Math.min(max_tokens || CEREBRAS_DEFAULT_MAX_TOKENS, CEREBRAS_DEFAULT_MAX_TOKENS) // kilocode_change
+		const effectiveMaxTokens = Math.min(max_tokens || CEREBRAS_DEFAULT_MAX_TOKENS, CEREBRAS_DEFAULT_MAX_TOKENS) // novacode_change
 		const requestBody: Record<string, any> = {
 			model,
 			messages: [{ role: "system", content: systemPrompt }, ...openaiMessages],
 			stream: true,
 			// Use max_completion_tokens (Cerebras-specific parameter)
-			...(effectiveMaxTokens > 0 ? { max_completion_tokens: effectiveMaxTokens } : {}), // kilocode_change
+			...(effectiveMaxTokens > 0 ? { max_completion_tokens: effectiveMaxTokens } : {}), // novacode_change
 			// Clamp temperature to Cerebras range (0 to 1.5)
 			...(temperature !== undefined && temperature !== CEREBRAS_DEFAULT_TEMPERATURE
 				? {
@@ -234,7 +234,7 @@ export class CerebrasHandler extends BaseProvider implements SingleCompletionHan
 					...DEFAULT_HEADERS,
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${this.apiKey}`,
-					[CEREBRAS_INTEGRATION_HEADER]: CEREBRAS_INTEGRATION_NAME, // kilocode_change
+					[CEREBRAS_INTEGRATION_HEADER]: CEREBRAS_INTEGRATION_NAME, // novacode_change
 				},
 				body: JSON.stringify(requestBody),
 			})
@@ -396,7 +396,7 @@ export class CerebrasHandler extends BaseProvider implements SingleCompletionHan
 					...DEFAULT_HEADERS,
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${this.apiKey}`,
-					[CEREBRAS_INTEGRATION_HEADER]: CEREBRAS_INTEGRATION_NAME, // kilocode_change
+					[CEREBRAS_INTEGRATION_HEADER]: CEREBRAS_INTEGRATION_NAME, // novacode_change
 				},
 				body: JSON.stringify(requestBody),
 			})

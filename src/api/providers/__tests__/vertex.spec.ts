@@ -8,10 +8,10 @@ import { Anthropic } from "@anthropic-ai/sdk"
 import { ApiStreamChunk } from "../../transform/stream"
 
 import { t } from "i18next"
-import { TelemetryService } from "@roo-code/telemetry" // kilocode_change
+import { TelemetryService } from "@roo-code/telemetry" // novacode_change
 import { VertexHandler } from "../vertex"
 
-// kilocode_change start
+// novacode_change start
 // Mock TelemetryService
 vi.mock("@roo-code/telemetry", () => ({
 	TelemetryService: {
@@ -20,7 +20,7 @@ vi.mock("@roo-code/telemetry", () => ({
 		},
 	},
 }))
-// kilocode_change end
+// novacode_change end
 
 describe("VertexHandler", () => {
 	let handler: VertexHandler
@@ -150,7 +150,7 @@ describe("VertexHandler", () => {
 			expect(modelInfo.info.contextWindow).toBe(1048576)
 		})
 
-		// kilocode_change start
+		// novacode_change start
 		it("should normalize legacy claude-opus-4-6 aliases", () => {
 			const testHandler = new VertexHandler({
 				apiModelId: "claude-opus-4-6@default",
@@ -162,9 +162,9 @@ describe("VertexHandler", () => {
 			expect(modelInfo.id).toBe("claude-opus-4-6")
 			expect(modelInfo.info.supportsImages).toBe(true)
 		})
-		// kilocode_change end
+		// novacode_change end
 
-		// kilocode_change start
+		// novacode_change start
 		it("should expose native tools metadata for gemini-3.1-pro-preview", () => {
 			const testHandler = new VertexHandler({
 				apiModelId: "gemini-3.1-pro-preview",
@@ -177,6 +177,6 @@ describe("VertexHandler", () => {
 			expect(modelInfo.info.supportsNativeTools).toBe(true)
 			expect(modelInfo.info.defaultToolProtocol).toBe("native")
 		})
-		// kilocode_change end
+		// novacode_change end
 	})
 })

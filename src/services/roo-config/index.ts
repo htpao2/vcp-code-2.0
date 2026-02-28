@@ -1,7 +1,7 @@
 import * as path from "path"
 import * as os from "os"
 import fs from "fs/promises"
-import fsSync from "fs" // kilocode_change
+import fsSync from "fs" // novacode_change
 
 /**
  * Gets the global .roo directory path based on the current platform
@@ -26,16 +26,16 @@ import fsSync from "fs" // kilocode_change
  */
 export function getGlobalRooDirectory(): string {
 	const homeDir = os.homedir()
-	const kiloDir = path.join(homeDir, ".kilocode") // kilocode_change
-	const rooDir = path.join(homeDir, ".roo") // kilocode_change
+	const novaDir = path.join(homeDir, ".novacode") // novacode_change
+	const rooDir = path.join(homeDir, ".roo") // novacode_change
 
-	// kilocode_change start: Prefer .kilocode; fallback to legacy .roo for backwards compatibility.
-	if (fsSync.existsSync(rooDir) && !fsSync.existsSync(kiloDir)) {
+	// novacode_change start: Prefer .novacode; fallback to legacy .roo for backwards compatibility.
+	if (fsSync.existsSync(rooDir) && !fsSync.existsSync(novaDir)) {
 		return rooDir
 	}
 
-	return kiloDir
-	// kilocode_change end
+	return novaDir
+	// novacode_change end
 }
 
 /**
@@ -68,14 +68,14 @@ export function getGlobalRooDirectory(): string {
  * ```
  */
 export function getProjectRooDirectoryForCwd(cwd: string): string {
-	// kilocode_change start
-	const kiloDir = path.join(cwd, ".kilocode")
+	// novacode_change start
+	const novaDir = path.join(cwd, ".novacode")
 	const rooDir = path.join(cwd, ".roo")
-	if (fsSync.existsSync(rooDir) && !fsSync.existsSync(kiloDir)) {
+	if (fsSync.existsSync(rooDir) && !fsSync.existsSync(novaDir)) {
 		return rooDir
 	}
-	return kiloDir
-	// kilocode_change end
+	return novaDir
+	// novacode_change end
 }
 
 /**
@@ -86,7 +86,7 @@ export async function directoryExists(dirPath: string): Promise<boolean> {
 		const stat = await fs.stat(dirPath)
 		return stat.isDirectory()
 	} catch (error: any) {
-		// kilocode_change start: Handle errors that can occur with symlinks: ENOENT (not found), ENOTDIR (not a directory),
+		// novacode_change start: Handle errors that can occur with symlinks: ENOENT (not found), ENOTDIR (not a directory),
 		// ELOOP (too many symlinks), ENOTCONN (network connection issue for network drives)
 		if (
 			error.code === "ENOENT" ||
@@ -96,7 +96,7 @@ export async function directoryExists(dirPath: string): Promise<boolean> {
 		) {
 			return false
 		}
-		// kilocode_change end
+		// novacode_change end
 		// Re-throw unexpected errors (permission, I/O, etc.)
 		throw error
 	}
@@ -110,7 +110,7 @@ export async function fileExists(filePath: string): Promise<boolean> {
 		const stat = await fs.stat(filePath)
 		return stat.isFile()
 	} catch (error: any) {
-		// kilocode_change start: Handle errors that can occur with symlinks: ENOENT (not found), ENOTDIR (not a directory),
+		// novacode_change start: Handle errors that can occur with symlinks: ENOENT (not found), ENOTDIR (not a directory),
 		// ELOOP (too many symlinks), ENOTCONN (network connection issue for network drives)
 		if (
 			error.code === "ENOENT" ||
@@ -120,7 +120,7 @@ export async function fileExists(filePath: string): Promise<boolean> {
 		) {
 			return false
 		}
-		// kilocode_change end
+		// novacode_change end
 		// Re-throw unexpected errors (permission, I/O, etc.)
 		throw error
 	}
@@ -183,16 +183,16 @@ export async function discoverSubfolderRooDirectories(cwd: string): Promise<stri
 		// available in the webview context
 		const { executeRipgrep } = await import("../search/file-search")
 
-		// Use ripgrep to find any file inside any .kilocode or legacy .roo directory.
+		// Use ripgrep to find any file inside any .novacode or legacy .roo directory.
 		// This efficiently discovers all config folders regardless of their content.
 		const args = [
 			"--files",
 			"--hidden",
 			"--follow",
 			"-g",
-			"**/.kilocode/**", // kilocode_change
+			"**/.novacode/**", // novacode_change
 			"-g",
-			"**/.roo/**", // kilocode_change (legacy)
+			"**/.roo/**", // novacode_change (legacy)
 			"-g",
 			"!node_modules/**",
 			"-g",
@@ -203,25 +203,25 @@ export async function discoverSubfolderRooDirectories(cwd: string): Promise<stri
 		const results = await executeRipgrep({ args, workspacePath: cwd })
 
 		// Extract unique config directory paths.
-		// Prefer .kilocode when both .kilocode and .roo exist for the same parent folder.
+		// Prefer .novacode when both .novacode and .roo exist for the same parent folder.
 		const configDirsByParent = new Map<string, string>() // parentDir -> configDir
-		const rootKiloDir = path.join(cwd, ".kilocode") // kilocode_change
+		const rootNovaDir = path.join(cwd, ".novacode") // novacode_change
 		const rootRooDir = path.join(cwd, ".roo")
 
 		for (const result of results) {
 			// Match paths like:
-			// - "subfolder/.kilocode/anything" (preferred)
+			// - "subfolder/.novacode/anything" (preferred)
 			// - "subfolder/.roo/anything" (legacy)
 			// Handle both forward slashes (Unix) and backslashes (Windows)
-			const match = result.path.match(/^(.+?)[/\\]\.(kilocode|roo)[/\\]/)
+			const match = result.path.match(/^(.+?)[/\\]\.(novacode|roo)[/\\]/)
 			if (!match?.[1] || !match?.[2]) continue
 
 			const parentRel = match[1]
-			const dirName = match[2] as "kilocode" | "roo"
+			const dirName = match[2] as "novacode" | "roo"
 			const configDir = path.join(cwd, parentRel, `.${dirName}`)
 
 			// Exclude the root config dirs (already handled by getProjectRooDirectoryForCwd)
-			if (configDir === rootKiloDir || configDir === rootRooDir) {
+			if (configDir === rootNovaDir || configDir === rootRooDir) {
 				continue
 			}
 
@@ -231,8 +231,8 @@ export async function discoverSubfolderRooDirectories(cwd: string): Promise<stri
 				continue
 			}
 
-			// Prefer .kilocode over legacy .roo for the same parent folder
-			if (existing.endsWith(`${path.sep}.roo`) && dirName === "kilocode") {
+			// Prefer .novacode over legacy .roo for the same parent folder
+			if (existing.endsWith(`${path.sep}.roo`) && dirName === "novacode") {
 				configDirsByParent.set(parentRel, configDir)
 			}
 		}

@@ -18,7 +18,7 @@ export const historyItemSchema = z.object({
 	totalCost: z.number(),
 	size: z.number().optional(),
 	workspace: z.string().optional(),
-	isFavorited: z.boolean().optional(), // kilocode_change
+	isFavorited: z.boolean().optional(), // novacode_change
 	mode: z.string().optional(),
 	/**
 	 * The tool protocol used by this task. Once a task uses tools with a specific

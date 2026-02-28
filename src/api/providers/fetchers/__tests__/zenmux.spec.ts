@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { zenmuxDefaultModelInfo } from "@roo-code/types"
 import { getZenmuxModels } from "../zenmux"
 

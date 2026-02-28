@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef, useMemo, Fragment } from "react" // kilocode_change Fragment, useMemo
+﻿import { useState, useCallback, useEffect, useRef, useMemo, Fragment } from "react" // novacode_change Fragment, useMemo
 import { VSCodeLink } from "@vscode/webview-ui-toolkit/react"
 import { Trans } from "react-i18next"
 import { ChevronsUpDown, Check, X, Info } from "lucide-react"
@@ -7,8 +7,8 @@ import type { ProviderSettings, ModelInfo, OrganizationAllowList } from "@roo-co
 
 import { useAppTranslation } from "@src/i18n/TranslationContext"
 import { useSelectedModel } from "@/components/ui/hooks/useSelectedModel"
-import { useGroupedModelIds } from "@/components/ui/hooks/kilocode/usePreferredModels" // kilocode_change
-// import { filterModels } from "./utils/organizationFilters" // kilocode_change: not doing this
+import { useGroupedModelIds } from "@/components/ui/hooks/nova/usePreferredModels" // novacode_change
+// import { filterModels } from "./utils/organizationFilters" // novacode_change: not doing this
 import { cn } from "@src/lib/utils"
 import {
 	Command,
@@ -26,25 +26,25 @@ import { useEscapeKey } from "@src/hooks/useEscapeKey"
 
 import { ModelInfoView } from "./ModelInfoView"
 import { ApiErrorMessage } from "./ApiErrorMessage"
-import { KiloModelInfoView } from "../kilocode/settings/KiloModelInfoView"
+import { NovaModelInfoView } from "../nova/settings/NovaModelInfoView"
 
 type ModelIdKey = keyof Pick<
 	ProviderSettings,
-	| "glamaModelId" // kilocode_change
+	| "glamaModelId" // novacode_change
 	| "openRouterModelId"
 	| "unboundModelId"
 	| "requestyModelId"
 	| "openAiModelId"
 	| "litellmModelId"
-	// kilocode_change start
+	// novacode_change start
 	| "apiModelId"
-	| "kilocodeModel"
+	| "novacodeModel"
 	| "nanoGptModelId"
 	| "ovhCloudAiEndpointsModelId"
 	| "inceptionLabsModelId"
 	| "poeModelId"
 	| "aihubmixModelId"
-	// kilocode_change end
+	// novacode_change end
 	| "deepInfraModelId"
 	| "ioIntelligenceModelId"
 	| "vercelAiGatewayModelId"
@@ -78,7 +78,7 @@ export const ModelPicker = ({
 	serviceUrl,
 	apiConfiguration,
 	setApiConfigurationField,
-	// organizationAllowList, // kilocode_change: unused
+	// organizationAllowList, // novacode_change: unused
 	errorMessage,
 	simplifySettings,
 }: ModelPickerProps) => {
@@ -91,11 +91,11 @@ export const ModelPicker = ({
 	const selectTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 	const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-	// kilocode_change start: Use grouped model IDs for section headers
+	// novacode_change start: Use grouped model IDs for section headers
 	const { preferredModelIds, restModelIds } = useGroupedModelIds(models)
 	const modelIds = useMemo(() => [...preferredModelIds, ...restModelIds], [preferredModelIds, restModelIds])
 	const [isPricingExpanded, setIsPricingExpanded] = useState(false)
-	// kilocode_change end
+	// novacode_change end
 
 	const { id: selectedModelId, info: selectedModelInfo } = useSelectedModel(apiConfiguration)
 
@@ -209,7 +209,7 @@ export const ModelPicker = ({
 										</div>
 									)}
 								</CommandEmpty>
-								{/* kilocode_change start: Section headers for recommended and all models */}
+								{/* novacode_change start: Section headers for recommended and all models */}
 								{preferredModelIds.length > 0 && (
 									<CommandGroup heading={t("settings:modelPicker.recommendedModels")}>
 										{preferredModelIds.map((model) => (
@@ -253,7 +253,7 @@ export const ModelPicker = ({
 										))}
 									</CommandGroup>
 								)}
-								{/* kilocode_change end */}
+								{/* novacode_change end */}
 							</CommandList>
 							{searchValue && !modelIds.includes(searchValue) && (
 								<div className="p-1 border-t border-vscode-input-border">
@@ -279,12 +279,12 @@ export const ModelPicker = ({
 			) : (
 				<div>
 					{
-						// kilocode_change start
+						// novacode_change start
 						selectedModelId &&
 							selectedModelInfo &&
-							(apiConfiguration.apiProvider === "kilocode" ||
+							(apiConfiguration.apiProvider === "novacode" ||
 							apiConfiguration.apiProvider === "openrouter" ? (
-								<KiloModelInfoView
+								<NovaModelInfoView
 									apiConfiguration={apiConfiguration}
 									modelId={selectedModelId}
 									model={selectedModelInfo}
@@ -302,9 +302,9 @@ export const ModelPicker = ({
 									setIsDescriptionExpanded={setIsDescriptionExpanded}
 								/>
 							))
-						// kilocode_change end
+						// novacode_change end
 					}
-					{apiConfiguration.apiProvider !== "kilocode" && ( // kilocode_change
+					{apiConfiguration.apiProvider !== "novacode" && ( // novacode_change
 						<div className="text-sm text-vscode-descriptionForeground">
 							<Trans
 								i18nKey="settings:modelPicker.automaticFetch"

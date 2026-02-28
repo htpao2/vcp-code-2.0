@@ -1,6 +1,6 @@
 <!--
-NOTE: New versions of the VS Code extension and CLI are being developed in https://github.com/Kilo-Org/Kilo
-(extension: packages/kilo-vscode, CLI: packages/opencode).
+NOTE: New versions of the VS Code extension and CLI are being developed in https://github.com/Nova-Org/Nova
+(extension: packages/nova-vscode, CLI: packages/opencode).
 If your changes are for the extension or CLI, please open your PR in that repository instead.
 -->
 
@@ -38,4 +38,4 @@ A "How To Test" section can look something like this:
 
 ## Get in Touch
 
-<!-- We'd love to have a way to chat with you about your changes if necessary. If you're in the [Kilo Code Discord](https://kilo.ai/discord), please share your handle here. -->
+<!-- We'd love to have a way to chat with you about your changes if necessary. If you're in the [Nova Code Discord](https://nova.ai/discord), please share your handle here. -->

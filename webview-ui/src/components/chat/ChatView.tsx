@@ -1,9 +1,9 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
+﻿import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
 import { useDeepCompareEffect, useEvent } from "react-use"
 import debounce from "debounce"
 import { Virtuoso, type VirtuosoHandle } from "react-virtuoso"
 import removeMd from "remove-markdown"
-import { VSCodeButton as Button } from "@vscode/webview-ui-toolkit/react" // kilocode_change: do not use rounded Roo buttons
+import { VSCodeButton as Button } from "@vscode/webview-ui-toolkit/react" // novacode_change: do not use rounded Roo buttons
 import useSound from "use-sound"
 import { LRUCache } from "lru-cache"
 import { Trans } from "react-i18next"
@@ -26,14 +26,14 @@ import { vscode } from "@src/utils/vscode"
 import { useAppTranslation } from "@src/i18n/TranslationContext"
 import { useExtensionState } from "@src/context/ExtensionStateContext"
 import { useSelectedModel } from "@src/components/ui/hooks/useSelectedModel"
-// import RooHero from "@src/components/welcome/RooHero" // kilocode_change: unused
-// import RooTips from "@src/components/welcome/RooTips" // kilocode_change: unused
+// import RooHero from "@src/components/welcome/RooHero" // novacode_change: unused
+// import RooTips from "@src/components/welcome/RooTips" // novacode_change: unused
 import { StandardTooltip } from "@src/components/ui"
 
-// import VersionIndicator from "../common/VersionIndicator" // kilocode_change: unused
-import { OrganizationSelector } from "../kilocode/common/OrganizationSelector"
-// import { useTaskSearch } from "../history/useTaskSearch" // kilocode_change: unused
-// import { CloudUpsellDialog } from "@src/components/cloud/CloudUpsellDialog" // kilocode_change: unused
+// import VersionIndicator from "../common/VersionIndicator" // novacode_change: unused
+import { OrganizationSelector } from "../nova/common/OrganizationSelector"
+// import { useTaskSearch } from "../history/useTaskSearch" // novacode_change: unused
+// import { CloudUpsellDialog } from "@src/components/cloud/CloudUpsellDialog" // novacode_change: unused
 
 import TelemetryBanner from "../common/TelemetryBanner"
 import HistoryPreview from "../history/HistoryPreview"
@@ -42,21 +42,21 @@ import BrowserActionRow from "./BrowserActionRow"
 import BrowserSessionStatusRow from "./BrowserSessionStatusRow"
 import ChatRow from "./ChatRow"
 import { ChatTextArea } from "./ChatTextArea"
-// import TaskHeader from "./TaskHeader"// kilocode_change
-import KiloTaskHeader from "../kilocode/KiloTaskHeader" // kilocode_change
+// import TaskHeader from "./TaskHeader"// novacode_change
+import NovaTaskHeader from "../nova/NovaTaskHeader" // novacode_change
 import AutoApproveMenu from "./AutoApproveMenu"
-import BottomControls from "../kilocode/BottomControls" // kilocode_change
+import BottomControls from "../nova/BottomControls" // novacode_change
 import SystemPromptWarning from "./SystemPromptWarning"
-// import ProfileViolationWarning from "./ProfileViolationWarning" kilocode_change: unused
+// import ProfileViolationWarning from "./ProfileViolationWarning" novacode_change: unused
 import { CheckpointWarning } from "./CheckpointWarning"
-import { IdeaSuggestionsBox } from "../kilocode/chat/IdeaSuggestionsBox" // kilocode_change
-import { KilocodeNotifications } from "../kilocode/KilocodeNotifications" // kilocode_change
+import { IdeaSuggestionsBox } from "../nova/chat/IdeaSuggestionsBox" // novacode_change
+import { NovacodeNotifications } from "../nova/NovacodeNotifications" // novacode_change
 import { QueuedMessages } from "./QueuedMessages"
-import { ReviewScopeSelector, type ReviewScopeInfo } from "./ReviewScopeSelector" // kilocode_change: Review mode
+import { ReviewScopeSelector, type ReviewScopeInfo } from "./ReviewScopeSelector" // novacode_change: Review mode
 import { buildDocLink } from "@/utils/docLinks"
-// import DismissibleUpsell from "../common/DismissibleUpsell" // kilocode_change: unused
-// import { useCloudUpsell } from "@src/hooks/useCloudUpsell" // kilocode_change: unused
-// import { Cloud } from "lucide-react" // kilocode_change: unused
+// import DismissibleUpsell from "../common/DismissibleUpsell" // novacode_change: unused
+// import { useCloudUpsell } from "@src/hooks/useCloudUpsell" // novacode_change: unused
+// import { Cloud } from "lucide-react" // novacode_change: unused
 
 export interface ChatViewProps {
 	isHidden: boolean
@@ -66,32 +66,32 @@ export interface ChatViewProps {
 
 export interface ChatViewRef {
 	acceptInput: () => void
-	focusInput: () => void // kilocode_change
+	focusInput: () => void // novacode_change
 }
 
 export const MAX_IMAGES_PER_MESSAGE = 20 // This is the Anthropic limit.
 
 const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0
 
-// kilocode_change start: KiloLogo component
-const KiloLogo = () => {
+// novacode_change start: NovaLogo component
+const NovaLogo = () => {
 	const iconsBaseUri = (window as any).ICONS_BASE_URI || ""
 	const isLightTheme =
 		document.body.classList.contains("vscode-light") ||
 		document.body.classList.contains("vscode-high-contrast-light")
-	const iconFile = isLightTheme ? "kilo-light.svg" : "kilo-dark.svg"
+	const iconFile = isLightTheme ? "nova-light.svg" : "nova-dark.svg"
 	return (
 		<div className="flex items-center justify-center" style={{ width: "56px", height: "56px", margin: "0 auto" }}>
 			<img
 				src={`${iconsBaseUri}/${iconFile}`}
-				alt="Kilo Code"
+				alt="Nova Code"
 				className="w-full h-full object-contain"
 				style={{ opacity: 0.85 }}
 			/>
 		</div>
 	)
 }
-// kilocode_change end
+// novacode_change end
 
 const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewProps> = (
 	{ isHidden, showAnnouncement, hideAnnouncement },
@@ -111,25 +111,25 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 		clineMessages: messages,
 		currentTaskItem,
 		currentTaskTodos,
-		currentTaskCumulativeCost, // kilocode_change
-		taskHistoryFullLength, // kilocode_change
-		taskHistoryVersion, // kilocode_change
+		currentTaskCumulativeCost, // novacode_change
+		taskHistoryFullLength, // novacode_change
+		taskHistoryVersion, // novacode_change
 		apiConfiguration,
 		organizationAllowList,
 		mode,
 		setMode,
 		alwaysAllowModeSwitch,
-		showAutoApproveMenu, // kilocode_change
-		enableCheckpoints, // kilocode_change
+		showAutoApproveMenu, // novacode_change
+		enableCheckpoints, // novacode_change
 		customModes,
 		telemetrySetting,
 		hasSystemPromptOverride,
-		historyPreviewCollapsed, // kilocode_change
+		historyPreviewCollapsed, // novacode_change
 		soundEnabled,
 		soundVolume,
-		// cloudIsAuthenticated, // kilocode_change
+		// cloudIsAuthenticated, // novacode_change
 		messageQueue = [],
-		sendMessageOnEnter, // kilocode_change
+		sendMessageOnEnter, // novacode_change
 		isBrowserSessionActive,
 	} = useExtensionState()
 
@@ -144,7 +144,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 	// Cline.abort).
 	const task = useMemo(() => messages.at(0), [messages])
 
-	// kilocode_change start
+	// novacode_change start
 	// Initialize expanded state based on the persisted setting (default to expanded if undefined)
 	const [isExpanded, setIsExpanded] = useState(
 		historyPreviewCollapsed === undefined ? true : !historyPreviewCollapsed,
@@ -156,7 +156,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 		// Send message to extension to persist the new collapsed state
 		vscode.postMessage({ type: "setHistoryPreviewCollapsed", bool: !newState })
 	}, [isExpanded])
-	// kilocode_change end
+	// novacode_change end
 
 	const latestTodos = useMemo(() => {
 		// First check if we have initial todos from the state (for new subtasks)
@@ -177,7 +177,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 	const modifiedMessages = useMemo(() => combineApiRequests(combineCommandSequences(messages.slice(1))), [messages])
 
 	// Has to be after api_req_finished are all reduced into api_req_started messages.
-	// kilocode_change start
+	// novacode_change start
 	const apiMetrics = useMemo(() => {
 		const metrics = getApiMetrics(modifiedMessages)
 		// use cumulative cost from backend if available, otherwise fall back to calculated cost
@@ -189,7 +189,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 		}
 		return metrics
 	}, [modifiedMessages, currentTaskCumulativeCost])
-	// kilocode_change end
+	// novacode_change end
 
 	const [inputValue, setInputValue] = useState("")
 	const inputValueRef = useRef(inputValue)
@@ -229,7 +229,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 	const autoApproveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 	const userRespondedRef = useRef<boolean>(false)
 	const [currentFollowUpTs, setCurrentFollowUpTs] = useState<number | null>(null)
-	// kilocode_change: keep map for `taskWithAggregatedCosts` updates (even if not currently displayed)
+	// novacode_change: keep map for `taskWithAggregatedCosts` updates (even if not currently displayed)
 	const [_aggregatedCostsMap, setAggregatedCostsMap] = useState<
 		Map<
 			string,
@@ -241,17 +241,17 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 		>
 	>(new Map())
 
-	// kilocode_change start: Review mode state
+	// novacode_change start: Review mode state
 	const [showReviewScopeSelector, setShowReviewScopeSelector] = useState(false)
 	const [reviewScopeInfo, setReviewScopeInfo] = useState<ReviewScopeInfo | null>(null)
-	// kilocode_change end: Review mode state
+	// novacode_change end: Review mode state
 
 	const clineAskRef = useRef(clineAsk)
 	useEffect(() => {
 		clineAskRef.current = clineAsk
 	}, [clineAsk])
 
-	// kilocode_change start: unused
+	// novacode_change start: unused
 	// const {
 	// 	isOpen: isUpsellOpen,
 	// 	openUpsell,
@@ -260,7 +260,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 	// } = useCloudUpsell({
 	// 	autoOpenOnAuth: false,
 	// })
-	// kilocode_change end
+	// novacode_change end
 
 	// Keep inputValueRef in sync with inputValue state
 	useEffect(() => {
@@ -472,7 +472,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 							setSecondaryButtonText(undefined)
 							setDidClickCancel(false)
 							break
-						// kilocode_change begin
+						// novacode_change begin
 						case "report_bug":
 							if (!isPartial) {
 								playSound("notification")
@@ -486,10 +486,10 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 							setSendingDisabled(isPartial)
 							setClineAsk("condense")
 							setEnableButtons(!isPartial)
-							setPrimaryButtonText(t("kilocode:chat.condense.condenseConversation"))
+							setPrimaryButtonText(t("novacode:chat.condense.condenseConversation"))
 							setSecondaryButtonText(undefined)
 							break
-						// kilocode_change end
+						// novacode_change end
 					}
 					break
 				case "say":
@@ -842,14 +842,14 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 				case "command_output":
 					vscode.postMessage({ type: "terminalOperation", terminalOperation: "continue" })
 					break
-				// kilocode_change start
+				// novacode_change start
 				case "condense":
 					vscode.postMessage({
 						type: "condense",
 						text: lastMessage?.text,
 					})
 					break
-				// kilocode_change end
+				// novacode_change end
 			}
 
 			setSendingDisabled(true)
@@ -858,7 +858,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 			setPrimaryButtonText(undefined)
 			setSecondaryButtonText(undefined)
 		},
-		[clineAsk, startNewTask, currentTaskItem?.parentTaskId, lastMessage?.text], // kilocode_change: add lastMessage?.text
+		[clineAsk, startNewTask, currentTaskItem?.parentTaskId, lastMessage?.text], // novacode_change: add lastMessage?.text
 	)
 
 	const handleSecondaryButtonClick = useCallback(
@@ -911,7 +911,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 		[clineAsk, startNewTask, isStreaming],
 	)
 
-	const handleTaskCloseButtonClick = useCallback(() => startNewTask(), [startNewTask]) // kilocode_change
+	const handleTaskCloseButtonClick = useCallback(() => startNewTask(), [startNewTask]) // novacode_change
 
 	const { info: model } = useSelectedModel(apiConfiguration)
 
@@ -1002,12 +1002,12 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 						)
 					}
 					break
-				// kilocode_change start: Review mode
+				// novacode_change start: Review mode
 				case "askReviewScope":
 					setReviewScopeInfo(message.reviewScopeInfo ?? null)
 					setShowReviewScopeSelector(true)
 					break
-				// kilocode_change end: Review mode
+				// novacode_change end: Review mode
 			}
 			// textAreaRef.current is not explicitly required here since React
 			// guarantees that ref will be stable across re-renders, and we're
@@ -1160,7 +1160,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 				typeof lastMessage.text === "string" && // has text (must be string for startsWith)
 				(lastMessage.say === "text" || lastMessage.say === "completion_result") && // is a text message
 				!lastMessage.partial && // not a partial message
-				typeof lastMessage.text === "string" && // kilocode_change: is a string
+				typeof lastMessage.text === "string" && // novacode_change: is a string
 				!lastMessage.text.startsWith("{") // not a json object
 			) {
 				let text = lastMessage?.text || ""
@@ -1260,7 +1260,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 		})
 	}, [])
 
-	// kilocode_change start
+	// novacode_change start
 	// Animated "blink" to highlight a specific message. Used by the TaskTimeline
 	const highlightClearTimerRef = useRef<NodeJS.Timeout | undefined>()
 	const [highlightedMessageIndex, setHighlightedMessageIndex] = useState<number | null>(null)
@@ -1286,7 +1286,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 			}
 		}
 	}, [])
-	// kilocode_change end
+	// novacode_change end
 
 	const handleSetExpandedRow = useCallback(
 		(ts: number, expand?: boolean) => {
@@ -1347,7 +1347,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 		return () => el.removeEventListener("scroll", onScroll)
 	}, [])
 
-	//kilocode_change
+	//novacode_change
 	// Effect to clear checkpoint warning when messages appear or task changes
 	useEffect(() => {
 		if (isHidden || !task) {
@@ -1380,7 +1380,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 				markFollowUpAsAnswered()
 			}
 
-			// kilocode_change start - Handle review mode suggestions from completion.
+			// novacode_change start - Handle review mode suggestions from completion.
 			// Close the pending completion_result ask, then switch to review mode
 			// with a reviewScope so the backend skips the scope dialog and starts
 			// the review directly (via handleReviewScopeSelected). The mode switch
@@ -1399,7 +1399,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 				}
 				return
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			// Check if we need to switch modes
 			if (suggestion.mode) {
@@ -1486,8 +1486,8 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 					isStreaming={isStreaming}
 					onSuggestionClick={handleSuggestionClickInRow} // This was already stabilized
 					onBatchFileResponse={handleBatchFileResponse}
-					highlighted={highlightedMessageIndex === index} // kilocode_change: add highlight prop
-					enableCheckpoints={enableCheckpoints} // kilocode_change
+					highlighted={highlightedMessageIndex === index} // novacode_change: add highlight prop
+					enableCheckpoints={enableCheckpoints} // novacode_change
 					isFollowUpAnswered={messageOrGroup.isAnswered === true || messageOrGroup.ts === currentFollowUpTs}
 					isFollowUpAutoApprovalPaused={isFollowUpAutoApprovalPaused}
 					editable={
@@ -1518,8 +1518,8 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 			isStreaming,
 			handleSuggestionClickInRow,
 			handleBatchFileResponse,
-			highlightedMessageIndex, // kilocode_change: add highlightedMessageIndex
-			enableCheckpoints, // kilocode_change
+			highlightedMessageIndex, // novacode_change: add highlightedMessageIndex
+			enableCheckpoints, // novacode_change
 			currentFollowUpTs,
 			isFollowUpAutoApprovalPaused,
 			enableButtons,
@@ -1567,12 +1567,12 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 
 	useEffect(() => {
 		window.addEventListener("keydown", handleKeyDown)
-		window.addEventListener("wheel", handleWheel, { passive: true }) // kilocode_change
+		window.addEventListener("wheel", handleWheel, { passive: true }) // novacode_change
 		return () => {
 			window.removeEventListener("keydown", handleKeyDown)
-			window.removeEventListener("wheel", handleWheel) // kilocode_change
+			window.removeEventListener("wheel", handleWheel) // novacode_change
 		}
-	}, [handleKeyDown, handleWheel]) // kilocode_change
+	}, [handleKeyDown, handleWheel]) // novacode_change
 
 	useImperativeHandle(ref, () => ({
 		acceptInput: () => {
@@ -1582,13 +1582,13 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 				handleSendMessage(inputValue, selectedImages)
 			}
 		},
-		// kilocode_change start
+		// novacode_change start
 		focusInput: () => {
 			if (textAreaRef.current) {
 				textAreaRef.current.focus()
 			}
 		},
-		// kilocode_change end
+		// novacode_change end
 	}))
 
 	const handleCondenseContext = (taskId: string) => {
@@ -1602,7 +1602,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 
 	const areButtonsVisible = showScrollToBottom || primaryButtonText || secondaryButtonText || isStreaming
 
-	const showTelemetryBanner = telemetrySetting === "unset" // kilocode_change
+	const showTelemetryBanner = telemetrySetting === "unset" // novacode_change
 
 	return (
 		<div
@@ -1610,7 +1610,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 			className={
 				isHidden
 					? "hidden"
-					: "fixed top-0 left-0 right-0 max-w-5xl mx-auto bottom-0 flex flex-col overflow-hidden" // kilocode_change; add max-w-5xl
+					: "fixed top-0 left-0 right-0 max-w-5xl mx-auto bottom-0 flex flex-col overflow-hidden" // novacode_change; add max-w-5xl
 			}>
 			{(showAnnouncement || showAnnouncementModal) && (
 				<Announcement
@@ -1626,7 +1626,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 			)}
 			{task ? (
 				<>
-					{/* kilocode_change start */}
+					{/* novacode_change start */}
 					{/* <TaskHeader
 						task={task}
 						tokensIn={apiMetrics.totalTokensIn}
@@ -1659,7 +1659,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 						handleCondenseContext={handleCondenseContext}
 						todos={latestTodos}
 					/> */}
-					<KiloTaskHeader
+					<NovaTaskHeader
 						task={task}
 						tokensIn={apiMetrics.totalTokensIn}
 						tokensOut={apiMetrics.totalTokensOut}
@@ -1675,7 +1675,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 						isTaskActive={sendingDisabled}
 						todos={latestTodos}
 					/>
-					{/* kilocode_change start */}
+					{/* novacode_change start */}
 
 					{hasSystemPromptOverride && (
 						<div className="px-3">
@@ -1707,11 +1707,11 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 						)}
 						{!showTelemetryBanner && <OrganizationSelector className="w-40 shrink-0 ml-auto" />}
 					</div>
-					{/* kilocode_change start: changed the classes to support notifications */}
+					{/* novacode_change start: changed the classes to support notifications */}
 					<div className="w-full h-full flex flex-col gap-4 px-3.5 transition-all duration-300">
-						{/* kilocode_change end */}
+						{/* novacode_change end */}
 						{/* Version indicator in top-right corner - only on welcome screen */}
-						{/* kilocode_change: do not show */}
+						{/* novacode_change: do not show */}
 						{/* <VersionIndicator
 							onClick={() => setShowAnnouncementModal(true)}
 							className="absolute top-2 right-3 z-10"
@@ -1719,16 +1719,16 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 
 						<RooHero /> */}
 
-						{/* kilocode_change start: KilocodeNotifications + Layout fixes */}
+						{/* novacode_change start: NovacodeNotifications + Layout fixes */}
 						{showTelemetryBanner && <TelemetryBanner />}
 						{!showTelemetryBanner && (
 							<div className={taskHistoryFullLength === 0 ? "mt-10" : undefined}>
-								<KilocodeNotifications />
+								<NovacodeNotifications />
 							</div>
 						)}
 						<div className="flex flex-grow flex-col justify-center gap-2">
-							<KiloLogo />
-							{/* kilocode_change end */}
+							<NovaLogo />
+							{/* novacode_change end */}
 							<p className="text-vscode-editor-foreground leading-normal font-vscode-font-family text-center text-balance max-w-[380px] mx-auto my-0">
 								<Trans
 									i18nKey="chat:about"
@@ -1744,17 +1744,17 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 									}}
 								/>
 							</p>
-							<IdeaSuggestionsBox /> {/* kilocode_change */}
+							<IdeaSuggestionsBox /> {/* novacode_change */}
 							{/*<div className="mb-2.5">
 								{cloudIsAuthenticated || taskHistory.length < 4 ? <RooTips /> : <RooCloudCTA />}
-							</div> kilocode_change: do not show */}
+							</div> novacode_change: do not show */}
 							{/* Show the task history preview if expanded and tasks exist */}
 							{taskHistoryFullLength > 0 && isExpanded && (
 								<HistoryPreview taskHistoryVersion={taskHistoryVersion} />
 							)}
-							{/* kilocode_change start: KilocodeNotifications + Layout fixes */}
+							{/* novacode_change start: NovacodeNotifications + Layout fixes */}
 						</div>
-						{/* kilocode_change end */}
+						{/* novacode_change end */}
 					</div>
 				</div>
 			)}
@@ -1774,7 +1774,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 			//    This ensures it takes its natural height when there's space
 			//    but becomes scrollable when the viewport is too small
 			*/}
-			{/* kilocode_change: added settings toggle for this */}
+			{/* novacode_change: added settings toggle for this */}
 			{!task && showAutoApproveMenu && (
 				<div className="mb-1 flex-initial min-h-0">
 					<AutoApproveMenu />
@@ -1789,7 +1789,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 								ref={virtuosoRef}
 								key={task.ts}
 								className="scrollable grow overflow-y-scroll mb-1"
-								increaseViewportBy={{ top: 400, bottom: 400 }} // kilocode_change: use more modest numbers to see if they reduce gray screen incidence
+								increaseViewportBy={{ top: 400, bottom: 400 }} // novacode_change: use more modest numbers to see if they reduce gray screen incidence
 								data={groupedMessages}
 								itemContent={itemContent}
 								followOutput={(isAtBottom: boolean) => isAtBottom || stickyFollowRef.current}
@@ -1804,7 +1804,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 						</div>
 					</div>
 					<div className={`flex-initial min-h-0 ${!areButtonsVisible ? "mb-1" : ""}`}>
-						{/* kilocode_change: added settings toggle for this */}
+						{/* novacode_change: added settings toggle for this */}
 						{showAutoApproveMenu && <AutoApproveMenu />}
 					</div>
 					{areButtonsVisible && (
@@ -1812,7 +1812,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 							className={`flex h-9 items-center mb-1 px-[15px] ${
 								showScrollToBottom
 									? "opacity-100"
-									: enableButtons || (isStreaming && !didClickCancel) // kilocode_change
+									: enableButtons || (isStreaming && !didClickCancel) // novacode_change
 										? "opacity-100"
 										: "opacity-50"
 							}`}>
@@ -1864,7 +1864,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 											</Button>
 										</StandardTooltip>
 									)}
-									{/* kilocode_change start */}
+									{/* novacode_change start */}
 									{(secondaryButtonText || isStreaming) && (
 										<StandardTooltip
 											content={
@@ -1888,7 +1888,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 											</Button>
 										</StandardTooltip>
 									)}
-									{/* kilocode_change end */}
+									{/* novacode_change end */}
 								</>
 							)}
 						</div>
@@ -1932,24 +1932,24 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 				mode={mode}
 				setMode={setMode}
 				modeShortcutText={modeShortcutText}
-				sendMessageOnEnter={sendMessageOnEnter} // kilocode_change
+				sendMessageOnEnter={sendMessageOnEnter} // novacode_change
 				showBrowserDockToggle={showBrowserDockToggle}
 			/>
-			{/* kilocode_change: added settings toggle the profile and model selection */}
+			{/* novacode_change: added settings toggle the profile and model selection */}
 			<BottomControls showApiConfig />
-			{/* kilocode_change: end */}
+			{/* novacode_change: end */}
 
-			{/* kilocode_change: disable {isProfileDisabled && (
+			{/* novacode_change: disable {isProfileDisabled && (
 				<div className="px-3">
 					<ProfileViolationWarning />
 				</div>
 			)} */}
 
 			<div id="roo-portal" />
-			{/* kilocode_change: disable  */}
+			{/* novacode_change: disable  */}
 			{/* <CloudUpsellDialog open={isUpsellOpen} onOpenChange={closeUpsell} onConnect={handleConnect} /> */}
 
-			{/* kilocode_change: Review mode scope selector */}
+			{/* novacode_change: Review mode scope selector */}
 			<ReviewScopeSelector
 				open={showReviewScopeSelector}
 				onOpenChange={setShowReviewScopeSelector}

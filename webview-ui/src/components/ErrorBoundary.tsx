@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+﻿import React, { Component } from "react"
 import { telemetryClient } from "@src/utils/TelemetryClient"
 import { withTranslation, WithTranslation } from "react-i18next"
 import { enhanceErrorWithSourceMaps } from "@src/utils/sourceMapUtils"
@@ -71,7 +71,7 @@ class ErrorBoundary extends Component<ErrorProps, ErrorState> {
 				</h2>
 				<p className="mb-4">
 					{t("errorBoundary.reportText")}{" "}
-					<a href="https://github.com/Kilo-Org/kilocode/issues" target="_blank" rel="noreferrer">
+					<a href="https://github.com/Nova-Org/nova/issues" target="_blank" rel="noreferrer">
 						{t("errorBoundary.githubText")}
 					</a>
 				</p>

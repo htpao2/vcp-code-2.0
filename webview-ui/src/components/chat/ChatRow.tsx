@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from "react"
+﻿import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useSize } from "react-use"
 import { useTranslation, Trans } from "react-i18next"
 import deepEqual from "fast-deep-equal"
@@ -71,24 +71,24 @@ import {
 	Repeat2,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { SeeNewChangesButtons } from "./kilocode/SeeNewChangesButtons"
+import { SeeNewChangesButtons } from "./nova/SeeNewChangesButtons"
 import { PathTooltip } from "../ui/PathTooltip"
 import { OpenMarkdownPreviewButton } from "./OpenMarkdownPreviewButton"
 
-// kilocode_change start
-import { LowCreditWarning } from "../kilocode/chat/LowCreditWarning"
-import { NewTaskPreview } from "../kilocode/chat/NewTaskPreview"
-import { KiloChatRowGutterBar } from "../kilocode/chat/KiloChatRowGutterBar"
+// novacode_change start
+import { LowCreditWarning } from "../nova/chat/LowCreditWarning"
+import { NewTaskPreview } from "../nova/chat/NewTaskPreview"
+import { NovaChatRowGutterBar } from "../nova/chat/NovaChatRowGutterBar"
 import { StandardTooltip } from "../ui"
-import { FastApplyChatDisplay } from "./kilocode/FastApplyChatDisplay"
-import { InvalidModelWarning } from "../kilocode/chat/InvalidModelWarning"
-import { UnauthorizedWarning } from "../kilocode/chat/UnauthorizedWarning"
+import { FastApplyChatDisplay } from "./nova/FastApplyChatDisplay"
+import { InvalidModelWarning } from "../nova/chat/InvalidModelWarning"
+import { UnauthorizedWarning } from "../nova/chat/UnauthorizedWarning"
 import { formatFileSize } from "@/lib/formatting-utils"
 import ChatTimestamps from "./ChatTimestamps"
 import { removeLeadingNonAlphanumeric } from "@/utils/removeLeadingNonAlphanumeric"
-import { KILOCODE_TOKEN_REQUIRED_ERROR } from "@roo/kilocode/errorUtils"
-import { PromotionWarning } from "../kilocode/chat/PromotionWarning"
-// kilocode_change end
+import { NOVACODE_TOKEN_REQUIRED_ERROR } from "@roo/nova/errorUtils"
+import { PromotionWarning } from "../nova/chat/PromotionWarning"
+// novacode_change end
 
 // Helper function to get previous todos before a specific message
 function getPreviousTodos(messages: ClineMessage[], currentMessageTs: number): any[] {
@@ -133,8 +133,8 @@ interface ChatRowProps {
 	onHeightChange: (isTaller: boolean) => void
 	onSuggestionClick?: (suggestion: SuggestionItem, event?: React.MouseEvent) => void
 	onBatchFileResponse?: (response: { [key: string]: boolean }) => void
-	highlighted?: boolean // kilocode_change: Add highlighted prop
-	enableCheckpoints?: boolean // kilocode_change
+	highlighted?: boolean // novacode_change: Add highlighted prop
+	enableCheckpoints?: boolean // novacode_change
 	onFollowUpUnmount?: () => void
 	isFollowUpAnswered?: boolean
 	isFollowUpAutoApprovalPaused?: boolean
@@ -147,8 +147,8 @@ interface ChatRowContentProps extends Omit<ChatRowProps, "onHeightChange"> {}
 
 const ChatRow = memo(
 	(props: ChatRowProps) => {
-		const { highlighted } = props // kilocode_change: Add highlighted prop
-		const { showTaskTimeline } = useExtensionState() // kilocode_change: Used by KiloChatRowGutterBar
+		const { highlighted } = props // novacode_change: Add highlighted prop
+		const { showTaskTimeline } = useExtensionState() // novacode_change: Used by NovaChatRowGutterBar
 		const { isLast, onHeightChange, message } = props
 		// Store the previous height to compare with the current height
 		// This allows us to detect changes without causing re-renders
@@ -156,11 +156,11 @@ const ChatRow = memo(
 
 		const [chatrow, { height }] = useSize(
 			<div
-				// kilocode_change: add highlighted className
+				// novacode_change: add highlighted className
 				className={cn(
 					`px-[15px] py-[10px] pr-[6px] relative ${highlighted ? "animate-message-highlight" : ""}`,
 				)}>
-				{showTaskTimeline && <KiloChatRowGutterBar message={message} />}
+				{showTaskTimeline && <NovaChatRowGutterBar message={message} />}
 				<ChatRowContent {...props} />
 			</div>,
 		)
@@ -197,13 +197,13 @@ export const ChatRowContent = ({
 	onSuggestionClick,
 	onFollowUpUnmount,
 	onBatchFileResponse,
-	enableCheckpoints, // kilocode_change
+	enableCheckpoints, // novacode_change
 	isFollowUpAnswered,
 	isFollowUpAutoApprovalPaused,
 }: ChatRowContentProps) => {
 	const { t, i18n } = useTranslation()
 
-	// kilocode_change: add showTimestamps
+	// novacode_change: add showTimestamps
 	const { mcpServers, alwaysAllowMcp, currentCheckpoint, mode, apiConfiguration, clineMessages, showTimestamps } =
 		useExtensionState()
 	const { info: model } = useSelectedModel(apiConfiguration)
@@ -265,7 +265,7 @@ export const ChatRowContent = ({
 		vscode.postMessage({ type: "selectImages", context: "edit", messageTs: message.ts })
 	}, [message.ts])
 
-	// kilocode_change: usageMissing, inferenceProvider
+	// novacode_change: usageMissing, inferenceProvider
 	const [cost, usageMissing, inferenceProvider, apiReqCancelReason, apiReqStreamingFailedMessage] = useMemo(() => {
 		if (message.text !== null && message.text !== undefined && message.say === "api_req_started") {
 			const info = safeJsonParse<ClineApiReqInfo>(message.text)
@@ -281,7 +281,7 @@ export const ChatRowContent = ({
 		return [undefined, undefined, undefined]
 	}, [message.text, message.say])
 
-	// kilocode_change start: hide cost display check
+	// novacode_change start: hide cost display check
 	const { hideCostBelowThreshold } = useExtensionState()
 	const shouldShowCost = useMemo(() => {
 		if (cost === undefined || cost === null || cost <= 0) return false
@@ -289,7 +289,7 @@ export const ChatRowContent = ({
 		const threshold = hideCostBelowThreshold ?? 0
 		return cost >= threshold
 	}, [cost, isExpanded, hideCostBelowThreshold])
-	// kilocode_change end: hide cost display check
+	// novacode_change end: hide cost display check
 
 	// When resuming task, last wont be api_req_failed but a resume_task
 	// message, so api_req_started will show loading spinner. That's why we just
@@ -400,11 +400,11 @@ export const ChatRowContent = ({
 							</span>
 						)
 					) : cost !== null && cost !== undefined ? (
-						// kilocode_change start: tooltip
+						// novacode_change start: tooltip
 						<StandardTooltip content={inferenceProvider && `Inference Provider: ${inferenceProvider}`}>
 							<span style={{ color: normalColor }}>{t("chat:apiRequest.title")}</span>
 						</StandardTooltip>
-					) : // kilocode_change end
+					) : // novacode_change end
 					apiRequestFailedMessage ? (
 						<span style={{ color: errorColor }}>{t("chat:apiRequest.failed")}</span>
 					) : (
@@ -428,7 +428,7 @@ export const ChatRowContent = ({
 		cost,
 		apiRequestFailedMessage,
 		t,
-		inferenceProvider, // kilocode_change
+		inferenceProvider, // novacode_change
 		isLast,
 	])
 
@@ -436,7 +436,7 @@ export const ChatRowContent = ({
 		display: "flex",
 		alignItems: "center",
 		gap: "10px",
-		marginBottom: "4px", // kilocode_change
+		marginBottom: "4px", // novacode_change
 		wordBreak: "break-word",
 	}
 
@@ -458,7 +458,7 @@ export const ChatRowContent = ({
 		return null
 	}, [message.type, message.ask, message.partial, message.text])
 
-	// kilocode_change start - Parse completion suggestions from completion_result ask
+	// novacode_change start - Parse completion suggestions from completion_result ask
 	const completionSuggestions = useMemo(() => {
 		if (message.type === "ask" && message.ask === "completion_result" && !message.partial && message.text) {
 			const parsed = safeJsonParse<{ suggest?: SuggestionItem[] }>(message.text)
@@ -466,7 +466,7 @@ export const ChatRowContent = ({
 		}
 		return undefined
 	}, [message.type, message.ask, message.partial, message.text])
-	// kilocode_change end
+	// novacode_change end
 
 	if (tool) {
 		const toolIcon = (name: string) => (
@@ -525,9 +525,9 @@ export const ChatRowContent = ({
 								diffStats={tool.diffStats}
 							/>
 							{
-								// kilocode_change start
+								// novacode_change start
 								tool.fastApplyResult && <FastApplyChatDisplay fastApplyResult={tool.fastApplyResult} />
-								// kilocode_change end
+								// novacode_change end
 							}
 						</div>
 					</>
@@ -663,14 +663,14 @@ export const ChatRowContent = ({
 								diffStats={tool.diffStats}
 							/>
 							{
-								// kilocode_change start
+								// novacode_change start
 								tool.fastApplyResult && <FastApplyChatDisplay fastApplyResult={tool.fastApplyResult} />
-								// kilocode_change end
+								// novacode_change end
 							}
 						</div>
 					</>
 				)
-			// kilocode_change start
+			// novacode_change start
 			case "deleteFile":
 				return (
 					<>
@@ -716,7 +716,7 @@ export const ChatRowContent = ({
 						</div>
 					</>
 				)
-			// kilocode_change end
+			// novacode_change end
 			case "readFile":
 				// Check if this is a batch file permission request
 				const isBatchRequest = message.type === "ask" && tool.batchFiles && Array.isArray(tool.batchFiles)
@@ -1204,12 +1204,12 @@ export const ChatRowContent = ({
 								}}>
 								<div style={{ display: "flex", alignItems: "center", gap: "10px", flexGrow: 1 }}>
 									{icon}
-									{/* kilocode_change start */}
+									{/* novacode_change start */}
 									<div style={{ display: "flex", alignItems: "center", gap: "8px", flexGrow: 1 }}>
 										{title}
 										{showTimestamps && <ChatTimestamps ts={message.ts} />}
 									</div>
-									{/* kilocode_change end */}
+									{/* novacode_change end */}
 								</div>
 								<div
 									className="text-xs text-vscode-dropdown-foreground border-vscode-dropdown-border/50 border px-1.5 py-0.5 rounded-lg"
@@ -1217,16 +1217,16 @@ export const ChatRowContent = ({
 									${Number(cost || 0)?.toFixed(4)}
 								</div>
 								{
-									// kilocode_change start
+									// novacode_change start
 									!cost && usageMissing && (
-										<StandardTooltip content={t("kilocode:pricing.costUnknownDescription")}>
+										<StandardTooltip content={t("novacode:pricing.costUnknownDescription")}>
 											<div className="flex items-center text-xs text-vscode-dropdown-foreground border-vscode-dropdown-border/50 border px-1.5 py-0.5 rounded-lg whitespace-nowrap">
 												<span className="codicon codicon-warning pr-1"></span>
-												{t("kilocode:pricing.costUnknown")}
+												{t("novacode:pricing.costUnknown")}
 											</div>
 										</StandardTooltip>
 									)
-									// kilocode_change end
+									// novacode_change end
 								}
 							</div>
 							{(((cost === null || cost === undefined) && apiRequestFailedMessage) ||
@@ -1277,7 +1277,7 @@ export const ChatRowContent = ({
 							} else {
 								// Non-HTTP-status-code error message - store full text as errorDetails
 								body = t("chat:apiRequest.errorMessage.unknown")
-								docsURL = "https://kilo.ai/support"
+								docsURL = "https://nova.ai/support"
 							}
 						}
 
@@ -1370,10 +1370,10 @@ export const ChatRowContent = ({
 							<div
 								className={cn(
 									"ml-6 border rounded-sm whitespace-pre-wrap",
-									isEditing ? "overflow-visible" : "overflow-hidden", // kilocode_change
+									isEditing ? "overflow-visible" : "overflow-hidden", // novacode_change
 									isEditing
 										? "bg-vscode-editor-background text-vscode-editor-foreground"
-										: "cursor-text p-1 bg-vscode-editor-background text-vscode-editor-foreground border-vscode-editorGroup-border", // kilocode_change
+										: "cursor-text p-1 bg-vscode-editor-background text-vscode-editor-foreground border-vscode-editorGroup-border", // novacode_change
 								)}>
 								{isEditing ? (
 									<div className="flex flex-col gap-2">
@@ -1450,18 +1450,18 @@ export const ChatRowContent = ({
 						</div>
 					)
 				case "error":
-					// kilocode_change start: Show login button for KiloCode auth errors
-					const isKiloCodeAuthError =
-						apiConfiguration?.apiProvider === "kilocode" &&
-						message.text?.includes(KILOCODE_TOKEN_REQUIRED_ERROR)
+					// novacode_change start: Show login button for NovaCode auth errors
+					const isNovaCodeAuthError =
+						apiConfiguration?.apiProvider === "novacode" &&
+						message.text?.includes(NOVACODE_TOKEN_REQUIRED_ERROR)
 					return (
 						<ErrorRow
 							type="error"
 							message={t("chat:error")}
 							errorDetails={message.text || undefined}
-							showLoginButton={isKiloCodeAuthError}
+							showLoginButton={isNovaCodeAuthError}
 							onLoginClick={
-								isKiloCodeAuthError
+								isNovaCodeAuthError
 									? () => {
 											vscode.postMessage({
 												type: "switchTab",
@@ -1473,7 +1473,7 @@ export const ChatRowContent = ({
 							}
 						/>
 					)
-					// kilocode_change end
+					// novacode_change end
 					// Check if this is a model response error based on marker strings from backend
 					const isNoToolsUsedError = message.text === "MODEL_NO_TOOLS_USED"
 					const isNoAssistantMessagesError = message.text === "MODEL_NO_ASSISTANT_MESSAGES"
@@ -1505,30 +1505,30 @@ export const ChatRowContent = ({
 						<ErrorRow type="error" message={message.text || t("chat:error")} errorDetails={message.text} />
 					)
 				case "completion_result":
-					const commitRange = message.metadata?.kiloCode?.commitRange
+					const commitRange = message.metadata?.novaCode?.commitRange
 					return (
 						<div className="group">
 							<div style={headerStyle}>
 								{icon}
-								{/* kilocode_change start */}
+								{/* novacode_change start */}
 								<div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
 									{title}
 									{showTimestamps && <ChatTimestamps ts={message.ts} />}
 									<OpenMarkdownPreviewButton markdown={message.text} />
 								</div>
-								{/* kilocode_change end */}
+								{/* novacode_change end */}
 							</div>
 							<div className="border-l border-green-600/30 ml-2 pl-4 pb-1">
 								<Markdown markdown={message.text} />
 							</div>
 							{
-								// kilocode_change start
+								// novacode_change start
 								!message.partial && enableCheckpoints !== false && commitRange ? (
 									<SeeNewChangesButtons commitRange={commitRange} />
 								) : (
 									<></>
 								)
-								// kilocode_change end
+								// novacode_change end
 							}
 						</div>
 					)
@@ -1687,7 +1687,7 @@ export const ChatRowContent = ({
 							<ImageBlock imageUri={imageInfo.imageUri} imagePath={imageInfo.imagePath} />
 						</div>
 					)
-				// kilocode_change start: upstream pr https://github.com/RooCodeInc/Roo-Code/pull/5452
+				// novacode_change start: upstream pr https://github.com/RooCodeInc/Roo-Code/pull/5452
 				case "browser_action":
 					return null
 				case "browser_action_result":
@@ -1721,19 +1721,19 @@ export const ChatRowContent = ({
 							</div>
 						</>
 					)
-				// kilocode_change end
+				// novacode_change end
 				default:
 					return (
 						<>
 							{title && (
 								<div style={headerStyle}>
 									{icon}
-									{/* kilocode_change start */}
+									{/* novacode_change start */}
 									<div style={{ display: "flex", alignItems: "center", gap: "8px", flexGrow: 1 }}>
 										{title}
 										{showTimestamps && <ChatTimestamps ts={message.ts} />}
 									</div>
-									{/* kilocode_change end */}
+									{/* novacode_change end */}
 								</div>
 							)}
 							<div style={{ paddingTop: 10 }}>
@@ -1815,7 +1815,7 @@ export const ChatRowContent = ({
 						</>
 					)
 				case "completion_result":
-					// kilocode_change start - Render completion suggestions when available
+					// novacode_change start - Render completion suggestions when available
 					if (completionSuggestions && completionSuggestions.length > 0) {
 						return (
 							<div className="flex flex-col gap-2 ml-6">
@@ -1827,13 +1827,13 @@ export const ChatRowContent = ({
 							</div>
 						)
 					}
-					// kilocode_change - Guard: don't render structured JSON payloads as markdown.
+					// novacode_change - Guard: don't render structured JSON payloads as markdown.
 					// If the text is valid JSON (i.e. our suggestion payload) but has no suggestions
 					// to display, suppress rendering rather than showing raw JSON.
 					if (message.text && safeJsonParse(message.text) !== undefined) {
 						return null
 					}
-					// kilocode_change end
+					// novacode_change end
 					if (message.text) {
 						return (
 							<div className="group">
@@ -1857,12 +1857,12 @@ export const ChatRowContent = ({
 							{title && (
 								<div style={headerStyle}>
 									{icon}
-									{/* kilocode_change start */}
+									{/* novacode_change start */}
 									<div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
 										{title}
 										{showTimestamps && <ChatTimestamps ts={message.ts} />}
 									</div>
-									{/* kilocode_change start */}
+									{/* novacode_change start */}
 								</div>
 							)}
 							<div className="flex flex-col gap-2 ml-6">
@@ -1881,7 +1881,7 @@ export const ChatRowContent = ({
 						</>
 					)
 
-				// kilocode_change begin
+				// novacode_change begin
 				case "condense":
 					return (
 						<>
@@ -1893,7 +1893,7 @@ export const ChatRowContent = ({
 										marginBottom: "-1.5px",
 									}}></span>
 								<span style={{ color: normalColor, fontWeight: "bold" }}>
-									{t("kilocode:chat.condense.wantsToCondense")}
+									{t("novacode:chat.condense.wantsToCondense")}
 								</span>
 							</div>
 							<NewTaskPreview context={message.text || ""} />
@@ -1923,13 +1923,13 @@ export const ChatRowContent = ({
 										marginBottom: "-1.5px",
 									}}></span>
 								<span style={{ color: normalColor, fontWeight: "bold" }}>
-									KiloCode wants to create a Github issue:
+									NovaCode wants to create a Github issue:
 								</span>
 							</div>
 							<ReportBugPreview data={message.text || ""} />
 						</>
 					)
-				// kilocode_change end
+				// novacode_change end
 				case "auto_approval_max_req_reached": {
 					return <AutoApprovedRequestLimitWarning message={message} />
 				}

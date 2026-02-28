@@ -1,4 +1,4 @@
-// kilocode_change - new file: Extract code identifiers from visible code for STT context
+// novacode_change - new file: Extract code identifiers from visible code for STT context
 import type { VisibleCodeContext } from "../../autocomplete/types"
 
 export interface CodeGlossary {
@@ -7,14 +7,14 @@ export interface CodeGlossary {
 
 /**
  * Core terms that should always be included in the glossary
- * These are Kilocode-specific or commonly spoken technical terms
+ * These are Novacode-specific or commonly spoken technical terms
  */
-const CORE_TERMS = ["Kilocode", "Kilo Code", "VSCode", "MCP"]
+const CORE_TERMS = ["Novacode", "Nova Code", "VSCode", "MCP"]
 
 /**
  * Extract code identifiers from visible editors
  * Uses regex-based extraction (fast, language-agnostic)
- * Always includes core Kilocode-related terms
+ * Always includes core Novacode-related terms
  */
 export function extractCodeGlossary(visibleCode: VisibleCodeContext): CodeGlossary {
 	const identifiers = new Set<string>()

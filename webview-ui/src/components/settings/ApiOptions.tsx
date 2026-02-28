@@ -2,16 +2,16 @@ import React, { memo, useCallback, useEffect, useMemo, useState } from "react"
 import { convertHeadersToObject } from "./utils/headers"
 import { useDebounce } from "react-use"
 import { VSCodeLink } from "@vscode/webview-ui-toolkit/react"
-// import { ExternalLinkIcon } from "@radix-ui/react-icons" // kilocode_change
+// import { ExternalLinkIcon } from "@radix-ui/react-icons" // novacode_change
 
 import {
 	type ProviderName,
 	type ProviderSettings,
 	DEFAULT_CONSECUTIVE_MISTAKE_LIMIT,
 	openRouterDefaultModelId,
-	zenmuxDefaultModelId, // kilocode_change
+	zenmuxDefaultModelId, // novacode_change
 	requestyDefaultModelId,
-	glamaDefaultModelId, // kilocode_change
+	glamaDefaultModelId, // novacode_change
 	unboundDefaultModelId,
 	litellmDefaultModelId,
 	openAiNativeDefaultModelId,
@@ -23,13 +23,13 @@ import {
 	geminiDefaultModelId,
 	deepSeekDefaultModelId,
 	moonshotDefaultModelId,
-	// kilocode_change start
+	// novacode_change start
 	apertisDefaultModelId,
 	syntheticDefaultModelId,
 	ovhCloudAiEndpointsDefaultModelId,
 	inceptionDefaultModelId,
 	MODEL_SELECTION_ENABLED,
-	// kilocode_change end
+	// novacode_change end
 	mistralDefaultModelId,
 	xaiDefaultModelId,
 	groqDefaultModelId,
@@ -49,8 +49,8 @@ import {
 	vercelAiGatewayDefaultModelId,
 	deepInfraDefaultModelId,
 	minimaxDefaultModelId,
-	nanoGptDefaultModelId, //kilocode_change
-	poeDefaultModelId, // kilocode_change
+	nanoGptDefaultModelId, //novacode_change
+	poeDefaultModelId, // novacode_change
 } from "@roo-code/types"
 
 import { vscode } from "@src/utils/vscode"
@@ -59,12 +59,12 @@ import { useAppTranslation } from "@src/i18n/TranslationContext"
 import { useRouterModels } from "@src/components/ui/hooks/useRouterModels"
 import { useSelectedModel } from "@src/components/ui/hooks/useSelectedModel"
 import { useExtensionState } from "@src/context/ExtensionStateContext"
-// kilocode_change start
+// novacode_change start
 //import {
 //	useOpenRouterModelProviders,
 //	OPENROUTER_DEFAULT_PROVIDER_NAME,
 //} from "@src/components/ui/hooks/useOpenRouterModelProviders"
-// kilocode_change start
+// novacode_change start
 import { filterModels } from "./utils/organizationFilters"
 import {
 	Select,
@@ -80,7 +80,7 @@ import {
 
 import {
 	Anthropic,
-	Apertis, // kilocode_change
+	Apertis, // novacode_change
 	Baseten,
 	Corethink,
 	Bedrock,
@@ -90,7 +90,7 @@ import {
 	DeepSeek,
 	Doubao,
 	Gemini,
-	Glama, // kilocode_change
+	Glama, // novacode_change
 	Groq,
 	HuggingFace,
 	IOIntelligence,
@@ -98,13 +98,13 @@ import {
 	LiteLLM,
 	Mistral,
 	Moonshot,
-	NanoGpt, // kilocode_change
+	NanoGpt, // novacode_change
 	Ollama,
 	OpenAI,
 	OpenAICompatible,
 	OpenAICodex,
 	OpenRouter,
-	ZenMux, // kilocode_change
+	ZenMux, // novacode_change
 	QwenCode,
 	Requesty,
 	Roo,
@@ -113,26 +113,26 @@ import {
 	Vertex,
 	VSCodeLM,
 	XAI,
-	// kilocode_change start
+	// novacode_change start
 	VirtualQuotaFallbackProvider,
 	Synthetic,
 	OvhCloudAiEndpoints,
 	Inception,
 	SapAiCore,
 	Aihubmix,
-	// kilocode_change end
+	// novacode_change end
 	ZAi,
 	Fireworks,
 	Featherless,
 	VercelAiGateway,
 	DeepInfra,
 	MiniMax,
-	Poe, // kilocode_change
+	Poe, // novacode_change
 } from "./providers"
 
 import { MODELS_BY_PROVIDER, PROVIDERS } from "./constants"
 import { inputEventTransform, noTransform } from "./transforms"
-// import { ModelPicker } from "./ModelPicker" // kilocode_change
+// import { ModelPicker } from "./ModelPicker" // novacode_change
 import { ModelInfoView } from "./ModelInfoView"
 import { ApiErrorMessage } from "./ApiErrorMessage"
 import { ThinkingBudget } from "./ThinkingBudget"
@@ -143,11 +143,11 @@ import { TemperatureControl } from "./TemperatureControl"
 import { RateLimitSecondsControl } from "./RateLimitSecondsControl"
 import { ConsecutiveMistakeLimitControl } from "./ConsecutiveMistakeLimitControl"
 import { BedrockCustomArn } from "./providers/BedrockCustomArn"
-import { KiloCode } from "../kilocode/settings/providers/KiloCode" // kilocode_change
+import { NovaCode as NovaCode } from "../nova/settings/providers/NovaCode" // novacode_change
 import { RooBalanceDisplay } from "./providers/RooBalanceDisplay"
 import { buildDocLink } from "@src/utils/docLinks"
-import { KiloProviderRouting, KiloProviderRoutingManagedByOrganization } from "./providers/KiloProviderRouting"
-import { RateLimitAfterControl } from "./RateLimitAfterSettings" // kilocode_change
+import { NovaProviderRouting, NovaProviderRoutingManagedByOrganization } from "./providers/NovaProviderRouting"
+import { RateLimitAfterControl } from "./RateLimitAfterSettings" // novacode_change
 import { BookOpenText } from "lucide-react"
 
 export interface ApiOptionsProps {
@@ -161,8 +161,8 @@ export interface ApiOptionsProps {
 	fromWelcomeView?: boolean
 	errorMessage: string | undefined
 	setErrorMessage: React.Dispatch<React.SetStateAction<string | undefined>>
-	hideKiloCodeButton?: boolean // kilocode_change
-	currentApiConfigName?: string // kilocode_change
+	hideNovaCodeButton?: boolean // novacode_change
+	currentApiConfigName?: string // novacode_change
 }
 
 const ApiOptions = ({
@@ -172,13 +172,14 @@ const ApiOptions = ({
 	fromWelcomeView,
 	errorMessage,
 	setErrorMessage,
-	hideKiloCodeButton = false,
-	currentApiConfigName, // kilocode_change
+	hideNovaCodeButton,
+	currentApiConfigName, // novacode_change
 }: ApiOptionsProps) => {
+	const resolvedHideNovaCodeButton = hideNovaCodeButton ?? false
 	const { t } = useAppTranslation()
 	const {
 		organizationAllowList,
-		kilocodeDefaultModel,
+		novacodeDefaultModel: novaDefaultModel,
 		cloudIsAuthenticated,
 		claudeCodeIsAuthenticated,
 		openAiCodexIsAuthenticated,
@@ -235,11 +236,47 @@ const ApiOptions = ({
 		info: selectedModelInfo,
 	} = useSelectedModel(apiConfiguration)
 
-	// kilocode_change start: queryKey, chutesApiKey, gemini
+	const createModelRequestMeta = useCallback((provider: string, providerUrl?: string) => {
+		const requestId = `model-request-${provider}-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
+		return { requestId, provider, providerUrl }
+	}, [])
+
+	const getProviderUrl = useCallback(
+		(provider: ProviderName): string | undefined => {
+			switch (provider) {
+				case "openai":
+				case "openai-responses":
+					return apiConfiguration?.openAiBaseUrl
+				case "ollama":
+					return apiConfiguration?.ollamaBaseUrl
+				case "lmstudio":
+					return apiConfiguration?.lmStudioBaseUrl
+				case "litellm":
+					return apiConfiguration?.litellmBaseUrl
+				case "deepinfra":
+					return apiConfiguration?.deepInfraBaseUrl
+				case "synthetic":
+				case "chutes":
+				case "poe":
+					return undefined
+				case "roo":
+					return process.env.ROO_CODE_PROVIDER_URL ?? "https://api.roocode.com/proxy"
+				case "vscode-lm":
+					return "vscode-lm://builtin"
+				default:
+					return undefined
+			}
+		},
+		[apiConfiguration],
+	)
+
+	// novacode_change start: queryKey, chutesApiKey, gemini
+	const novaOrganizationId = apiConfiguration?.novacodeOrganizationId ?? "personal"
 	const { data: routerModels, refetch: refetchRouterModels } = useRouterModels({
 		openRouterBaseUrl: apiConfiguration?.openRouterBaseUrl,
 		openRouterApiKey: apiConfiguration?.openRouterApiKey,
-		kilocodeOrganizationId: apiConfiguration?.kilocodeOrganizationId ?? "personal",
+		novaOrganizationId,
+		novacodeOrganizationId: novaOrganizationId,
 		deepInfraApiKey: apiConfiguration?.deepInfraApiKey,
 		geminiApiKey: apiConfiguration?.geminiApiKey,
 		googleGeminiBaseUrl: apiConfiguration?.googleGeminiBaseUrl,
@@ -261,7 +298,7 @@ const ApiOptions = ({
 	//			apiConfiguration.openRouterModelId in routerModels.openrouter,
 	//	},
 	//)
-	// kilocode_change end
+	// novacode_change end
 
 	// Update `apiModelId` whenever `selectedModelId` changes.
 	useEffect(() => {
@@ -278,14 +315,19 @@ const ApiOptions = ({
 		() => {
 			if (
 				selectedProvider === "openai" ||
-				selectedProvider === "openai-responses" // kilocode_change
+				selectedProvider === "openai-responses" // novacode_change
 			) {
 				// Use our custom headers state to build the headers object.
 				const headerObject = convertHeadersToObject(customHeaders)
+				const requestMeta = createModelRequestMeta(selectedProvider, getProviderUrl(selectedProvider))
 
 				vscode.postMessage({
 					type: "requestOpenAiModels",
+					requestId: requestMeta.requestId,
 					values: {
+						provider: requestMeta.provider,
+						requestId: requestMeta.requestId,
+						providerUrl: requestMeta.providerUrl,
 						baseUrl: apiConfiguration?.openAiBaseUrl,
 						apiKey: apiConfiguration?.openAiApiKey,
 						customHeaders: {}, // Reserved for any additional headers.
@@ -293,20 +335,56 @@ const ApiOptions = ({
 					},
 				})
 			} else if (selectedProvider === "ollama") {
-				vscode.postMessage({ type: "requestOllamaModels" })
+				const requestMeta = createModelRequestMeta(selectedProvider, getProviderUrl(selectedProvider))
+				vscode.postMessage({
+					type: "requestOllamaModels",
+					requestId: requestMeta.requestId,
+					values: {
+						provider: requestMeta.provider,
+						requestId: requestMeta.requestId,
+						providerUrl: requestMeta.providerUrl,
+					},
+				})
 			} else if (selectedProvider === "lmstudio") {
-				vscode.postMessage({ type: "requestLmStudioModels" })
+				const requestMeta = createModelRequestMeta(selectedProvider, getProviderUrl(selectedProvider))
+				vscode.postMessage({
+					type: "requestLmStudioModels",
+					requestId: requestMeta.requestId,
+					values: {
+						provider: requestMeta.provider,
+						requestId: requestMeta.requestId,
+						providerUrl: requestMeta.providerUrl,
+					},
+				})
 			} else if (selectedProvider === "vscode-lm") {
-				vscode.postMessage({ type: "requestVsCodeLmModels" })
+				const requestMeta = createModelRequestMeta(selectedProvider, getProviderUrl(selectedProvider))
+				vscode.postMessage({
+					type: "requestVsCodeLmModels",
+					requestId: requestMeta.requestId,
+					values: {
+						provider: requestMeta.provider,
+						requestId: requestMeta.requestId,
+						providerUrl: requestMeta.providerUrl,
+					},
+				})
 			} else if (
 				selectedProvider === "litellm" ||
 				selectedProvider === "deepinfra" ||
-				selectedProvider === "chutes" || // kilocode_change
-				selectedProvider === "synthetic" || // kilocode_change
-				selectedProvider === "poe" || // kilocode_change
+				selectedProvider === "chutes" || // novacode_change
+				selectedProvider === "synthetic" || // novacode_change
+				selectedProvider === "poe" || // novacode_change
 				selectedProvider === "roo"
 			) {
-				vscode.postMessage({ type: "requestRouterModels" })
+				const requestMeta = createModelRequestMeta(selectedProvider, getProviderUrl(selectedProvider))
+				vscode.postMessage({
+					type: "requestRouterModels",
+					requestId: requestMeta.requestId,
+					values: {
+						provider: selectedProvider,
+						requestId: requestMeta.requestId,
+						providerUrl: requestMeta.providerUrl,
+					},
+				})
 			}
 		},
 		250,
@@ -321,9 +399,11 @@ const ApiOptions = ({
 			apiConfiguration?.litellmApiKey,
 			apiConfiguration?.deepInfraApiKey,
 			apiConfiguration?.deepInfraBaseUrl,
-			apiConfiguration?.chutesApiKey, // kilocode_change
-			apiConfiguration?.ovhCloudAiEndpointsBaseUrl, // kilocode_change
+			apiConfiguration?.chutesApiKey, // novacode_change
+			apiConfiguration?.ovhCloudAiEndpointsBaseUrl, // novacode_change
 			customHeaders,
+			createModelRequestMeta,
+			getProviderUrl,
 		],
 	)
 
@@ -342,7 +422,7 @@ const ApiOptions = ({
 		if (!models) return []
 
 		const filteredModels = filterModels(models, selectedProvider, organizationAllowList)
-		// kilocode_change start
+		// novacode_change start
 		const modelsAllowedByEndpoint =
 			selectedProvider === "moonshot" && filteredModels
 				? Object.fromEntries(
@@ -353,7 +433,7 @@ const ApiOptions = ({
 						),
 					)
 				: filteredModels
-		// kilocode_change end
+		// novacode_change end
 
 		// Include the currently selected model even if deprecated (so users can see what they have selected)
 		// But filter out other deprecated models from being newly selectable
@@ -437,11 +517,11 @@ const ApiOptions = ({
 				deepinfra: { field: "deepInfraModelId", default: deepInfraDefaultModelId },
 				openrouter: { field: "openRouterModelId", default: openRouterDefaultModelId },
 				zenmux: { field: "zenmuxModelId", default: zenmuxDefaultModelId },
-				glama: { field: "glamaModelId", default: glamaDefaultModelId }, // kilocode_change
+				glama: { field: "glamaModelId", default: glamaDefaultModelId }, // novacode_change
 				unbound: { field: "unboundModelId", default: unboundDefaultModelId },
 				requesty: { field: "requestyModelId", default: requestyDefaultModelId },
 				litellm: { field: "litellmModelId", default: litellmDefaultModelId },
-				"nano-gpt": { field: "nanoGptModelId", default: nanoGptDefaultModelId }, // kilocode_change
+				"nano-gpt": { field: "nanoGptModelId", default: nanoGptDefaultModelId }, // novacode_change
 				anthropic: { field: "apiModelId", default: anthropicDefaultModelId },
 				cerebras: { field: "apiModelId", default: cerebrasDefaultModelId },
 				"claude-code": { field: "apiModelId", default: claudeCodeDefaultModelId },
@@ -465,7 +545,7 @@ const ApiOptions = ({
 				zai: {
 					field: "apiModelId",
 					default:
-						// kilocode_change - china_api uses mainland model catalog too.
+						// novacode_change - china_api uses mainland model catalog too.
 						apiConfiguration.zaiApiLine === "china_coding" || apiConfiguration.zaiApiLine === "china_api"
 							? mainlandZAiDefaultModelId
 							: internationalZAiDefaultModelId,
@@ -478,14 +558,14 @@ const ApiOptions = ({
 				openai: { field: "openAiModelId" },
 				ollama: { field: "ollamaModelId" },
 				lmstudio: { field: "lmStudioModelId" },
-				// kilocode_change start
+				// novacode_change start
 				apertis: { field: "apertisModelId", default: apertisDefaultModelId },
-				kilocode: { field: "kilocodeModel", default: kilocodeDefaultModel },
+				novacode: { field: "novacodeModel", default: novaDefaultModel },
 				synthetic: { field: "apiModelId", default: syntheticDefaultModelId },
 				ovhcloud: { field: "ovhCloudAiEndpointsModelId", default: ovhCloudAiEndpointsDefaultModelId },
 				inception: { field: "inceptionLabsModelId", default: inceptionDefaultModelId },
 				poe: { field: "poeModelId", default: poeDefaultModelId },
-				// kilocode_change end
+				// novacode_change end
 			}
 
 			const config = PROVIDER_MODEL_CONFIG[value]
@@ -498,7 +578,7 @@ const ApiOptions = ({
 				)
 			}
 		},
-		[setApiConfigurationField, apiConfiguration, organizationAllowList, kilocodeDefaultModel],
+		[setApiConfigurationField, apiConfiguration, organizationAllowList, novaDefaultModel],
 	)
 
 	const modelValidationError = useMemo(() => {
@@ -513,7 +593,7 @@ const ApiOptions = ({
 			return undefined
 		}
 
-		// kilocode_change start
+		// novacode_change start
 		// Providers that don't have documentation pages yet
 		const excludedProviders = ["moonshot", "chutes", "cerebras", "litellm", "zai", "qwen-code", "minimax"]
 
@@ -521,13 +601,13 @@ const ApiOptions = ({
 		if (excludedProviders.includes(selectedProvider)) {
 			return undefined
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		// Get the URL slug - use custom mapping if available, otherwise use the provider key.
 		const slugs: Record<string, string> = {
 			"openai-native": "openai",
 			openai: "openai-compatible",
-			"openai-responses": "openai-compatible", // kilocode_change
+			"openai-responses": "openai-compatible", // novacode_change
 		}
 
 		const slug = slugs[selectedProvider] || selectedProvider
@@ -538,7 +618,7 @@ const ApiOptions = ({
 	}, [selectedProvider])
 
 	// Convert providers to SearchableSelect options
-	// kilocode_change start: no organizationAllowList
+	// novacode_change start: no organizationAllowList
 	const providerOptions = useMemo(
 		() =>
 			PROVIDERS.map(({ value, label }) => {
@@ -546,11 +626,11 @@ const ApiOptions = ({
 			}),
 		[],
 	)
-	// kilocode_change end
+	// novacode_change end
 
 	return (
 		<div className="flex flex-col gap-3">
-			{/* kilocode_change start - autocomplete profile type system */}
+			{/* novacode_change start - autocomplete profile type system */}
 			{/* Profile Type Display (read-only for existing profiles) */}
 			{MODEL_SELECTION_ENABLED && (
 				<div className="flex flex-col gap-1">
@@ -570,7 +650,7 @@ const ApiOptions = ({
 					</div>
 				</div>
 			)}
-			{/* kilocode_change end */}
+			{/* novacode_change end */}
 
 			<div className="flex flex-col gap-1 relative">
 				<div className="flex justify-between items-center">
@@ -600,19 +680,19 @@ const ApiOptions = ({
 
 			{errorMessage && <ApiErrorMessage errorMessage={errorMessage} />}
 
-			{/* kilocode_change start */}
-			{selectedProvider === "kilocode" && (
-				<KiloCode
+			{/* novacode_change start */}
+			{selectedProvider === "novacode" && (
+				<NovaCode
 					apiConfiguration={apiConfiguration}
 					setApiConfigurationField={setApiConfigurationField}
-					hideKiloCodeButton={hideKiloCodeButton}
+					hideNovaCodeButton={resolvedHideNovaCodeButton}
 					currentApiConfigName={currentApiConfigName}
 					routerModels={routerModels}
 					organizationAllowList={organizationAllowList}
-					kilocodeDefaultModel={kilocodeDefaultModel}
+					novacodeDefaultModel={novaDefaultModel}
 				/>
 			)}
-			{/* kilocode_change end */}
+			{/* novacode_change end */}
 
 			{selectedProvider === "openrouter" && (
 				<OpenRouter
@@ -627,7 +707,7 @@ const ApiOptions = ({
 				/>
 			)}
 
-			{/* kilocode_change start */}
+			{/* novacode_change start */}
 			{selectedProvider === "zenmux" && (
 				<ZenMux
 					apiConfiguration={apiConfiguration}
@@ -640,7 +720,7 @@ const ApiOptions = ({
 					modelValidationError={modelValidationError}
 				/>
 			)}
-			{/* kilocode_change end */}
+			{/* novacode_change end */}
 
 			{selectedProvider === "requesty" && (
 				<Requesty
@@ -656,7 +736,7 @@ const ApiOptions = ({
 			)}
 
 			{
-				/* kilocode_change start */
+				/* novacode_change start */
 				selectedProvider === "glama" && (
 					<Glama
 						apiConfiguration={apiConfiguration}
@@ -668,11 +748,11 @@ const ApiOptions = ({
 						simplifySettings={fromWelcomeView}
 					/>
 				)
-				/* kilocode_change end */
+				/* novacode_change end */
 			}
 
 			{
-				/* kilocode_change start */
+				/* novacode_change start */
 				selectedProvider === "aihubmix" && (
 					<Aihubmix
 						apiConfiguration={apiConfiguration}
@@ -683,7 +763,7 @@ const ApiOptions = ({
 						simplifySettings={fromWelcomeView}
 					/>
 				)
-				/* kilocode_change end */
+				/* novacode_change end */
 			}
 
 			{selectedProvider === "unbound" && (
@@ -709,7 +789,7 @@ const ApiOptions = ({
 				/>
 			)}
 
-			{/* kilocode_change start */}
+			{/* novacode_change start */}
 			{selectedProvider === "inception" && (
 				<Inception
 					apiConfiguration={apiConfiguration}
@@ -720,9 +800,9 @@ const ApiOptions = ({
 					modelValidationError={modelValidationError}
 				/>
 			)}
-			{/* kilocode_change end */}
+			{/* novacode_change end */}
 
-			{/* kilocode_change start */}
+			{/* novacode_change start */}
 			{selectedProvider === "poe" && (
 				<Poe
 					apiConfiguration={apiConfiguration}
@@ -733,7 +813,7 @@ const ApiOptions = ({
 					modelValidationError={modelValidationError}
 				/>
 			)}
-			{/* kilocode_change end */}
+			{/* novacode_change end */}
 
 			{selectedProvider === "anthropic" && (
 				<Anthropic
@@ -743,11 +823,11 @@ const ApiOptions = ({
 				/>
 			)}
 
-			{/* kilocode_change start */}
+			{/* novacode_change start */}
 			{selectedProvider === "apertis" && (
 				<Apertis apiConfiguration={apiConfiguration} setApiConfigurationField={setApiConfigurationField} />
 			)}
-			{/* kilocode_change end */}
+			{/* novacode_change end */}
 
 			{selectedProvider === "claude-code" && (
 				<ClaudeCode
@@ -776,7 +856,7 @@ const ApiOptions = ({
 				/>
 			)}
 
-			{/* kilocode_change start */}
+			{/* novacode_change start */}
 			{selectedProvider === "ovhcloud" && (
 				<OvhCloudAiEndpoints
 					apiConfiguration={apiConfiguration}
@@ -786,7 +866,7 @@ const ApiOptions = ({
 					modelValidationError={modelValidationError}
 				/>
 			)}
-			{/* kilocode_change end */}
+			{/* novacode_change end */}
 
 			{selectedProvider === "mistral" && (
 				<Mistral
@@ -830,7 +910,7 @@ const ApiOptions = ({
 			)}
 
 			{selectedProvider === "gemini" && (
-				// kilocode_change: added props
+				// novacode_change: added props
 				<Gemini
 					apiConfiguration={apiConfiguration}
 					setApiConfigurationField={setApiConfigurationField}
@@ -841,7 +921,7 @@ const ApiOptions = ({
 				/>
 			)}
 
-			{(selectedProvider === "openai" || selectedProvider === "openai-responses") /* kilocode_change */ && (
+			{(selectedProvider === "openai" || selectedProvider === "openai-responses") /* novacode_change */ && (
 				<OpenAICompatible
 					apiConfiguration={apiConfiguration}
 					setApiConfigurationField={setApiConfigurationField}
@@ -895,7 +975,7 @@ const ApiOptions = ({
 				<MiniMax apiConfiguration={apiConfiguration} setApiConfigurationField={setApiConfigurationField} />
 			)}
 
-			{/* kilocode_change start */}
+			{/* novacode_change start */}
 			{selectedProvider === "nano-gpt" && (
 				<NanoGpt
 					apiConfiguration={apiConfiguration}
@@ -905,7 +985,7 @@ const ApiOptions = ({
 					modelValidationError={modelValidationError}
 				/>
 			)}
-			{/* kilocode_change end */}
+			{/* novacode_change end */}
 
 			{selectedProvider === "vscode-lm" && (
 				<VSCodeLM apiConfiguration={apiConfiguration} setApiConfigurationField={setApiConfigurationField} />
@@ -942,14 +1022,14 @@ const ApiOptions = ({
 				/>
 			)}
 
-			{/* kilocode_change start */}
+			{/* novacode_change start */}
 			{selectedProvider === "virtual-quota-fallback" && (
 				<VirtualQuotaFallbackProvider
 					apiConfiguration={apiConfiguration}
 					setApiConfigurationField={setApiConfigurationField}
 				/>
 			)}
-			{/* kilocode_change end */}
+			{/* novacode_change end */}
 
 			{selectedProvider === "litellm" && (
 				<LiteLLM
@@ -1015,7 +1095,7 @@ const ApiOptions = ({
 						modelValidationError={modelValidationError}
 					/>
 				)
-				// kilocode_change end
+				// novacode_change end
 			}
 
 			{selectedProvider === "roo" && (
@@ -1034,11 +1114,11 @@ const ApiOptions = ({
 				<Featherless apiConfiguration={apiConfiguration} setApiConfigurationField={setApiConfigurationField} />
 			)}
 
-			{/* kilocode_change start */}
+			{/* novacode_change start */}
 			{selectedProvider === "sap-ai-core" && (
 				<SapAiCore apiConfiguration={apiConfiguration} setApiConfigurationField={setApiConfigurationField} />
 			)}
-			{/* kilocode_change end */}
+			{/* novacode_change end */}
 
 			{/* Skip generic model picker for claude-code/openai-codex since they have their own model pickers */}
 			{selectedProviderModels.length > 0 &&
@@ -1123,23 +1203,23 @@ const ApiOptions = ({
 			)}
 
 			{
-				// kilocode_change start
-				(selectedProvider === "kilocode" || selectedProvider === "openrouter") &&
-					(apiConfiguration.kilocodeOrganizationId ? (
-						<KiloProviderRoutingManagedByOrganization
-							organizationId={apiConfiguration.kilocodeOrganizationId}
+				// novacode_change start
+				(selectedProvider === "novacode" || selectedProvider === "openrouter") &&
+					(apiConfiguration.novacodeOrganizationId ? (
+						<NovaProviderRoutingManagedByOrganization
+							organizationId={apiConfiguration.novacodeOrganizationId}
 						/>
 					) : (
-						<KiloProviderRouting
+						<NovaProviderRouting
 							apiConfiguration={apiConfiguration}
 							setApiConfigurationField={setApiConfigurationField}
-							kilocodeDefaultModel={kilocodeDefaultModel}
+							novacodeDefaultModel={novaDefaultModel}
 						/>
 					))
-				// kilocode_change end
+				// novacode_change end
 			}
 
-			{!fromWelcomeView && selectedProvider !== "virtual-quota-fallback" /*kilocode_change*/ && (
+			{!fromWelcomeView && selectedProvider !== "virtual-quota-fallback" /*novacode_change*/ && (
 				<Collapsible open={isAdvancedSettingsOpen} onOpenChange={setIsAdvancedSettingsOpen}>
 					<CollapsibleTrigger className="flex items-center gap-1 w-full cursor-pointer hover:opacity-80 mb-2">
 						<span className={`codicon codicon-chevron-${isAdvancedSettingsOpen ? "down" : "right"}`}></span>
@@ -1164,12 +1244,12 @@ const ApiOptions = ({
 							/>
 						)}
 						{
-							// kilocode_change start
+							// novacode_change start
 							<RateLimitAfterControl
 								rateLimitAfterEnabled={apiConfiguration.rateLimitAfter}
 								onChange={(field, value) => setApiConfigurationField(field, value)}
 							/>
-							// kilocode_change end
+							// novacode_change end
 						}
 						<RateLimitSecondsControl
 							value={apiConfiguration.rateLimitSeconds || 0}
@@ -1183,7 +1263,7 @@ const ApiOptions = ({
 							}
 							onChange={(value) => setApiConfigurationField("consecutiveMistakeLimit", value)}
 						/>
-						{/* kilocode_change start
+						{/* novacode_change start
 						selectedProvider === "openrouter" &&
 							openRouterModelProviders &&
 							Object.keys(openRouterModelProviders).length > 0 && (
@@ -1226,7 +1306,7 @@ const ApiOptions = ({
 									</div>
 								</div>
 							)
-							kilocode_change end */}
+							novacode_change end */}
 					</CollapsibleContent>
 				</Collapsible>
 			)}

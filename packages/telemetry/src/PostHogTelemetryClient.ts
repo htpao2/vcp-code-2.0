@@ -1,7 +1,7 @@
 import { PostHog } from "posthog-node"
 import * as vscode from "vscode"
 
-import { getKiloUrlFromToken, type TelemetryEvent, TelemetryEventName } from "@roo-code/types"
+import { getNovaUrlFromToken, type TelemetryEvent, TelemetryEventName } from "@roo-code/types"
 
 import { BaseTelemetryClient } from "./BaseTelemetryClient"
 
@@ -15,9 +15,9 @@ export class PostHogTelemetryClient extends BaseTelemetryClient {
 	private distinctId: string = vscode.env.machineId
 	// Git repository properties that should be filtered out for all users
 	private readonly gitPropertyNames = ["repositoryUrl", "repositoryName", "defaultBranch"]
-	// kilocode_change start: filter sensitive error properties for organization users
+	// novacode_change start: filter sensitive error properties for organization users
 	private readonly orgFilteredProperties = ["errorMessage", "cliPath", "stderrPreview"]
-	// kilocode_change end
+	// novacode_change end
 
 	constructor(debug = false) {
 		super(
@@ -25,15 +25,15 @@ export class PostHogTelemetryClient extends BaseTelemetryClient {
 				type: "exclude",
 				events: [
 					TelemetryEventName.TASK_MESSAGE,
-					// TelemetryEventName.LLM_COMPLETION // kilocode_change
+					// TelemetryEventName.LLM_COMPLETION // novacode_change
 				],
 			},
 			debug,
 		)
 
-		this.client = new PostHog(process.env.KILOCODE_POSTHOG_API_KEY || "", {
+		this.client = new PostHog(process.env.NOVACODE_POSTHOG_API_KEY || "", {
 			host: "https://us.i.posthog.com",
-			disableGeoip: false, // kilocode_change
+			disableGeoip: false, // novacode_change
 		})
 	}
 
@@ -45,18 +45,18 @@ export class PostHogTelemetryClient extends BaseTelemetryClient {
 	 * @param allProperties All properties for context (to check organization membership)
 	 * @returns Whether the property should be included in telemetry events
 	 */
-	// kilocode_change start: add allProperties parameter for org-based filtering
+	// novacode_change start: add allProperties parameter for org-based filtering
 	protected override isPropertyCapturable(propertyName: string, allProperties: Record<string, unknown>): boolean {
 		// Filter out git repository properties for all users
 		if (this.gitPropertyNames.includes(propertyName)) {
 			return false
 		}
-		if (allProperties.kilocodeOrganizationId && this.orgFilteredProperties.includes(propertyName)) {
+		if (allProperties.novacodeOrganizationId && this.orgFilteredProperties.includes(propertyName)) {
 			return false
 		}
 		return true
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	public override async capture(event: TelemetryEvent): Promise<void> {
 		if (!this.isTelemetryEnabled() || !this.isEventCapturable(event.event)) {
@@ -110,7 +110,7 @@ export class PostHogTelemetryClient extends BaseTelemetryClient {
 		await this.client.shutdown()
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	public override async captureException(error: Error, properties?: Record<string | number, unknown>): Promise<void> {
 		if (this.isTelemetryEnabled()) {
 			let providerProperties = {}
@@ -127,24 +127,24 @@ export class PostHogTelemetryClient extends BaseTelemetryClient {
 	}
 
 	private counter = 0
-	private kilocodeToken = ""
+	private novacodeToken = ""
 
-	public override async updateIdentity(kilocodeToken: string) {
-		if (kilocodeToken === this.kilocodeToken) {
-			console.debug("KILOTEL: Identity up-to-date")
+	public override async updateIdentity(novacodeToken: string) {
+		if (novacodeToken === this.novacodeToken) {
+			console.debug("NOVATEL: Identity up-to-date")
 			return
 		}
-		if (!kilocodeToken) {
-			console.debug("KILOTEL: Updating identity to machine ID")
+		if (!novacodeToken) {
+			console.debug("NOVATEL: Updating identity to machine ID")
 			this.distinctId = vscode.env.machineId
-			this.kilocodeToken = ""
+			this.novacodeToken = ""
 			return
 		}
 		const id = ++this.counter
 		try {
-			const response = await fetch(getKiloUrlFromToken("https://api.kilo.ai/api/profile", kilocodeToken), {
+			const response = await fetch(getNovaUrlFromToken("https://api.nova.ai/api/profile", novacodeToken), {
 				headers: {
-					Authorization: `Bearer ${kilocodeToken}`,
+					Authorization: `Bearer ${novacodeToken}`,
 					"Content-Type": "application/json",
 				},
 			})
@@ -154,18 +154,18 @@ export class PostHogTelemetryClient extends BaseTelemetryClient {
 			}
 			if (id === this.counter) {
 				this.distinctId = data.user.email
-				this.kilocodeToken = kilocodeToken
-				console.debug("KILOTEL: Identity updated to:", this.distinctId)
+				this.novacodeToken = novacodeToken
+				console.debug("NOVATEL: Identity updated to:", this.distinctId)
 			} else {
-				console.debug("KILOTEL: Identity update ignored, newer request in progress")
+				console.debug("NOVATEL: Identity update ignored, newer request in progress")
 			}
 		} catch (error) {
-			console.error("KILOTEL: Failed to update identity", error)
+			console.error("NOVATEL: Failed to update identity", error)
 			if (id === this.counter) {
 				this.distinctId = vscode.env.machineId
-				this.kilocodeToken = ""
+				this.novacodeToken = ""
 			}
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 }

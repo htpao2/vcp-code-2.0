@@ -239,7 +239,7 @@ describe("NativeToolCallParser", () => {
 		})
 	})
 
-	// kilocode_change start
+	// novacode_change start
 	describe("processRawChunk", () => {
 		it("should coerce numeric tool call id to string", () => {
 			const events = NativeToolCallParser.processRawChunk({
@@ -284,5 +284,5 @@ describe("NativeToolCallParser", () => {
 			})
 		})
 	})
-	// kilocode_change end
+	// novacode_change end
 })

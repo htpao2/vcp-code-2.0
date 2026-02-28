@@ -1,4 +1,4 @@
-// kilocode_change - new file: STT message handlers (replaces speechMessageHandlers.ts)
+// novacode_change - new file: STT message handlers (replaces speechMessageHandlers.ts)
 import type { ClineProvider } from "./ClineProvider"
 import type { STTCommand, STTSegment as ContractSTTSegment, MicrophoneDevice } from "../../shared/sttContract"
 import { STTService } from "../../services/stt"

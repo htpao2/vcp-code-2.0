@@ -1,6 +1,6 @@
 {
 	"extension": {
-		"name": "Kilo Code",
+		"name": "Nova Code",
 		"description": "Agente di programmazione AI open source che genera codice dal linguaggio naturale, automatizza le attività ed esegue comandi da terminale. Include autocompletamento inline, automazione del browser, refactoring automatizzato e modalità personalizzate per pianificazione, programmazione e debug. Supporta oltre 500 modelli AI tra cui Claude (Anthropic), Gemini, Grok, GPT, Codex e GLM."
 	},
 	"number_format": {
@@ -165,7 +165,7 @@
 	"warnings": {
 		"no_terminal_content": "Nessun contenuto del terminale selezionato",
 		"missing_task_files": "I file di questa attività sono mancanti. Vuoi rimuoverla dall'elenco delle attività?",
-		"auto_import_failed": "Importazione automatica delle impostazioni Kilo Code fallita: {{error}}"
+		"auto_import_failed": "Importazione automatica delle impostazioni Nova Code fallita: {{error}}"
 	},
 	"info": {
 		"no_changes": "Nessuna modifica trovata.",
@@ -174,7 +174,7 @@
 		"custom_storage_path_set": "Percorso di archiviazione personalizzato impostato: {{path}}",
 		"default_storage_path": "Tornato al percorso di archiviazione predefinito",
 		"settings_imported": "Impostazioni importate con successo.",
-		"auto_import_success": "Impostazioni Kilo Code importate automaticamente da {{filename}}",
+		"auto_import_success": "Impostazioni Nova Code importate automaticamente da {{filename}}",
 		"share_link_copied": "Link di condivisione copiato negli appunti",
 		"image_copied_to_clipboard": "URI dati dell'immagine copiato negli appunti",
 		"image_saved": "Immagine salvata in {{path}}",
@@ -208,12 +208,12 @@
 	},
 	"storage": {
 		"prompt_custom_path": "Inserisci il percorso di archiviazione personalizzato per la cronologia delle conversazioni, lascia vuoto per utilizzare la posizione predefinita",
-		"path_placeholder": "D:\\KiloCodeStorage",
-		"enter_absolute_path": "Inserisci un percorso assoluto (ad esempio D:\\KiloCodeStorage o /home/user/storage)",
+		"path_placeholder": "D:\\NovaCodeStorage",
+		"enter_absolute_path": "Inserisci un percorso assoluto (ad esempio D:\\NovaCodeStorage o /home/user/storage)",
 		"enter_valid_path": "Inserisci un percorso valido"
 	},
 	"input": {
-		"task_prompt": "Cosa deve fare Kilo Code?",
+		"task_prompt": "Cosa deve fare Nova Code?",
 		"task_placeholder": "Scrivi il tuo compito qui"
 	},
 	"settings": {
@@ -224,8 +224,8 @@
 	},
 	"customModes": {
 		"errors": {
-			"yamlParseError": "YAML non valido nel file .kilocodemodes alla riga {{line}}. Controlla:\n• Indentazione corretta (usa spazi, non tab)\n• Virgolette e parentesi corrispondenti\n• Sintassi YAML valida",
-			"schemaValidationError": "Formato modalità personalizzate non valido in .kilocodemodes:\n{{issues}}",
+			"yamlParseError": "YAML non valido nel file .novacodemodes alla riga {{line}}. Controlla:\n• Indentazione corretta (usa spazi, non tab)\n• Virgolette e parentesi corrispondenti\n• Sintassi YAML valida",
+			"schemaValidationError": "Formato modalità personalizzate non valido in .novacodemodes:\n{{issues}}",
 			"invalidFormat": "Formato modalità personalizzate non valido. Assicurati che le tue impostazioni seguano il formato YAML corretto.",
 			"updateFailed": "Aggiornamento modalità personalizzata fallito: {{error}}",
 			"deleteFailed": "Eliminazione modalità personalizzata fallita: {{error}}",
@@ -274,7 +274,7 @@
 	},
 	"docsLink": {
 		"label": "Docs",
-		"url": "https://kilo.ai/docs"
+		"url": "https://nova.ai/docs"
 	},
 	"errorBoundary": {
 		"title": "Errore",

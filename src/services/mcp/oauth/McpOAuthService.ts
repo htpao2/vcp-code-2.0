@@ -4,6 +4,8 @@ import { McpAuthorizationDiscovery, AuthorizationServerMetadata } from "./McpAut
 import { McpOAuthBrowserFlow, DEFAULT_AUTH_FLOW_PORT } from "./McpOAuthBrowserFlow"
 import { McpOAuthTokenStorage, OAuthTokens, StoredTokenData } from "./McpOAuthTokenStorage"
 import { generateCodeChallenge, generateCodeVerifier, generateState } from "./utils"
+import { Package } from "../../../shared/package"
+import { LEGACY_EXTENSION_ID } from "../../../utils/extensionIdentity"
 
 // Buffer time before token expiration to trigger proactive refresh (5 minutes)
 const TOKEN_REFRESH_BUFFER_MS = 5 * 60 * 1000
@@ -169,7 +171,8 @@ export class McpOAuthService {
 		const redirectUris = [
 			"http://127.0.0.1/",
 			`http://127.0.0.1:${DEFAULT_AUTH_FLOW_PORT}/`,
-			"vscode://kilocode.kilo-code/oauth/callback",
+			`vscode://${Package.publisher}.${Package.name}/oauth/callback`,
+			`vscode://${LEGACY_EXTENSION_ID}/oauth/callback`,
 		]
 		const clientCredentials = await this.getOrRegisterClient(authServerMetadata, redirectUris, options)
 
@@ -454,9 +457,9 @@ export class McpOAuthService {
 
 		// Client metadata according to RFC 7591
 		const clientMetadata = {
-			client_name: "Kilo Code",
-			client_uri: "https://kilocode.ai",
-			logo_uri: "https://kilocode.ai/logo.png",
+			client_name: "Nova Code",
+			client_uri: "https://novacode.ai",
+			logo_uri: "https://novacode.ai/logo.png",
 			redirect_uris: redirectUris,
 			grant_types: ["authorization_code"],
 			response_types: ["code"],
@@ -582,7 +585,7 @@ export class McpOAuthService {
 		// 4. Fall back to Client ID Metadata Document URL
 		console.log("[McpOAuthService] Using Client ID Metadata Document URL as client_id")
 		return {
-			clientId: "https://kilocode.ai/.well-known/oauth-client/vscode-extension.json",
+			clientId: "https://novacode.ai/.well-known/oauth-client/vscode-extension.json",
 		}
 	}
 

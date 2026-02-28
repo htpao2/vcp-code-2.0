@@ -1,8 +1,9 @@
-// kilocode_change - new file
+// novacode_change - new file
 import * as vscode from "vscode"
 import { AutocompleteServiceManager } from "./AutocompleteServiceManager"
 import { ClineProvider } from "../../core/webview/ClineProvider"
 import { registerAutocompleteJetbrainsBridge } from "./AutocompleteJetbrainsBridge"
+import { Package } from "../../shared/package"
 
 export const registerAutocompleteProvider = (context: vscode.ExtensionContext, cline: ClineProvider) => {
 	const autocompleteManager = new AutocompleteServiceManager(context, cline)
@@ -11,32 +12,29 @@ export const registerAutocompleteProvider = (context: vscode.ExtensionContext, c
 	// Register JetBrains Bridge if applicable
 	registerAutocompleteJetbrainsBridge(context, cline, autocompleteManager)
 
+	const registerAutocompleteCommand = (suffix: string, callback: () => Promise<unknown> | unknown) => {
+		const primary = `${Package.name}.autocomplete.${suffix}`
+		const legacy = `nova-code.autocomplete.${suffix}`
+		context.subscriptions.push(vscode.commands.registerCommand(primary, callback))
+		if (legacy !== primary) {
+			context.subscriptions.push(vscode.commands.registerCommand(legacy, callback))
+		}
+	}
+
 	// Register AutocompleteServiceManager Commands
-	context.subscriptions.push(
-		vscode.commands.registerCommand("kilo-code.autocomplete.reload", async () => {
-			await autocompleteManager.load()
-		}),
-	)
-	context.subscriptions.push(
-		vscode.commands.registerCommand("kilo-code.autocomplete.codeActionQuickFix", async () => {
-			return
-		}),
-	)
-	context.subscriptions.push(
-		vscode.commands.registerCommand("kilo-code.autocomplete.generateSuggestions", async () => {
-			autocompleteManager.codeSuggestion()
-		}),
-	)
-	context.subscriptions.push(
-		vscode.commands.registerCommand("kilo-code.autocomplete.showIncompatibilityExtensionPopup", async () => {
-			await autocompleteManager.showIncompatibilityExtensionPopup()
-		}),
-	)
-	context.subscriptions.push(
-		vscode.commands.registerCommand("kilo-code.autocomplete.disable", async () => {
-			await autocompleteManager.disable()
-		}),
-	)
+	registerAutocompleteCommand("reload", async () => {
+		await autocompleteManager.load()
+	})
+	registerAutocompleteCommand("codeActionQuickFix", async () => undefined)
+	registerAutocompleteCommand("generateSuggestions", async () => {
+		autocompleteManager.codeSuggestion()
+	})
+	registerAutocompleteCommand("showIncompatibilityExtensionPopup", async () => {
+		await autocompleteManager.showIncompatibilityExtensionPopup()
+	})
+	registerAutocompleteCommand("disable", async () => {
+		await autocompleteManager.disable()
+	})
 
 	// Register AutocompleteServiceManager Code Actions
 	context.subscriptions.push(

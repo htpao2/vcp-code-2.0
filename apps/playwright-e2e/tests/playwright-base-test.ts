@@ -1,4 +1,4 @@
-// kilocode_change - new file
+// novacode_change - new file
 import { test as base, type Page, _electron } from "@playwright/test"
 export { expect } from "@playwright/test"
 import * as path from "path"
@@ -69,7 +69,7 @@ export const test = base.extend<TestFixtures>({
 				"--disable-crash-reporter",
 				"--enable-logging",
 				"--log-level=0",
-				"--disable-extensions-except=kilocode.kilo-code",
+				"--disable-extensions-except=novacode.nova-code",
 				"--disable-extension-recommendations",
 				"--disable-extension-update-check",
 				"--disable-default-apps",
@@ -79,7 +79,7 @@ export const test = base.extend<TestFixtures>({
 				`--extensionDevelopmentPath=${path.resolve(__dirname, "..", "..", "..", "src")}`,
 				`--extensions-dir=${path.join(defaultCachePath, "extensions")}`,
 				`--user-data-dir=${userDataDir}`,
-				"--enable-proposed-api=kilocode.kilo-code",
+				"--enable-proposed-api=novacode.nova-code",
 				await createProject(),
 			],
 		})

@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react"
+﻿import React, { createContext, useCallback, useContext, useEffect, useState } from "react"
 
 import {
 	type ProviderSettings,
@@ -6,8 +6,8 @@ import {
 	type CustomModePrompts,
 	type ModeConfig,
 	type ExperimentId,
-	AutocompleteServiceSettings, // kilocode_change
-	openRouterDefaultModelId, // kilocode_change
+	AutocompleteServiceSettings, // novacode_change
+	openRouterDefaultModelId, // novacode_change
 	type TodoItem,
 	type TelemetrySetting,
 	type OrganizationAllowList,
@@ -28,32 +28,32 @@ import { checkExistKey } from "@roo/checkExistApiConfig"
 import { Mode, defaultModeSlug, defaultPrompts } from "@roo/modes"
 import { CustomSupportPrompts } from "@roo/support-prompt"
 import { experimentDefault } from "@roo/experiments"
-import { McpMarketplaceCatalog } from "../../../src/shared/kilocode/mcp" // kilocode_change
+import { McpMarketplaceCatalog } from "../../../src/shared/nova/mcp" // novacode_change
 
 import { vscode } from "@src/utils/vscode"
 import { convertTextMateToHljs } from "@src/utils/textMateToHljs"
-import { ClineRulesToggles } from "@roo/cline-rules" // kilocode_change
+import { ClineRulesToggles } from "@roo/cline-rules" // novacode_change
 
 export interface ExtensionStateContextType extends ExtensionState {
 	historyPreviewCollapsed?: boolean
-	showTaskTimeline?: boolean // kilocode_change
-	sendMessageOnEnter?: boolean // kilocode_change New state property for Enter key behavior
-	setShowTaskTimeline: (value: boolean) => void // kilocode_change
-	setSendMessageOnEnter: (value: boolean) => void // kilocode_change
-	showTimestamps?: boolean // kilocode_change
-	setShowTimestamps: (value: boolean) => void // kilocode_change
-	showDiffStats?: boolean // kilocode_change
-	setShowDiffStats: (value: boolean) => void // kilocode_change
-	hideCostBelowThreshold?: number // kilocode_change
-	setHideCostBelowThreshold: (value: number) => void // kilocode_change
-	hoveringTaskTimeline?: boolean // kilocode_change
-	setHoveringTaskTimeline: (value: boolean) => void // kilocode_change
-	systemNotificationsEnabled?: boolean // kilocode_change
-	setSystemNotificationsEnabled: (value: boolean) => void // kilocode_change
-	dismissedNotificationIds: string[] // kilocode_change
-	yoloMode?: boolean // kilocode_change
-	setYoloMode: (value: boolean) => void // kilocode_Change
-	// kilocode_change start - Auto-purge settings
+	showTaskTimeline?: boolean // novacode_change
+	sendMessageOnEnter?: boolean // novacode_change New state property for Enter key behavior
+	setShowTaskTimeline: (value: boolean) => void // novacode_change
+	setSendMessageOnEnter: (value: boolean) => void // novacode_change
+	showTimestamps?: boolean // novacode_change
+	setShowTimestamps: (value: boolean) => void // novacode_change
+	showDiffStats?: boolean // novacode_change
+	setShowDiffStats: (value: boolean) => void // novacode_change
+	hideCostBelowThreshold?: number // novacode_change
+	setHideCostBelowThreshold: (value: number) => void // novacode_change
+	hoveringTaskTimeline?: boolean // novacode_change
+	setHoveringTaskTimeline: (value: boolean) => void // novacode_change
+	systemNotificationsEnabled?: boolean // novacode_change
+	setSystemNotificationsEnabled: (value: boolean) => void // novacode_change
+	dismissedNotificationIds: string[] // novacode_change
+	yoloMode?: boolean // novacode_change
+	setYoloMode: (value: boolean) => void // novacode_Change
+	// novacode_change start - Auto-purge settings
 	autoPurgeEnabled?: boolean
 	setAutoPurgeEnabled: (value: boolean) => void
 	autoPurgeDefaultRetentionDays?: number
@@ -66,23 +66,23 @@ export interface ExtensionStateContextType extends ExtensionState {
 	setAutoPurgeIncompleteTaskRetentionDays: (value: number) => void
 	autoPurgeLastRunTimestamp?: number
 	setAutoPurgeLastRunTimestamp: (value: number) => void
-	// kilocode_change end
+	// novacode_change end
 	didHydrateState: boolean
 	showWelcome: boolean
 	theme: any
 	mcpServers: McpServer[]
-	mcpMarketplaceCatalog: McpMarketplaceCatalog // kilocode_change
+	mcpMarketplaceCatalog: McpMarketplaceCatalog // novacode_change
 	hasSystemPromptOverride?: boolean
 	currentCheckpoint?: string
 	currentTaskTodos?: TodoItem[] // Initial todos for the current task
 	filePaths: string[]
 	openedTabs: Array<{ label: string; isActive: boolean; path?: string }>
-	// kilocode_change start
+	// novacode_change start
 	globalRules: ClineRulesToggles
 	localRules: ClineRulesToggles
 	globalWorkflows: ClineRulesToggles
 	localWorkflows: ClineRulesToggles
-	// kilocode_change start
+	// novacode_change start
 	commands: Command[]
 	organizationAllowList: OrganizationAllowList
 	organizationSettingsVersion: number
@@ -91,12 +91,12 @@ export interface ExtensionStateContextType extends ExtensionState {
 	sharingEnabled: boolean
 	publicSharingEnabled: boolean
 	maxConcurrentFileReads?: number
-	allowVeryLargeReads?: boolean // kilocode_change
+	allowVeryLargeReads?: boolean // novacode_change
 	mdmCompliant?: boolean
 	hasOpenedModeSelector: boolean // New property to track if user has opened mode selector
 	setHasOpenedModeSelector: (value: boolean) => void // Setter for the new property
-	hasCompletedOnboarding?: boolean // kilocode_change: Track if user has completed onboarding flow
-	setHasCompletedOnboarding: (value: boolean) => void // kilocode_change
+	hasCompletedOnboarding?: boolean // novacode_change: Track if user has completed onboarding flow
+	setHasCompletedOnboarding: (value: boolean) => void // novacode_change
 	alwaysAllowFollowupQuestions: boolean // New property for follow-up questions auto-approve
 	setAlwaysAllowFollowupQuestions: (value: boolean) => void // Setter for the new property
 	followupAutoApproveTimeoutMs: number | undefined // Timeout in ms for auto-approving follow-up questions
@@ -105,9 +105,9 @@ export interface ExtensionStateContextType extends ExtensionState {
 	setCondensingApiConfigId: (value: string) => void
 	customCondensingPrompt?: string
 	setCustomCondensingPrompt: (value: string) => void
-	yoloGatekeeperApiConfigId?: string // kilocode_change: AI gatekeeper for YOLO mode
-	setYoloGatekeeperApiConfigId: (value: string) => void // kilocode_change: AI gatekeeper for YOLO mode
-	speechToTextStatus?: { available: boolean; reason?: "openaiKeyMissing" | "ffmpegNotInstalled" } // kilocode_change: Speech-to-text availability status with failure reason
+	yoloGatekeeperApiConfigId?: string // novacode_change: AI gatekeeper for YOLO mode
+	setYoloGatekeeperApiConfigId: (value: string) => void // novacode_change: AI gatekeeper for YOLO mode
+	speechToTextStatus?: { available: boolean; reason?: "openaiKeyMissing" | "ffmpegNotInstalled" } // novacode_change: Speech-to-text availability status with failure reason
 	marketplaceItems?: any[]
 	marketplaceInstalledMetadata?: MarketplaceInstalledMetadata
 	profileThresholds: Record<string, number>
@@ -118,7 +118,7 @@ export interface ExtensionStateContextType extends ExtensionState {
 	setAlwaysAllowReadOnlyOutsideWorkspace: (value: boolean) => void
 	setAlwaysAllowWrite: (value: boolean) => void
 	setAlwaysAllowWriteOutsideWorkspace: (value: boolean) => void
-	setAlwaysAllowDelete: (value: boolean) => void // kilocode_change
+	setAlwaysAllowDelete: (value: boolean) => void // novacode_change
 	setAlwaysAllowExecute: (value: boolean) => void
 	setAlwaysAllowBrowser: (value: boolean) => void
 	setAlwaysAllowMcp: (value: boolean) => void
@@ -126,7 +126,7 @@ export interface ExtensionStateContextType extends ExtensionState {
 	setAlwaysAllowSubtasks: (value: boolean) => void
 	setBrowserToolEnabled: (value: boolean) => void
 	setShowRooIgnoredFiles: (value: boolean) => void
-	setShowAutoApproveMenu: (value: boolean) => void // kilocode_change
+	setShowAutoApproveMenu: (value: boolean) => void // novacode_change
 	setEnableSubfolderRules: (value: boolean) => void
 	setShowAnnouncement: (value: boolean) => void
 	setAllowedCommands: (value: string[]) => void
@@ -174,11 +174,11 @@ export interface ExtensionStateContextType extends ExtensionState {
 	setCustomSupportPrompts: (value: CustomSupportPrompts) => void
 	enhancementApiConfigId?: string
 	setEnhancementApiConfigId: (value: string) => void
-	commitMessageApiConfigId?: string // kilocode_change
-	setCommitMessageApiConfigId: (value: string) => void // kilocode_change
-	markNotificationAsDismissed: (notificationId: string) => void // kilocode_change
-	ghostServiceSettings?: AutocompleteServiceSettings // kilocode_change
-	setAutocompleteServiceSettings: (value: AutocompleteServiceSettings) => void // kilocode_change
+	commitMessageApiConfigId?: string // novacode_change
+	setCommitMessageApiConfigId: (value: string) => void // novacode_change
+	markNotificationAsDismissed: (notificationId: string) => void // novacode_change
+	ghostServiceSettings?: AutocompleteServiceSettings // novacode_change
+	setAutocompleteServiceSettings: (value: AutocompleteServiceSettings) => void // novacode_change
 	setExperimentEnabled: (id: ExperimentId, enabled: boolean) => void
 	setAutoApprovalEnabled: (value: boolean) => void
 	customModes: ModeConfig[]
@@ -251,8 +251,8 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		apiConfiguration: {},
 		version: "",
 		clineMessages: [],
-		taskHistoryFullLength: 0, // kilocode_change
-		taskHistoryVersion: 0, // kilocode_change
+		taskHistoryFullLength: 0, // novacode_change
+		taskHistoryVersion: 0, // novacode_change
 		shouldShowAnnouncement: false,
 		allowedCommands: [],
 		deniedCommands: [],
@@ -277,9 +277,9 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		remoteControlEnabled: false,
 		taskSyncEnabled: false,
 		featureRoomoteControlEnabled: false,
-		alwaysAllowWrite: true, // kilocode_change
-		alwaysAllowReadOnly: true, // kilocode_change
-		alwaysAllowDelete: false, // kilocode_change
+		alwaysAllowWrite: true, // novacode_change
+		alwaysAllowReadOnly: true, // novacode_change
+		alwaysAllowDelete: false, // novacode_change
 		requestDelaySeconds: 5,
 		currentApiConfigName: "default",
 		listApiConfigMeta: [],
@@ -288,14 +288,14 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		customSupportPrompts: {},
 		experiments: experimentDefault,
 		enhancementApiConfigId: "",
-		dismissedNotificationIds: [], // kilocode_change
-		commitMessageApiConfigId: "", // kilocode_change
-		ghostServiceSettings: {}, // kilocode_change
+		dismissedNotificationIds: [], // novacode_change
+		commitMessageApiConfigId: "", // novacode_change
+		ghostServiceSettings: {}, // novacode_change
 		condensingApiConfigId: "", // Default empty string for condensing API config ID
 		customCondensingPrompt: "", // Default empty string for custom condensing prompt
-		yoloGatekeeperApiConfigId: "", // kilocode_change: Default empty string for gatekeeper API config ID
+		yoloGatekeeperApiConfigId: "", // novacode_change: Default empty string for gatekeeper API config ID
 		hasOpenedModeSelector: false, // Default to false (not opened yet)
-		hasCompletedOnboarding: undefined, // kilocode_change: Leave unset until extension sends value
+		hasCompletedOnboarding: undefined, // novacode_change: Leave unset until extension sends value
 		autoApprovalEnabled: true,
 		customModes: [],
 		maxOpenTabsContext: 20,
@@ -304,25 +304,25 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		browserToolEnabled: true,
 		telemetrySetting: "unset",
 		showRooIgnoredFiles: true, // Default to showing .rooignore'd files with lock symbol (current behavior).
-		showAutoApproveMenu: false, // kilocode_change
+		showAutoApproveMenu: false, // novacode_change
 		enableSubfolderRules: false, // Default to disabled - must be enabled to load rules from subdirectories
 		renderContext: "sidebar",
-		maxReadFileLine: 500 /*kilocode_change*/, // Default max read file line limit
+		maxReadFileLine: 500 /*novacode_change*/, // Default max read file line limit
 		maxImageFileSize: 5, // Default max image file size in MB
 		maxTotalImageSize: 20, // Default max total image size in MB
 		pinnedApiConfigs: {}, // Empty object for pinned API configs
 		terminalZshOhMy: false, // Default Oh My Zsh integration setting
 		maxConcurrentFileReads: 5, // Default concurrent file reads
-		allowVeryLargeReads: false, // kilocode_change
+		allowVeryLargeReads: false, // novacode_change
 		terminalZshP10k: false, // Default Powerlevel10k integration setting
 		terminalZdotdir: false, // Default ZDOTDIR handling setting
 		terminalCompressProgressBar: true, // Default to compress progress bar output
 		historyPreviewCollapsed: false, // Initialize the new state (default to expanded)
-		showTaskTimeline: true, // kilocode_change
-		sendMessageOnEnter: true, // kilocode_change
-		showTimestamps: true, // kilocode_change
-		showDiffStats: true, // kilocode_change
-		kilocodeDefaultModel: openRouterDefaultModelId,
+		showTaskTimeline: true, // novacode_change
+		sendMessageOnEnter: true, // novacode_change
+		showTimestamps: true, // novacode_change
+		showDiffStats: true, // novacode_change
+		novacodeDefaultModel: openRouterDefaultModelId,
 		reasoningBlockCollapsed: true, // Default to collapsed
 		enterBehavior: "send", // Default: Enter sends, Shift+Enter creates newline
 		cloudUserInfo: null,
@@ -339,10 +339,10 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 			codebaseIndexEnabled: true,
 			codebaseIndexQdrantUrl: "http://localhost:6333",
 			codebaseIndexEmbedderProvider: "openai",
-			// kilocode_change start
+			// novacode_change start
 			codebaseIndexVectorStoreProvider: "qdrant",
 			codebaseIndexLancedbVectorStoreDirectory: undefined,
-			// kilocode_change end
+			// novacode_change end
 			codebaseIndexEmbedderBaseUrl: "",
 			codebaseIndexEmbedderModelId: "",
 			codebaseIndexSearchMaxResults: undefined,
@@ -352,15 +352,15 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		includeDiagnosticMessages: true,
 		maxDiagnosticMessages: 50,
 		openRouterImageApiKey: "",
-		kiloCodeImageApiKey: "",
-		// kilocode_change start - Auto Purge
+		novaCodeImageApiKey: "",
+		// novacode_change start - Auto Purge
 		autoPurgeEnabled: false,
 		autoPurgeDefaultRetentionDays: 30,
 		autoPurgeFavoritedTaskRetentionDays: null,
 		autoPurgeCompletedTaskRetentionDays: 30,
 		autoPurgeIncompleteTaskRetentionDays: 7,
 		autoPurgeLastRunTimestamp: undefined,
-		// kilocode_change end
+		// novacode_change end
 		openRouterImageGenerationSelectedModel: "",
 		includeCurrentTime: true,
 		includeCurrentCost: true,
@@ -373,15 +373,15 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 	const [openedTabs, setOpenedTabs] = useState<Array<{ label: string; isActive: boolean; path?: string }>>([])
 	const [commands, setCommands] = useState<Command[]>([])
 	const [mcpServers, setMcpServers] = useState<McpServer[]>([])
-	const [mcpMarketplaceCatalog, setMcpMarketplaceCatalog] = useState<McpMarketplaceCatalog>({ items: [] }) // kilocode_change
+	const [mcpMarketplaceCatalog, setMcpMarketplaceCatalog] = useState<McpMarketplaceCatalog>({ items: [] }) // novacode_change
 	const [currentCheckpoint, setCurrentCheckpoint] = useState<string>()
 	const [extensionRouterModels, setExtensionRouterModels] = useState<RouterModels | undefined>(undefined)
-	// kilocode_change start
+	// novacode_change start
 	const [globalRules, setGlobalRules] = useState<ClineRulesToggles>({})
 	const [localRules, setLocalRules] = useState<ClineRulesToggles>({})
 	const [globalWorkflows, setGlobalWorkflows] = useState<ClineRulesToggles>({})
 	const [localWorkflows, setLocalWorkflows] = useState<ClineRulesToggles>({})
-	// kilocode_change end
+	// novacode_change end
 	const [marketplaceItems, setMarketplaceItems] = useState<any[]>([])
 	const [alwaysAllowFollowupQuestions, setAlwaysAllowFollowupQuestions] = useState(false) // Add state for follow-up questions auto-approve
 	const [followupAutoApproveTimeoutMs, setFollowupAutoApproveTimeoutMs] = useState<number | undefined>(undefined) // Will be set from global settings
@@ -495,7 +495,7 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 					setMcpServers(message.mcpServers ?? [])
 					break
 				}
-				// kilocode_change
+				// novacode_change
 				case "mcpMarketplaceCatalog": {
 					if (message.mcpMarketplaceCatalog) {
 						setMcpMarketplaceCatalog(message.mcpMarketplaceCatalog)
@@ -509,7 +509,7 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 					if (message.localWorkflows) setLocalWorkflows(message.localWorkflows)
 					break
 				}
-				// end kilocode_change
+				// end novacode_change
 				case "currentCheckpointUpdated": {
 					setCurrentCheckpoint(message.text)
 					break
@@ -565,16 +565,16 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		showWelcome,
 		theme,
 		mcpServers,
-		mcpMarketplaceCatalog, // kilocode_change
+		mcpMarketplaceCatalog, // novacode_change
 		currentCheckpoint,
 		filePaths,
 		openedTabs,
-		// kilocode_change start
+		// novacode_change start
 		globalRules,
 		localRules,
 		globalWorkflows,
 		localWorkflows,
-		// kilocode_change end
+		// novacode_change end
 		commands,
 		soundVolume: state.soundVolume,
 		ttsSpeed: state.ttsSpeed,
@@ -603,7 +603,7 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		setAlwaysAllowWrite: (value) => setState((prevState) => ({ ...prevState, alwaysAllowWrite: value })),
 		setAlwaysAllowWriteOutsideWorkspace: (value) =>
 			setState((prevState) => ({ ...prevState, alwaysAllowWriteOutsideWorkspace: value })),
-		setAlwaysAllowDelete: (value) => setState((prevState) => ({ ...prevState, alwaysAllowDelete: value })), // kilocode_change
+		setAlwaysAllowDelete: (value) => setState((prevState) => ({ ...prevState, alwaysAllowDelete: value })), // novacode_change
 		setAlwaysAllowExecute: (value) => setState((prevState) => ({ ...prevState, alwaysAllowExecute: value })),
 		setAlwaysAllowBrowser: (value) => setState((prevState) => ({ ...prevState, alwaysAllowBrowser: value })),
 		setAlwaysAllowMcp: (value) => setState((prevState) => ({ ...prevState, alwaysAllowMcp: value })),
@@ -652,7 +652,7 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		setCustomSupportPrompts: (value) => setState((prevState) => ({ ...prevState, customSupportPrompts: value })),
 		setEnhancementApiConfigId: (value) =>
 			setState((prevState) => ({ ...prevState, enhancementApiConfigId: value })),
-		// kilocode_change start
+		// novacode_change start
 		markNotificationAsDismissed: (notificationId) => {
 			setState((prevState) => {
 				return {
@@ -667,14 +667,14 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 			setState((prevState) => ({ ...prevState, commitMessageApiConfigId: value })),
 		setShowAutoApproveMenu: (value) => setState((prevState) => ({ ...prevState, showAutoApproveMenu: value })),
 		setShowTaskTimeline: (value) => setState((prevState) => ({ ...prevState, showTaskTimeline: value })),
-		setSendMessageOnEnter: (value) => setState((prevState) => ({ ...prevState, sendMessageOnEnter: value })), // kilocode_change
+		setSendMessageOnEnter: (value) => setState((prevState) => ({ ...prevState, sendMessageOnEnter: value })), // novacode_change
 		setHideCostBelowThreshold: (value) =>
 			setState((prevState) => ({ ...prevState, hideCostBelowThreshold: value })),
 		setHoveringTaskTimeline: (value) => setState((prevState) => ({ ...prevState, hoveringTaskTimeline: value })),
 		setShowTimestamps: (value) => setState((prevState) => ({ ...prevState, showTimestamps: value })),
-		setShowDiffStats: (value) => setState((prevState) => ({ ...prevState, showDiffStats: value })), // kilocode_change
-		setYoloMode: (value) => setState((prevState) => ({ ...prevState, yoloMode: value })), // kilocode_change
-		// kilocode_change end
+		setShowDiffStats: (value) => setState((prevState) => ({ ...prevState, showDiffStats: value })), // novacode_change
+		setYoloMode: (value) => setState((prevState) => ({ ...prevState, yoloMode: value })), // novacode_change
+		// novacode_change end
 		setAutoApprovalEnabled: (value) => setState((prevState) => ({ ...prevState, autoApprovalEnabled: value })),
 		setCustomModes: (value) => setState((prevState) => ({ ...prevState, customModes: value })),
 		setMaxOpenTabsContext: (value) => setState((prevState) => ({ ...prevState, maxOpenTabsContext: value })),
@@ -713,9 +713,9 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		enterBehavior: state.enterBehavior ?? "send",
 		setEnterBehavior: (value) => setState((prevState) => ({ ...prevState, enterBehavior: value })),
 		setHasOpenedModeSelector: (value) => setState((prevState) => ({ ...prevState, hasOpenedModeSelector: value })),
-		hasCompletedOnboarding: state.hasCompletedOnboarding, // kilocode_change
+		hasCompletedOnboarding: state.hasCompletedOnboarding, // novacode_change
 		setHasCompletedOnboarding: (value) =>
-			setState((prevState) => ({ ...prevState, hasCompletedOnboarding: value })), // kilocode_change
+			setState((prevState) => ({ ...prevState, hasCompletedOnboarding: value })), // novacode_change
 		setAutoCondenseContext: (value) => setState((prevState) => ({ ...prevState, autoCondenseContext: value })),
 		setAutoCondenseContextPercent: (value) =>
 			setState((prevState) => ({ ...prevState, autoCondenseContextPercent: value })),
@@ -723,13 +723,13 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		setCustomCondensingPrompt: (value) =>
 			setState((prevState) => ({ ...prevState, customCondensingPrompt: value })),
 		setYoloGatekeeperApiConfigId: (value) =>
-			setState((prevState) => ({ ...prevState, yoloGatekeeperApiConfigId: value })), // kilocode_change: AI gatekeeper for YOLO mode
+			setState((prevState) => ({ ...prevState, yoloGatekeeperApiConfigId: value })), // novacode_change: AI gatekeeper for YOLO mode
 		setProfileThresholds: (value) => setState((prevState) => ({ ...prevState, profileThresholds: value })),
-		// kilocode_change start
+		// novacode_change start
 		setSystemNotificationsEnabled: (value) =>
 			setState((prevState) => ({ ...prevState, systemNotificationsEnabled: value })),
-		dismissedNotificationIds: state.dismissedNotificationIds || [], // kilocode_change
-		// kilocode_change end
+		dismissedNotificationIds: state.dismissedNotificationIds || [], // novacode_change
+		// novacode_change end
 		includeDiagnosticMessages: state.includeDiagnosticMessages,
 		setIncludeDiagnosticMessages: (value) => {
 			setState((prevState) => ({ ...prevState, includeDiagnosticMessages: value }))
@@ -738,7 +738,7 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		setMaxDiagnosticMessages: (value) => {
 			setState((prevState) => ({ ...prevState, maxDiagnosticMessages: value }))
 		},
-		// kilocode_change start - Auto-purge setters
+		// novacode_change start - Auto-purge setters
 		setAutoPurgeEnabled: (value) => setState((prevState) => ({ ...prevState, autoPurgeEnabled: value })),
 		setAutoPurgeDefaultRetentionDays: (value) =>
 			setState((prevState) => ({ ...prevState, autoPurgeDefaultRetentionDays: value })),
@@ -750,7 +750,7 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 			setState((prevState) => ({ ...prevState, autoPurgeIncompleteTaskRetentionDays: value })),
 		setAutoPurgeLastRunTimestamp: (value) =>
 			setState((prevState) => ({ ...prevState, autoPurgeLastRunTimestamp: value })),
-		// kilocode_change end
+		// novacode_change end
 		includeTaskHistoryInEnhance,
 		setIncludeTaskHistoryInEnhance,
 		includeCurrentTime,

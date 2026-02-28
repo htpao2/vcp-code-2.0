@@ -1,4 +1,5 @@
 import * as path from "path"
+import fs from "fs"
 import { Parser as ParserT, Language as LanguageT, Query as QueryT } from "web-tree-sitter"
 import {
 	javascriptQuery,
@@ -37,9 +38,33 @@ export interface LanguageParser {
 	}
 }
 
+function resolveLanguageWasmPath(langName: string, sourceDirectory?: string): string {
+	const filename = `tree-sitter-${langName}.wasm`
+	const candidatePaths: string[] = []
+
+	if (sourceDirectory) {
+		candidatePaths.push(path.join(sourceDirectory, filename))
+	}
+
+	candidatePaths.push(path.join(__dirname, filename))
+	candidatePaths.push(path.resolve(__dirname, "../../dist", filename))
+	candidatePaths.push(path.resolve(__dirname, "../../../dist", filename))
+
+	for (const candidate of candidatePaths) {
+		if (fs.existsSync(candidate)) {
+			return candidate
+		}
+	}
+
+	try {
+		return require.resolve(`tree-sitter-wasms/out/${filename}`)
+	} catch {
+		throw new Error(`Unable to resolve tree-sitter wasm: ${filename}`)
+	}
+}
+
 async function loadLanguage(langName: string, sourceDirectory?: string) {
-	const baseDir = sourceDirectory || __dirname
-	const wasmPath = path.join(baseDir, `tree-sitter-${langName}.wasm`)
+	const wasmPath = resolveLanguageWasmPath(langName, sourceDirectory)
 
 	try {
 		const { Language } = require("web-tree-sitter")

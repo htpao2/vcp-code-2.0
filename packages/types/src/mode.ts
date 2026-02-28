@@ -69,8 +69,8 @@ export const modeConfigSchema = z.object({
 	description: z.string().optional(),
 	customInstructions: z.string().optional(),
 	groups: groupEntryArraySchema,
-	source: z.enum(["global", "project", "organization"]).optional(), // kilocode_change: Added "organization" source
-	iconName: z.string().optional(), // kilocode_change
+	source: z.enum(["global", "project", "organization"]).optional(), // novacode_change: Added "organization" source
+	iconName: z.string().optional(), // novacode_change
 })
 
 export type ModeConfig = z.infer<typeof modeConfigSchema>
@@ -142,12 +142,12 @@ export const DEFAULT_MODE_SLUG = "code"
 export const DEFAULT_MODES: readonly ModeConfig[] = [
 	{
 		slug: "architect",
-		// kilocode_change start
+		// novacode_change start
 		name: "Architect",
 		iconName: "codicon-type-hierarchy-sub",
-		// kilocode_change end
+		// novacode_change end
 		roleDefinition:
-			"You are Kilo Code, an experienced technical leader who is inquisitive and an excellent planner. Your goal is to gather information and get context to create a detailed plan for accomplishing the user's task, which the user will review and approve before they switch into another mode to implement the solution.",
+			"You are Nova Code, an experienced technical leader who is inquisitive and an excellent planner. Your goal is to gather information and get context to create a detailed plan for accomplishing the user's task, which the user will review and approve before they switch into another mode to implement the solution.",
 		whenToUse:
 			"Use this mode when you need to plan, design, or strategize before implementation. Perfect for breaking down complex problems, creating technical specifications, designing system architecture, or brainstorming solutions before coding.",
 		description: "Plan and design before implementation",
@@ -157,12 +157,12 @@ export const DEFAULT_MODES: readonly ModeConfig[] = [
 	},
 	{
 		slug: "code",
-		// kilocode_change start
+		// novacode_change start
 		name: "Code",
 		iconName: "codicon-code",
-		// kilocode_change end
+		// novacode_change end
 		roleDefinition:
-			"You are Kilo Code, a highly skilled software engineer with extensive knowledge in many programming languages, frameworks, design patterns, and best practices.",
+			"You are Nova Code, a highly skilled software engineer with extensive knowledge in many programming languages, frameworks, design patterns, and best practices.",
 		whenToUse:
 			"Use this mode when you need to write, modify, or refactor code. Ideal for implementing features, fixing bugs, creating new files, or making code improvements across any programming language or framework.",
 		description: "Write, modify, and refactor code",
@@ -170,12 +170,12 @@ export const DEFAULT_MODES: readonly ModeConfig[] = [
 	},
 	{
 		slug: "ask",
-		// kilocode_change start
+		// novacode_change start
 		name: "Ask",
 		iconName: "codicon-question",
-		// kilocode_change end
+		// novacode_change end
 		roleDefinition:
-			"You are Kilo Code, a knowledgeable technical assistant focused on answering questions and providing information about software development, technology, and related topics.",
+			"You are Nova Code, a knowledgeable technical assistant focused on answering questions and providing information about software development, technology, and related topics.",
 		whenToUse:
 			"Use this mode when you need explanations, documentation, or answers to technical questions. Best for understanding concepts, analyzing existing code, getting recommendations, or learning about technologies without making changes.",
 		description: "Get answers and explanations",
@@ -185,12 +185,12 @@ export const DEFAULT_MODES: readonly ModeConfig[] = [
 	},
 	{
 		slug: "debug",
-		// kilocode_change start
+		// novacode_change start
 		name: "Debug",
 		iconName: "codicon-bug",
-		// kilocode_change end
+		// novacode_change end
 		roleDefinition:
-			"You are Kilo Code, an expert software debugger specializing in systematic problem diagnosis and resolution.",
+			"You are Nova Code, an expert software debugger specializing in systematic problem diagnosis and resolution.",
 		whenToUse:
 			"Use this mode when you're troubleshooting issues, investigating errors, or diagnosing problems. Specialized in systematic debugging, adding logging, analyzing stack traces, and identifying root causes before applying fixes.",
 		description: "Diagnose and fix software issues",
@@ -200,12 +200,12 @@ export const DEFAULT_MODES: readonly ModeConfig[] = [
 	},
 	{
 		slug: "orchestrator",
-		// kilocode_change start
+		// novacode_change start
 		name: "Orchestrator",
 		iconName: "codicon-run-all",
-		// kilocode_change end
+		// novacode_change end
 		roleDefinition:
-			"You are Kilo Code, a strategic workflow orchestrator who coordinates complex tasks by delegating them to appropriate specialized modes. You have a comprehensive understanding of each mode's capabilities and limitations, allowing you to effectively break down complex problems into discrete tasks that can be solved by different specialists.",
+			"You are Nova Code, a strategic workflow orchestrator who coordinates complex tasks by delegating them to appropriate specialized modes. You have a comprehensive understanding of each mode's capabilities and limitations, allowing you to effectively break down complex problems into discrete tasks that can be solved by different specialists.",
 		whenToUse:
 			"Use this mode for complex, multi-step projects that require coordination across different specialties. Ideal when you need to break down large tasks into subtasks, manage workflows, or coordinate work that spans multiple domains or expertise areas.",
 		description: "Coordinate tasks across multiple modes",
@@ -213,13 +213,13 @@ export const DEFAULT_MODES: readonly ModeConfig[] = [
 		customInstructions:
 			"Your role is to coordinate complex workflows by delegating tasks to specialized modes. As an orchestrator, you should:\n\n1. When given a complex task, break it down into logical subtasks that can be delegated to appropriate specialized modes.\n\n2. For each subtask, use the `new_task` tool to delegate. Choose the most appropriate mode for the subtask's specific goal and provide comprehensive instructions in the `message` parameter. These instructions must include:\n    *   All necessary context from the parent task or previous subtasks required to complete the work.\n    *   A clearly defined scope, specifying exactly what the subtask should accomplish.\n    *   An explicit statement that the subtask should *only* perform the work outlined in these instructions and not deviate.\n    *   An instruction for the subtask to signal completion by using the `attempt_completion` tool, providing a concise yet thorough summary of the outcome in the `result` parameter, keeping in mind that this summary will be the source of truth used to keep track of what was completed on this project.\n    *   A statement that these specific instructions supersede any conflicting general instructions the subtask's mode might have.\n\n3. Track and manage the progress of all subtasks. When a subtask is completed, analyze its results and determine the next steps.\n\n4. Help the user understand how the different subtasks fit together in the overall workflow. Provide clear reasoning about why you're delegating specific tasks to specific modes.\n\n5. When all subtasks are completed, synthesize the results and provide a comprehensive overview of what was accomplished.\n\n6. Ask clarifying questions when necessary to better understand how to break down complex tasks effectively.\n\n7. Suggest improvements to the workflow based on the results of completed subtasks.\n\nUse subtasks to maintain clarity. If a request significantly shifts focus or requires a different expertise (mode), consider creating a subtask rather than overloading the current one.",
 	},
-	// kilocode_change start - Review mode for local code reviews
+	// novacode_change start - Review mode for local code reviews
 	{
 		slug: "review",
 		name: "Review",
 		iconName: "codicon-git-compare",
 		roleDefinition:
-			"You are Kilo Code, an expert code reviewer with deep expertise in software engineering best practices, security vulnerabilities, performance optimization, and code quality. Your role is advisory - provide clear, actionable feedback on code quality and potential issues.",
+			"You are Nova Code, an expert code reviewer with deep expertise in software engineering best practices, security vulnerabilities, performance optimization, and code quality. Your role is advisory - provide clear, actionable feedback on code quality and potential issues.",
 		whenToUse:
 			"Use this mode when you need to review code changes. Ideal for reviewing uncommitted work before committing, comparing your branch against main/develop, or analyzing changes before merging.",
 		description: "Review code changes locally",
@@ -306,5 +306,5 @@ Use \`ask_followup_question\` with:
   - { text: "Fix all issues found in this review", mode: "code" }
   - { text: "Fix critical issues only", mode: "code" }`,
 	},
-	// kilocode_change end
+	// novacode_change end
 ] as const

@@ -28,81 +28,81 @@ export const TASK_TIMELINE_MESSAGE_TYPES: Record<string, TaskTimelineMessageType
 	// Ask types that should be shown (everything except the filtered ones)
 	"ask:tool": {
 		color: taskTimelineColorPalette.SYSTEM_GENERAL_TOOL,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.tool",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.tool",
 	},
 	"ask:completion_result": {
 		color: taskTimelineColorPalette.SUCCESS,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.completion_result",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.completion_result",
 	},
 	"ask:browser_action_launch": {
 		color: taskTimelineColorPalette.SYSTEM_GENERAL_TOOL,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.browser_action_launch",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.browser_action_launch",
 	},
 	"ask:use_mcp_server": {
 		color: taskTimelineColorPalette.SYSTEM_GENERAL_TOOL,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.use_mcp_server",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.use_mcp_server",
 	},
 	"ask:command": {
 		color: taskTimelineColorPalette.SYSTEM_GENERAL_TOOL,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.command",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.command",
 	},
 	"ask:followup": {
 		color: taskTimelineColorPalette.ASSISTANT_QUESTION,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.followup",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.followup",
 	},
 
 	// Say types that should be shown (everything except the filtered ones)
 	"say:text": {
 		color: taskTimelineColorPalette.ASSISTANT_MUTTERING,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.text",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.text",
 	},
 	"say:reasoning": {
 		color: taskTimelineColorPalette.ASSISTANT_MUTTERING,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.reasoning",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.reasoning",
 	},
 	"say:mcp_server_response": {
 		color: taskTimelineColorPalette.SYSTEM_GENERAL_TOOL,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.mcp_server_response",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.mcp_server_response",
 	},
 	"say:command_output": {
 		color: taskTimelineColorPalette.SYSTEM_GENERAL_TOOL,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.command_output",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.command_output",
 	},
 	"say:browser_action": {
 		color: taskTimelineColorPalette.SYSTEM_GENERAL_TOOL,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.browser_action",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.browser_action",
 	},
 	"say:browser_action_result": {
 		color: taskTimelineColorPalette.SYSTEM_GENERAL_TOOL,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.browser_action_result",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.browser_action_result",
 	},
 	"say:completion_result": {
 		color: taskTimelineColorPalette.SUCCESS,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.completion_result",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.completion_result",
 	},
 	"say:error": {
 		color: taskTimelineColorPalette.ERROR,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.error",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.error",
 	},
 	"say:checkpoint_saved": {
 		color: taskTimelineColorPalette.SUCCESS,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.checkpoint_saved",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.checkpoint_saved",
 	},
 	"say:condense_context": {
 		color: taskTimelineColorPalette.ASSISTANT_MUTTERING,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.condense_context",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.condense_context",
 	},
 	"say:user_feedback": {
 		color: taskTimelineColorPalette.USER_INTERACTION,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.user",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.user",
 	},
 	"say:user_feedback_diff": {
 		color: taskTimelineColorPalette.USER_INTERACTION,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.user",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.user",
 	},
 	"ask:condense": {
 		color: taskTimelineColorPalette.ASSISTANT_MUTTERING,
-		translationKey: "kilocode:taskTimeline.tooltip.messageTypes.condense",
+		translationKey: "novacode:taskTimeline.tooltip.messageTypes.condense",
 	},
 }
 
@@ -124,12 +124,12 @@ export function getTaskTimelineMessageTypeKey(message: ClineMessage): string {
 export function getMessageTypeDescription(message: ClineMessage | ClineMessage[], t: any): string {
 	const singleMessage = Array.isArray(message) ? message[0] : message
 	if (!singleMessage) {
-		return t("kilocode:taskTimeline.tooltip.messageTypes.unknown")
+		return t("novacode:taskTimeline.tooltip.messageTypes.unknown")
 	}
 
 	const messageKey = getTaskTimelineMessageTypeKey(singleMessage)
 	const config = TASK_TIMELINE_MESSAGE_TYPES[messageKey]
-	const translationKey = config ? config.translationKey : "kilocode:taskTimeline.tooltip.messageTypes.unknown"
+	const translationKey = config ? config.translationKey : "novacode:taskTimeline.tooltip.messageTypes.unknown"
 
 	return t(translationKey)
 }

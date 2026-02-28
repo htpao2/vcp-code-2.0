@@ -1,4 +1,4 @@
-import { ExtensionContext } from "vscode"
+﻿import { ExtensionContext } from "vscode"
 import { z, ZodError } from "zod"
 import deepEqual from "fast-deep-equal"
 
@@ -11,15 +11,15 @@ import {
 	DEFAULT_CONSECUTIVE_MISTAKE_LIMIT,
 	getModelId,
 	type ProviderName,
-	type ProfileType, // kilocode_change - autocomplete profile type system
+	type ProfileType, // novacode_change - autocomplete profile type system
 	isProviderName,
 } from "@roo-code/types"
 import { TelemetryService } from "@roo-code/telemetry"
 
 import { Mode, modes } from "../../shared/modes"
-import { migrateMorphApiKey } from "./kilocode/migrateMorphApiKey"
+import { migrateMorphApiKey } from "./nova/migrateMorphApiKey"
 import { buildApiHandler } from "../../api"
-import { t } from "../../i18n" // kilocode_change - autocomplete profile type system
+import { t } from "../../i18n" // novacode_change - autocomplete profile type system
 
 // Type-safe model migrations mapping
 type ModelMigrations = {
@@ -50,7 +50,7 @@ export const providerProfilesSchema = z.object({
 			openAiHeadersMigrated: z.boolean().optional(),
 			consecutiveMistakeLimitMigrated: z.boolean().optional(),
 			todoListEnabledMigrated: z.boolean().optional(),
-			morphApiKeyMigrated: z.boolean().optional(), // kilocode_change: Morph API key migration
+			morphApiKeyMigrated: z.boolean().optional(), // novacode_change: Morph API key migration
 			claudeCodeLegacySettingsMigrated: z.boolean().optional(),
 		})
 		.optional(),
@@ -66,14 +66,14 @@ export class ProviderSettingsManager {
 		modes.map((mode) => [mode.slug, this.defaultConfigId]),
 	)
 
-	// kilocode_change start: Anonymous kilocode onboarding - set default provider for new users
+	// novacode_change start: Anonymous novacode onboarding - set default provider for new users
 	private readonly defaultProviderProfiles: ProviderProfiles = {
 		currentApiConfigName: "default",
 		apiConfigs: {
 			default: {
 				id: this.defaultConfigId,
-				apiProvider: "kilocode",
-				kilocodeModel: "minimax/minimax-m2.1:free",
+				apiProvider: "novacode",
+				novacodeModel: "minimax/minimax-m2.1:free",
 			},
 		},
 		modeApiConfigs: this.defaultModeApiConfigs,
@@ -86,9 +86,9 @@ export class ProviderSettingsManager {
 			claudeCodeLegacySettingsMigrated: true, // Mark as migrated on fresh installs
 		},
 	}
-	// kilocode_change end
+	// novacode_change end
 
-	// kilocode_change start
+	// novacode_change start
 	private pendingDuplicateIdRepairReport: Record<string, string[]> | null = null
 
 	public consumeDuplicateIdRepairReport(): Record<string, string[]> | null {
@@ -96,7 +96,7 @@ export class ProviderSettingsManager {
 		this.pendingDuplicateIdRepairReport = null
 		return report
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	private readonly context: ExtensionContext
 
@@ -104,14 +104,14 @@ export class ProviderSettingsManager {
 		this.context = context
 
 		// TODO: We really shouldn't have async methods in the constructor.
-		// kilocode_change start
+		// novacode_change start
 		// only initialize ONCE, and save the promise in case somebody needs to wait.
 		this.initialization = this.init_runMigrations()
 		this.initialization.catch(console.error)
-		// kilocode_change end
+		// novacode_change end
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	private readonly initialization: Promise<void>
 	/**
 	 * Wait for initialization migrations to complete.  These were started during construction.
@@ -130,7 +130,7 @@ export class ProviderSettingsManager {
 		existingIds.add(id)
 		return id
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	public generateId() {
 		return Math.random().toString(36).substring(2, 15)
@@ -144,14 +144,14 @@ export class ProviderSettingsManager {
 		return next
 	}
 
-	// kilocode_change: private & renamed:
+	// novacode_change: private & renamed:
 	async init_runMigrations() {
 		try {
 			return await this.lock(async () => {
-				// kilocode_change start: Check if this is a new user (no stored config)
+				// novacode_change start: Check if this is a new user (no stored config)
 				const storedContent = await this.context.secrets.get(this.secretsKey)
 				const isNewUser = !storedContent
-				// kilocode_change end
+				// novacode_change end
 
 				const providerProfiles = await this.loadFromContent(storedContent)
 
@@ -187,7 +187,7 @@ export class ProviderSettingsManager {
 					}
 				}
 
-				// kilocode_change start: Repair duplicated IDs (keep the first occurrence based on apiConfigs insertion order).
+				// novacode_change start: Repair duplicated IDs (keep the first occurrence based on apiConfigs insertion order).
 				const existingIds = new Set(
 					Object.values(providerProfiles.apiConfigs)
 						.map((c) => c.id)
@@ -254,7 +254,7 @@ export class ProviderSettingsManager {
 						}
 					}
 				}
-				// kilocode_Change end
+				// novacode_Change end
 
 				// Ensure migrations field exists
 				if (!providerProfiles.migrations) {
@@ -264,7 +264,7 @@ export class ProviderSettingsManager {
 						openAiHeadersMigrated: false,
 						consecutiveMistakeLimitMigrated: false,
 						todoListEnabledMigrated: false,
-						morphApiKeyMigrated: false, // kilocode_change: Morph API key migration
+						morphApiKeyMigrated: false, // novacode_change: Morph API key migration
 						claudeCodeLegacySettingsMigrated: false,
 					} // Initialize with default values
 					isDirty = true
@@ -300,13 +300,13 @@ export class ProviderSettingsManager {
 					isDirty = true
 				}
 
-				// kilocode_change start
+				// novacode_change start
 				if (!providerProfiles.migrations.morphApiKeyMigrated) {
 					const result = await migrateMorphApiKey(this.context, providerProfiles)
 					providerProfiles.migrations.morphApiKeyMigrated = true
 					isDirty ||= result
 				}
-				// kilocode_change end
+				// novacode_change end
 				if (!providerProfiles.migrations.claudeCodeLegacySettingsMigrated) {
 					// These keys were used by the removed local Claude Code CLI wrapper.
 					for (const apiConfig of Object.values(providerProfiles.apiConfigs)) {
@@ -509,7 +509,7 @@ export class ProviderSettingsManager {
 					id: apiConfig.id || "",
 					apiProvider: apiConfig.apiProvider,
 					modelId: this.cleanModelId(getModelId(apiConfig)),
-					profileType: apiConfig.profileType, // kilocode_change - autocomplete profile type system
+					profileType: apiConfig.profileType, // novacode_change - autocomplete profile type system
 				}))
 			})
 		} catch (error) {
@@ -517,7 +517,7 @@ export class ProviderSettingsManager {
 		}
 	}
 
-	// kilocode_change start - autocomplete profile type system
+	// novacode_change start - autocomplete profile type system
 	/**
 	 * Validate that only one autocomplete profile exists
 	 */
@@ -539,7 +539,7 @@ export class ProviderSettingsManager {
 			throw new Error(t("settings:providers.autocomplete.onlyOneAllowed", { existingName }))
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	/**
 	 * Save a config with the given name.
@@ -551,7 +551,7 @@ export class ProviderSettingsManager {
 			return await this.lock(async () => {
 				const providerProfiles = await this.load()
 
-				// kilocode_change start" autocomplete profile type system and check for duplicate id's
+				// novacode_change start" autocomplete profile type system and check for duplicate id's
 				await this.validateAutocompleteConstraint(providerProfiles, name, config.profileType)
 
 				const existingEntry = providerProfiles.apiConfigs[name]
@@ -566,7 +566,7 @@ export class ProviderSettingsManager {
 					existingEntry?.id && existingEntry.id.length > 0
 						? existingEntry.id
 						: this.generateUniqueId(existingIds)
-				// kilocode_change end
+				// novacode_change end
 
 				// Filter out settings from other providers.
 				const filteredConfig = discriminatedProviderSettingsWithIdSchema.parse(config)
@@ -778,7 +778,7 @@ export class ProviderSettingsManager {
 		return this.loadFromContent(content)
 	}
 
-	// kilocode_change start: Extract content parsing to avoid double-fetching in init_runMigrations
+	// novacode_change start: Extract content parsing to avoid double-fetching in init_runMigrations
 	private loadFromContent(content: string | undefined): ProviderProfiles {
 		try {
 			if (!content) {
@@ -819,7 +819,7 @@ export class ProviderSettingsManager {
 			throw new Error(`Failed to read provider profiles from secrets: ${error}`)
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	/**
 	 * Sanitizes a provider config by resetting invalid/removed apiProvider values.

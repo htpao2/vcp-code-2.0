@@ -62,7 +62,7 @@ export class CodeIndexManager {
 		CodeIndexManager.instances.clear()
 	}
 
-	public readonly workspacePath: string // kilocode_change
+	public readonly workspacePath: string // novacode_change
 	private readonly context: vscode.ExtensionContext
 
 	// Private constructor for singleton pattern
@@ -148,7 +148,7 @@ export class CodeIndexManager {
 		const needsServiceRecreation = !this._serviceFactory || requiresRestart
 
 		if (needsServiceRecreation) {
-			// kilocode_change start: add additional logging
+			// novacode_change start: add additional logging
 			try {
 				await this._recreateServices()
 			} catch (error) {
@@ -161,7 +161,7 @@ export class CodeIndexManager {
 				// Re-throw to prevent further initialization
 				throw error
 			}
-			// kilocode_change end
+			// novacode_change end
 		}
 
 		// 5. Handle Indexing Start/Restart
@@ -216,7 +216,7 @@ export class CodeIndexManager {
 		}
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	/**
 	 * Cancel any active indexing activity immediately.
 	 */
@@ -238,7 +238,7 @@ export class CodeIndexManager {
 			this._orchestrator.updateBatchSegmentThreshold(newThreshold)
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	/**
 	 * Recovers from error state by clearing the error and resetting internal state.
@@ -303,11 +303,11 @@ export class CodeIndexManager {
 		await this._cacheManager!.clearCacheFile()
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	public clearErrorState(): void {
 		this._stateManager.setSystemState("Standby", "")
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	// --- Private Helpers ---
 
@@ -383,10 +383,10 @@ export class CodeIndexManager {
 			rooIgnoreController,
 		)
 
-		// kilocode_change start: Handle Kilo org mode (no embedder/vector store validation needed)
-		const isKiloOrgMode = this._configManager!.isKiloOrgMode
+		// novacode_change start: Handle Nova org mode (no embedder/vector store validation needed)
+		const isNovaOrgMode = this._configManager!.isNovaOrgMode
 
-		if (!isKiloOrgMode) {
+		if (!isNovaOrgMode) {
 			// Only validate the embedder if it matches the currently configured provider
 			const config = this._configManager!.getConfig()
 			const shouldValidate = embedder && embedder.embedderInfo.name === config.embedderProvider
@@ -400,7 +400,7 @@ export class CodeIndexManager {
 				}
 			}
 		}
-		// kilocode_change end
+		// novacode_change end
 
 		// (Re)Initialize orchestrator
 		this._orchestrator = new CodeIndexOrchestrator(
@@ -413,15 +413,15 @@ export class CodeIndexManager {
 			fileWatcher,
 		)
 
-		// kilocode_change start: Always create search service (it handles both local and Kilo org mode)
-		// In Kilo org mode, embedder and vectorStore ill be null, but search service handles this
+		// novacode_change start: Always create search service (it handles both local and Nova org mode)
+		// In Nova org mode, embedder and vectorStore ill be null, but search service handles this
 		this._searchService = new CodeIndexSearchService(
 			this._configManager!,
 			this._stateManager,
 			embedder,
 			vectorStore,
 		)
-		// kilocode_change end
+		// novacode_change end
 
 		// Clear any error state after successful recwreation
 		this._stateManager.setSystemState("Standby", "")

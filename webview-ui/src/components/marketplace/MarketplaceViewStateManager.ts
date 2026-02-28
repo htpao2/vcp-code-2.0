@@ -11,10 +11,10 @@
  * 3. Using minimal state updates to avoid resetting scroll position
  */
 
-import { MarketplaceItem, isSkillItem, SkillMarketplaceItem } from "@roo-code/types" //kilo_code change
+import { MarketplaceItem, isSkillItem, SkillMarketplaceItem } from "@roo-code/types" //nova_code change
 import { vscode } from "../../utils/vscode"
 import { WebviewMessage } from "../../../../src/shared/WebviewMessage"
-import type { MarketplaceInstalledMetadata } from "@roo-code/types" // kilocode_change
+import type { MarketplaceInstalledMetadata } from "@roo-code/types" // novacode_change
 
 export interface ViewState {
 	allItems: MarketplaceItem[]
@@ -22,7 +22,7 @@ export interface ViewState {
 	displayItems?: MarketplaceItem[] // Items currently being displayed (filtered or all)
 	displayOrganizationMcps?: MarketplaceItem[] // Organization MCPs currently being displayed (filtered or all)
 	isFetching: boolean
-	activeTab: "mcp" | "mode" | "skills" // kilocode_change added skills
+	activeTab: "mcp" | "mode" | "skills" // novacode_change added skills
 	filters: {
 		type: string
 		search: string
@@ -484,9 +484,9 @@ export class MarketplaceViewStateManager {
 		}
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	public getSkills(): SkillMarketplaceItem[] {
 		return this.state.allItems.filter(isSkillItem)
 	}
-	// kilocode_change end
+	// novacode_change end
 }

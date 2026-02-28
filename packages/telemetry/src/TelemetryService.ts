@@ -51,17 +51,17 @@ export class TelemetryService {
 		this.clients.forEach((client) => client.updateTelemetryState(isOptedIn))
 	}
 
-	// kilocode_change start
+	// novacode_change start
 	public captureException(error: Error, properties?: Record<string | number, unknown>): void {
 		this.clients.forEach((client) => client.captureException(error, properties))
 	}
 
-	public async updateIdentity(kilocodeToken: string) {
+	public async updateIdentity(novacodeToken: string) {
 		for (const client of this.clients) {
-			await client.updateIdentity(kilocodeToken)
+			await client.updateIdentity(novacodeToken)
 		}
 	}
-	// kilocode_change end
+	// novacode_change end
 
 	/**
 	 * Generic method to capture any type of event with specified properties
@@ -101,10 +101,10 @@ export class TelemetryService {
 			cacheWriteTokens: number
 			cacheReadTokens: number
 			cost?: number
-			// kilocode_change start
+			// novacode_change start
 			completionTime?: number
 			inferenceProvider?: string
-			// kilocode_change end
+			// novacode_change end
 		},
 	): void {
 		this.captureEvent(TelemetryEventName.LLM_COMPLETION, { taskId, ...properties })

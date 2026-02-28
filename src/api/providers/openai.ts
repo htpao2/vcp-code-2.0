@@ -91,7 +91,7 @@ export class OpenAiHandler extends BaseProvider implements SingleCompletionHandl
 		const enabledR1Format = this.options.openAiR1FormatEnabled ?? false
 		const isAzureAiInference = this._isAzureAiInference(modelUrl)
 		const deepseekReasoner = modelId.includes("deepseek-reasoner") || enabledR1Format
-		// kilocode_change removed const ark = modelUrl.includes(".volces.com")
+		// novacode_change removed const ark = modelUrl.includes(".volces.com")
 
 		if (modelId.includes("o1") || modelId.includes("o3") || modelId.includes("o4")) {
 			yield* this.handleO3FamilyMessage(modelId, systemPrompt, messages, metadata)
@@ -204,7 +204,7 @@ export class OpenAiHandler extends BaseProvider implements SingleCompletionHandl
 					}
 				}
 
-				// kilocode_change start: reasoning
+				// novacode_change start: reasoning
 				const reasoningText =
 					"reasoning_content" in delta && typeof delta.reasoning_content === "string"
 						? delta.reasoning_content
@@ -217,7 +217,7 @@ export class OpenAiHandler extends BaseProvider implements SingleCompletionHandl
 						text: reasoningText,
 					}
 				}
-				// kilocode_change end
+				// novacode_change end
 
 				yield* this.processToolCalls(delta, finishReason, activeToolCallIds)
 
@@ -260,7 +260,7 @@ export class OpenAiHandler extends BaseProvider implements SingleCompletionHandl
 				throw handleOpenAIError(error, this.providerName)
 			}
 
-			// kilocode_change start: reasoning
+			// novacode_change start: reasoning
 			const message = response.choices[0]?.message
 			if (message) {
 				if ("reasoning" in message && typeof message.reasoning === "string") {
@@ -276,7 +276,7 @@ export class OpenAiHandler extends BaseProvider implements SingleCompletionHandl
 					}
 				}
 			}
-			// kilocode_change end
+			// novacode_change end
 
 			if (message?.tool_calls) {
 				for (const toolCall of message.tool_calls) {
@@ -504,7 +504,7 @@ export class OpenAiHandler extends BaseProvider implements SingleCompletionHandl
 				id?: string
 				name?: string
 				arguments?: string
-				extra_content?: Record<string, unknown> // kilocode_change
+				extra_content?: Record<string, unknown> // novacode_change
 		  }
 		| { type: "tool_call_end"; id: string }
 	> {
@@ -519,9 +519,9 @@ export class OpenAiHandler extends BaseProvider implements SingleCompletionHandl
 					id: toolCall.id,
 					name: toolCall.function?.name,
 					arguments: toolCall.function?.arguments,
-					// kilocode_change start: Preserve extra_content for Gemini 3 thought_signature support
+					// novacode_change start: Preserve extra_content for Gemini 3 thought_signature support
 					extra_content: (toolCall as any).extra_content,
-					// kilocode_change end
+					// novacode_change end
 				}
 			}
 		}
