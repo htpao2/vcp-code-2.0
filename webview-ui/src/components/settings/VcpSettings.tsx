@@ -7,7 +7,13 @@ import {
 	VSCodeTextArea,
 	VSCodeTextField,
 } from "@vscode/webview-ui-toolkit/react"
-import { getDefaultVcpConfig, type VcpAgentTeamMember, type VcpConfig } from "@roo-code/types"
+import {
+	getDefaultVcpConfig,
+	type VcpAgentTeamMember,
+	type VcpBridgeLogEntry,
+	type VcpBridgeTestResult,
+	type VcpConfig,
+} from "@roo-code/types"
 
 import type { ExtensionStateContextType } from "@/context/ExtensionStateContext"
 import { Button } from "@/components/ui"
@@ -86,10 +92,33 @@ export const VcpSettings = ({
 	const openExternal = (url: string) => vscode.postMessage({ type: "openExternal", url })
 	const currentVcpConfig = vcpConfig ?? getDefaultVcpConfig()
 	const [membersJson, setMembersJson] = useState<string>(JSON.stringify(currentVcpConfig.agentTeam.members, null, 2))
+	const [bridgeLogs, setBridgeLogs] = useState<VcpBridgeLogEntry[]>([])
+	const [bridgeTestResult, setBridgeTestResult] = useState<VcpBridgeTestResult | undefined>(undefined)
+	const [isTestingBridge, setIsTestingBridge] = useState(false)
 
 	useEffect(() => {
 		setMembersJson(JSON.stringify(currentVcpConfig.agentTeam.members, null, 2))
 	}, [currentVcpConfig.agentTeam.members])
+
+	useEffect(() => {
+		const handleMessage = (event: MessageEvent) => {
+			const message = event.data
+			if (message.type === "vcpBridgeLog") {
+				const entries = (message.vcpBridgeLogEntries ?? message.entries ?? []) as VcpBridgeLogEntry[]
+				if (entries.length > 0) {
+					setBridgeLogs((prev) => [...prev, ...entries].slice(-100))
+				}
+				return
+			}
+			if (message.type === "vcpBridgeTestResult") {
+				setIsTestingBridge(false)
+				setBridgeTestResult(message.vcpBridgeTestResult)
+			}
+		}
+
+		window.addEventListener("message", handleMessage)
+		return () => window.removeEventListener("message", handleMessage)
+	}, [])
 
 	const updateVcpConfig = (patch: DeepPartial<VcpConfig>) => {
 		const next: VcpConfig = {
@@ -406,8 +435,29 @@ export const VcpSettings = ({
 							data-testid="vcp-toolbox-reconnect-interval-input">
 							Reconnect Interval (ms)
 						</VSCodeTextField>
-						<div className="text-xs text-vscode-descriptionForeground">
-							Bridge: {vcpBridgeStatus?.connected ? "Connected" : "Disconnected"}
+						<div
+							className="rounded-md p-2 text-xs"
+							style={{
+								background: "var(--vscode-editorWidget-background)",
+								border: "1px solid var(--vscode-editorWidget-border)",
+							}}>
+							<div className="font-medium text-[var(--vscode-foreground)] mb-1">
+								Bridge: {vcpBridgeStatus?.connected ? "Connected" : "Disconnected"}
+							</div>
+							<div className="text-vscode-descriptionForeground">
+								Endpoint: {vcpBridgeStatus?.endpoint || currentVcpConfig.toolbox.url || "(unset)"}
+							</div>
+							<div className="text-vscode-descriptionForeground">
+								Last latency: {vcpBridgeStatus?.lastLatencyMs ?? bridgeTestResult?.latencyMs ?? "-"} ms
+							</div>
+							<div className="text-vscode-descriptionForeground">
+								Reconnect attempts: {vcpBridgeStatus?.reconnectAttempts ?? 0}
+							</div>
+							{vcpBridgeStatus?.lastError && (
+								<div className="text-vscode-errorForeground mt-1">
+									Last error: {vcpBridgeStatus.lastError}
+								</div>
+							)}
 						</div>
 						<div className="flex flex-wrap gap-2">
 							<Button
@@ -422,11 +472,67 @@ export const VcpSettings = ({
 								Connect Bridge
 							</Button>
 							<Button
+								variant="secondary"
+								onClick={() => {
+									setBridgeTestResult(undefined)
+									setIsTestingBridge(true)
+									vscode.postMessage({
+										type: "updateVcpConfig",
+										config: { toolbox: currentVcpConfig.toolbox },
+									})
+									vscode.postMessage({ type: "requestVcpBridgeTest", timeout: 5000 })
+								}}
+								data-testid="vcp-toolbox-test-button">
+								{isTestingBridge ? "Testing..." : "Test Bridge"}
+							</Button>
+							<Button
 								onClick={() => vscode.postMessage({ type: "requestVcpBridgeDisconnect" })}
 								data-testid="vcp-toolbox-disconnect-button">
 								Disconnect Bridge
 							</Button>
 						</div>
+						{bridgeTestResult && (
+							<div
+								className="rounded-md p-2 text-xs"
+								style={{
+									background: bridgeTestResult.success
+										? "var(--vscode-testing-iconPassed)"
+										: "var(--vscode-inputValidation-errorBackground)",
+									color: "var(--vscode-editor-foreground)",
+									opacity: 0.85,
+								}}>
+								{bridgeTestResult.success
+									? `Bridge test succeeded (${bridgeTestResult.latencyMs ?? 0}ms)`
+									: `Bridge test failed: ${bridgeTestResult.error ?? "unknown error"}`}
+								{bridgeTestResult.endpoint ? ` | ${bridgeTestResult.endpoint}` : ""}
+							</div>
+						)}
+						{bridgeLogs.length > 0 && (
+							<details>
+								<summary className="cursor-pointer font-medium text-xs">
+									Bridge Logs ({bridgeLogs.length})
+								</summary>
+								<div
+									className="max-h-40 overflow-y-auto text-xs mt-1 rounded p-2"
+									style={{
+										background: "var(--vscode-textCodeBlock-background)",
+										border: "1px solid var(--vscode-editorWidget-border)",
+									}}>
+									{bridgeLogs
+										.slice()
+										.reverse()
+										.map((entry, index) => (
+											<div key={`${entry.timestamp}-${index}`} className="mb-1">
+												<span className="opacity-70">
+													[{new Date(entry.timestamp).toLocaleTimeString()}]
+												</span>{" "}
+												<span className="font-medium">{entry.level.toUpperCase()}</span>{" "}
+												{entry.message}
+											</div>
+										))}
+								</div>
+							</details>
+						)}
 					</div>
 				</details>
 			</Section>

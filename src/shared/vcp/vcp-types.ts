@@ -10,6 +10,7 @@ export type {
 	VcpBridgeLogEntry,
 	VcpBridgeRuntimeStats,
 	VcpBridgeStatus,
+	VcpBridgeTestResult,
 	VcpConfig,
 	VcpContextFoldConfig,
 	VcpHtmlConfig,

@@ -47,10 +47,13 @@ import {
 	ORGANIZATION_ALLOW_ALL,
 	DEFAULT_MODES,
 	DEFAULT_CHECKPOINT_TIMEOUT_SECONDS,
+	getDefaultSkillSettings,
 	getModelId,
 	getDefaultVcpConfig, // vcp_change
+	type SkillSettings,
 	type VcpBridgeLogEntry, // vcp_change
 	type VcpBridgeStatus, // vcp_change
+	type VcpBridgeTestResult, // vcp_change
 	type VcpToolboxConfig, // vcp_change
 } from "@roo-code/types"
 import { aggregateTaskCostsRecursive, type AggregatedCosts } from "./aggregateTaskCosts"
@@ -2095,11 +2098,7 @@ export class ClineProvider
 				})
 			})
 			this.vcpBridge.onLogReceived((entries: VcpBridgeLogEntry[]) => {
-				void this.postMessageToWebview({
-					type: "vcpBridgeLog",
-					entries,
-					vcpBridgeLogEntries: entries,
-				})
+				void this.postVcpBridgeLogs(entries)
 			})
 		}
 
@@ -2121,8 +2120,22 @@ export class ClineProvider
 		bridge.updateConfig(toolboxConfig)
 	}
 
+	public async testVcpBridgeConnection(timeoutMs = 5000): Promise<VcpBridgeTestResult> {
+		const vcpConfig = this.getValue("vcpConfig") ?? getDefaultVcpConfig()
+		const bridge = this.ensureVcpBridgeService(vcpConfig.toolbox)
+		return await bridge.testConnection(timeoutMs)
+	}
+
 	public getVcpBridgeStatus(): VcpBridgeStatus | null {
 		return this.vcpBridge?.status ?? null
+	}
+
+	public async postVcpBridgeLogs(entries: VcpBridgeLogEntry[]): Promise<void> {
+		await this.postMessageToWebview({
+			type: "vcpBridgeLog",
+			entries,
+			vcpBridgeLogEntries: entries,
+		})
 	}
 	// novacode_change end: vcp_change
 
@@ -2369,6 +2382,7 @@ export class ClineProvider
 			featureRoomoteControlEnabled,
 			yoloMode, // novacode_change
 			vcpConfig, // vcp_change
+			skillSettings,
 			yoloGatekeeperApiConfigId, // novacode_change: AI gatekeeper for YOLO mode
 			selectedMicrophoneDevice, // novacode_change: Selected microphone device for STT
 			isBrowserSessionActive,
@@ -2444,6 +2458,7 @@ export class ClineProvider
 			isBrowserSessionActive,
 			yoloMode: yoloMode ?? false, // novacode_change
 			vcpConfig: vcpConfig ?? getDefaultVcpConfig(), // novacode_change: vcp_change
+			skillSettings: skillSettings ?? getDefaultSkillSettings(),
 			vcpBridgeStatus: this.getVcpBridgeStatus(), // novacode_change: vcp_change
 			allowedMaxRequests,
 			allowedMaxCost,
@@ -2769,6 +2784,7 @@ export class ClineProvider
 			isBrowserSessionActive,
 			yoloMode: stateValues.yoloMode ?? false, // novacode_change
 			vcpConfig: stateValues.vcpConfig ?? getDefaultVcpConfig(), // novacode_change: vcp_change
+			skillSettings: stateValues.skillSettings ?? getDefaultSkillSettings(),
 			followupAutoApproveTimeoutMs: stateValues.followupAutoApproveTimeoutMs ?? 60000,
 			diagnosticsEnabled: stateValues.diagnosticsEnabled ?? true,
 			allowedMaxRequests: stateValues.allowedMaxRequests,

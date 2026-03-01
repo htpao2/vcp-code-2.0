@@ -40,8 +40,8 @@ vi.mock("@vscode/webview-ui-toolkit/react", () => ({
 
 // Mock the UI components
 vi.mock("@src/components/ui", () => ({
-	Button: ({ children, onClick, variant, size, style }: any) => (
-		<button onClick={onClick} data-variant={variant} data-size={size} style={style}>
+	Button: ({ children, onClick, variant, size, style, ...props }: any) => (
+		<button onClick={onClick} data-variant={variant} data-size={size} style={style} {...props}>
 			{children}
 		</button>
 	),
@@ -189,7 +189,7 @@ describe("InstalledSkillsView", () => {
 		})
 
 		// Find and click the delete button (trash icon)
-		const deleteButton = screen.getByRole("button")
+		const deleteButton = screen.getByRole("button", { name: "Delete skill skill-to-delete" })
 		fireEvent.click(deleteButton)
 
 		// Check that dialog is open
@@ -220,7 +220,7 @@ describe("InstalledSkillsView", () => {
 		})
 
 		// Click delete button to open dialog
-		const deleteButton = screen.getByRole("button")
+		const deleteButton = screen.getByRole("button", { name: "Delete skill skill-to-delete" })
 		fireEvent.click(deleteButton)
 
 		// Clear the mock to only track the delete message
@@ -269,7 +269,7 @@ describe("InstalledSkillsView", () => {
 		})
 
 		// Click delete button to open dialog
-		const deleteButton = screen.getByRole("button")
+		const deleteButton = screen.getByRole("button", { name: "Delete skill skill-to-delete" })
 		fireEvent.click(deleteButton)
 
 		// Verify dialog is open

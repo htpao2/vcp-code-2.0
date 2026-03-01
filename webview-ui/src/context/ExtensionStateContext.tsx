@@ -16,13 +16,17 @@ import {
 	type ExtensionState,
 	type MarketplaceInstalledMetadata,
 	type VcpBridgeStatus, // vcp_change
+	type VcpBridgeLogEntry, // vcp_change
+	type VcpBridgeTestResult, // vcp_change
 	type VcpConfig, // vcp_change
+	type SkillSettings,
 	type Command,
 	type McpServer,
 	RouterModels,
 	ORGANIZATION_ALLOW_ALL,
 	DEFAULT_CHECKPOINT_TIMEOUT_SECONDS,
 	getDefaultVcpConfig, // vcp_change
+	getDefaultSkillSettings,
 } from "@roo-code/types"
 
 import { findLastIndex } from "@roo/array"
@@ -74,6 +78,13 @@ export interface ExtensionStateContextType extends ExtensionState {
 	showWelcome: boolean
 	theme: any
 	mcpServers: McpServer[]
+	skills: Array<{
+		name: string
+		description: string
+		path: string
+		source: "global" | "project"
+		mode?: string
+	}>
 	mcpMarketplaceCatalog: McpMarketplaceCatalog // novacode_change
 	hasSystemPromptOverride?: boolean
 	currentCheckpoint?: string
@@ -225,6 +236,9 @@ export interface ExtensionStateContextType extends ExtensionState {
 	setIncludeCurrentTime: (value: boolean) => void
 	includeCurrentCost?: boolean
 	setIncludeCurrentCost: (value: boolean) => void
+	skillSettings?: SkillSettings
+	vcpBridgeLogEntries: VcpBridgeLogEntry[]
+	vcpBridgeTestResult?: VcpBridgeTestResult
 }
 
 export const ExtensionStateContext = createContext<ExtensionStateContextType | undefined>(undefined)
@@ -369,6 +383,7 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		includeCurrentCost: true,
 		vcpConfig: getDefaultVcpConfig(), // vcp_change
 		vcpBridgeStatus: null, // vcp_change
+		skillSettings: getDefaultSkillSettings(),
 	})
 
 	const [didHydrateState, setDidHydrateState] = useState(false)
@@ -378,7 +393,12 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 	const [openedTabs, setOpenedTabs] = useState<Array<{ label: string; isActive: boolean; path?: string }>>([])
 	const [commands, setCommands] = useState<Command[]>([])
 	const [mcpServers, setMcpServers] = useState<McpServer[]>([])
+	const [skills, setSkills] = useState<
+		Array<{ name: string; description: string; path: string; source: "global" | "project"; mode?: string }>
+	>([])
 	const [mcpMarketplaceCatalog, setMcpMarketplaceCatalog] = useState<McpMarketplaceCatalog>({ items: [] }) // novacode_change
+	const [vcpBridgeLogEntries, setVcpBridgeLogEntries] = useState<VcpBridgeLogEntry[]>([])
+	const [vcpBridgeTestResult, setVcpBridgeTestResult] = useState<VcpBridgeTestResult | undefined>(undefined)
 	const [currentCheckpoint, setCurrentCheckpoint] = useState<string>()
 	const [extensionRouterModels, setExtensionRouterModels] = useState<RouterModels | undefined>(undefined)
 	// novacode_change start
@@ -482,6 +502,10 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 					setCommands(message.commands ?? [])
 					break
 				}
+				case "skillsData": {
+					setSkills(message.skills ?? [])
+					break
+				}
 				case "messageUpdated": {
 					const clineMessage = message.clineMessage!
 					setState((prevState) => {
@@ -547,6 +571,23 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 					setState((prevState) => ({ ...prevState, vcpBridgeStatus: status }))
 					break
 				}
+				case "vcpBridgeLog": {
+					const entries = (message.vcpBridgeLogEntries ?? message.entries ?? []) as VcpBridgeLogEntry[]
+					if (entries.length > 0) {
+						setVcpBridgeLogEntries((prev) => [...prev, ...entries].slice(-200))
+					}
+					break
+				}
+				case "vcpBridgeTestResult": {
+					setVcpBridgeTestResult(message.vcpBridgeTestResult)
+					break
+				}
+				case "skillSettingsUpdated": {
+					if (message.skillSettings) {
+						setState((prevState) => ({ ...prevState, skillSettings: message.skillSettings }))
+					}
+					break
+				}
 			}
 		},
 		[setListApiConfigMeta],
@@ -561,6 +602,7 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 
 	useEffect(() => {
 		vscode.postMessage({ type: "webviewDidLaunch" })
+		vscode.postMessage({ type: "refreshSkills" })
 	}, [])
 
 	// Watch for authentication state changes and refresh Roo models
@@ -581,6 +623,7 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		showWelcome,
 		theme,
 		mcpServers,
+		skills,
 		mcpMarketplaceCatalog, // novacode_change
 		currentCheckpoint,
 		filePaths,
@@ -592,6 +635,9 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		localWorkflows,
 		// novacode_change end
 		commands,
+		vcpBridgeLogEntries,
+		vcpBridgeTestResult,
+		skillSettings: state.skillSettings ?? getDefaultSkillSettings(),
 		soundVolume: state.soundVolume,
 		ttsSpeed: state.ttsSpeed,
 		fuzzyMatchThreshold: state.fuzzyMatchThreshold,

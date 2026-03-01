@@ -9,9 +9,11 @@ import * as vscode from "vscode"
 import axios from "axios"
 import {
 	fastApplyApiProviderSchema,
+	getDefaultSkillSettings,
 	getDefaultVcpConfig,
 	getNovaUrlFromToken,
 	isGlobalStateKey,
+	type SkillSettings,
 	type VcpConfig,
 } from "@roo-code/types"
 import { getAppUrl } from "@roo-code/types"
@@ -3304,6 +3306,25 @@ export const webviewMessageHandler = async (
 			await provider.postSkillsDataToWebview()
 			break
 		}
+		case "updateSkillSettings": {
+			const current = getGlobalState("skillSettings") ?? getDefaultSkillSettings()
+			const incoming = (message.skillSettings ?? {}) as Partial<SkillSettings>
+			const merged: SkillSettings = {
+				...current,
+				...incoming,
+				disabledSkills: Array.isArray(incoming.disabledSkills)
+					? incoming.disabledSkills.map((name) => String(name)).filter((name) => name.trim().length > 0)
+					: current.disabledSkills,
+			}
+
+			await updateGlobalState("skillSettings", merged)
+			await provider.postStateToWebview()
+			await provider.postMessageToWebview({
+				type: "skillSettingsUpdated",
+				skillSettings: merged,
+			})
+			break
+		}
 		// novacode_change end
 
 		case "toggleRule": {
@@ -4200,6 +4221,24 @@ export const webviewMessageHandler = async (
 				await provider.connectVcpBridge()
 			} catch (error) {
 				provider.log(`Failed to connect VCP bridge: ${error instanceof Error ? error.message : String(error)}`)
+			}
+			break
+		}
+		case "requestVcpBridgeTest": {
+			const timeoutMs = typeof message.timeout === "number" ? Math.max(1000, message.timeout) : 5000
+			const result = await provider.testVcpBridgeConnection(timeoutMs)
+
+			await provider.postMessageToWebview({
+				type: "vcpBridgeTestResult",
+				vcpBridgeTestResult: result,
+			})
+
+			if (result.success) {
+				vscode.window.showInformationMessage(
+					`VCP bridge test succeeded (${result.latencyMs ?? 0}ms)${result.endpoint ? `: ${result.endpoint}` : ""}`,
+				)
+			} else {
+				vscode.window.showWarningMessage(`VCP bridge test failed: ${result.error ?? "unknown error"}`)
 			}
 			break
 		}

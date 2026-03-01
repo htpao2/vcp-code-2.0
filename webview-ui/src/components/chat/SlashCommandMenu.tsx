@@ -19,7 +19,7 @@ const SlashCommandMenu: React.FC<SlashCommandMenuProps> = ({
 	query,
 	customModes,
 }) => {
-	const { localWorkflows, globalWorkflows } = useExtensionState() // novacode_change
+	const { localWorkflows, globalWorkflows, mcpServers, skills, skillSettings } = useExtensionState() // novacode_change
 	const menuRef = useRef<HTMLDivElement>(null)
 
 	const handleClick = useCallback(
@@ -47,7 +47,15 @@ const SlashCommandMenu: React.FC<SlashCommandMenuProps> = ({
 	}, [selectedIndex])
 
 	// Filter commands based on query
-	const filteredCommands = getMatchingSlashCommands(query, customModes, localWorkflows, globalWorkflows) // novacode_change
+	const filteredCommands = getMatchingSlashCommands(
+		query,
+		customModes,
+		localWorkflows,
+		globalWorkflows,
+		mcpServers,
+		skills,
+		skillSettings,
+	) // novacode_change
 
 	return (
 		<div

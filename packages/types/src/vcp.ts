@@ -137,6 +137,18 @@ export interface VcpBridgeStatus {
 	stats?: VcpBridgeRuntimeStats
 	activePlugins: VcpBridgeActivePlugin[]
 	distributedServers: VcpBridgeDistributedServer[]
+	reconnectAttempts?: number
+	lastConnected?: number
+	lastError?: string
+	endpoint?: string
+	lastLatencyMs?: number
+}
+
+export interface VcpBridgeTestResult {
+	success: boolean
+	endpoint?: string
+	latencyMs?: number
+	error?: string
 }
 
 export interface AtomicMemoryItem {

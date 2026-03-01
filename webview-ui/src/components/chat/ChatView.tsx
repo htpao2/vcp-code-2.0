@@ -1389,7 +1389,12 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 			// Shift+click is a no-op for review suggestions (they can't be appended to text).
 			// Guard on clineAsk to ensure this only triggers for completion suggestions,
 			// not LLM-generated follow-up suggestions that might also have mode: "review".
-			if (suggestion.mode === "review" && clineAsk === "completion_result") {
+			const latestAsk = findLast(messagesRef.current, (message) => message.type === "ask")
+			const isCompletionResultContext =
+				clineAsk === "completion_result" ||
+				clineAskRef.current === "completion_result" ||
+				latestAsk?.ask === "completion_result"
+			if (suggestion.mode === "review" && isCompletionResultContext) {
 				if (!event?.shiftKey) {
 					const isManualClick = !!event
 					if (isManualClick || alwaysAllowModeSwitch) {

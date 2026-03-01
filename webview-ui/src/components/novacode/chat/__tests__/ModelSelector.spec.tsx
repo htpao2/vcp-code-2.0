@@ -129,6 +129,28 @@ describe("ModelSelector", () => {
 		expect(dropdownTrigger).not.toBeInTheDocument()
 	})
 
+	test("does not crash when providerModels is undefined", () => {
+		mockUseProviderModels.mockReturnValue({
+			provider: "openai",
+			providerModels: undefined,
+			providerDefaultModel: undefined,
+			isLoading: false,
+			isError: false,
+		})
+
+		expect(() =>
+			render(
+				<ModelSelector
+					currentApiConfigName="test-profile"
+					apiConfiguration={baseApiConfiguration}
+					fallbackText="Select a model"
+				/>,
+			),
+		).not.toThrow()
+
+		expect(screen.getByTestId("dropdown-trigger")).toBeInTheDocument()
+	})
+
 	test("renders nothing when isLoading is true", () => {
 		mockUseProviderModels.mockReturnValue({
 			provider: "openai",

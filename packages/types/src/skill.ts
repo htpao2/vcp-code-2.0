@@ -53,6 +53,26 @@ export const skillMarketplaceItemSchema = z.object({
 
 export type SkillMarketplaceItem = z.infer<typeof skillMarketplaceItemSchema>
 
+export const skillSourcePreferenceSchema = z.enum(["project-first", "global-first"])
+
+export const skillSettingsSchema = z.object({
+	enabled: z.boolean(),
+	exposeInSlashCommands: z.boolean(),
+	sourcePreference: skillSourcePreferenceSchema,
+	disabledSkills: z.array(z.string()),
+})
+
+export type SkillSettings = z.infer<typeof skillSettingsSchema>
+
+export function getDefaultSkillSettings(): SkillSettings {
+	return {
+		enabled: true,
+		exposeInSlashCommands: true,
+		sourcePreference: "project-first",
+		disabledSkills: [],
+	}
+}
+
 export function isSkillItem(item: { type: string }): item is SkillMarketplaceItem {
 	return item.type === "skill"
 }

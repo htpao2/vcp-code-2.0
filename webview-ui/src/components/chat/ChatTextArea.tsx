@@ -157,6 +157,9 @@ export const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 			cwd,
 			pinnedApiConfigs,
 			togglePinnedApiConfig,
+			mcpServers,
+			skills,
+			skillSettings,
 			localWorkflows, // novacode_change
 			globalWorkflows, // novacode_change
 			taskHistoryVersion, // novacode_change
@@ -691,6 +694,9 @@ export const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 								customModes,
 								localWorkflows,
 								globalWorkflows,
+								mcpServers,
+								skills,
+								skillSettings,
 							) // novacode_change
 
 							if (commands.length === 0) {
@@ -710,6 +716,9 @@ export const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 							customModes,
 							localWorkflows,
 							globalWorkflows,
+							mcpServers,
+							skills,
+							skillSettings,
 						)
 						if (commands.length > 0) {
 							handleSlashCommandsSelect(commands[selectedSlashCommandsIndex])
@@ -886,6 +895,9 @@ export const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 				showSlashCommandsMenu, // novacode_change start
 				localWorkflows,
 				globalWorkflows,
+				mcpServers,
+				skills,
+				skillSettings,
 				customModes,
 				handleSlashCommandsSelect,
 				selectedSlashCommandsIndex,
@@ -949,6 +961,9 @@ export const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 					customModes,
 					localWorkflows,
 					globalWorkflows,
+					mcpServers,
+					skills,
+					skillSettings,
 				)
 				// novacode_change end
 
@@ -1028,6 +1043,9 @@ export const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 				customModes,
 				localWorkflows,
 				globalWorkflows,
+				mcpServers,
+				skills,
+				skillSettings,
 				// novacode_change end
 				setInputValue,
 				setSearchRequestId,
@@ -1187,7 +1205,15 @@ export const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 
 				// extract and validate the exact command text
 				const commandText = processedText.substring(slashIndex + 1, endIndex)
-				const isValidCommand = validateSlashCommand(commandText, customModes)
+				const isValidCommand = validateSlashCommand(
+					commandText,
+					customModes,
+					localWorkflows,
+					globalWorkflows,
+					mcpServers,
+					skills,
+					skillSettings,
+				)
 
 				if (isValidCommand) {
 					const fullCommand = processedText.substring(slashIndex, endIndex) // includes slash
@@ -1225,7 +1251,18 @@ export const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 			highlightLayerRef.current.innerHTML = processedText
 			highlightLayerRef.current.scrollTop = textAreaRef.current.scrollTop
 			highlightLayerRef.current.scrollLeft = textAreaRef.current.scrollLeft
-		}, [customModes, autocompleteText, inputValue, isRecording, previewRanges]) // novacode_change - merged dependencies
+		}, [
+			customModes,
+			localWorkflows,
+			globalWorkflows,
+			mcpServers,
+			skills,
+			skillSettings,
+			autocompleteText,
+			inputValue,
+			isRecording,
+			previewRanges,
+		]) // novacode_change - merged dependencies
 
 		useLayoutEffect(() => {
 			updateHighlights()

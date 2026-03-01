@@ -22,7 +22,8 @@ import type { McpServer } from "./mcp.js"
 import type { ModelRecord, RouterModels, ModelInfo } from "./model.js"
 import type { CommitRange } from "./nova/novacode.js"
 import type { OpenAiCodexRateLimitInfo } from "./providers/openai-codex-rate-limits.js"
-import type { AtomicMemoryItem, VcpBridgeLogEntry, VcpBridgeStatus, VcpConfig } from "./vcp.js"
+import type { AtomicMemoryItem, VcpBridgeLogEntry, VcpBridgeStatus, VcpBridgeTestResult, VcpConfig } from "./vcp.js"
+import type { SkillSettings } from "./skill.js"
 
 // novacode_change start: Type definitions for Nova Code-specific features
 // SAP AI Core deployment types
@@ -258,7 +259,9 @@ export interface ExtensionMessage {
 		| "vcpConfigUpdated" // vcp_change
 		| "vcpBridgeStatus" // vcp_change
 		| "vcpBridgeLog" // vcp_change
+		| "vcpBridgeTestResult" // vcp_change
 		| "vcpMemoryUpdated" // vcp_change
+		| "skillSettingsUpdated"
 		| "claudeCodeRateLimits"
 		| "customToolsResult"
 		| "modes"
@@ -401,6 +404,7 @@ export interface ExtensionMessage {
 	vcpConfig?: VcpConfig // vcp_change
 	vcpBridgeStatus?: VcpBridgeStatus | null // vcp_change
 	vcpBridgeLogEntries?: VcpBridgeLogEntry[] // vcp_change
+	vcpBridgeTestResult?: VcpBridgeTestResult // vcp_change
 	vcpMemoryItems?: AtomicMemoryItem[] // vcp_change
 	status?: VcpBridgeStatus // vcp_change
 	entries?: VcpBridgeLogEntry[] // vcp_change
@@ -413,6 +417,7 @@ export interface ExtensionMessage {
 		source: "global" | "project"
 		mode?: string
 	}>
+	skillSettings?: SkillSettings
 	queuedMessages?: QueuedMessage[]
 	list?: string[] // For dismissedUpsells
 	organizationId?: string | null // For organizationSwitchResult
@@ -494,6 +499,7 @@ export type ExtensionState = Pick<
 	| "autoApprovalEnabled"
 	| "yoloMode" // novacode_change
 	| "vcpConfig" // vcp_change
+	| "skillSettings"
 	| "alwaysAllowReadOnly"
 	| "alwaysAllowReadOnlyOutsideWorkspace"
 	| "alwaysAllowWrite"
@@ -916,6 +922,7 @@ export interface WebviewMessage {
 		| "updateVcpConfig" // vcp_change
 		| "requestVcpBridgeConnect" // vcp_change
 		| "requestVcpBridgeDisconnect" // vcp_change
+		| "requestVcpBridgeTest" // vcp_change
 		| "vcpMemoryQuery" // vcp_change
 		| "vcpMemoryDelete" // vcp_change
 		| "autoPurgeEnabled" // novacode_change
@@ -981,6 +988,7 @@ export interface WebviewMessage {
 		| "switchMode"
 		| "debugSetting"
 		| "refreshSkills"
+		| "updateSkillSettings"
 		| "reviewScopeSelected" // novacode_change: Review mode scope selection
 	text?: string
 	suggestionLength?: number // novacode_change: Length of accepted suggestion for telemetry
@@ -1048,6 +1056,7 @@ export interface WebviewMessage {
 	messageTs?: number
 	restoreCheckpoint?: boolean
 	historyPreviewCollapsed?: boolean
+	skillSettings?: SkillSettings
 	filters?: { type?: string; search?: string; tags?: string[] }
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	settings?: any

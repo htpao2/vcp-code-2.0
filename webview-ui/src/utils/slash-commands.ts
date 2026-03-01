@@ -5,11 +5,23 @@ import { getAllModes } from "@roo/modes"
 import { getBasename } from "./nova/path-webview"
 import { Fzf } from "@/lib/word-boundary-fzf" // novacode_change
 import { ClineRulesToggles } from "@roo/cline-rules"
+import { McpServer, SkillSettings, getDefaultSkillSettings } from "@roo-code/types"
 
 export interface SlashCommand {
 	name: string
 	description?: string
-	section?: "default" | "custom"
+	section?: "default" | "custom" | "mcp" | "skill"
+}
+
+type SkillItem = {
+	name: string
+	description: string
+	source: "global" | "project"
+	mode?: string
+}
+
+function toSlashSafeSegment(value: string): string {
+	return value.trim().replace(/[^a-zA-Z0-9_.-]/g, "-")
 }
 
 // Create a function to get all supported slash commands
@@ -17,6 +29,9 @@ export function getSupportedSlashCommands(
 	customModes?: any[],
 	localWorkflowToggles: ClineRulesToggles = {},
 	globalWorkflowToggles: ClineRulesToggles = {},
+	mcpServers: McpServer[] = [],
+	skills: SkillItem[] = [],
+	skillSettings: SkillSettings = getDefaultSkillSettings(),
 ): SlashCommand[] {
 	// Start with non-mode commands
 	const baseCommands: SlashCommand[] = [
@@ -35,6 +50,8 @@ export function getSupportedSlashCommands(
 		{ name: "condense", description: "Condenses your current context window" },
 		{ name: "compact", description: "Condenses your current context window" },
 		{ name: "session", description: "Session management <fork|share|show>" },
+		{ name: "mcp", description: "Guide model to use MCP tools (supports /mcp.<server>.<tool>)" },
+		{ name: "skill", description: "Guide model to use skills (supports /skill.<name>)" },
 		// novacode_change end
 	]
 
@@ -46,7 +63,52 @@ export function getSupportedSlashCommands(
 
 	// add workflow commands
 	const workflowCommands = getWorkflowCommands(localWorkflowToggles, globalWorkflowToggles)
-	return [...baseCommands, ...modeCommands, ...workflowCommands]
+
+	const mcpCommands: SlashCommand[] = mcpServers.flatMap((server) => {
+		const serverName = toSlashSafeSegment(server.name)
+		if (!serverName) {
+			return []
+		}
+		const serverCommands: SlashCommand[] = [
+			{
+				name: `mcp.${serverName}`,
+				description: `Use MCP server ${server.name}`,
+				section: "mcp",
+			},
+		]
+		for (const tool of server.tools ?? []) {
+			const toolName = toSlashSafeSegment(tool.name)
+			if (!toolName) {
+				continue
+			}
+			serverCommands.push({
+				name: `mcp.${serverName}.${toolName}`,
+				description: tool.description || `Use ${server.name} / ${tool.name}`,
+				section: "mcp",
+			})
+		}
+		return serverCommands
+	})
+
+	const disabledSkills = new Set((skillSettings.disabledSkills ?? []).map((name) => name.toLowerCase()))
+	const skillCommands: SlashCommand[] =
+		skillSettings.enabled && skillSettings.exposeInSlashCommands
+			? skills
+					.filter((skill) => !disabledSkills.has(skill.name.toLowerCase()))
+					.map((skill) => ({
+						name: `skill.${toSlashSafeSegment(skill.name)}`,
+						description: skill.description,
+						section: "skill",
+					}))
+			: []
+
+	const unique = new Map<string, SlashCommand>()
+	for (const command of [...baseCommands, ...modeCommands, ...workflowCommands, ...mcpCommands, ...skillCommands]) {
+		if (!unique.has(command.name)) {
+			unique.set(command.name, command)
+		}
+	}
+	return Array.from(unique.values())
 }
 
 // Export a default instance for backward compatibility
@@ -66,6 +128,9 @@ export function shouldShowSlashCommandsMenu(
 	customModes?: any[],
 	localWorkflowToggles: ClineRulesToggles = {},
 	globalWorkflowToggles: ClineRulesToggles = {},
+	mcpServers: McpServer[] = [],
+	skills: SkillItem[] = [],
+	skillSettings: SkillSettings = getDefaultSkillSettings(),
 ): boolean {
 	// novacode_change end
 	const beforeCursor = text.slice(0, cursorPosition)
@@ -93,7 +158,15 @@ export function shouldShowSlashCommandsMenu(
 
 	// novacode_change start: If there are no matching commands for the current query, don't show the menu.
 	// This prevents an empty menu from capturing Enter/Tab and blocking message submission.
-	const matches = getMatchingSlashCommands(textAfterSlash, customModes, localWorkflowToggles, globalWorkflowToggles)
+	const matches = getMatchingSlashCommands(
+		textAfterSlash,
+		customModes,
+		localWorkflowToggles,
+		globalWorkflowToggles,
+		mcpServers,
+		skills,
+		skillSettings,
+	)
 	return matches.length > 0
 	// novacode_change end
 }
@@ -122,8 +195,18 @@ export function getMatchingSlashCommands(
 	customModes?: any[],
 	localWorkflowToggles: ClineRulesToggles = {},
 	globalWorkflowToggles: ClineRulesToggles = {},
+	mcpServers: McpServer[] = [],
+	skills: SkillItem[] = [],
+	skillSettings: SkillSettings = getDefaultSkillSettings(),
 ): SlashCommand[] {
-	const commands = getSupportedSlashCommands(customModes, localWorkflowToggles, globalWorkflowToggles)
+	const commands = getSupportedSlashCommands(
+		customModes,
+		localWorkflowToggles,
+		globalWorkflowToggles,
+		mcpServers,
+		skills,
+		skillSettings,
+	)
 
 	if (!query) {
 		return [...commands]
@@ -162,12 +245,22 @@ export function validateSlashCommand(
 	customModes?: any[],
 	localWorkflowToggles: ClineRulesToggles = {},
 	globalWorkflowToggles: ClineRulesToggles = {},
+	mcpServers: McpServer[] = [],
+	skills: SkillItem[] = [],
+	skillSettings: SkillSettings = getDefaultSkillSettings(),
 ): "full" | "partial" | null {
 	if (!command) {
 		return null
 	}
 
-	const commands = getSupportedSlashCommands(customModes, localWorkflowToggles, globalWorkflowToggles)
+	const commands = getSupportedSlashCommands(
+		customModes,
+		localWorkflowToggles,
+		globalWorkflowToggles,
+		mcpServers,
+		skills,
+		skillSettings,
+	)
 
 	// Check for exact match (command name equals query, case-insensitive via FZF)
 	const lowerCommand = command.toLowerCase()

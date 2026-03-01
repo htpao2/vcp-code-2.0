@@ -56,7 +56,10 @@ describe("VcpBridgeService", () => {
 
 		wss.on("connection", (socket, request) => {
 			const targetUrl = new URL(request.url ?? "/", `ws://127.0.0.1:${port}`)
-			const channel = targetUrl.searchParams.get("channel") ?? ""
+			const path = targetUrl.pathname.toLowerCase()
+			const channel =
+				targetUrl.searchParams.get("channel") ??
+				(path.includes("vcpinfo") ? "info" : path.includes("vcplog") ? "log" : "")
 			seenChannels.push(channel)
 
 			if (channel === "info") {

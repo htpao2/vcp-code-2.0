@@ -9,6 +9,7 @@ import { directoryExists, fileExists } from "../roo-config"
 import { SkillMetadata, SkillContent } from "../../shared/skills"
 import { modes, getAllModes } from "../../shared/modes"
 import { ConfigChangeNotifier } from "../config/ConfigChangeNotifier" // novacode_change
+import type { SkillSettings } from "@roo-code/types"
 
 // Re-export for convenience
 export type { SkillMetadata, SkillContent }
@@ -186,12 +187,19 @@ export class SkillsManager {
 	 *
 	 * @param currentMode - The current mode slug (e.g., 'code', 'architect')
 	 */
-	getSkillsForMode(currentMode: string): SkillMetadata[] {
+	getSkillsForMode(currentMode: string, skillSettings?: SkillSettings): SkillMetadata[] {
+		if (skillSettings?.enabled === false) {
+			return []
+		}
+
+		const disabledSkills = new Set((skillSettings?.disabledSkills ?? []).map((name) => name.trim().toLowerCase()))
+		const sourcePreference = skillSettings?.sourcePreference ?? "project-first"
 		const resolvedSkills = new Map<string, SkillMetadata>()
 
 		for (const skill of this.skills.values()) {
 			// Skip mode-specific skills that don't match current mode
 			if (skill.mode && skill.mode !== currentMode) continue
+			if (disabledSkills.has(skill.name.toLowerCase())) continue
 
 			const existingSkill = resolvedSkills.get(skill.name)
 
@@ -201,7 +209,7 @@ export class SkillsManager {
 			}
 
 			// Apply override rules
-			const shouldOverride = this.shouldOverrideSkill(existingSkill, skill)
+			const shouldOverride = this.shouldOverrideSkill(existingSkill, skill, sourcePreference)
 			if (shouldOverride) {
 				resolvedSkills.set(skill.name, skill)
 			}
@@ -214,10 +222,18 @@ export class SkillsManager {
 	 * Determine if newSkill should override existingSkill based on priority rules.
 	 * Priority: project > global, mode-specific > generic
 	 */
-	private shouldOverrideSkill(existing: SkillMetadata, newSkill: SkillMetadata): boolean {
-		// Project always overrides global
-		if (newSkill.source === "project" && existing.source === "global") return true
-		if (newSkill.source === "global" && existing.source === "project") return false
+	private shouldOverrideSkill(
+		existing: SkillMetadata,
+		newSkill: SkillMetadata,
+		sourcePreference: SkillSettings["sourcePreference"] = "project-first",
+	): boolean {
+		// Resolve global/project priority by user preference.
+		if (existing.source !== newSkill.source) {
+			if (sourcePreference === "global-first") {
+				return newSkill.source === "global"
+			}
+			return newSkill.source === "project"
+		}
 
 		// Same source: mode-specific overrides generic
 		if (newSkill.mode && !existing.mode) return true

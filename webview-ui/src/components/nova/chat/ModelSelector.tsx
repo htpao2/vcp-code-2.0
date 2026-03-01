@@ -35,6 +35,7 @@ export const ModelSelector = ({
 	const { preferredModelIds, restModelIds } = useGroupedModelIds(providerModels)
 	const options = useMemo(() => {
 		const result: DropdownOption[] = []
+		const getModelLabel = (modelId: string) => providerModels?.[modelId]?.displayName ?? prettyModelName(modelId)
 
 		// Check if selected model is missing from the lists
 		const allModelIds = [...preferredModelIds, ...restModelIds]
@@ -51,7 +52,7 @@ export const ModelSelector = ({
 			preferredModelIds.forEach((modelId) => {
 				result.push({
 					value: modelId,
-					label: providerModels[modelId]?.displayName ?? prettyModelName(modelId),
+					label: getModelLabel(modelId),
 					type: DropdownOptionType.ITEM,
 				})
 			})
@@ -69,7 +70,7 @@ export const ModelSelector = ({
 			if (isMissingSelectedModel) {
 				result.push({
 					value: selectedModelId,
-					label: providerModels[selectedModelId]?.displayName ?? prettyModelName(selectedModelId),
+					label: getModelLabel(selectedModelId),
 					type: DropdownOptionType.ITEM,
 				})
 			}
@@ -77,7 +78,7 @@ export const ModelSelector = ({
 			restModelIds.forEach((modelId) => {
 				result.push({
 					value: modelId,
-					label: providerModels[modelId]?.displayName ?? prettyModelName(modelId),
+					label: getModelLabel(modelId),
 					type: DropdownOptionType.ITEM,
 				})
 			})
@@ -85,7 +86,7 @@ export const ModelSelector = ({
 			// If there are no rest models but we have a missing selected model, add it
 			result.push({
 				value: selectedModelId,
-				label: providerModels[selectedModelId]?.displayName ?? prettyModelName(selectedModelId),
+				label: getModelLabel(selectedModelId),
 				type: DropdownOptionType.ITEM,
 			})
 		}

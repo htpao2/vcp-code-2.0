@@ -55,6 +55,7 @@ import {
 	TOOL_PROTOCOL,
 	ConsecutiveMistakeError,
 	getDefaultVcpConfig,
+	type VcpBridgeLogEntry,
 } from "@roo-code/types"
 import { TelemetryService } from "@roo-code/telemetry"
 import { CloudService, BridgeOrchestrator } from "@roo-code/cloud"
@@ -88,6 +89,7 @@ import { RepoPerTaskCheckpointService } from "../../services/checkpoints"
 // integrations
 import { DiffViewProvider } from "../../integrations/editor/DiffViewProvider"
 import { findToolName } from "../../integrations/misc/export-markdown"
+import { showSystemNotification } from "../../integrations/notifications"
 import { RooTerminalProcess } from "../../integrations/terminal/types"
 import { TerminalRegistry } from "../../integrations/terminal/TerminalRegistry"
 
@@ -3737,6 +3739,36 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 					const processedVcp = processVcpContent(assistantMessage, effectiveVcpConfig)
 					assistantMessage = processedVcp.text
 
+					if (processedVcp.notifications.length > 0) {
+						const provider = this.providerRef.deref()
+						const bridgeEntries: VcpBridgeLogEntry[] = processedVcp.notifications.map((notification) => ({
+							timestamp: Date.now(),
+							level: notification.level,
+							source: "vcpinfo",
+							message: `${notification.title}: ${notification.body}`,
+						}))
+
+						if (provider && bridgeEntries.length > 0) {
+							await provider.postVcpBridgeLogs(bridgeEntries)
+						}
+
+						const systemNotificationsEnabled = providerState?.systemNotificationsEnabled ?? true
+						if (systemNotificationsEnabled) {
+							for (const notification of processedVcp.notifications.slice(0, 5)) {
+								const title = notification.title?.trim() || "VCPInfo"
+								const message = notification.body?.trim()
+								if (!message) {
+									continue
+								}
+								await showSystemNotification({
+									title,
+									subtitle: "VCP",
+									message,
+								})
+							}
+						}
+					}
+
 					const hasNativeToolUse = this.assistantMessageContent.some(
 						(block) => block.type === "tool_use" || block.type === "mcp_tool_use",
 					)
@@ -4109,6 +4141,14 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			this.getContext(),
 			this.cwd,
 		)
+		const provider = this.providerRef.deref()
+		const providerState = await provider?.getState()
+		const modeForSkills = providerState?.mode ?? defaultModeSlug
+		const slashCommandContext = {
+			mcpServers: providerState?.mcpServers ?? [],
+			skillSettings: providerState?.skillSettings,
+			skills: provider?.getSkillsManager()?.getSkillsForMode(modeForSkills, providerState?.skillSettings) ?? [],
+		}
 
 		const processUserContent = async () => {
 			// This is a temporary solution to dynamically load context mentions from tool results. It checks for the presence of tags that indicate that the tool was rejected and feedback was provided (see formatToolDeniedFeedback, attemptCompletion, executeCommand, and consecutiveMistakeCount >= 3) or "<answer>" (see askFollowupQuestion), we place all user generated content in these tags so they can effectively be used as markers for when we should parse mentions). However if we allow multiple tools responses in the future, we will need to parse mentions specifically within the user content tags.
@@ -4136,6 +4176,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 								parsedText.text,
 								localWorkflowToggles,
 								globalWorkflowToggles,
+								slashCommandContext,
 							)
 
 							if (needsCheck) {
