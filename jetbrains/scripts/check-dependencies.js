@@ -309,12 +309,21 @@ function checkBuildSystem() {
 	const gradlew = path.join(pluginDir, process.platform === "win32" ? "gradlew.bat" : "gradlew")
 	const buildGradle = path.join(pluginDir, "build.gradle.kts")
 	const gradleProps = path.join(pluginDir, "gradle.properties")
+	const gradlePropsTemplate = path.join(pluginDir, "gradle.properties.template")
+	const hasGradleProps = fs.existsSync(gradleProps) || fs.existsSync(gradlePropsTemplate)
 
-	if (fs.existsSync(gradlew) && fs.existsSync(buildGradle) && fs.existsSync(gradleProps)) {
+	if (fs.existsSync(gradlew) && fs.existsSync(buildGradle) && hasGradleProps) {
 		printSuccess("Gradle build system is configured")
+		if (!fs.existsSync(gradleProps) && fs.existsSync(gradlePropsTemplate)) {
+			printWarning(
+				"gradle.properties is not generated yet; sync:version will create it from gradle.properties.template",
+			)
+		}
 	} else {
 		printError("Gradle build system files are missing")
-		console.log("  Missing files: gradlew, build.gradle.kts, or gradle.properties")
+		console.log(
+			"  Missing files: gradlew, build.gradle.kts, and either gradle.properties or gradle.properties.template",
+		)
 		return false
 	}
 

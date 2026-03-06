@@ -6,6 +6,7 @@ import type { DropdownOption } from "@/components/ui/select-dropdown" // novacod
 import { useAppTranslation } from "@/i18n/TranslationContext"
 import { vscode } from "@/utils/vscode"
 import { cn } from "@/lib/utils"
+import { useExtensionState } from "@/context/ExtensionStateContext"
 
 interface NovaModeSelectorProps {
 	value: Mode
@@ -29,7 +30,17 @@ export const NovaModeSelector = ({
 	initiallyOpen,
 }: NovaModeSelectorProps) => {
 	const { t } = useAppTranslation()
-	const allModes = React.useMemo(() => getAllModes(customModes), [customModes])
+	const { vcpConfig } = useExtensionState()
+	const allModes = React.useMemo(
+		() =>
+			getAllModes(customModes).filter((mode) => {
+				if (mode.slug !== "agent_team") {
+					return true
+				}
+				return vcpConfig?.agentTeam.enabled === true
+			}),
+		[customModes, vcpConfig?.agentTeam.enabled],
+	)
 
 	// Group modes by source
 	const { organizationModes, otherModes } = React.useMemo(() => {

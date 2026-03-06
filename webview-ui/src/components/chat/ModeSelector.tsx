@@ -47,7 +47,7 @@ export const ModeSelector = ({
 	const selectedItemRef = React.useRef<HTMLDivElement>(null)
 	const scrollContainerRef = React.useRef<HTMLDivElement>(null)
 	const portalContainer = useRooPortal("roo-portal")
-	const { hasOpenedModeSelector, setHasOpenedModeSelector } = useExtensionState()
+	const { hasOpenedModeSelector, setHasOpenedModeSelector, vcpConfig } = useExtensionState()
 	const { t } = useAppTranslation()
 
 	const trackModeSelectorOpened = React.useCallback(() => {
@@ -64,12 +64,18 @@ export const ModeSelector = ({
 	// Get all modes including custom modes and merge custom prompt descriptions.
 	const modes = React.useMemo(() => {
 		const allModes = getAllModes(customModes)
+		const filteredModes = allModes.filter((mode) => {
+			if (mode.slug !== "agent_team") {
+				return true
+			}
+			return vcpConfig?.agentTeam.enabled === true
+		})
 
-		return allModes.map((mode) => ({
+		return filteredModes.map((mode) => ({
 			...mode,
 			description: customModePrompts?.[mode.slug]?.description ?? mode.description,
 		}))
-	}, [customModes, customModePrompts])
+	}, [customModes, customModePrompts, vcpConfig?.agentTeam.enabled])
 
 	// Find the selected mode.
 	const selectedMode = React.useMemo(() => modes.find((mode) => mode.slug === value), [modes, value])

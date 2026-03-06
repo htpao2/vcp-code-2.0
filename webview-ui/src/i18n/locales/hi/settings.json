@@ -978,7 +978,7 @@
 		},
 		"MORPH_FAST_APPLY": {
 			"name": "Fast Apply सक्षम करें",
-			"description": "जब सक्षम होता है, तो Nova Code कोड संशोधनों के लिए अनुकूलित विशेष मॉडल के साथ Fast Apply का उपयोग करके फ़ाइलें संपादित कर सकता है। Nova Gateway Provider, OpenRouter, या Morph API कुंजी की आवश्यकता है।",
+			"description": "जब सक्षम होता है, तो Nova Code कोड संशोधनों के लिए अनुकूलित विशेष मॉडल के साथ Fast Apply का उपयोग करके फ़ाइलें संपादित कर सकता है। OpenRouter, या Morph API कुंजी की आवश्यकता है।",
 			"apiProvider": "API प्रदाता",
 			"apiProviderList": {
 				"current": "वर्तमान"

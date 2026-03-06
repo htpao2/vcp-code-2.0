@@ -1048,7 +1048,7 @@
 		},
 		"MORPH_FAST_APPLY": {
 			"name": "Povolit Fast Apply",
-			"description": "Pokud je povoleno, Nova Code může upravovat soubory pomocí Fast Apply se specializovanými modely optimalizovanými pro úpravy kódu. Vyžaduje Nova Gateway Provider, OpenRouter nebo klíč API Morph.",
+			"description": "Pokud je povoleno, Nova Code může upravovat soubory pomocí Fast Apply se specializovanými modely optimalizovanými pro úpravy kódu. Vyžaduje OpenRouter nebo klíč API Morph.",
 			"apiProvider": "Poskytovatel API",
 			"apiProviderList": {
 				"current": "Aktuální"

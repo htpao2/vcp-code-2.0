@@ -285,6 +285,21 @@
 				"label": "Enable Chat Autocomplete",
 				"description": "Show completions as you type in the chat input. Press Tab to accept suggestions."
 			},
+			"configuredProvider": {
+				"label": "Autocomplete Provider Override",
+				"description": "Use your existing autocomplete profile flow, or override it with a dedicated OpenAI Compatible endpoint.",
+				"options": {
+					"profile": "Use configured profile",
+					"openAiCompatible": "OpenAI Compatible"
+				}
+			},
+			"openAiCompatible": {
+				"baseUrl": "API Base URL",
+				"model": "Model Name",
+				"apiKey": "API Key (Optional)",
+				"apiKeyPlaceholder": "Optional for unauthenticated endpoints",
+				"description": "When this override is enabled, autocomplete uses the OpenAI Compatible endpoint and model configured here."
+			},
 			"snooze": {
 				"label": "Snooze Suggestions",
 				"description": "Temporarily pause suggestions for a specified duration.",

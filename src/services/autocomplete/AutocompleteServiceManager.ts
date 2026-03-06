@@ -72,8 +72,6 @@ export class AutocompleteServiceManager {
 
 	public async load() {
 		await this.cline.providerSettingsManager.initialize() // avoid race condition with settings migrations
-		await this.model.reload(this.cline.providerSettingsManager)
-
 		this.settings = ContextProxy.instance.getGlobalState("ghostServiceSettings") ?? {
 			enableSmartInlineTaskKeybinding: true,
 		}
@@ -86,6 +84,8 @@ export class AutocompleteServiceManager {
 		if (this.settings.enableChatAutocomplete == undefined) {
 			this.settings.enableChatAutocomplete = true
 		}
+
+		await this.model.reload(this.cline.providerSettingsManager, this.settings)
 
 		await this.updateGlobalContext()
 		this.updateStatusBar()

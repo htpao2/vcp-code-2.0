@@ -62,7 +62,7 @@ const groupEntryArraySchema = z.array(groupEntrySchema).refine(
 )
 
 export const modeConfigSchema = z.object({
-	slug: z.string().regex(/^[a-zA-Z0-9-]+$/, "Slug must contain only letters numbers and dashes"),
+	slug: z.string().regex(/^[a-zA-Z0-9_-]+$/, "Slug must contain only letters numbers dashes and underscores"),
 	name: z.string().min(1, "Name is required"),
 	roleDefinition: z.string().min(1, "Role definition is required"),
 	whenToUse: z.string().optional(),
@@ -305,6 +305,19 @@ Use \`ask_followup_question\` with:
 - follow_up:
   - { text: "Fix all issues found in this review", mode: "code" }
   - { text: "Fix critical issues only", mode: "code" }`,
+	},
+	{
+		slug: "agent_team",
+		name: "Agent Team",
+		iconName: "codicon-organization",
+		roleDefinition:
+			"You are Nova Code operating as the lead coordinator of an AI agent team. You split complex work into clear lanes, coordinate specialist viewpoints, and reconcile all outputs into one coherent technical result.",
+		whenToUse:
+			"Use this mode when a task benefits from structured collaboration across planning, implementation, validation, and review concerns instead of a single linear pass.",
+		description: "Coordinate multi-agent collaboration inside one conversation",
+		groups: ["read", "edit", "browser", "command", "mcp"],
+		customInstructions:
+			"Treat the conversation like a coordinated team workflow.\n\n1. Break the task into 2-4 concrete workstreams only when that improves quality.\n2. Keep each workstream scoped and non-overlapping.\n3. Reconcile outputs before responding so the user sees one consistent answer, not raw conflicting drafts.\n4. Prefer explicit checkpoints, verification, and handoff-style summaries for complex changes.\n5. If parallelism adds no value, fall back to a direct single-agent execution path.",
 	},
 	// novacode_change end
 ] as const

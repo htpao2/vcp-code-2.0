@@ -24,6 +24,10 @@ describe("autocompleteServiceSettingsSchema", () => {
 			enableAutoTrigger: true,
 			enableQuickInlineTaskKeybinding: true,
 			enableSmartInlineTaskKeybinding: true,
+			configuredProvider: "openai-compatible",
+			openAiCompatibleBaseUrl: "https://example.com/v1",
+			openAiCompatibleApiKey: "test-key",
+			openAiCompatibleModel: "codestral-compatible",
 		})
 		expect(result.success).toBe(true)
 	})

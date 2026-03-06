@@ -41,6 +41,7 @@ import { useSTT } from "@/hooks/useSTT" // novacode_change: STT hook
 import { useSTTStatus } from "@/hooks/useSTTStatus" // novacode_change: STT status management hook
 import { cn } from "@/lib/utils"
 import { usePromptHistory } from "./hooks/usePromptHistory"
+import { EmojiStickerPicker } from "./EmojiStickerPicker"
 
 // novacode_change start: pull slash commands from Cline
 import SlashCommandMenu from "@/components/chat/SlashCommandMenu"
@@ -463,6 +464,18 @@ export const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 				setInputValue(t("chat:enhancePromptDescription"))
 			}
 		}, [inputValue, setInputValue, t])
+
+		const handleInsertSticker = useCallback(
+			(markdown: string) => {
+				const needsLeadingSpace = inputValue.length > 0 && !inputValue.endsWith(" ")
+				const nextValue = `${inputValue}${needsLeadingSpace ? " " : ""}${markdown} `
+				setInputValue(nextValue)
+				requestAnimationFrame(() => {
+					textAreaRef.current?.focus()
+				})
+			},
+			[inputValue, setInputValue],
+		)
 
 		// novacode_change start: Image and speech handlers
 		const showImageWarning = useCallback(
@@ -1763,6 +1776,8 @@ export const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 
 					{/* novacode_change start */}
 					{!isEditMode && <IndexingStatusBadge className={cn({ hidden: containerWidth < 235 })} />}
+
+					<EmojiStickerPicker disabled={sendingDisabled} onInsert={handleInsertSticker} />
 
 					<StandardTooltip content="Add Context (@)">
 						<button

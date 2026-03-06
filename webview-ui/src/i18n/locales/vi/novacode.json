@@ -297,6 +297,21 @@
 				"title": "Tài khoản của bạn không có tín dụng",
 				"description": "Tài khoản Nova Code của bạn không có tín dụng. Để sử dụng tự động hoàn thành, vui lòng nạp tín dụng vào tài khoản.",
 				"buyCredits": "Mua tín dụng →"
+			},
+			"configuredProvider": {
+				"label": "Autocomplete Provider Override",
+				"description": "Use your existing autocomplete profile flow, or override it with a dedicated OpenAI Compatible endpoint.",
+				"options": {
+					"profile": "Use configured profile",
+					"openAiCompatible": "OpenAI Compatible"
+				}
+			},
+			"openAiCompatible": {
+				"baseUrl": "API Base URL",
+				"model": "Model Name",
+				"apiKey": "API Key (Optional)",
+				"apiKeyPlaceholder": "Optional for unauthenticated endpoints",
+				"description": "When this override is enabled, autocomplete uses the OpenAI Compatible endpoint and model configured here."
 			}
 		}
 	},

@@ -88,9 +88,8 @@ describe("VcpSettings", () => {
 		expect(screen.getByTestId("vcp-toolbox-reconnect-interval-input")).toBeInTheDocument()
 		expect(screen.getByTestId("vcp-snow-compat-enabled-checkbox")).toBeInTheDocument()
 		expect(screen.getByTestId("vcp-snow-compat-basic-model-input")).toBeInTheDocument()
-		expect(
-			screen.getByText(/Agent Team 设置已迁移到「代理行为」页面，Memory 设置已迁移到「上下文管理」页面/i),
-		).toBeInTheDocument()
+		expect(screen.getByText(/重复设置已迁移/i)).toBeInTheDocument()
+		expect(screen.getByText(/成员编排、波次策略和文件隔离规则已迁移到“代理行为”页面统一管理/i)).toBeInTheDocument()
 	})
 
 	it("updates nested vcpInfo marker and keeps the full config shape", () => {

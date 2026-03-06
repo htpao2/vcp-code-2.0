@@ -999,7 +999,7 @@
 		},
 		"MORPH_FAST_APPLY": {
 			"name": "Aktifkan Fast Apply",
-			"description": "Ketika diaktifkan, Nova Code dapat mengedit file menggunakan Fast Apply dengan model khusus yang dioptimalkan untuk modifikasi kode. Memerlukan Nova Gateway Provider, OpenRouter, atau kunci API Morph.",
+			"description": "Ketika diaktifkan, Nova Code dapat mengedit file menggunakan Fast Apply dengan model khusus yang dioptimalkan untuk modifikasi kode. Memerlukan OpenRouter, atau kunci API Morph.",
 			"apiProvider": "Penyedia API",
 			"apiProviderList": {
 				"current": "Saat ini"

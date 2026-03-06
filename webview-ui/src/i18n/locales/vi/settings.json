@@ -1011,7 +1011,7 @@
 		},
 		"MORPH_FAST_APPLY": {
 			"name": "Bật Fast Apply",
-			"description": "Khi được bật, Nova Code có thể chỉnh sửa tệp bằng Fast Apply với các mô hình chuyên biệt được tối ưu hóa cho việc sửa đổi mã. Yêu cầu Nova Gateway Provider, OpenRouter hoặc khóa API Morph.",
+			"description": "Khi được bật, Nova Code có thể chỉnh sửa tệp bằng Fast Apply với các mô hình chuyên biệt được tối ưu hóa cho việc sửa đổi mã. Yêu cầu OpenRouter hoặc khóa API Morph.",
 			"apiProvider": "Nhà cung cấp API",
 			"apiProviderList": {
 				"current": "Hiện tại"

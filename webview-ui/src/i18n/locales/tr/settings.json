@@ -978,7 +978,7 @@
 		},
 		"MORPH_FAST_APPLY": {
 			"name": "Fast Apply'ı etkinleştir",
-			"description": "Etkinleştirildiğinde, Nova Code dosyaları kod değişiklikleri için optimize edilmiş özel modellerle Fast Apply kullanarak düzenleyebilir. Nova Gateway Provider, OpenRouter veya bir Morph API anahtarı gerektirir.",
+			"description": "Etkinleştirildiğinde, Nova Code dosyaları kod değişiklikleri için optimize edilmiş özel modellerle Fast Apply kullanarak düzenleyebilir. OpenRouter veya bir Morph API anahtarı gerektirir.",
 			"apiProvider": "API Sağlayıcı",
 			"apiProviderList": {
 				"current": "Mevcut"

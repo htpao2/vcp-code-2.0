@@ -289,7 +289,22 @@
 				"description": "आपके Nova Code खाते में कोई क्रेडिट नहीं है। ऑटोकम्पलीट का उपयोग करने के लिए, कृपया अपने खाते में क्रेडिट जोड़ें।",
 				"buyCredits": "क्रेडिट खरीदें →"
 			},
-			"configureAutocompleteProfile": "प्रोफाइल में जाकर और ऑटोकम्पलीट प्रोफाइल टाइप की एक प्रोफाइल कॉन्फ़िगर करके किसी भी मॉडल का उपयोग करें।"
+			"configureAutocompleteProfile": "प्रोफाइल में जाकर और ऑटोकम्पलीट प्रोफाइल टाइप की एक प्रोफाइल कॉन्फ़िगर करके किसी भी मॉडल का उपयोग करें।",
+			"configuredProvider": {
+				"label": "Autocomplete Provider Override",
+				"description": "Use your existing autocomplete profile flow, or override it with a dedicated OpenAI Compatible endpoint.",
+				"options": {
+					"profile": "Use configured profile",
+					"openAiCompatible": "OpenAI Compatible"
+				}
+			},
+			"openAiCompatible": {
+				"baseUrl": "API Base URL",
+				"model": "Model Name",
+				"apiKey": "API Key (Optional)",
+				"apiKeyPlaceholder": "Optional for unauthenticated endpoints",
+				"description": "When this override is enabled, autocomplete uses the OpenAI Compatible endpoint and model configured here."
+			}
 		}
 	},
 	"virtualProvider": {

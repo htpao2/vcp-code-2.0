@@ -110,5 +110,3 @@ export const PROVIDERS = [
 	{ value: "poe", label: "Poe", proxy: false }, // novacode_change
 	{ value: "corethink", label: "Corethink", proxy: false },
 ].sort((a, b) => a.label.localeCompare(b.label))
-
-PROVIDERS.unshift({ value: "novacode", label: "Nova Gateway", proxy: false }) // novacode_change

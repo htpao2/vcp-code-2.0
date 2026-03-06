@@ -74,6 +74,12 @@ vi.mock("@vscode/webview-ui-toolkit/react", () => ({
 			{children}
 		</button>
 	),
+	VSCodeTextField: ({ children, value, onInput, placeholder, type }: any) => (
+		<label>
+			{children}
+			<input value={value} onInput={onInput} placeholder={placeholder} type={type || "text"} />
+		</label>
+	),
 	VSCodeDropdown: ({ children, value, onChange }: any) => (
 		<select value={value} onChange={(e) => onChange({ target: { value: e.target.value } })}>
 			{children}
@@ -285,6 +291,32 @@ describe("AutocompleteServiceSettingsView", () => {
 		expect(screen.getByText(/openrouter/)).toBeInTheDocument()
 		expect(screen.getAllByText(/novacode:autocomplete.settings.model/).length).toBeGreaterThan(0)
 		expect(screen.getByText(/openai\/gpt-4o-mini/)).toBeInTheDocument()
+	})
+
+	it("updates autocomplete provider override", () => {
+		const onAutocompleteServiceSettingsChange = vi.fn()
+		renderComponent({ onAutocompleteServiceSettingsChange })
+
+		const dropdown = screen.getByRole("combobox") as HTMLSelectElement
+		fireEvent.change(dropdown, { target: { value: "openai-compatible" } })
+
+		expect(onAutocompleteServiceSettingsChange).toHaveBeenCalledWith("configuredProvider", "openai-compatible")
+	})
+
+	it("renders OpenAI Compatible fields when override is enabled", () => {
+		renderComponent({
+			ghostServiceSettings: {
+				...defaultAutocompleteServiceSettings,
+				configuredProvider: "openai-compatible",
+				openAiCompatibleBaseUrl: "https://example.com/v1",
+				openAiCompatibleModel: "codestral-compatible",
+				openAiCompatibleApiKey: "secret",
+			},
+		})
+
+		expect(screen.getByDisplayValue("https://example.com/v1")).toBeInTheDocument()
+		expect(screen.getByDisplayValue("codestral-compatible")).toBeInTheDocument()
+		expect(screen.getByDisplayValue("secret")).toBeInTheDocument()
 	})
 
 	it("displays error message when provider and model are not configured", () => {

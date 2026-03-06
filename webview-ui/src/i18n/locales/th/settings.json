@@ -1116,7 +1116,7 @@
 		"experimentalParallelToolCallsWarning": "⚠️ นี่เป็นฟีเจอร์เบต้า และอาจส่งผลต่อพฤติกรรมของแอปพลิเคชัน",
 		"MORPH_FAST_APPLY": {
 			"name": "เปิดใช้งาน Fast Apply",
-			"description": "เมื่อเปิดใช้งาน Nova Code สามารถแก้ไขไฟล์โดยใช้ Fast Apply กับโมเดลเฉพาะทางที่ปรับแต่งสำหรับการแก้ไขโค้ด ต้องใช้ Nova Gateway Provider, OpenRouter หรือ Morph API key",
+			"description": "เมื่อเปิดใช้งาน Nova Code สามารถแก้ไขไฟล์โดยใช้ Fast Apply กับโมเดลเฉพาะทางที่ปรับแต่งสำหรับการแก้ไขโค้ด ต้องใช้ OpenRouter หรือ Morph API key",
 			"apiProvider": "ผู้ให้บริการ API",
 			"apiProviderList": {
 				"current": "ปัจจุบัน"

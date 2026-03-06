@@ -2,10 +2,24 @@ import { render, screen, fireEvent, waitFor } from "@/utils/test-utils"
 import { NovaModeSelector } from "../NovaModeSelector"
 import { vscode } from "@/utils/vscode"
 
+const { mockExtensionState } = vi.hoisted(() => ({
+	mockExtensionState: {
+		vcpConfig: {
+			agentTeam: {
+				enabled: false,
+			},
+		},
+	},
+}))
+
 vi.mock("@/utils/vscode", () => ({
 	vscode: {
 		postMessage: vi.fn(),
 	},
+}))
+
+vi.mock("@/context/ExtensionStateContext", () => ({
+	useExtensionState: () => mockExtensionState,
 }))
 
 vi.mock("@/i18n/TranslationContext", () => ({
@@ -24,6 +38,7 @@ describe("NovaModeSelector", () => {
 
 	beforeEach(() => {
 		vi.clearAllMocks()
+		mockExtensionState.vcpConfig.agentTeam.enabled = false
 	})
 
 	test("renders the mode selector", () => {
@@ -88,5 +103,29 @@ describe("NovaModeSelector", () => {
 
 		// Verify that onChange was called with the selected mode
 		expect(mockOnChange).toHaveBeenCalledWith("architect")
+	})
+
+	test("hides agent team mode when disabled", async () => {
+		render(<NovaModeSelector {...defaultProps} />)
+
+		fireEvent.click(screen.getByTestId("dropdown-trigger"))
+
+		await waitFor(() => {
+			expect(screen.getByText("Architect")).toBeInTheDocument()
+		})
+
+		expect(screen.queryByText("Agent Team")).not.toBeInTheDocument()
+	})
+
+	test("shows agent team mode when enabled", async () => {
+		mockExtensionState.vcpConfig.agentTeam.enabled = true
+
+		render(<NovaModeSelector {...defaultProps} />)
+
+		fireEvent.click(screen.getByTestId("dropdown-trigger"))
+
+		await waitFor(() => {
+			expect(screen.getByText("Agent Team")).toBeInTheDocument()
+		})
 	})
 })

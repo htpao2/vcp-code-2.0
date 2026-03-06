@@ -1,10 +1,9 @@
-﻿import {
+import type { ReactNode } from "react"
+import {
 	type ProviderSettings,
 	openRouterProviderSortSchema,
 	openRouterProviderDataCollectionSchema,
 	OPENROUTER_DEFAULT_PROVIDER_NAME,
-	getAppUrl,
-	TelemetryEventName,
 } from "@roo-code/types"
 
 import { useAppTranslation } from "@src/i18n/TranslationContext"
@@ -13,8 +12,6 @@ import { z } from "zod"
 import { safeJsonParse } from "@roo/safeJsonParse"
 import { useModelProviders } from "@/components/ui/hooks/useSelectedModel"
 import { cn } from "@/lib/utils"
-import { VSCodeButtonLink } from "@/components/common/VSCodeButtonLink"
-import { telemetryClient } from "@/utils/TelemetryClient"
 
 const DEFAULT_VALUE_KEY = "default" as const
 const SPECIFIC_PROVIDER_KEY = "specific" as const
@@ -29,7 +26,7 @@ type ProviderPreference =
 			provider: string
 	  }
 
-const ProviderSelectItem = ({ value, children }: { value: ProviderPreference; children: React.ReactNode }) => {
+const ProviderSelectItem = ({ value, children }: { value: ProviderPreference; children: ReactNode }) => {
 	return <SelectItem value={JSON.stringify(value)}>{children}</SelectItem>
 }
 
@@ -42,33 +39,13 @@ const getProviderPreference = (apiConfiguration: ProviderSettings): ProviderPref
 interface Props {
 	apiConfiguration: ProviderSettings
 	setApiConfigurationField: <K extends keyof ProviderSettings>(field: K, value: ProviderSettings[K]) => void
-	novacodeDefaultModel: string
 }
 
-export const NovaProviderRoutingManagedByOrganization = (props: { organizationId: string }) => {
+export const OpenRouterProviderRouting = ({ apiConfiguration, setApiConfigurationField }: Props) => {
 	const { t } = useAppTranslation()
-	return (
-		<div className="flex flex-col gap-1">
-			<div className="flex justify-between items-center">
-				<label className="block font-medium mb-1">
-					{t("novacode:settings.provider.providerRouting.title")}
-				</label>
-			</div>
-			<div className="text-sm text-vscode-descriptionForeground">
-				<VSCodeButtonLink
-					href={getAppUrl(`/organizations/${props.organizationId}`)}
-					appearance="secondary"
-					className="text-sm w-full whitespace-normal h-auto py-3">
-					{t("novacode:settings.provider.providerRouting.managedByOrganization")}
-				</VSCodeButtonLink>
-			</div>
-		</div>
+	const providers = Object.values(
+		useModelProviders(apiConfiguration.openRouterModelId || "", apiConfiguration).data ?? {},
 	)
-}
-
-export const NovaProviderRouting = ({ apiConfiguration, setApiConfigurationField, novacodeDefaultModel }: Props) => {
-	const { t } = useAppTranslation()
-	const providers = Object.values(useModelProviders(novacodeDefaultModel, apiConfiguration).data ?? {})
 
 	const onValueChange = (value: string) => {
 		const preference = safeJsonParse<ProviderPreference>(value)
@@ -86,7 +63,7 @@ export const NovaProviderRouting = ({ apiConfiguration, setApiConfigurationField
 	const specificProviderIsInvalid =
 		!!specficProvider &&
 		specficProvider !== OPENROUTER_DEFAULT_PROVIDER_NAME &&
-		!providers.find((p) => p.label === specficProvider)
+		!providers.find((provider) => provider.label === specficProvider)
 
 	return (
 		<div className="flex flex-col gap-1">
@@ -145,9 +122,7 @@ export const NovaProviderRouting = ({ apiConfiguration, setApiConfigurationField
 				</SelectTrigger>
 				<SelectContent>
 					<SelectItem value={DEFAULT_VALUE_KEY}>
-						{apiConfiguration.apiProvider === "novacode"
-							? t("novacode:settings.provider.providerRouting.dataCollection.allowFree")
-							: t("novacode:settings.provider.providerRouting.dataCollection.default")}
+						{t("novacode:settings.provider.providerRouting.dataCollection.default")}
 					</SelectItem>
 					<SelectItem value={openRouterProviderDataCollectionSchema.Values.allow}>
 						{t("novacode:settings.provider.providerRouting.dataCollection.allow")}
@@ -160,19 +135,6 @@ export const NovaProviderRouting = ({ apiConfiguration, setApiConfigurationField
 					</SelectItem>
 				</SelectContent>
 			</Select>
-			{apiConfiguration.apiProvider === "novacode" && (
-				<VSCodeButtonLink
-					onClick={() => {
-						telemetryClient.capture(TelemetryEventName.CREATE_ORGANIZATION_LINK_CLICKED, {
-							origin: "provider-routing",
-						})
-					}}
-					href={getAppUrl("/organizations/new")}
-					appearance="primary"
-					className="text-sm w-full whitespace-normal h-auto py-3">
-					{t("novacode:settings.provider.providerRouting.createOrganization")}
-				</VSCodeButtonLink>
-			)}
 		</div>
 	)
 }

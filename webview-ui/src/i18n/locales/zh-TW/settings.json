@@ -988,7 +988,7 @@
 		},
 		"MORPH_FAST_APPLY": {
 			"name": "啟用 Fast Apply",
-			"description": "啟用後，Nova Code 可使用專為程式碼修改最佳化的特殊模型進行 Fast Apply 編輯檔案。需要 Nova Gateway Provider、OpenRouter 或 Morph API 金鑰。",
+			"description": "啟用後，Nova Code 可使用專為程式碼修改最佳化的特殊模型進行 Fast Apply 編輯檔案。需要 OpenRouter 或 Morph API 金鑰。",
 			"apiProvider": "API 供應商",
 			"apiProviderList": {
 				"current": "目前"

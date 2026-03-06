@@ -9,8 +9,8 @@
 		"test": "vitest run --passWithNoTests",
 		"format": "prettier --write src",
 		"dev": "vite",
-		"build": "tsc -b && vite build",
-		"build:nightly": "tsc -b && vite build --mode nightly",
+		"build": "rimraf ../src/webview-ui/build && tsc -b && vite build",
+		"build:nightly": "rimraf ../apps/vscode-nightly/build/webview-ui/build && tsc -b && vite build --mode nightly",
 		"preview": "vite preview",
 		"clean": "rimraf ../src/webview-ui ../apps/vscode-nightly/build/webview-ui tsconfig.tsbuildinfo .turbo"
 	},
@@ -72,6 +72,8 @@
 		"react-virtuoso": "^4.7.13",
 		"rehype-highlight": "^7.0.0",
 		"rehype-katex": "^7.0.1",
+		"rehype-raw": "^7.0.0",
+		"rehype-sanitize": "^6.0.0",
 		"remark-gfm": "^4.0.1",
 		"remark-math": "^6.0.0",
 		"remove-markdown": "^0.6.0",
@@ -91,7 +93,6 @@
 		"zod": "^3.25.61"
 	},
 	"devDependencies": {
-		"babel-plugin-react-compiler": "^1.0.0",
 		"@roo-code/config-eslint": "workspace:^",
 		"@roo-code/config-typescript": "workspace:^",
 		"@storybook/addon-essentials": "^8.6.15",
@@ -112,6 +113,7 @@
 		"@types/vscode-webview": "^1.57.5",
 		"@vitejs/plugin-react": "^4.3.4",
 		"@vitest/ui": "^3.2.3",
+		"babel-plugin-react-compiler": "^1.0.0",
 		"identity-obj-proxy": "^3.0.0",
 		"jest": "^29.7.0",
 		"jest-environment-jsdom": "^29.7.0",

@@ -141,7 +141,7 @@ export const ImageGenerationSettings = ({
 							onChange={(e: any) => handleProviderChange(e.target.value)}
 							className="w-full">
 							<VSCodeOption value="novacode" className="py-2 px-3">
-								Nova Gateway
+								{t("novacode:settings.provider.account")}
 							</VSCodeOption>
 							<VSCodeOption value="openrouter" className="py-2 px-3">
 								OpenRouter

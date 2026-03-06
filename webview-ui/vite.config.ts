@@ -117,7 +117,7 @@ export default defineConfig(({ mode }) => {
 		},
 		build: {
 			outDir,
-			emptyOutDir: true,
+			emptyOutDir: false,
 			reportCompressedSize: false,
 			// Generate complete source maps with original TypeScript sources
 			sourcemap: true,

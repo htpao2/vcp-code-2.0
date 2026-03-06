@@ -949,6 +949,12 @@ export const webviewMessageHandler = async (
 			break
 		case "requestRouterModels":
 			const { apiConfiguration } = await provider.getState()
+			const apiConfigurationOverride =
+				(message?.values?.apiConfigurationOverride as Partial<typeof apiConfiguration> | undefined) ?? undefined
+			const effectiveApiConfiguration = {
+				...apiConfiguration,
+				...(apiConfigurationOverride ?? {}),
+			}
 
 			// Optional single provider filter from webview
 			const requestedProvider = message?.values?.provider
@@ -1013,8 +1019,8 @@ export const webviewMessageHandler = async (
 			}
 
 			// novacode_change start: openrouter auth, novacode provider
-			const openRouterApiKey = apiConfiguration.openRouterApiKey || message?.values?.openRouterApiKey
-			const openRouterBaseUrl = apiConfiguration.openRouterBaseUrl || message?.values?.openRouterBaseUrl
+			const openRouterApiKey = effectiveApiConfiguration.openRouterApiKey || message?.values?.openRouterApiKey
+			const openRouterBaseUrl = effectiveApiConfiguration.openRouterBaseUrl || message?.values?.openRouterBaseUrl
 
 			// Base candidates (only those handled by this aggregate fetcher)
 			const candidates: { key: RouterName; options: GetModelsOptions }[] = [
@@ -1026,36 +1032,36 @@ export const webviewMessageHandler = async (
 					key: "gemini",
 					options: {
 						provider: "gemini",
-						apiKey: apiConfiguration.geminiApiKey,
-						baseUrl: apiConfiguration.googleGeminiBaseUrl,
+						apiKey: effectiveApiConfiguration.geminiApiKey,
+						baseUrl: effectiveApiConfiguration.googleGeminiBaseUrl,
 					},
 				},
 				{
 					key: "requesty",
 					options: {
 						provider: "requesty",
-						apiKey: apiConfiguration.requestyApiKey,
-						baseUrl: apiConfiguration.requestyBaseUrl,
+						apiKey: effectiveApiConfiguration.requestyApiKey,
+						baseUrl: effectiveApiConfiguration.requestyBaseUrl,
 					},
 				},
 				{ key: "glama", options: { provider: "glama" } }, // novacode_change
-				{ key: "unbound", options: { provider: "unbound", apiKey: apiConfiguration.unboundApiKey } },
+				{ key: "unbound", options: { provider: "unbound", apiKey: effectiveApiConfiguration.unboundApiKey } },
 				{
 					key: "novacode",
 					options: {
 						provider: "novacode",
-						novacodeToken: apiConfiguration.novacodeToken,
-						novacodeOrganizationId: apiConfiguration.novacodeOrganizationId,
+						novacodeToken: effectiveApiConfiguration.novacodeToken,
+						novacodeOrganizationId: effectiveApiConfiguration.novacodeOrganizationId,
 					},
 				},
-				{ key: "ollama", options: { provider: "ollama", baseUrl: apiConfiguration.ollamaBaseUrl } },
+				{ key: "ollama", options: { provider: "ollama", baseUrl: effectiveApiConfiguration.ollamaBaseUrl } },
 				{ key: "vercel-ai-gateway", options: { provider: "vercel-ai-gateway" } },
 				{
 					key: "deepinfra",
 					options: {
 						provider: "deepinfra",
-						apiKey: apiConfiguration.deepInfraApiKey,
-						baseUrl: apiConfiguration.deepInfraBaseUrl,
+						apiKey: effectiveApiConfiguration.deepInfraApiKey,
+						baseUrl: effectiveApiConfiguration.deepInfraBaseUrl,
 					},
 				},
 				// novacode_change start
@@ -1063,16 +1069,16 @@ export const webviewMessageHandler = async (
 					key: "nano-gpt",
 					options: {
 						provider: "nano-gpt",
-						apiKey: apiConfiguration.nanoGptApiKey,
-						nanoGptModelList: apiConfiguration.nanoGptModelList,
+						apiKey: effectiveApiConfiguration.nanoGptApiKey,
+						nanoGptModelList: effectiveApiConfiguration.nanoGptModelList,
 					},
 				},
 				{
 					key: "aihubmix",
 					options: {
 						provider: "aihubmix",
-						apiKey: apiConfiguration.aihubmixApiKey,
-						baseUrl: apiConfiguration.aihubmixBaseUrl,
+						apiKey: effectiveApiConfiguration.aihubmixApiKey,
+						baseUrl: effectiveApiConfiguration.aihubmixBaseUrl,
 					},
 				},
 				// novacode_change end
@@ -1080,19 +1086,22 @@ export const webviewMessageHandler = async (
 					key: "ovhcloud",
 					options: {
 						provider: "ovhcloud",
-						apiKey: apiConfiguration.ovhCloudAiEndpointsApiKey,
-						baseUrl: apiConfiguration.ovhCloudAiEndpointsBaseUrl,
+						apiKey: effectiveApiConfiguration.ovhCloudAiEndpointsApiKey,
+						baseUrl: effectiveApiConfiguration.ovhCloudAiEndpointsBaseUrl,
 					},
 				},
 				{
 					key: "inception",
 					options: {
 						provider: "inception",
-						apiKey: apiConfiguration.inceptionLabsApiKey,
-						baseUrl: apiConfiguration.inceptionLabsBaseUrl,
+						apiKey: effectiveApiConfiguration.inceptionLabsApiKey,
+						baseUrl: effectiveApiConfiguration.inceptionLabsBaseUrl,
 					},
 				},
-				{ key: "synthetic", options: { provider: "synthetic", apiKey: apiConfiguration.syntheticApiKey } }, // novacode_change
+				{
+					key: "synthetic",
+					options: { provider: "synthetic", apiKey: effectiveApiConfiguration.syntheticApiKey },
+				}, // novacode_change
 				{
 					key: "roo",
 					options: {
@@ -1105,36 +1114,36 @@ export const webviewMessageHandler = async (
 				},
 				{
 					key: "chutes",
-					options: { provider: "chutes", apiKey: apiConfiguration.chutesApiKey },
+					options: { provider: "chutes", apiKey: effectiveApiConfiguration.chutesApiKey },
 				},
 				// novacode_change start
 				{
 					key: "poe",
-					options: { provider: "poe", apiKey: apiConfiguration.poeApiKey },
+					options: { provider: "poe", apiKey: effectiveApiConfiguration.poeApiKey },
 				},
 				// novacode_change end
 				{
 					key: "zenmux",
 					options: {
 						provider: "zenmux",
-						apiKey: apiConfiguration.zenmuxApiKey,
-						baseUrl: apiConfiguration.zenmuxBaseUrl ?? "https://zenmux.ai/api/v1",
+						apiKey: effectiveApiConfiguration.zenmuxApiKey,
+						baseUrl: effectiveApiConfiguration.zenmuxBaseUrl ?? "https://zenmux.ai/api/v1",
 					},
 				},
 			]
 			// novacode_change end
 
 			// IO Intelligence is conditional on api key
-			if (apiConfiguration.ioIntelligenceApiKey) {
+			if (effectiveApiConfiguration.ioIntelligenceApiKey) {
 				candidates.push({
 					key: "io-intelligence",
-					options: { provider: "io-intelligence", apiKey: apiConfiguration.ioIntelligenceApiKey },
+					options: { provider: "io-intelligence", apiKey: effectiveApiConfiguration.ioIntelligenceApiKey },
 				})
 			}
 
 			// LiteLLM is conditional on baseUrl+apiKey
-			const litellmApiKey = apiConfiguration.litellmApiKey || message?.values?.litellmApiKey
-			const litellmBaseUrl = apiConfiguration.litellmBaseUrl || message?.values?.litellmBaseUrl
+			const litellmApiKey = effectiveApiConfiguration.litellmApiKey || message?.values?.litellmApiKey
+			const litellmBaseUrl = effectiveApiConfiguration.litellmBaseUrl || message?.values?.litellmBaseUrl
 
 			if (litellmApiKey && litellmBaseUrl) {
 				// If explicit credentials are provided in message.values (from Refresh Models button),

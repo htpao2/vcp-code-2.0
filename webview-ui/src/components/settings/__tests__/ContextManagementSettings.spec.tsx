@@ -195,6 +195,9 @@ describe("ContextManagementSettings", () => {
 	it("renders other context management settings", () => {
 		render(<ContextManagementSettings {...defaultProps} />)
 
+		expect(screen.getByText("处理链路")).toBeInTheDocument()
+		expect(screen.getByText("原始上下文 → 记忆系统注入 → 上下文压缩")).toBeInTheDocument()
+
 		// Check for other sliders
 		expect(screen.getByTestId("open-tabs-limit-slider")).toBeInTheDocument()
 		expect(screen.getByTestId("workspace-files-limit-slider")).toBeInTheDocument()

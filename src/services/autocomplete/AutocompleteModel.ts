@@ -1,5 +1,5 @@
 // novacode_change new file
-import { modelIdKeysByProvider, ProviderName } from "@roo-code/types"
+import { AutocompleteServiceSettings, modelIdKeysByProvider, ProviderName, ProviderSettings } from "@roo-code/types"
 import { ApiHandler, buildApiHandler, FimHandler } from "../../api"
 import { ProviderSettingsManager } from "../../core/config/ProviderSettingsManager"
 import { OpenRouterHandler } from "../../api/providers"
@@ -46,10 +46,27 @@ export class AutocompleteModel {
 		this.hasNovacodeProfileWithNoBalance = false
 	}
 
-	public async reload(providerSettingsManager: ProviderSettingsManager): Promise<boolean> {
+	public async reload(
+		providerSettingsManager: ProviderSettingsManager,
+		settings?: AutocompleteServiceSettings | null,
+	): Promise<boolean> {
 		const profiles = await providerSettingsManager.listConfig()
 
 		this.cleanup()
+
+		const manualOpenAiCompatibleProfile = this.createManualOpenAiCompatibleProfile(settings)
+		if (manualOpenAiCompatibleProfile) {
+			await useProfile(
+				this,
+				manualOpenAiCompatibleProfile as Awaited<ReturnType<typeof providerSettingsManager.getProfile>>,
+				"openai",
+			)
+			return true
+		}
+		if (settings?.configuredProvider === "openai-compatible") {
+			this.loaded = true
+			return false
+		}
 
 		const selectedProfile = profiles.find((x) => x.profileType === "autocomplete")
 		if (selectedProfile) {
@@ -77,7 +94,8 @@ export class AutocompleteModel {
 					continue
 				}
 			}
-			await useProfile(this, { ...profile, [modelIdKeysByProvider[provider]]: model }, provider)
+			const modelField = provider === "openai" ? "openAiModelId" : modelIdKeysByProvider[provider]
+			await useProfile(this, { ...profile, [modelField]: model }, provider)
 			return true
 		}
 
@@ -93,6 +111,27 @@ export class AutocompleteModel {
 			if (self.apiHandler instanceof OpenRouterHandler) await self.apiHandler.fetchModel()
 			self.loaded = true
 		}
+	}
+
+	private createManualOpenAiCompatibleProfile(
+		settings?: AutocompleteServiceSettings | null,
+	): ProviderSettings | null {
+		if (settings?.configuredProvider !== "openai-compatible") {
+			return null
+		}
+
+		if (!settings.openAiCompatibleBaseUrl || !settings.openAiCompatibleModel) {
+			return null
+		}
+
+		return {
+			apiProvider: "openai",
+			profileType: "autocomplete",
+			name: "OpenAI Compatible Autocomplete",
+			openAiBaseUrl: settings.openAiCompatibleBaseUrl,
+			openAiApiKey: settings.openAiCompatibleApiKey || "",
+			openAiModelId: settings.openAiCompatibleModel,
+		} as ProviderSettings
 	}
 
 	public supportsFim(): boolean {

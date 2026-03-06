@@ -159,72 +159,70 @@ export const VcpSettings = ({
 		setCachedStateField("vcpConfig", next)
 	}
 
+	const movedSettings = [
+		{
+			label: "YOLO 路由",
+			value: yoloMode ? "已启用" : "已关闭",
+			target: "请前往“自动批准/代理行为”页面调整",
+		},
+		{
+			label: "自动批准快捷菜单",
+			value: (showAutoApproveMenu ?? true) ? "显示" : "隐藏",
+			target: "请前往“自动批准”页面调整",
+		},
+		{
+			label: "浏览器工具",
+			value: (browserToolEnabled ?? true) ? "已启用" : "已关闭",
+			target: remoteBrowserEnabled ? "当前已启用远程浏览器模式" : "请前往“浏览器”相关设置调整",
+		},
+		{
+			label: "自动补全",
+			value:
+				ghostServiceSettings?.enableAutoTrigger ||
+				ghostServiceSettings?.enableSmartInlineTaskKeybinding ||
+				ghostServiceSettings?.enableChatAutocomplete
+					? "已配置"
+					: "未配置",
+			target: "请前往“自动补全”页面调整",
+		},
+	]
+	void setAutocompleteServiceSettingsField
+
 	return (
-		<div>
-			<SectionHeader description="Core VCP toggles and quick links.">VCP</SectionHeader>
+		<div className="space-y-3">
+			<SectionHeader description="统一管理 VCP 协议、桥接通道与兼容层，重复开关已迁移到专门页面。">
+				VCP
+			</SectionHeader>
 			<Section>
-				<VSCodeCheckbox
-					checked={yoloMode ?? false}
-					onChange={(e: any) => setCachedStateField("yoloMode", e.target.checked === true)}
-					data-testid="vcp-yolo-checkbox">
-					Enable YOLO routing
-				</VSCodeCheckbox>
-				<VSCodeCheckbox
-					checked={showAutoApproveMenu ?? true}
-					onChange={(e: any) => setCachedStateField("showAutoApproveMenu", e.target.checked === true)}
-					data-testid="vcp-auto-approve-menu-checkbox">
-					Show auto-approve quick menu in chat
-				</VSCodeCheckbox>
-				<VSCodeCheckbox
-					checked={browserToolEnabled ?? true}
-					onChange={(e: any) => setCachedStateField("browserToolEnabled", e.target.checked === true)}
-					data-testid="vcp-browser-tool-checkbox">
-					Enable browser automation tool
-				</VSCodeCheckbox>
-				<VSCodeCheckbox
-					checked={remoteBrowserEnabled ?? false}
-					onChange={(e: any) => setCachedStateField("remoteBrowserEnabled", e.target.checked === true)}
-					data-testid="vcp-remote-browser-checkbox">
-					Enable remote browser mode
-				</VSCodeCheckbox>
-				<VSCodeCheckbox
-					checked={ghostServiceSettings?.enableAutoTrigger ?? false}
-					onChange={(e: any) =>
-						setAutocompleteServiceSettingsField("enableAutoTrigger", e.target.checked === true)
-					}
-					data-testid="vcp-autocomplete-auto-trigger-checkbox">
-					Enable autocomplete auto trigger
-				</VSCodeCheckbox>
-				<VSCodeCheckbox
-					checked={ghostServiceSettings?.enableSmartInlineTaskKeybinding ?? false}
-					onChange={(e: any) =>
-						setAutocompleteServiceSettingsField(
-							"enableSmartInlineTaskKeybinding",
-							e.target.checked === true,
-						)
-					}
-					data-testid="vcp-autocomplete-inline-keybinding-checkbox">
-					Enable smart inline task keybinding
-				</VSCodeCheckbox>
-				<VSCodeCheckbox
-					checked={ghostServiceSettings?.enableChatAutocomplete ?? false}
-					onChange={(e: any) =>
-						setAutocompleteServiceSettingsField("enableChatAutocomplete", e.target.checked === true)
-					}
-					data-testid="vcp-chat-autocomplete-checkbox">
-					Enable chat autocomplete
-				</VSCodeCheckbox>
+				<div className="rounded border border-vscode-panel-border bg-[var(--vscode-editorWidget-background)] p-3">
+					<div className="font-medium text-vscode-foreground">重复设置已迁移</div>
+					<div className="mt-1 text-sm text-vscode-descriptionForeground">
+						YOLO、自动批准、浏览器模式和自动补全已从这里移出，避免和其他设置页重复维护。
+					</div>
+					<div className="mt-3 grid grid-cols-1 gap-2 md:grid-cols-2">
+						{movedSettings.map((item) => (
+							<div key={item.label} className="rounded border border-vscode-panel-border p-3 text-sm">
+								<div className="font-medium text-vscode-foreground">{item.label}</div>
+								<div className="mt-1 text-vscode-descriptionForeground">当前状态：{item.value}</div>
+								<div className="mt-1 text-xs text-vscode-descriptionForeground">{item.target}</div>
+							</div>
+						))}
+					</div>
+				</div>
 			</Section>
 
 			<Section>
 				<details open>
-					<summary className="cursor-pointer font-medium mb-2">VCP 协议配置</summary>
+					<summary className="cursor-pointer font-medium mb-2">🧹 协议桥接</summary>
+					<div className="pb-2 text-xs text-vscode-descriptionForeground">
+						控制上下文折叠、VCP 信息标记、HTML 渲染与消息桥接标记。
+					</div>
 					<div className="space-y-2">
 						<VSCodeCheckbox
 							checked={currentVcpConfig.enabled}
 							onChange={(e: any) => updateVcpConfig({ enabled: e.target.checked === true })}
 							data-testid="vcp-enabled-checkbox">
-							Enable VCP protocol
+							启用 VCP 协议
 						</VSCodeCheckbox>
 						<VSCodeCheckbox
 							checked={currentVcpConfig.contextFold.enabled}
@@ -234,7 +232,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-context-fold-enabled-checkbox">
-							Enable context fold parser
+							启用上下文折叠解析
 						</VSCodeCheckbox>
 						<VSCodeDropdown
 							value={currentVcpConfig.contextFold.style}
@@ -246,8 +244,8 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-context-fold-style-dropdown">
-							<VSCodeOption value="details">details</VSCodeOption>
-							<VSCodeOption value="comment">comment</VSCodeOption>
+							<VSCodeOption value="details">details 标签</VSCodeOption>
+							<VSCodeOption value="comment">注释标记</VSCodeOption>
 						</VSCodeDropdown>
 						<VSCodeTextField
 							value={currentVcpConfig.contextFold.startMarker}
@@ -257,7 +255,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-context-fold-start-marker-input">
-							Context Fold Start Marker
+							折叠开始标记
 						</VSCodeTextField>
 						<VSCodeTextField
 							value={currentVcpConfig.contextFold.endMarker}
@@ -267,7 +265,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-context-fold-end-marker-input">
-							Context Fold End Marker
+							折叠结束标记
 						</VSCodeTextField>
 						<VSCodeCheckbox
 							checked={currentVcpConfig.vcpInfo.enabled}
@@ -277,7 +275,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-vcpinfo-enabled-checkbox">
-							Enable VCP info parser
+							启用 VCP 信息解析
 						</VSCodeCheckbox>
 						<VSCodeTextField
 							value={currentVcpConfig.vcpInfo.startMarker}
@@ -285,7 +283,7 @@ export const VcpSettings = ({
 								updateVcpConfig({ vcpInfo: { startMarker: String(e.target.value || "") } })
 							}
 							data-testid="vcp-vcpinfo-start-marker-input">
-							VCPINFO Start Marker
+							VCPINFO 开始标记
 						</VSCodeTextField>
 						<VSCodeTextField
 							value={currentVcpConfig.vcpInfo.endMarker}
@@ -293,21 +291,24 @@ export const VcpSettings = ({
 								updateVcpConfig({ vcpInfo: { endMarker: String(e.target.value || "") } })
 							}
 							data-testid="vcp-vcpinfo-end-marker-input">
-							VCPINFO End Marker
+							VCPINFO 结束标记
 						</VSCodeTextField>
 						<VSCodeCheckbox
 							checked={currentVcpConfig.html.enabled}
 							onChange={(e: any) => updateVcpConfig({ html: { enabled: e.target.checked === true } })}
 							data-testid="vcp-html-enabled-checkbox">
-							Allow HTML rendering in VCP content
+							允许在 VCP 内容中渲染 HTML
 						</VSCodeCheckbox>
 					</div>
 				</details>
 			</Section>
 
 			<Section>
-				<details>
-					<summary className="cursor-pointer font-medium mb-2">Tool Request 与 Bridge</summary>
+				<details open>
+					<summary className="cursor-pointer font-medium mb-2">📡 WS 通道与 Tool Request</summary>
+					<div className="pb-2 text-xs text-vscode-descriptionForeground">
+						这里集中管理 Tool Request 解析器、Bridge 连接状态和 VCPToolBox 通道。
+					</div>
 					<div className="space-y-2">
 						<VSCodeCheckbox
 							checked={currentVcpConfig.toolRequest.enabled}
@@ -317,7 +318,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-tool-request-enabled-checkbox">
-							Enable tool request parser
+							启用 Tool Request 解析
 						</VSCodeCheckbox>
 						<VSCodeDropdown
 							value={currentVcpConfig.toolRequest.bridgeMode}
@@ -329,8 +330,8 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-tool-request-bridge-mode-dropdown">
-							<VSCodeOption value="execute">execute</VSCodeOption>
-							<VSCodeOption value="event">event</VSCodeOption>
+							<VSCodeOption value="execute">直接执行</VSCodeOption>
+							<VSCodeOption value="event">事件转发</VSCodeOption>
 						</VSCodeDropdown>
 						<VSCodeTextField
 							value={String(currentVcpConfig.toolRequest.maxPerMessage)}
@@ -346,7 +347,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-tool-request-max-per-message-input">
-							Max Tool Requests Per Message
+							每条消息最多 Tool Request 数
 						</VSCodeTextField>
 						<VSCodeCheckbox
 							checked={currentVcpConfig.toolRequest.keepBlockInText}
@@ -356,7 +357,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-tool-request-keep-block-checkbox">
-							Keep raw tool request blocks in assistant text
+							保留助手文本中的原始 Tool Request 块
 						</VSCodeCheckbox>
 						<VSCodeTextArea
 							value={currentVcpConfig.toolRequest.allowTools.join("\n")}
@@ -367,7 +368,7 @@ export const VcpSettings = ({
 							}
 							rows={4}
 							data-testid="vcp-tool-request-allow-tools-input">
-							Allow Tools (comma/newline separated)
+							允许的工具（逗号或换行分隔）
 						</VSCodeTextArea>
 						<VSCodeTextArea
 							value={currentVcpConfig.toolRequest.denyTools.join("\n")}
@@ -378,7 +379,7 @@ export const VcpSettings = ({
 							}
 							rows={4}
 							data-testid="vcp-tool-request-deny-tools-input">
-							Deny Tools (comma/newline separated)
+							禁止的工具（逗号或换行分隔）
 						</VSCodeTextArea>
 						<VSCodeTextField
 							value={currentVcpConfig.toolRequest.startMarker}
@@ -388,7 +389,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-tool-request-start-marker-input">
-							Tool Request Start Marker
+							Tool Request 开始标记
 						</VSCodeTextField>
 						<VSCodeTextField
 							value={currentVcpConfig.toolRequest.endMarker}
@@ -398,26 +399,26 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-tool-request-end-marker-input">
-							Tool Request End Marker
+							Tool Request 结束标记
 						</VSCodeTextField>
 						<VSCodeCheckbox
 							checked={currentVcpConfig.toolbox.enabled}
 							onChange={(e: any) => updateVcpConfig({ toolbox: { enabled: e.target.checked === true } })}
 							data-testid="vcp-toolbox-enabled-checkbox">
-							Enable VCPToolBox bridge
+							启用 VCPToolBox Bridge
 						</VSCodeCheckbox>
 						<VSCodeTextField
 							value={currentVcpConfig.toolbox.url}
 							onInput={(e: any) => updateVcpConfig({ toolbox: { url: String(e.target.value || "") } })}
 							data-testid="vcp-toolbox-url-input">
-							WebSocket URL
+							WebSocket 地址
 						</VSCodeTextField>
 						<VSCodeTextField
 							value={currentVcpConfig.toolbox.key}
 							type="password"
 							onInput={(e: any) => updateVcpConfig({ toolbox: { key: String(e.target.value || "") } })}
 							data-testid="vcp-toolbox-key-input">
-							Bridge Key
+							Bridge 密钥
 						</VSCodeTextField>
 						<VSCodeTextField
 							value={String(currentVcpConfig.toolbox.reconnectInterval)}
@@ -433,7 +434,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-toolbox-reconnect-interval-input">
-							Reconnect Interval (ms)
+							重连间隔（毫秒）
 						</VSCodeTextField>
 						<div
 							className="rounded-md p-2 text-xs"
@@ -442,20 +443,20 @@ export const VcpSettings = ({
 								border: "1px solid var(--vscode-editorWidget-border)",
 							}}>
 							<div className="font-medium text-[var(--vscode-foreground)] mb-1">
-								Bridge: {vcpBridgeStatus?.connected ? "Connected" : "Disconnected"}
+								连接状态：{vcpBridgeStatus?.connected ? "已连接" : "未连接"}
 							</div>
 							<div className="text-vscode-descriptionForeground">
-								Endpoint: {vcpBridgeStatus?.endpoint || currentVcpConfig.toolbox.url || "(unset)"}
+								端点：{vcpBridgeStatus?.endpoint || currentVcpConfig.toolbox.url || "未设置"}
 							</div>
 							<div className="text-vscode-descriptionForeground">
-								Last latency: {vcpBridgeStatus?.lastLatencyMs ?? bridgeTestResult?.latencyMs ?? "-"} ms
+								最近延迟：{vcpBridgeStatus?.lastLatencyMs ?? bridgeTestResult?.latencyMs ?? "-"} ms
 							</div>
 							<div className="text-vscode-descriptionForeground">
-								Reconnect attempts: {vcpBridgeStatus?.reconnectAttempts ?? 0}
+								重连次数：{vcpBridgeStatus?.reconnectAttempts ?? 0}
 							</div>
 							{vcpBridgeStatus?.lastError && (
 								<div className="text-vscode-errorForeground mt-1">
-									Last error: {vcpBridgeStatus.lastError}
+									最近错误：{vcpBridgeStatus.lastError}
 								</div>
 							)}
 						</div>
@@ -469,7 +470,7 @@ export const VcpSettings = ({
 									vscode.postMessage({ type: "requestVcpBridgeConnect" })
 								}}
 								data-testid="vcp-toolbox-connect-button">
-								Connect Bridge
+								连接 Bridge
 							</Button>
 							<Button
 								variant="secondary"
@@ -483,12 +484,12 @@ export const VcpSettings = ({
 									vscode.postMessage({ type: "requestVcpBridgeTest", timeout: 5000 })
 								}}
 								data-testid="vcp-toolbox-test-button">
-								{isTestingBridge ? "Testing..." : "Test Bridge"}
+								{isTestingBridge ? "测试中..." : "测试连接"}
 							</Button>
 							<Button
 								onClick={() => vscode.postMessage({ type: "requestVcpBridgeDisconnect" })}
 								data-testid="vcp-toolbox-disconnect-button">
-								Disconnect Bridge
+								断开连接
 							</Button>
 						</div>
 						{bridgeTestResult && (
@@ -502,15 +503,15 @@ export const VcpSettings = ({
 									opacity: 0.85,
 								}}>
 								{bridgeTestResult.success
-									? `Bridge test succeeded (${bridgeTestResult.latencyMs ?? 0}ms)`
-									: `Bridge test failed: ${bridgeTestResult.error ?? "unknown error"}`}
+									? `连接测试成功（${bridgeTestResult.latencyMs ?? 0}ms）`
+									: `连接测试失败：${bridgeTestResult.error ?? "未知错误"}`}
 								{bridgeTestResult.endpoint ? ` | ${bridgeTestResult.endpoint}` : ""}
 							</div>
 						)}
 						{bridgeLogs.length > 0 && (
 							<details>
 								<summary className="cursor-pointer font-medium text-xs">
-									Bridge Logs ({bridgeLogs.length})
+									Bridge 日志（{bridgeLogs.length}）
 								</summary>
 								<div
 									className="max-h-40 overflow-y-auto text-xs mt-1 rounded p-2"
@@ -539,7 +540,10 @@ export const VcpSettings = ({
 
 			<Section>
 				<details>
-					<summary className="cursor-pointer font-medium mb-2">Snow Compat</summary>
+					<summary className="cursor-pointer font-medium mb-2">🔌 分布式服务与兼容层</summary>
+					<div className="pb-2 text-xs text-vscode-descriptionForeground">
+						Snow Compat 用于兼容外部服务协议，后续可继续扩展分布式节点与插件桥接能力。
+					</div>
 					<div className="space-y-2">
 						<VSCodeCheckbox
 							checked={currentVcpConfig.snowCompat.enabled}
@@ -547,7 +551,7 @@ export const VcpSettings = ({
 								updateVcpConfig({ snowCompat: { enabled: e.target.checked === true } })
 							}
 							data-testid="vcp-snow-compat-enabled-checkbox">
-							Enable Snow compatibility profile
+							启用 Snow 兼容层
 						</VSCodeCheckbox>
 						<VSCodeTextField
 							value={currentVcpConfig.snowCompat.basicModel}
@@ -555,7 +559,7 @@ export const VcpSettings = ({
 								updateVcpConfig({ snowCompat: { basicModel: String(e.target.value || "") } })
 							}
 							data-testid="vcp-snow-compat-basic-model-input">
-							Basic Model
+							基础模型
 						</VSCodeTextField>
 						<VSCodeTextField
 							value={currentVcpConfig.snowCompat.advancedModel}
@@ -563,7 +567,7 @@ export const VcpSettings = ({
 								updateVcpConfig({ snowCompat: { advancedModel: String(e.target.value || "") } })
 							}
 							data-testid="vcp-snow-compat-advanced-model-input">
-							Advanced Model
+							高级模型
 						</VSCodeTextField>
 						<VSCodeTextField
 							value={currentVcpConfig.snowCompat.baseUrl}
@@ -579,7 +583,7 @@ export const VcpSettings = ({
 								updateVcpConfig({ snowCompat: { requestMethod: String(e.target.value || "") } })
 							}
 							data-testid="vcp-snow-compat-request-method-input">
-							Request Method
+							请求方法
 						</VSCodeTextField>
 						<VSCodeTextField
 							value={String(currentVcpConfig.snowCompat.maxContextTokens)}
@@ -595,7 +599,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-snow-compat-max-context-tokens-input">
-							Max Context Tokens
+							最大上下文 Tokens
 						</VSCodeTextField>
 						<VSCodeTextField
 							value={String(currentVcpConfig.snowCompat.maxTokens)}
@@ -611,7 +615,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-snow-compat-max-tokens-input">
-							Max Output Tokens
+							最大输出 Tokens
 						</VSCodeTextField>
 						<VSCodeTextField
 							value={String(currentVcpConfig.snowCompat.toolResultTokenLimit)}
@@ -627,7 +631,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-snow-compat-tool-result-token-limit-input">
-							Tool Result Token Limit
+							工具结果 Token 上限
 						</VSCodeTextField>
 						<VSCodeCheckbox
 							checked={currentVcpConfig.snowCompat.showThinking}
@@ -635,7 +639,7 @@ export const VcpSettings = ({
 								updateVcpConfig({ snowCompat: { showThinking: e.target.checked === true } })
 							}
 							data-testid="vcp-snow-compat-show-thinking-checkbox">
-							Show Thinking
+							显示 Thinking
 						</VSCodeCheckbox>
 						<VSCodeCheckbox
 							checked={currentVcpConfig.snowCompat.enableAutoCompress}
@@ -643,7 +647,7 @@ export const VcpSettings = ({
 								updateVcpConfig({ snowCompat: { enableAutoCompress: e.target.checked === true } })
 							}
 							data-testid="vcp-snow-compat-auto-compress-checkbox">
-							Enable Auto Compress
+							启用自动压缩
 						</VSCodeCheckbox>
 						<VSCodeTextField
 							value={String(currentVcpConfig.snowCompat.editSimilarityThreshold)}
@@ -660,7 +664,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-snow-compat-edit-similarity-threshold-input">
-							Edit Similarity Threshold (0-1)
+							编辑相似度阈值（0-1）
 						</VSCodeTextField>
 						<VSCodeTextField
 							value={currentVcpConfig.snowCompat.anthropicBeta}
@@ -688,7 +692,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-snow-compat-reasoning-enabled-checkbox">
-							Responses Reasoning Enabled
+							启用 Responses Reasoning
 						</VSCodeCheckbox>
 						<VSCodeTextField
 							value={currentVcpConfig.snowCompat.responsesReasoning.effort}
@@ -700,7 +704,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-snow-compat-reasoning-effort-input">
-							Responses Reasoning Effort
+							Responses Reasoning 强度
 						</VSCodeTextField>
 						<VSCodeCheckbox
 							checked={currentVcpConfig.snowCompat.proxy.enabled}
@@ -710,7 +714,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-snow-compat-proxy-enabled-checkbox">
-							Enable Snow Proxy
+							启用 Snow 代理
 						</VSCodeCheckbox>
 						<VSCodeTextField
 							value={String(currentVcpConfig.snowCompat.proxy.port)}
@@ -728,7 +732,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-snow-compat-proxy-port-input">
-							Proxy Port
+							代理端口
 						</VSCodeTextField>
 						<VSCodeTextField
 							value={String(currentVcpConfig.snowCompat.proxy.browserDebugPort)}
@@ -746,7 +750,7 @@ export const VcpSettings = ({
 								})
 							}
 							data-testid="vcp-snow-compat-proxy-browser-debug-port-input">
-							Proxy Browser Debug Port
+							浏览器调试端口
 						</VSCodeTextField>
 					</div>
 				</details>
@@ -755,28 +759,48 @@ export const VcpSettings = ({
 			<Section>
 				<details>
 					<summary className="cursor-pointer font-medium mb-2">Agent Team 与 Memory</summary>
-					<div className="text-xs text-vscode-descriptionForeground">
-						Agent Team 设置已迁移到「代理行为」页面，Memory 设置已迁移到「上下文管理」页面，便于集中配置。
+					<div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+						<div className="rounded border border-vscode-panel-border p-3 text-sm">
+							<div className="font-medium text-vscode-foreground">Agent Team</div>
+							<div className="mt-1 text-vscode-descriptionForeground">
+								成员编排、波次策略和文件隔离规则已迁移到“代理行为”页面统一管理。
+							</div>
+							<div className="mt-2 text-xs text-vscode-descriptionForeground">
+								当前状态：{currentVcpConfig.agentTeam.enabled ? "已启用" : "未启用"}，成员数{" "}
+								{currentVcpConfig.agentTeam.members.length}
+							</div>
+						</div>
+						<div className="rounded border border-vscode-panel-border p-3 text-sm">
+							<div className="font-medium text-vscode-foreground">记忆系统</div>
+							<div className="mt-1 text-vscode-descriptionForeground">
+								被动记忆、写入记忆、检索记忆与刷新调度已迁移到“上下文管理”页面，避免与压缩配置重复。
+							</div>
+							<div className="mt-2 text-xs text-vscode-descriptionForeground">
+								当前状态：Passive {currentVcpConfig.memory.passive.enabled ? "开" : "关"} / Writer{" "}
+								{currentVcpConfig.memory.writer.enabled ? "开" : "关"} / Retrieval{" "}
+								{currentVcpConfig.memory.retrieval.enabled ? "开" : "关"}
+							</div>
+						</div>
 					</div>
 				</details>
 			</Section>
 
 			<Section>
 				<div className="text-vscode-descriptionForeground text-sm">
-					Project:{" "}
+					项目地址：{" "}
 					<VSCodeLink href="https://github.com/DerstedtCasper/vcp-code-2.0">
 						github.com/DerstedtCasper/vcp-code-2.0
 					</VSCodeLink>
 				</div>
 				<div className="flex flex-wrap items-center gap-2">
 					<Button onClick={() => openExternal("https://github.com/DerstedtCasper/vcp-code-2.0/issues")}>
-						Open Issues
+						打开 Issues
 					</Button>
 					<Button
 						variant="destructive"
 						onClick={() => vscode.postMessage({ type: "resetState" })}
 						data-testid="vcp-reset-state-button">
-						Reset Extension State
+						重置扩展状态
 					</Button>
 				</div>
 			</Section>

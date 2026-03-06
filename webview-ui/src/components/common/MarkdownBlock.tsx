@@ -3,6 +3,8 @@ import ReactMarkdown from "react-markdown"
 import styled from "styled-components"
 import { visit } from "unist-util-visit"
 import rehypeKatex from "rehype-katex"
+import rehypeRaw from "rehype-raw"
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize"
 import remarkMath from "remark-math"
 import remarkGfm from "remark-gfm"
 
@@ -13,7 +15,24 @@ import MermaidBlock from "./MermaidBlock"
 
 interface MarkdownBlockProps {
 	markdown?: string
+	htmlEnabled?: boolean
 }
+
+const VCP_HTML_SCHEMA = {
+	...defaultSchema,
+	tagNames: [...(defaultSchema.tagNames ?? []), "details", "summary", "div", "span", "img", "section", "article"],
+	attributes: {
+		...(defaultSchema.attributes ?? {}),
+		div: [...(defaultSchema.attributes?.div ?? []), "className", "style"],
+		span: [...(defaultSchema.attributes?.span ?? []), "className", "style"],
+		img: [...(defaultSchema.attributes?.img ?? []), "style", "loading"],
+		details: [...(defaultSchema.attributes?.details ?? []), "open"],
+		summary: [...(defaultSchema.attributes?.summary ?? []), "style"],
+		section: [...(defaultSchema.attributes?.section ?? []), "style"],
+		article: [...(defaultSchema.attributes?.article ?? []), "style"],
+		"*": [...(defaultSchema.attributes?.["*"] ?? []), "style", "className"],
+	},
+} as const
 
 const StyledMarkdown = styled.div`
 	* {
@@ -203,7 +222,7 @@ const StyledMarkdown = styled.div`
 	}
 `
 
-const MarkdownBlock = memo(({ markdown }: MarkdownBlockProps) => {
+const MarkdownBlock = memo(({ markdown, htmlEnabled = false }: MarkdownBlockProps) => {
 	const components = useMemo(
 		() => ({
 			table: ({ children, ...props }: any) => {
@@ -321,7 +340,11 @@ const MarkdownBlock = memo(({ markdown }: MarkdownBlockProps) => {
 						}
 					},
 				]}
-				rehypePlugins={[rehypeKatex as any]}
+				rehypePlugins={
+					htmlEnabled
+						? [rehypeKatex as any, rehypeRaw as any, [rehypeSanitize, VCP_HTML_SCHEMA] as any]
+						: [rehypeKatex as any]
+				}
 				components={components}>
 				{markdown || ""}
 			</ReactMarkdown>

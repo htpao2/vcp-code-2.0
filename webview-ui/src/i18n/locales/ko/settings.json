@@ -978,7 +978,7 @@
 		},
 		"MORPH_FAST_APPLY": {
 			"name": "Fast Apply 활성화",
-			"description": "활성화하면 Nova Code는 코드 수정에 최적화된 특수 모델을 사용하여 Fast Apply로 파일을 편집할 수 있습니다. Nova Gateway Provider, OpenRouter 또는 Morph API 키가 필요합니다.",
+			"description": "활성화하면 Nova Code는 코드 수정에 최적화된 특수 모델을 사용하여 Fast Apply로 파일을 편집할 수 있습니다. OpenRouter 또는 Morph API 키가 필요합니다.",
 			"apiProvider": "API 제공자",
 			"apiProviderList": {
 				"current": "현재"

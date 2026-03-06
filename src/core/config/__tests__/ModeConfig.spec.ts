@@ -68,7 +68,9 @@ describe("CustomModeSchema", () => {
 			} satisfies Omit<ModeConfig, "slug"> & { slug: string }
 
 			expect(() => validateCustomMode(invalidMode)).toThrow(ZodError)
-			expect(() => validateCustomMode(invalidMode)).toThrow("Slug must contain only letters numbers and dashes")
+			expect(() => validateCustomMode(invalidMode)).toThrow(
+				"Slug must contain only letters numbers dashes and underscores",
+			)
 		})
 
 		test("rejects empty strings in required fields", () => {

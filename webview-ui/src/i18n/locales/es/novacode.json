@@ -296,7 +296,22 @@
 				"description": "Tu cuenta de Nova Code no tiene créditos. Para usar el autocompletado, por favor añade créditos a tu cuenta.",
 				"buyCredits": "Comprar créditos →"
 			},
-			"configureAutocompleteProfile": "Usa cualquier modelo yendo a perfiles y configurando un Perfil del Tipo de Perfil Autocompletado."
+			"configureAutocompleteProfile": "Usa cualquier modelo yendo a perfiles y configurando un Perfil del Tipo de Perfil Autocompletado.",
+			"configuredProvider": {
+				"label": "Autocomplete Provider Override",
+				"description": "Use your existing autocomplete profile flow, or override it with a dedicated OpenAI Compatible endpoint.",
+				"options": {
+					"profile": "Use configured profile",
+					"openAiCompatible": "OpenAI Compatible"
+				}
+			},
+			"openAiCompatible": {
+				"baseUrl": "API Base URL",
+				"model": "Model Name",
+				"apiKey": "API Key (Optional)",
+				"apiKeyPlaceholder": "Optional for unauthenticated endpoints",
+				"description": "When this override is enabled, autocomplete uses the OpenAI Compatible endpoint and model configured here."
+			}
 		}
 	},
 	"virtualProvider": {

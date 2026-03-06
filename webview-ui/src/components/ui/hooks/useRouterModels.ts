@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 
-import { type RouterModels, type ExtensionMessage } from "@roo-code/types"
+import { type RouterModels, type ExtensionMessage, type ProviderSettings } from "@roo-code/types"
 
 import { vscode } from "@src/utils/vscode"
 
@@ -16,7 +16,19 @@ const EMPTY_ROUTER_MODELS = {} as RouterModels
 
 const createRequestId = () => `router-models-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
 
-const getRouterModels = async (provider?: string) =>
+type RouterModelsQueryKey = Partial<ProviderSettings>
+
+export const getRouterModels = async (
+	provider?: string,
+	apiConfigurationOverride?: RouterModelsQueryKey,
+	refresh = false,
+) => getRouterModelsInternal(provider, apiConfigurationOverride, refresh)
+
+const getRouterModelsInternal = async (
+	provider?: string,
+	apiConfigurationOverride?: RouterModelsQueryKey,
+	refresh = false,
+) =>
 	new Promise<RouterModels>((resolve) => {
 		const requestId = createRequestId()
 		let connectionState: ConnectionState = "connecting"
@@ -71,9 +83,7 @@ const getRouterModels = async (provider?: string) =>
 				const msgProvider = message?.values?.provider as string | undefined
 				const msgRequestId = message?.values?.requestId as string | undefined
 
-				// Verify response matches request
 				if (provider !== msgProvider) {
-					// Not our response; ignore and wait for the matching one
 					return
 				}
 
@@ -95,39 +105,23 @@ const getRouterModels = async (provider?: string) =>
 		}
 
 		window.addEventListener("message", handler)
-		if (provider) {
-			vscode.postMessage({ type: "requestRouterModels", requestId, values: { provider, requestId } })
-		} else {
-			vscode.postMessage({ type: "requestRouterModels", requestId, values: { requestId } })
-		}
+		vscode.postMessage({
+			type: "requestRouterModels",
+			requestId,
+			values: {
+				provider,
+				requestId,
+				refresh,
+				apiConfigurationOverride,
+			},
+		})
 	})
-
-// novacode_change start
-type RouterModelsQueryKey = {
-	openRouterBaseUrl?: string
-	openRouterApiKey?: string
-	lmStudioBaseUrl?: string
-	ollamaBaseUrl?: string
-	novaOrganizationId?: string
-	novacodeOrganizationId?: string
-	deepInfraApiKey?: string
-	geminiApiKey?: string
-	googleGeminiBaseUrl?: string
-	chutesApiKey?: string
-	nanoGptApiKey?: string
-	nanoGptModelList?: "all" | "personalized" | "subscription"
-	syntheticApiKey?: string
-	zenmuxBaseUrl?: string
-	zenmuxApiKey?: string
-	// Requesty, Unbound, etc should perhaps also be here, but they already have their own hacks for reloading
-}
-// novacode_change end
 
 export const useRouterModels = (queryKey: RouterModelsQueryKey, opts: UseRouterModelsOptions = {}) => {
 	const provider = opts.provider || undefined
 	return useQuery({
 		queryKey: ["routerModels", provider || "all", queryKey],
-		queryFn: () => getRouterModels(provider),
+		queryFn: () => getRouterModelsInternal(provider, queryKey),
 		enabled: opts.enabled !== false,
 	})
 }

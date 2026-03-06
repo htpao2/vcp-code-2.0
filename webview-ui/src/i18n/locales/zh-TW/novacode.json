@@ -310,7 +310,22 @@
 				"description": "Nova Code 帳戶沒有額度。若要使用 Autocomplete，請為帳戶儲值。",
 				"buyCredits": "購買額度 →"
 			},
-			"configureAutocompleteProfile": "前往設定檔並設定一個類型為「Autocomplete」的設定檔，即可使用任何模型。"
+			"configureAutocompleteProfile": "前往設定檔並設定一個類型為「Autocomplete」的設定檔，即可使用任何模型。",
+			"configuredProvider": {
+				"label": "Autocomplete Provider Override",
+				"description": "Use your existing autocomplete profile flow, or override it with a dedicated OpenAI Compatible endpoint.",
+				"options": {
+					"profile": "Use configured profile",
+					"openAiCompatible": "OpenAI Compatible"
+				}
+			},
+			"openAiCompatible": {
+				"baseUrl": "API Base URL",
+				"model": "Model Name",
+				"apiKey": "API Key (Optional)",
+				"apiKeyPlaceholder": "Optional for unauthenticated endpoints",
+				"description": "When this override is enabled, autocomplete uses the OpenAI Compatible endpoint and model configured here."
+			}
 		}
 	},
 	"virtualProvider": {

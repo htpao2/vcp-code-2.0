@@ -1208,7 +1208,6 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref)
 										setApiConfigurationField={setApiConfigurationField}
 										errorMessage={errorMessage}
 										setErrorMessage={setErrorMessage}
-										currentApiConfigName={editingApiConfigName}
 									/>
 									{/* novacode_change end - pass editing profile name */}
 								</Section>

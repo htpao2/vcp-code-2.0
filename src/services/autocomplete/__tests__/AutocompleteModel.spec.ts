@@ -728,5 +728,27 @@ describe("AutocompleteModel", () => {
 			const modelName = model.getModelName()
 			expect(modelName).toBe(defaultAutocompleteModel)
 		})
+
+		it("should use manual OpenAI Compatible settings when configured", async () => {
+			vi.mocked(mockProviderSettingsManager.listConfig).mockResolvedValue([])
+
+			const mockApiHandler = {
+				getModel: vi.fn().mockReturnValue({ id: "manual-compatible-model", info: {} }),
+				createMessage: vi.fn(),
+				countTokens: vi.fn(),
+			}
+			vi.spyOn(apiIndex, "buildApiHandler").mockReturnValue(mockApiHandler as any)
+
+			const model = new AutocompleteModel()
+			await model.reload(mockProviderSettingsManager, {
+				configuredProvider: "openai-compatible",
+				openAiCompatibleBaseUrl: "https://example.com/v1",
+				openAiCompatibleApiKey: "test-key",
+				openAiCompatibleModel: "manual-compatible-model",
+			})
+
+			expect(model.getModelName()).toBe("manual-compatible-model")
+			expect(model.getProviderDisplayName()).toBe("OpenAI Compatible")
+		})
 	})
 })

@@ -259,11 +259,14 @@ check_build_system() {
     cd "$JETBRAINS_DIR/plugin"
     
     # Quick check - just verify Gradle wrapper and build files exist
-    if [[ -f "./gradlew" ]] && [[ -f "build.gradle.kts" ]] && [[ -f "gradle.properties" ]]; then
+    if [[ -f "./gradlew" ]] && [[ -f "build.gradle.kts" ]] && ([[ -f "gradle.properties" ]] || [[ -f "gradle.properties.template" ]]); then
         print_success "Gradle build system is configured"
+        if [[ ! -f "gradle.properties" ]] && [[ -f "gradle.properties.template" ]]; then
+            print_warning "gradle.properties is not generated yet; sync:version will create it from gradle.properties.template"
+        fi
     else
         print_error "Gradle build system files are missing"
-        echo "  Missing files: gradlew, build.gradle.kts, or gradle.properties"
+        echo "  Missing files: gradlew, build.gradle.kts, and either gradle.properties or gradle.properties.template"
         return 1
     fi
     

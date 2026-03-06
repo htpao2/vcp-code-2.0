@@ -869,6 +869,55 @@ describe("SYSTEM_PROMPT", () => {
 		expect(prompt).toContain("# Tools")
 	})
 
+	it("should append configured agent team guidance in agent_team mode", async () => {
+		const prompt = await SYSTEM_PROMPT(
+			mockContext,
+			"/test/path",
+			false,
+			undefined,
+			undefined,
+			undefined,
+			"agent_team" as Mode,
+			undefined,
+			undefined,
+			undefined,
+			undefined,
+			experiments,
+			true,
+			undefined,
+			undefined,
+			undefined,
+			undefined,
+			undefined,
+			undefined,
+			undefined,
+			{
+				vcpConfig: {
+					agentTeam: {
+						enabled: true,
+						maxParallel: 3,
+						waveStrategy: "adaptive",
+						handoffFormat: "markdown",
+						requireFileSeparation: true,
+						members: [
+							{
+								id: "planner",
+								name: "planner",
+								providerID: "anthropic",
+								modelID: "claude-sonnet-4-5",
+								rolePrompt: "Break work into subtasks.",
+							},
+						],
+					},
+				},
+			} as any,
+		)
+
+		expect(prompt).toContain("## Agent Team Coordination")
+		expect(prompt).toContain("Wave strategy: adaptive")
+		expect(prompt).toContain("planner -> anthropic/claude-sonnet-4-5")
+	})
+
 	afterAll(() => {
 		vi.restoreAllMocks()
 	})

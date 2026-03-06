@@ -1,6 +1,10 @@
-﻿import { render, screen } from "@/utils/test-utils"
+import { OPENROUTER_DEFAULT_PROVIDER_NAME, type ProviderSettings } from "@roo-code/types"
+
+import { fireEvent, render, screen } from "@/utils/test-utils"
+import { vscode } from "@/utils/vscode"
 import { ModelSelector } from "../ModelSelector"
-import type { ProviderSettings } from "@roo-code/types"
+
+const mockUseProfileModelCatalog = vi.fn()
 
 vi.mock("@/utils/vscode", () => ({
 	vscode: {
@@ -14,305 +18,239 @@ vi.mock("@/i18n/TranslationContext", () => ({
 	}),
 }))
 
-// Create a mock function that can be controlled per test
-const mockUseGroupedModelIds = vi.fn()
-
-vi.mock("@/components/ui/hooks/nova/usePreferredModels", () => ({
-	useGroupedModelIds: () => mockUseGroupedModelIds(),
+vi.mock("@/components/chat/useProfileModelCatalog", () => ({
+	useProfileModelCatalog: (...args: unknown[]) => mockUseProfileModelCatalog(...args),
 }))
 
-// Create a mock function that can be controlled per test
-const mockUseProviderModels = vi.fn()
-
-vi.mock("../../hooks/useProviderModels", () => ({
-	useProviderModels: (config: ProviderSettings) => mockUseProviderModels(config),
-}))
-
-vi.mock("../../hooks/useSelectedModel", () => ({
+vi.mock("@/components/nova/hooks/useSelectedModel", () => ({
 	getSelectedModelId: () => "model-1",
-	getModelIdKey: () => "apiModelId",
 }))
+
+vi.mock("@/components/ui/hooks/useRooPortal", () => ({
+	useRooPortal: () => undefined,
+}))
+
+const baseApiConfiguration: ProviderSettings = {
+	apiProvider: "openrouter",
+	openRouterModelId: "model-1",
+	profileType: "chat",
+}
+
+const createModelItem = (overrides: Record<string, unknown> = {}) => ({
+	key: "profile-1:model-1",
+	profileId: "profile-1",
+	profileName: "chat-profile",
+	profileConfig: {
+		apiProvider: "openrouter",
+		openRouterModelId: "model-1",
+	},
+	provider: "openrouter",
+	providerLabel: "OpenRouter",
+	modelId: "model-1",
+	modelLabel: "Model 1",
+	isCurrentProfile: true,
+	isCurrentModel: true,
+	searchText: "openrouter chat-profile model 1",
+	...overrides,
+})
+
+const createGroup = (overrides: Record<string, unknown> = {}) => ({
+	key: "openrouter:profile-1",
+	provider: "openrouter",
+	providerLabel: "OpenRouter",
+	items: [createModelItem()],
+	isEmpty: false,
+	profileName: "chat-profile",
+	refresh: vi.fn().mockResolvedValue(undefined),
+	...overrides,
+})
 
 describe("ModelSelector", () => {
-	const baseApiConfiguration: ProviderSettings = {
-		apiProvider: "openai",
-		apiModelId: "model-1",
-	}
-
 	beforeEach(() => {
-		// Reset mocks before each test
-		mockUseProviderModels.mockReset()
-		mockUseGroupedModelIds.mockReset()
-
-		// Default mock implementation for useGroupedModelIds (no preferred models)
-		mockUseGroupedModelIds.mockReturnValue({
-			preferredModelIds: [],
-			restModelIds: ["model-1", "model-2"],
-		})
-
-		// Default mock implementation for useProviderModels
-		mockUseProviderModels.mockReturnValue({
-			provider: "openai",
-			providerModels: {
-				"model-1": { displayName: "Model 1" },
-				"model-2": { displayName: "Model 2" },
-			},
-			providerDefaultModel: "model-1",
+		mockUseProfileModelCatalog.mockReset()
+		vi.mocked(vscode.postMessage).mockReset()
+		mockUseProfileModelCatalog.mockReturnValue({
+			groups: [createGroup()],
 			isLoading: false,
 			isError: false,
 		})
 	})
 
-	test("renders dropdown for chat profile", () => {
-		const chatConfig: ProviderSettings = {
-			...baseApiConfiguration,
-			profileType: "chat",
-		}
-
+	test("chat profile renders dropdown trigger", () => {
 		render(
 			<ModelSelector
-				currentApiConfigName="test-profile"
-				apiConfiguration={chatConfig}
-				fallbackText="Select a model"
-			/>,
-		)
-
-		// Should render the SelectDropdown component (not a span)
-		// The SelectDropdown renders as a button with data-testid="dropdown-trigger"
-		const dropdownTrigger = screen.getByTestId("dropdown-trigger")
-		expect(dropdownTrigger).toBeInTheDocument()
-		expect(dropdownTrigger.tagName).toBe("BUTTON")
-	})
-
-	test("renders disabled span for autocomplete profile", () => {
-		const autocompleteConfig: ProviderSettings = {
-			...baseApiConfiguration,
-			profileType: "autocomplete",
-		}
-
-		render(
-			<ModelSelector
-				currentApiConfigName="test-profile"
-				apiConfiguration={autocompleteConfig}
-				fallbackText="Select a model"
-			/>,
-		)
-
-		// Should render a span with fallback text (not a dropdown)
-		expect(screen.getByText("Select a model")).toBeInTheDocument()
-
-		// Should NOT render the SelectDropdown component
-		const dropdownTrigger = screen.queryByTestId("dropdown-trigger")
-		expect(dropdownTrigger).not.toBeInTheDocument()
-	})
-
-	test("renders disabled span when isError is true", () => {
-		mockUseProviderModels.mockReturnValue({
-			provider: "openai",
-			providerModels: {},
-			providerDefaultModel: undefined,
-			isLoading: false,
-			isError: true,
-		})
-
-		render(
-			<ModelSelector
-				currentApiConfigName="test-profile"
+				currentApiConfigName="chat-profile"
 				apiConfiguration={baseApiConfiguration}
-				fallbackText="Error loading models"
+				fallbackText="选择模型"
 			/>,
 		)
-
-		expect(screen.getByText("Error loading models")).toBeInTheDocument()
-
-		const dropdownTrigger = screen.queryByTestId("dropdown-trigger")
-		expect(dropdownTrigger).not.toBeInTheDocument()
-	})
-
-	test("does not crash when providerModels is undefined", () => {
-		mockUseProviderModels.mockReturnValue({
-			provider: "openai",
-			providerModels: undefined,
-			providerDefaultModel: undefined,
-			isLoading: false,
-			isError: false,
-		})
-
-		expect(() =>
-			render(
-				<ModelSelector
-					currentApiConfigName="test-profile"
-					apiConfiguration={baseApiConfiguration}
-					fallbackText="Select a model"
-				/>,
-			),
-		).not.toThrow()
 
 		expect(screen.getByTestId("dropdown-trigger")).toBeInTheDocument()
 	})
 
-	test("renders nothing when isLoading is true", () => {
-		mockUseProviderModels.mockReturnValue({
-			provider: "openai",
-			providerModels: {},
-			providerDefaultModel: undefined,
-			isLoading: true,
-			isError: false,
-		})
-
-		const { container } = render(
+	test("autocomplete profile renders fallback text", () => {
+		render(
 			<ModelSelector
-				currentApiConfigName="test-profile"
-				apiConfiguration={baseApiConfiguration}
-				fallbackText="Loading..."
+				currentApiConfigName="chat-profile"
+				apiConfiguration={{ ...baseApiConfiguration, profileType: "autocomplete" }}
+				fallbackText="自动补全不可切换"
 			/>,
 		)
 
-		expect(container.firstChild).toBeNull()
+		expect(screen.getByText("自动补全不可切换")).toBeInTheDocument()
+		expect(screen.queryByTestId("dropdown-trigger")).not.toBeInTheDocument()
 	})
 
-	test("renders span for virtual-quota-fallback provider with virtualQuotaActiveModel", () => {
-		mockUseProviderModels.mockReturnValue({
-			provider: "virtual-quota-fallback",
-			providerModels: {},
-			providerDefaultModel: undefined,
+	test("virtual quota fallback renders active model label", () => {
+		render(
+			<ModelSelector
+				currentApiConfigName="chat-profile"
+				apiConfiguration={{ ...baseApiConfiguration, apiProvider: "virtual-quota-fallback" }}
+				fallbackText="选择模型"
+				virtualQuotaActiveModel={{ id: "gpt-4", name: "GPT-4", activeProfileNumber: 2 }}
+			/>,
+		)
+
+		expect(screen.getByText(/Gpt 4/)).toBeInTheDocument()
+		expect(screen.getByText(/2/)).toBeInTheDocument()
+	})
+
+	test("empty groups render fallback text", () => {
+		mockUseProfileModelCatalog.mockReturnValue({
+			groups: [],
 			isLoading: false,
 			isError: false,
 		})
 
-		const virtualQuotaConfig: ProviderSettings = {
-			...baseApiConfiguration,
-			apiProvider: "virtual-quota-fallback",
-		}
-
 		render(
 			<ModelSelector
-				currentApiConfigName="test-profile"
-				apiConfiguration={virtualQuotaConfig}
-				fallbackText="Select a model"
-				virtualQuotaActiveModel={{ id: "gpt-4", name: "GPT-4" }}
+				currentApiConfigName="chat-profile"
+				apiConfiguration={baseApiConfiguration}
+				fallbackText="暂无模型"
 			/>,
 		)
 
-		// Should show the virtual quota active model name (prettyModelName formats it)
-		expect(screen.getByText("Gpt 4")).toBeInTheDocument()
-
-		const dropdownTrigger = screen.queryByTestId("dropdown-trigger")
-		expect(dropdownTrigger).not.toBeInTheDocument()
+		expect(screen.getByText("暂无模型")).toBeInTheDocument()
+		expect(screen.queryByTestId("dropdown-trigger")).not.toBeInTheDocument()
 	})
 
-	test("autocomplete profile takes precedence over other conditions", () => {
-		// Even with valid models, autocomplete profile should show disabled span
-		const autocompleteConfig: ProviderSettings = {
-			...baseApiConfiguration,
-			profileType: "autocomplete",
-		}
+	test("empty group shows refresh button after opening popover", () => {
+		const refresh = vi.fn().mockResolvedValue(undefined)
+		mockUseProfileModelCatalog.mockReturnValue({
+			groups: [createGroup({ items: [], isEmpty: true, refresh })],
+			isLoading: false,
+			isError: false,
+		})
 
 		render(
 			<ModelSelector
-				currentApiConfigName="test-profile"
-				apiConfiguration={autocompleteConfig}
-				fallbackText="Autocomplete model"
+				currentApiConfigName="chat-profile"
+				apiConfiguration={baseApiConfiguration}
+				fallbackText="选择模型"
 			/>,
 		)
 
-		expect(screen.getByText("Autocomplete model")).toBeInTheDocument()
+		fireEvent.click(screen.getByTestId("dropdown-trigger"))
+		fireEvent.click(screen.getByRole("button", { name: "获取模型列表" }))
 
-		const dropdownTrigger = screen.queryByTestId("dropdown-trigger")
-		expect(dropdownTrigger).not.toBeInTheDocument()
+		expect(refresh).toHaveBeenCalledTimes(1)
 	})
 
-	describe("preferred models sections", () => {
-		test("builds options with section headers when preferred models exist", () => {
-			// Setup mock to return preferred models
-			mockUseGroupedModelIds.mockReturnValue({
-				preferredModelIds: ["preferred-1", "preferred-2"],
-				restModelIds: ["model-1", "model-2"],
-			})
-
-			mockUseProviderModels.mockReturnValue({
-				provider: "openai",
-				providerModels: {
-					"preferred-1": { displayName: "Preferred Model 1", preferredIndex: 0 },
-					"preferred-2": { displayName: "Preferred Model 2", preferredIndex: 1 },
-					"model-1": { displayName: "Model 1" },
-					"model-2": { displayName: "Model 2" },
-				},
-				providerDefaultModel: "model-1",
-				isLoading: false,
-				isError: false,
-			})
-
-			render(
-				<ModelSelector
-					currentApiConfigName="test-profile"
-					apiConfiguration={{
-						apiProvider: "openai",
-						apiModelId: "model-1",
-					}}
-					fallbackText="Select a model"
-				/>,
-			)
-
-			// Should render the dropdown
-			const dropdownTrigger = screen.getByTestId("dropdown-trigger")
-			expect(dropdownTrigger).toBeInTheDocument()
+	test("selecting a model in the current profile posts only upsertApiConfiguration", () => {
+		mockUseProfileModelCatalog.mockReturnValue({
+			groups: [
+				createGroup({
+					items: [
+						createModelItem({
+							modelId: "model-2",
+							modelLabel: "Model 2",
+							isCurrentModel: false,
+							profileConfig: {
+								apiProvider: "openrouter",
+								openRouterModelId: "model-2",
+							},
+						}),
+					],
+				}),
+			],
+			isLoading: false,
+			isError: false,
 		})
 
-		test("does not add section headers when no preferred models exist", () => {
-			// Setup mock with no preferred models
-			mockUseGroupedModelIds.mockReturnValue({
-				preferredModelIds: [],
-				restModelIds: ["model-1", "model-2"],
-			})
+		render(
+			<ModelSelector
+				currentApiConfigName="chat-profile"
+				apiConfiguration={baseApiConfiguration}
+				fallbackText="选择模型"
+			/>,
+		)
 
-			render(
-				<ModelSelector
-					currentApiConfigName="test-profile"
-					apiConfiguration={{
-						apiProvider: "openai",
-						apiModelId: "model-1",
-					}}
-					fallbackText="Select a model"
-				/>,
-			)
+		fireEvent.click(screen.getByTestId("dropdown-trigger"))
+		fireEvent.click(screen.getByRole("button", { name: "Model 2 model-2" }))
 
-			// Should render the dropdown
-			const dropdownTrigger = screen.getByTestId("dropdown-trigger")
-			expect(dropdownTrigger).toBeInTheDocument()
+		expect(vscode.postMessage).toHaveBeenCalledTimes(1)
+		expect(vscode.postMessage).toHaveBeenCalledWith({
+			type: "upsertApiConfiguration",
+			text: "chat-profile",
+			apiConfiguration: expect.objectContaining({
+				apiProvider: "openrouter",
+				openRouterModelId: "model-2",
+				openRouterSpecificProvider: OPENROUTER_DEFAULT_PROVIDER_NAME,
+			}),
+		})
+	})
+
+	test("selecting a model from another profile also loads that profile", () => {
+		mockUseProfileModelCatalog.mockReturnValue({
+			groups: [
+				createGroup({
+					profileName: "other-profile",
+					items: [
+						createModelItem({
+							key: "profile-2:model-9",
+							profileId: "profile-2",
+							profileName: "other-profile",
+							profileConfig: {
+								apiProvider: "openai",
+								openAiModelId: "model-9",
+							},
+							provider: "openai",
+							providerLabel: "OpenAI Compatible",
+							modelId: "model-9",
+							modelLabel: "Model 9",
+							isCurrentProfile: false,
+							isCurrentModel: false,
+							searchText: "openai other-profile model 9",
+						}),
+					],
+				}),
+			],
+			isLoading: false,
+			isError: false,
 		})
 
-		test("handles only preferred models without rest models", () => {
-			// Setup mock with only preferred models (edge case)
-			mockUseGroupedModelIds.mockReturnValue({
-				preferredModelIds: ["preferred-1"],
-				restModelIds: [],
-			})
+		render(
+			<ModelSelector
+				currentApiConfigName="chat-profile"
+				apiConfiguration={baseApiConfiguration}
+				fallbackText="选择模型"
+			/>,
+		)
 
-			mockUseProviderModels.mockReturnValue({
-				provider: "openai",
-				providerModels: {
-					"preferred-1": { displayName: "Preferred Model 1", preferredIndex: 0 },
-				},
-				providerDefaultModel: "preferred-1",
-				isLoading: false,
-				isError: false,
-			})
+		fireEvent.click(screen.getByTestId("dropdown-trigger"))
+		fireEvent.click(screen.getByRole("button", { name: "Model 9 model-9" }))
 
-			render(
-				<ModelSelector
-					currentApiConfigName="test-profile"
-					apiConfiguration={{
-						apiProvider: "openai",
-						apiModelId: "preferred-1",
-					}}
-					fallbackText="Select a model"
-				/>,
-			)
-
-			// Should render the dropdown with only preferred models section
-			const dropdownTrigger = screen.getByTestId("dropdown-trigger")
-			expect(dropdownTrigger).toBeInTheDocument()
+		expect(vscode.postMessage).toHaveBeenNthCalledWith(1, {
+			type: "upsertApiConfiguration",
+			text: "other-profile",
+			apiConfiguration: expect.objectContaining({
+				apiProvider: "openai",
+				openAiModelId: "model-9",
+			}),
+		})
+		expect(vscode.postMessage).toHaveBeenNthCalledWith(2, {
+			type: "loadApiConfigurationById",
+			text: "profile-2",
 		})
 	})
 })

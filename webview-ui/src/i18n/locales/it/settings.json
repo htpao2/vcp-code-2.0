@@ -1016,7 +1016,7 @@
 		},
 		"MORPH_FAST_APPLY": {
 			"name": "Abilita Fast Apply",
-			"description": "Quando abilitato, Nova Code può modificare i file utilizzando Fast Apply con modelli specializzati ottimizzati per le modifiche al codice. Richiede Nova Gateway Provider, OpenRouter o una chiave API Morph.",
+			"description": "Quando abilitato, Nova Code può modificare i file utilizzando Fast Apply con modelli specializzati ottimizzati per le modifiche al codice. Richiede OpenRouter o una chiave API Morph.",
 			"apiProvider": "Fornitore API",
 			"apiProviderList": {
 				"current": "Attuale"

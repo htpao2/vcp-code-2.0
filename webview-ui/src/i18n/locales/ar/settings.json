@@ -1091,7 +1091,7 @@
 		},
 		"MORPH_FAST_APPLY": {
 			"name": "تفعيل Fast Apply",
-			"description": "عند التفعيل، يستطيع Nova Code تعديل الملفات باستخدام Fast Apply مع نماذج متخصصة محسّنة لتعديلات الكود. يتطلب Nova Gateway Provider أو OpenRouter أو مفتاح Morph API.",
+			"description": "عند التفعيل، يستطيع Nova Code تعديل الملفات باستخدام Fast Apply مع نماذج متخصصة محسّنة لتعديلات الكود. يتطلب OpenRouter أو مفتاح Morph API.",
 			"apiProvider": "مزود API",
 			"apiProviderList": {
 				"current": "الحالي"

@@ -14,7 +14,13 @@ import {
 	MODEL_SELECTION_ENABLED,
 } from "@roo-code/types"
 import { vscode } from "@/utils/vscode"
-import { VSCodeCheckbox, VSCodeButton, VSCodeDropdown, VSCodeOption } from "@vscode/webview-ui-toolkit/react"
+import {
+	VSCodeCheckbox,
+	VSCodeButton,
+	VSCodeDropdown,
+	VSCodeOption,
+	VSCodeTextField,
+} from "@vscode/webview-ui-toolkit/react"
 import { useKeybindings } from "@/hooks/useKeybindings"
 import { useExtensionState } from "../../../context/ExtensionStateContext"
 import { PROVIDERS } from "../../settings/constants"
@@ -45,6 +51,10 @@ export const AutocompleteServiceSettingsView = ({
 		enableAutoTrigger,
 		enableSmartInlineTaskKeybinding,
 		enableChatAutocomplete,
+		configuredProvider,
+		openAiCompatibleBaseUrl,
+		openAiCompatibleApiKey,
+		openAiCompatibleModel,
 		provider,
 		model,
 		hasNovacodeProfileWithNoBalance,
@@ -91,6 +101,13 @@ export const AutocompleteServiceSettingsView = ({
 	const onEnableChatAutocompleteChange = useCallback(
 		(e: any) => {
 			onAutocompleteServiceSettingsChange("enableChatAutocomplete", e.target.checked)
+		},
+		[onAutocompleteServiceSettingsChange],
+	)
+
+	const onConfiguredProviderChange = useCallback(
+		(e: any) => {
+			onAutocompleteServiceSettingsChange("configuredProvider", e.target.value)
 		},
 		[onAutocompleteServiceSettingsChange],
 	)
@@ -250,6 +267,77 @@ export const AutocompleteServiceSettingsView = ({
 							<Trans i18nKey="novacode:autocomplete.settings.enableChatAutocomplete.description" />
 						</div>
 					</SearchableSetting>
+
+					<SearchableSetting
+						settingId="autocomplete-provider"
+						section="autocomplete"
+						label={t("novacode:autocomplete.settings.configuredProvider.label")}
+						className="flex flex-col gap-2">
+						<div className="flex flex-col gap-1">
+							<div className="flex items-center gap-2 font-bold">
+								<Bot className="w-4" />
+								<div>{t("novacode:autocomplete.settings.configuredProvider.label")}</div>
+							</div>
+						</div>
+						<VSCodeDropdown value={configuredProvider || "profile"} onChange={onConfiguredProviderChange}>
+							<VSCodeOption value="profile">
+								{t("novacode:autocomplete.settings.configuredProvider.options.profile")}
+							</VSCodeOption>
+							<VSCodeOption value="openai-compatible">
+								{t("novacode:autocomplete.settings.configuredProvider.options.openAiCompatible")}
+							</VSCodeOption>
+						</VSCodeDropdown>
+						<div className="text-vscode-descriptionForeground text-sm">
+							{t("novacode:autocomplete.settings.configuredProvider.description")}
+						</div>
+					</SearchableSetting>
+
+					{configuredProvider === "openai-compatible" && (
+						<SearchableSetting
+							settingId="autocomplete-openai-compatible"
+							section="autocomplete"
+							label={t("novacode:autocomplete.settings.openAiCompatible.baseUrl")}
+							className="flex flex-col gap-3 ml-6">
+							<VSCodeTextField
+								value={openAiCompatibleBaseUrl || ""}
+								type="url"
+								onInput={(e: any) =>
+									onAutocompleteServiceSettingsChange("openAiCompatibleBaseUrl", e.target.value)
+								}
+								placeholder="https://example.com/v1"
+								className="w-full">
+								<label className="block font-medium mb-1">
+									{t("novacode:autocomplete.settings.openAiCompatible.baseUrl")}
+								</label>
+							</VSCodeTextField>
+							<VSCodeTextField
+								value={openAiCompatibleModel || ""}
+								onInput={(e: any) =>
+									onAutocompleteServiceSettingsChange("openAiCompatibleModel", e.target.value)
+								}
+								placeholder="codestral-compatible"
+								className="w-full">
+								<label className="block font-medium mb-1">
+									{t("novacode:autocomplete.settings.openAiCompatible.model")}
+								</label>
+							</VSCodeTextField>
+							<VSCodeTextField
+								value={openAiCompatibleApiKey || ""}
+								type="password"
+								onInput={(e: any) =>
+									onAutocompleteServiceSettingsChange("openAiCompatibleApiKey", e.target.value)
+								}
+								placeholder={t("novacode:autocomplete.settings.openAiCompatible.apiKeyPlaceholder")}
+								className="w-full">
+								<label className="block font-medium mb-1">
+									{t("novacode:autocomplete.settings.openAiCompatible.apiKey")}
+								</label>
+							</VSCodeTextField>
+							<div className="text-vscode-descriptionForeground text-sm">
+								{t("novacode:autocomplete.settings.openAiCompatible.description")}
+							</div>
+						</SearchableSetting>
+					)}
 
 					<SearchableSetting
 						settingId="autocomplete-model"

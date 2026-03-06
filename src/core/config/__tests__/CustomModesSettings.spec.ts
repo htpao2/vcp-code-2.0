@@ -74,7 +74,7 @@ describe("CustomModesSettings", () => {
 			}).toThrow(ZodError)
 			expect(() => {
 				customModesSettingsSchema.parse(invalidSettings)
-			}).toThrow("Slug must contain only letters numbers and dashes")
+			}).toThrow("Slug must contain only letters numbers dashes and underscores")
 		})
 
 		it("rejects non-array customModes", () => {

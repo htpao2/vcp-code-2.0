@@ -53,6 +53,58 @@ export function getPromptComponent(
 	return component
 }
 
+function getSkillUsageGuidanceSection(): string {
+	return `## Skill Usage Guidance
+
+You have access to registered Skills that extend your capabilities for specialized tasks.
+When a request matches an installed skill, reach for it naturally as part of your workflow.
+
+1. Proactively activate the relevant skill instead of waiting for a slash command.
+2. Briefly note why that skill fits the task before following it.
+3. Follow the selected SKILL.md instructions so the result stays consistent and reliable.`
+}
+
+function getAgentTeamGuidanceSection(mode: Mode, clineProviderState?: ClineProviderState): string {
+	if (mode !== "agent_team") {
+		return ""
+	}
+
+	const teamConfig = clineProviderState?.vcpConfig?.agentTeam
+	if (!teamConfig?.enabled) {
+		return `## Agent Team Coordination
+
+Agent Team mode is active. Coordinate work as a lead orchestrator, but no explicit team roster is currently enabled in settings.
+Break work into clear sub-tasks, assign ownership explicitly in your plan, and consolidate results before responding.`
+	}
+
+	const members = teamConfig.members ?? []
+	const memberLines =
+		members.length > 0
+			? members
+					.map((member, index) => {
+						const rolePrompt = member.rolePrompt?.trim()
+						const roleSummary = rolePrompt
+							? rolePrompt.replace(/\s+/g, " ").slice(0, 160)
+							: "No role prompt provided."
+						return `${index + 1}. ${member.id || member.name} -> ${member.providerID}/${member.modelID} | ${roleSummary}`
+					})
+					.join("\n")
+			: "No members configured."
+
+	return `## Agent Team Coordination
+
+Agent Team mode is active. Operate as the coordinator for a configured multi-agent team.
+- Wave strategy: ${teamConfig.waveStrategy}
+- Max parallel agents: ${teamConfig.maxParallel}
+- Handoff format: ${teamConfig.handoffFormat}
+- Require file separation: ${teamConfig.requireFileSeparation ? "yes" : "no"}
+
+Configured team members:
+${memberLines}
+
+Delegate mentally according to the roster above, preserve separation of responsibilities, and produce a merged final outcome that reflects the configured handoff style.`
+}
+
 async function generatePrompt(
 	context: vscode.ExtensionContext,
 	cwd: string,
@@ -159,6 +211,10 @@ ${skillsSection ? `\n${skillsSection}` : ""}
 ${getRulesSection(cwd, settings, clineProviderState /* novacode_change */)}
 
 ${getSystemInfoSection(cwd)}
+
+${getSkillUsageGuidanceSection()}
+
+${getAgentTeamGuidanceSection(mode, clineProviderState)}
 
 ${getObjectiveSection()}
 

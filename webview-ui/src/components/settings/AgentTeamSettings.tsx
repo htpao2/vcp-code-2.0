@@ -107,17 +107,30 @@ export const AgentTeamSettings = ({ vcpConfig, onUpdateVcpConfig }: AgentTeamSet
 		updateMembers(nextMembers)
 	}
 
+	const moveMember = (index: number, direction: -1 | 1) => {
+		const targetIndex = index + direction
+		if (targetIndex < 0 || targetIndex >= members.length) {
+			return
+		}
+		const nextMembers = [...members]
+		;[nextMembers[index], nextMembers[targetIndex]] = [nextMembers[targetIndex], nextMembers[index]]
+		updateMembers(nextMembers)
+	}
+
 	return (
 		<div className="space-y-3 p-4">
-			<div className="text-sm text-vscode-descriptionForeground">
-				在代理行为中配置 Agent Team。支持按加号自由添加 agent（ID、提示词、模型）。
+			<div className="rounded border border-vscode-panel-border bg-[var(--vscode-editorWidget-background)] p-3 text-sm text-vscode-descriptionForeground">
+				<div className="font-medium text-vscode-foreground">Agent Team 团队编排</div>
+				<div className="mt-1">
+					在这里配置多代理协作模式。你可以为每个成员指定唯一 ID、职责提示词、模型和执行顺序。
+				</div>
 			</div>
 
 			<VSCodeCheckbox
 				checked={currentVcpConfig.agentTeam.enabled}
 				onChange={(e: any) => onUpdateVcpConfig({ agentTeam: { enabled: e.target.checked === true } })}
 				data-testid="agent-behaviour-vcp-agent-team-enabled-checkbox">
-				Enable agent team orchestration
+				启用 Agent Team 编排
 			</VSCodeCheckbox>
 
 			<div className="flex items-center gap-3">
@@ -135,7 +148,7 @@ export const AgentTeamSettings = ({ vcpConfig, onUpdateVcpConfig }: AgentTeamSet
 						})
 					}
 					data-testid="agent-behaviour-vcp-agent-team-max-parallel-input">
-					Max Parallel Agents
+					最大并行 Agent 数
 				</VSCodeTextField>
 
 				<VSCodeDropdown
@@ -151,9 +164,9 @@ export const AgentTeamSettings = ({ vcpConfig, onUpdateVcpConfig }: AgentTeamSet
 						})
 					}
 					data-testid="agent-behaviour-vcp-agent-team-wave-strategy-dropdown">
-					<VSCodeOption value="sequential">sequential</VSCodeOption>
-					<VSCodeOption value="parallel">parallel</VSCodeOption>
-					<VSCodeOption value="adaptive">adaptive</VSCodeOption>
+					<VSCodeOption value="sequential">顺序波次</VSCodeOption>
+					<VSCodeOption value="parallel">并行波次</VSCodeOption>
+					<VSCodeOption value="adaptive">自适应波次</VSCodeOption>
 				</VSCodeDropdown>
 
 				<VSCodeDropdown
@@ -164,9 +177,30 @@ export const AgentTeamSettings = ({ vcpConfig, onUpdateVcpConfig }: AgentTeamSet
 						})
 					}
 					data-testid="agent-behaviour-vcp-agent-team-handoff-format-dropdown">
-					<VSCodeOption value="markdown">markdown</VSCodeOption>
-					<VSCodeOption value="json">json</VSCodeOption>
+					<VSCodeOption value="markdown">Markdown 交接</VSCodeOption>
+					<VSCodeOption value="json">JSON 交接</VSCodeOption>
 				</VSCodeDropdown>
+			</div>
+
+			<div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+				<div className="rounded border border-vscode-panel-border p-3">
+					<div className="font-medium text-vscode-foreground">顺序波次</div>
+					<div className="mt-1 text-xs text-vscode-descriptionForeground">
+						按成员顺序逐个执行，适合严格依赖前一个 Agent 输出的工作流。
+					</div>
+				</div>
+				<div className="rounded border border-vscode-panel-border p-3">
+					<div className="font-medium text-vscode-foreground">并行波次</div>
+					<div className="mt-1 text-xs text-vscode-descriptionForeground">
+						同一波次并发执行多个成员，适合拆分独立子任务，优先提升吞吐。
+					</div>
+				</div>
+				<div className="rounded border border-vscode-panel-border p-3">
+					<div className="font-medium text-vscode-foreground">自适应波次</div>
+					<div className="mt-1 text-xs text-vscode-descriptionForeground">
+						根据团队规模和并行上限自动分批，适合多数常规协作场景。
+					</div>
+				</div>
 			</div>
 
 			<VSCodeCheckbox
@@ -175,13 +209,13 @@ export const AgentTeamSettings = ({ vcpConfig, onUpdateVcpConfig }: AgentTeamSet
 					onUpdateVcpConfig({ agentTeam: { requireFileSeparation: e.target.checked === true } })
 				}
 				data-testid="agent-behaviour-vcp-agent-team-file-separation-checkbox">
-				Require file separation per agent
+				要求每个 Agent 使用独立文件上下文
 			</VSCodeCheckbox>
 
 			<div className="flex items-center justify-between pt-1">
-				<div className="text-xs text-vscode-descriptionForeground">Agents: {members.length}</div>
+				<div className="text-xs text-vscode-descriptionForeground">团队成员：{members.length}</div>
 				<Button onClick={addMember} data-testid="agent-behaviour-vcp-agent-team-add-member-button">
-					+ Add Agent
+					+ 添加 Agent
 				</Button>
 			</div>
 
@@ -219,7 +253,7 @@ export const AgentTeamSettings = ({ vcpConfig, onUpdateVcpConfig }: AgentTeamSet
 											})
 										}}
 										data-testid={`agent-behaviour-vcp-agent-team-member-profile-select-${index}`}>
-										<VSCodeOption value="">Use profile preset...</VSCodeOption>
+										<VSCodeOption value="">使用现有配置预设...</VSCodeOption>
 										{profileOptions.map((option) => (
 											<VSCodeOption key={option.value} value={option.value}>
 												{option.label}
@@ -254,16 +288,30 @@ export const AgentTeamSettings = ({ vcpConfig, onUpdateVcpConfig }: AgentTeamSet
 								rows={4}
 								onInput={(e: any) => updateMember(index, { rolePrompt: String(e.target.value ?? "") })}
 								data-testid={`agent-behaviour-vcp-agent-team-member-prompt-input-${index}`}>
-								Role Prompt
+								角色提示词
 							</VSCodeTextArea>
 						</div>
 
-						<div className="pt-2 flex justify-end">
+						<div className="flex flex-wrap justify-end gap-2 pt-2">
+							<Button
+								variant="secondary"
+								onClick={() => moveMember(index, -1)}
+								disabled={index === 0}
+								data-testid={`agent-behaviour-vcp-agent-team-member-move-up-button-${index}`}>
+								上移
+							</Button>
+							<Button
+								variant="secondary"
+								onClick={() => moveMember(index, 1)}
+								disabled={index === members.length - 1}
+								data-testid={`agent-behaviour-vcp-agent-team-member-move-down-button-${index}`}>
+								下移
+							</Button>
 							<Button
 								variant="destructive"
 								onClick={() => removeMember(index)}
 								data-testid={`agent-behaviour-vcp-agent-team-member-remove-button-${index}`}>
-								Remove
+								删除
 							</Button>
 						</div>
 					</div>

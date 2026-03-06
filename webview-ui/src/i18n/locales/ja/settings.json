@@ -1016,7 +1016,7 @@
 		},
 		"MORPH_FAST_APPLY": {
 			"name": "Fast Applyを有効化",
-			"description": "有効にすると、Nova Codeはコード変更に最適化された専用モデルを使用してFast Applyでファイルを編集できます。Nova Gateway Provider、OpenRouter、またはMorph APIキーが必要です。",
+			"description": "有効にすると、Nova Codeはコード変更に最適化された専用モデルを使用してFast Applyでファイルを編集できます。OpenRouter、またはMorph APIキーが必要です。",
 			"apiProvider": "APIプロバイダー",
 			"apiProviderList": {
 				"current": "現在"

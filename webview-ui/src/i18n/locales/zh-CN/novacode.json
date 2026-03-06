@@ -281,6 +281,21 @@
 				"label": "聊天输入自动完成",
 				"description": "启用后，Nova Code 将在您输入聊天内容时提供补全建议。按 Tab 键接受建议。"
 			},
+			"configuredProvider": {
+				"label": "自动补全提供商覆盖",
+				"description": "可继续沿用现有自动补全配置文件，也可以改为使用专用的 OpenAI Compatible 端点。",
+				"options": {
+					"profile": "使用已配置的 Profile",
+					"openAiCompatible": "OpenAI Compatible"
+				}
+			},
+			"openAiCompatible": {
+				"baseUrl": "API Base URL",
+				"model": "模型名称",
+				"apiKey": "API Key（可选）",
+				"apiKeyPlaceholder": "无需鉴权的端点可留空",
+				"description": "启用此覆盖后，自动补全将使用这里配置的 OpenAI Compatible 端点和模型。"
+			},
 			"snooze": {
 				"label": "暂停自动补全",
 				"description": "在指定时间内暂时停止自动补全建议。",

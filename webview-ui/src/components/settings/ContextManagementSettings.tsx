@@ -171,6 +171,18 @@ export const ContextManagementSettings = ({
 			</SectionHeader>
 
 			<Section>
+				<div className="rounded border border-vscode-panel-border bg-[var(--vscode-editorWidget-background)] p-3">
+					<div className="font-medium text-vscode-foreground">处理链路</div>
+					<div className="mt-2 text-sm text-vscode-descriptionForeground">
+						原始上下文 → 记忆系统注入 → 上下文压缩
+					</div>
+					<div className="mt-2 text-xs text-vscode-descriptionForeground">
+						当记忆系统启用时，建议为自动压缩阈值预留余量，避免刚注入的记忆内容立即被压缩掉。
+					</div>
+				</div>
+			</Section>
+
+			<Section>
 				<SearchableSetting
 					settingId="context-open-tabs"
 					section="contextManagement"
@@ -530,9 +542,9 @@ export const ContextManagementSettings = ({
 				</SearchableSetting>
 
 				<div className="mt-4 rounded border border-vscode-panel-border p-3">
-					<div className="font-medium mb-2">VCP Memory</div>
+					<div className="font-medium mb-2">VCP 记忆系统</div>
 					<div className="text-vscode-descriptionForeground text-sm mb-3">
-						Memory 配置已迁移至上下文管理，支持更细粒度参数。
+						记忆系统配置已并入上下文管理页，便于和上下文压缩一起协调调整。
 					</div>
 
 					<div className="grid grid-cols-1 gap-3">
@@ -542,7 +554,7 @@ export const ContextManagementSettings = ({
 								onUpdateVcpConfig?.({ memory: { passive: { enabled: e.target.checked === true } } })
 							}
 							data-testid="context-vcp-memory-passive-enabled-checkbox">
-							Enable passive memory
+							启用被动记忆
 						</VSCodeCheckbox>
 						<div className="flex items-center gap-2">
 							<Input
@@ -564,7 +576,7 @@ export const ContextManagementSettings = ({
 								}
 								data-testid="context-vcp-memory-passive-max-items-input"
 							/>
-							<span className="text-sm">Passive max items</span>
+							<span className="text-sm">被动记忆最大条目数</span>
 						</div>
 						<div className="flex items-center gap-2">
 							<Input
@@ -586,7 +598,7 @@ export const ContextManagementSettings = ({
 								}
 								data-testid="context-vcp-memory-passive-max-chars-input"
 							/>
-							<span className="text-sm">Passive max chars per item</span>
+							<span className="text-sm">单条被动记忆最大字符数</span>
 						</div>
 						<div className="flex items-center gap-2">
 							<Input
@@ -610,7 +622,7 @@ export const ContextManagementSettings = ({
 								}
 								data-testid="context-vcp-memory-passive-min-importance-input"
 							/>
-							<span className="text-sm">Passive min importance (0-1)</span>
+							<span className="text-sm">被动记忆最低重要度（0-1）</span>
 						</div>
 
 						<hr className="border-vscode-panel-border" />
@@ -621,7 +633,7 @@ export const ContextManagementSettings = ({
 								onUpdateVcpConfig?.({ memory: { writer: { enabled: e.target.checked === true } } })
 							}
 							data-testid="context-vcp-memory-writer-enabled-checkbox">
-							Enable memory writer
+							启用写入记忆
 						</VSCodeCheckbox>
 						<div className="flex items-center gap-2">
 							<Input
@@ -643,7 +655,7 @@ export const ContextManagementSettings = ({
 								}
 								data-testid="context-vcp-memory-writer-trigger-tokens-input"
 							/>
-							<span className="text-sm">Writer trigger tokens</span>
+							<span className="text-sm">触发写入的 Token 阈值</span>
 						</div>
 						<div className="flex items-center gap-2">
 							<Input
@@ -665,7 +677,7 @@ export const ContextManagementSettings = ({
 								}
 								data-testid="context-vcp-memory-writer-min-chars-input"
 							/>
-							<span className="text-sm">Writer min chars</span>
+							<span className="text-sm">触发写入的最小字符数</span>
 						</div>
 						<div className="flex items-center gap-2">
 							<Input
@@ -689,7 +701,7 @@ export const ContextManagementSettings = ({
 								}
 								data-testid="context-vcp-memory-writer-importance-threshold-input"
 							/>
-							<span className="text-sm">Writer importance threshold (0-1)</span>
+							<span className="text-sm">写入重要度阈值（0-1）</span>
 						</div>
 						<VSCodeCheckbox
 							checked={currentVcpConfig.memory.writer.summarizeLongContent}
@@ -699,7 +711,7 @@ export const ContextManagementSettings = ({
 								})
 							}
 							data-testid="context-vcp-memory-writer-summarize-checkbox">
-							Summarize long content before writing
+							写入前先总结长内容
 						</VSCodeCheckbox>
 
 						<hr className="border-vscode-panel-border" />
@@ -712,7 +724,7 @@ export const ContextManagementSettings = ({
 								})
 							}
 							data-testid="context-vcp-memory-retrieval-enabled-checkbox">
-							Enable retrieval memory
+							启用检索记忆
 						</VSCodeCheckbox>
 						<div className="flex items-center gap-2">
 							<Input
@@ -734,7 +746,7 @@ export const ContextManagementSettings = ({
 								}
 								data-testid="context-vcp-memory-retrieval-topk-input"
 							/>
-							<span className="text-sm">Retrieval topK</span>
+							<span className="text-sm">检索返回 TopK</span>
 						</div>
 						<div className="flex items-center gap-2">
 							<Input
@@ -758,7 +770,7 @@ export const ContextManagementSettings = ({
 								}
 								data-testid="context-vcp-memory-retrieval-decay-factor-input"
 							/>
-							<span className="text-sm">Retrieval decay factor (0-1)</span>
+							<span className="text-sm">检索衰减因子（0-1）</span>
 						</div>
 						<div className="flex items-center gap-2">
 							<Input
@@ -782,7 +794,7 @@ export const ContextManagementSettings = ({
 								}
 								data-testid="context-vcp-memory-retrieval-min-score-input"
 							/>
-							<span className="text-sm">Retrieval min score (0-1)</span>
+							<span className="text-sm">检索最低分数（0-1）</span>
 						</div>
 						<div className="flex items-center gap-2">
 							<Input
@@ -806,7 +818,7 @@ export const ContextManagementSettings = ({
 								}
 								data-testid="context-vcp-memory-retrieval-recency-bias-input"
 							/>
-							<span className="text-sm">Retrieval recency bias (0-2)</span>
+							<span className="text-sm">检索时序偏置（0-2）</span>
 						</div>
 
 						<hr className="border-vscode-panel-border" />
@@ -817,7 +829,7 @@ export const ContextManagementSettings = ({
 								onUpdateVcpConfig?.({ memory: { refresh: { enabled: e.target.checked === true } } })
 							}
 							data-testid="context-vcp-memory-refresh-enabled-checkbox">
-							Enable refresh scheduler
+							启用刷新调度器
 						</VSCodeCheckbox>
 						<div className="flex items-center gap-2">
 							<Input
@@ -839,7 +851,7 @@ export const ContextManagementSettings = ({
 								}
 								data-testid="context-vcp-memory-refresh-interval-ms-input"
 							/>
-							<span className="text-sm">Refresh interval (ms)</span>
+							<span className="text-sm">刷新间隔（毫秒）</span>
 						</div>
 						<div className="flex items-center gap-2">
 							<Input
@@ -861,7 +873,7 @@ export const ContextManagementSettings = ({
 								}
 								data-testid="context-vcp-memory-refresh-max-items-input"
 							/>
-							<span className="text-sm">Refresh max items per run</span>
+							<span className="text-sm">单次刷新最大条目数</span>
 						</div>
 						<div className="flex items-center gap-2">
 							<Input
@@ -883,7 +895,7 @@ export const ContextManagementSettings = ({
 								}
 								data-testid="context-vcp-memory-refresh-cleanup-days-input"
 							/>
-							<span className="text-sm">Cleanup age (days)</span>
+							<span className="text-sm">清理保留天数</span>
 						</div>
 					</div>
 				</div>

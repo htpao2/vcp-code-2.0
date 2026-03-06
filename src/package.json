@@ -673,7 +673,7 @@
 		"vscode:prepublish": "pnpm bundle --production",
 		"vsix:clean": "rimraf ../bin",
 		"vsix": "mkdirp ../bin && vsce package --no-dependencies --out ../bin/vcp-code-1.0.6.vsix",
-		"vsix:unpacked": "mkdirp ../bin-unpacked && unzip -q -o ../bin/vcp-code-*.vsix -d ../bin-unpacked",
+		"vsix:unpacked": "node scripts/unpack-vsix.cjs",
 		"publish:marketplace": "vsce publish --no-dependencies && ovsx publish --no-dependencies",
 		"watch:bundle": "pnpm bundle --watch",
 		"watch:tsc": "cd .. && tsc --noEmit --watch --project src/tsconfig.json",

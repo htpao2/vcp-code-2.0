@@ -7,6 +7,7 @@ import { VSCodeButton as Button } from "@vscode/webview-ui-toolkit/react" // nov
 import useSound from "use-sound"
 import { LRUCache } from "lru-cache"
 import { Trans } from "react-i18next"
+import { ListTree } from "lucide-react"
 
 import { useDebounceEffect } from "@src/utils/useDebounceEffect"
 import { appendImages } from "@src/utils/imageUtils"
@@ -53,8 +54,8 @@ import { IdeaSuggestionsBox } from "../nova/chat/IdeaSuggestionsBox" // novacode
 import { NovacodeNotifications } from "../nova/NovacodeNotifications" // novacode_change
 import { QueuedMessages } from "./QueuedMessages"
 import { ReviewScopeSelector, type ReviewScopeInfo } from "./ReviewScopeSelector" // novacode_change: Review mode
-import { VcpStatusBadge } from "./VcpStatusBadge" // vcp_change
-import { VcpInfoNotifications } from "./VcpInfoNotifications"
+import { VcpCapsule } from "./VcpCapsule"
+import { ContextNodeTree } from "./ContextNodeTree"
 import { buildDocLink } from "@/utils/docLinks"
 // import DismissibleUpsell from "../common/DismissibleUpsell" // novacode_change: unused
 // import { useCloudUpsell } from "@src/hooks/useCloudUpsell" // novacode_change: unused
@@ -246,6 +247,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 	// novacode_change start: Review mode state
 	const [showReviewScopeSelector, setShowReviewScopeSelector] = useState(false)
 	const [reviewScopeInfo, setReviewScopeInfo] = useState<ReviewScopeInfo | null>(null)
+	const [showContextTree, setShowContextTree] = useState(false)
 	// novacode_change end: Review mode state
 
 	const clineAskRef = useRef(clineAsk)
@@ -1682,12 +1684,6 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 						isTaskActive={sendingDisabled}
 						todos={latestTodos}
 					/>
-					<div className="px-3 flex items-center justify-between gap-2">
-						<VcpStatusBadge className="min-w-0" />
-						<VcpInfoNotifications />
-					</div>
-					{/* novacode_change start */}
-
 					{hasSystemPromptOverride && (
 						<div className="px-3">
 							<SystemPromptWarning />
@@ -1949,6 +1945,22 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 			{/* novacode_change: added settings toggle the profile and model selection */}
 			<BottomControls showApiConfig />
 			{/* novacode_change: end */}
+
+			{task && (
+				<>
+					<div className="absolute bottom-24 right-3 z-30 flex flex-col items-end gap-2">
+						<button
+							type="button"
+							onClick={() => setShowContextTree((current) => !current)}
+							className="inline-flex items-center gap-2 rounded-full border border-vscode-panel-border bg-[color-mix(in_srgb,var(--vscode-editor-background)_88%,transparent)] px-3 py-2 text-xs text-vscode-foreground shadow-lg backdrop-blur-sm">
+							<ListTree className="h-4 w-4" />
+							<span>上下文树</span>
+						</button>
+						<VcpCapsule />
+					</div>
+					<ContextNodeTree open={showContextTree} onClose={() => setShowContextTree(false)} />
+				</>
+			)}
 
 			{/* novacode_change: disable {isProfileDisabled && (
 				<div className="px-3">

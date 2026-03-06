@@ -143,10 +143,9 @@ import { TemperatureControl } from "./TemperatureControl"
 import { RateLimitSecondsControl } from "./RateLimitSecondsControl"
 import { ConsecutiveMistakeLimitControl } from "./ConsecutiveMistakeLimitControl"
 import { BedrockCustomArn } from "./providers/BedrockCustomArn"
-import { NovaCode as NovaCode } from "../nova/settings/providers/NovaCode" // novacode_change
 import { RooBalanceDisplay } from "./providers/RooBalanceDisplay"
 import { buildDocLink } from "@src/utils/docLinks"
-import { NovaProviderRouting, NovaProviderRoutingManagedByOrganization } from "./providers/NovaProviderRouting"
+import { OpenRouterProviderRouting } from "./providers/OpenRouterProviderRouting"
 import { RateLimitAfterControl } from "./RateLimitAfterSettings" // novacode_change
 import { BookOpenText } from "lucide-react"
 
@@ -161,8 +160,6 @@ export interface ApiOptionsProps {
 	fromWelcomeView?: boolean
 	errorMessage: string | undefined
 	setErrorMessage: React.Dispatch<React.SetStateAction<string | undefined>>
-	hideNovaCodeButton?: boolean // novacode_change
-	currentApiConfigName?: string // novacode_change
 }
 
 const ApiOptions = ({
@@ -172,18 +169,10 @@ const ApiOptions = ({
 	fromWelcomeView,
 	errorMessage,
 	setErrorMessage,
-	hideNovaCodeButton,
-	currentApiConfigName, // novacode_change
 }: ApiOptionsProps) => {
-	const resolvedHideNovaCodeButton = hideNovaCodeButton ?? false
 	const { t } = useAppTranslation()
-	const {
-		organizationAllowList,
-		novacodeDefaultModel: novaDefaultModel,
-		cloudIsAuthenticated,
-		claudeCodeIsAuthenticated,
-		openAiCodexIsAuthenticated,
-	} = useExtensionState()
+	const { organizationAllowList, cloudIsAuthenticated, claudeCodeIsAuthenticated, openAiCodexIsAuthenticated } =
+		useExtensionState()
 
 	const [customHeaders, setCustomHeaders] = useState<[string, string][]>(() => {
 		const headers = apiConfiguration?.openAiHeaders || {}
@@ -275,7 +264,6 @@ const ApiOptions = ({
 	const { data: routerModels, refetch: refetchRouterModels } = useRouterModels({
 		openRouterBaseUrl: apiConfiguration?.openRouterBaseUrl,
 		openRouterApiKey: apiConfiguration?.openRouterApiKey,
-		novaOrganizationId,
 		novacodeOrganizationId: novaOrganizationId,
 		deepInfraApiKey: apiConfiguration?.deepInfraApiKey,
 		geminiApiKey: apiConfiguration?.geminiApiKey,
@@ -560,7 +548,6 @@ const ApiOptions = ({
 				lmstudio: { field: "lmStudioModelId" },
 				// novacode_change start
 				apertis: { field: "apertisModelId", default: apertisDefaultModelId },
-				novacode: { field: "novacodeModel", default: novaDefaultModel },
 				synthetic: { field: "apiModelId", default: syntheticDefaultModelId },
 				ovhcloud: { field: "ovhCloudAiEndpointsModelId", default: ovhCloudAiEndpointsDefaultModelId },
 				inception: { field: "inceptionLabsModelId", default: inceptionDefaultModelId },
@@ -578,7 +565,7 @@ const ApiOptions = ({
 				)
 			}
 		},
-		[setApiConfigurationField, apiConfiguration, organizationAllowList, novaDefaultModel],
+		[setApiConfigurationField, apiConfiguration, organizationAllowList],
 	)
 
 	const modelValidationError = useMemo(() => {
@@ -679,20 +666,6 @@ const ApiOptions = ({
 			</div>
 
 			{errorMessage && <ApiErrorMessage errorMessage={errorMessage} />}
-
-			{/* novacode_change start */}
-			{selectedProvider === "novacode" && (
-				<NovaCode
-					apiConfiguration={apiConfiguration}
-					setApiConfigurationField={setApiConfigurationField}
-					hideNovaCodeButton={resolvedHideNovaCodeButton}
-					currentApiConfigName={currentApiConfigName}
-					routerModels={routerModels}
-					organizationAllowList={organizationAllowList}
-					novacodeDefaultModel={novaDefaultModel}
-				/>
-			)}
-			{/* novacode_change end */}
 
 			{selectedProvider === "openrouter" && (
 				<OpenRouter
@@ -1204,18 +1177,12 @@ const ApiOptions = ({
 
 			{
 				// novacode_change start
-				(selectedProvider === "novacode" || selectedProvider === "openrouter") &&
-					(apiConfiguration.novacodeOrganizationId ? (
-						<NovaProviderRoutingManagedByOrganization
-							organizationId={apiConfiguration.novacodeOrganizationId}
-						/>
-					) : (
-						<NovaProviderRouting
-							apiConfiguration={apiConfiguration}
-							setApiConfigurationField={setApiConfigurationField}
-							novacodeDefaultModel={novaDefaultModel}
-						/>
-					))
+				selectedProvider === "openrouter" && (
+					<OpenRouterProviderRouting
+						apiConfiguration={apiConfiguration}
+						setApiConfigurationField={setApiConfigurationField}
+					/>
+				)
 				// novacode_change end
 			}
 
