@@ -1,10 +1,8 @@
 import { OPENROUTER_DEFAULT_PROVIDER_NAME, type ProviderSettings } from "@roo-code/types"
 
-import { fireEvent, render, screen } from "@/utils/test-utils"
+import { fireEvent, render, screen, waitFor } from "@/utils/test-utils"
 import { vscode } from "@/utils/vscode"
 import { ModelSelector } from "../ModelSelector"
-
-const mockUseProfileModelCatalog = vi.fn()
 
 vi.mock("@/utils/vscode", () => ({
 	vscode: {
@@ -18,16 +16,29 @@ vi.mock("@/i18n/TranslationContext", () => ({
 	}),
 }))
 
-vi.mock("@/components/chat/useProfileModelCatalog", () => ({
-	useProfileModelCatalog: (...args: unknown[]) => mockUseProfileModelCatalog(...args),
+vi.mock("@/components/ui/hooks/useRooPortal", () => ({
+	useRooPortal: () => undefined,
 }))
 
 vi.mock("@/components/nova/hooks/useSelectedModel", () => ({
-	getSelectedModelId: () => "model-1",
-}))
-
-vi.mock("@/components/ui/hooks/useRooPortal", () => ({
-	useRooPortal: () => undefined,
+	getSelectedModelId: ({ provider, apiConfiguration }: any) => {
+		if (provider === "openrouter") {
+			return apiConfiguration.openRouterModelId ?? ""
+		}
+		if (provider === "openai") {
+			return apiConfiguration.openAiModelId ?? ""
+		}
+		return ""
+	},
+	getModelIdKey: ({ provider }: any) => {
+		if (provider === "openrouter") {
+			return "openRouterModelId"
+		}
+		if (provider === "openai") {
+			return "openAiModelId"
+		}
+		return "apiModelId"
+	},
 }))
 
 const baseApiConfiguration: ProviderSettings = {
@@ -36,44 +47,22 @@ const baseApiConfiguration: ProviderSettings = {
 	profileType: "chat",
 }
 
-const createModelItem = (overrides: Record<string, unknown> = {}) => ({
-	key: "profile-1:model-1",
-	profileId: "profile-1",
-	profileName: "chat-profile",
-	profileConfig: {
-		apiProvider: "openrouter",
-		openRouterModelId: "model-1",
+const runtimeModels = [
+	{
+		id: "model-1",
+		displayName: "Model 1",
+		owned_by: "openrouter",
 	},
-	provider: "openrouter",
-	providerLabel: "OpenRouter",
-	modelId: "model-1",
-	modelLabel: "Model 1",
-	isCurrentProfile: true,
-	isCurrentModel: true,
-	searchText: "openrouter chat-profile model 1",
-	...overrides,
-})
-
-const createGroup = (overrides: Record<string, unknown> = {}) => ({
-	key: "openrouter:profile-1",
-	provider: "openrouter",
-	providerLabel: "OpenRouter",
-	items: [createModelItem()],
-	isEmpty: false,
-	profileName: "chat-profile",
-	refresh: vi.fn().mockResolvedValue(undefined),
-	...overrides,
-})
+	{
+		id: "model-2",
+		displayName: "Model 2",
+		owned_by: "openrouter",
+	},
+]
 
 describe("ModelSelector", () => {
 	beforeEach(() => {
-		mockUseProfileModelCatalog.mockReset()
 		vi.mocked(vscode.postMessage).mockReset()
-		mockUseProfileModelCatalog.mockReturnValue({
-			groups: [createGroup()],
-			isLoading: false,
-			isError: false,
-		})
 	})
 
 	test("chat profile renders dropdown trigger", () => {
@@ -115,33 +104,7 @@ describe("ModelSelector", () => {
 		expect(screen.getByText(/2/)).toBeInTheDocument()
 	})
 
-	test("empty groups render fallback text", () => {
-		mockUseProfileModelCatalog.mockReturnValue({
-			groups: [],
-			isLoading: false,
-			isError: false,
-		})
-
-		render(
-			<ModelSelector
-				currentApiConfigName="chat-profile"
-				apiConfiguration={baseApiConfiguration}
-				fallbackText="暂无模型"
-			/>,
-		)
-
-		expect(screen.getByText("暂无模型")).toBeInTheDocument()
-		expect(screen.queryByTestId("dropdown-trigger")).not.toBeInTheDocument()
-	})
-
-	test("empty group shows refresh button after opening popover", () => {
-		const refresh = vi.fn().mockResolvedValue(undefined)
-		mockUseProfileModelCatalog.mockReturnValue({
-			groups: [createGroup({ items: [], isEmpty: true, refresh })],
-			isLoading: false,
-			isError: false,
-		})
-
+	test("opening the dropdown requests current provider models", () => {
 		render(
 			<ModelSelector
 				currentApiConfigName="chat-profile"
@@ -151,32 +114,11 @@ describe("ModelSelector", () => {
 		)
 
 		fireEvent.click(screen.getByTestId("dropdown-trigger"))
-		fireEvent.click(screen.getByRole("button", { name: "获取模型列表" }))
 
-		expect(refresh).toHaveBeenCalledTimes(1)
+		expect(vscode.postMessage).toHaveBeenCalledWith({ type: "fetchRuntimeProviderModels" })
 	})
 
-	test("selecting a model in the current profile posts only upsertApiConfiguration", () => {
-		mockUseProfileModelCatalog.mockReturnValue({
-			groups: [
-				createGroup({
-					items: [
-						createModelItem({
-							modelId: "model-2",
-							modelLabel: "Model 2",
-							isCurrentModel: false,
-							profileConfig: {
-								apiProvider: "openrouter",
-								openRouterModelId: "model-2",
-							},
-						}),
-					],
-				}),
-			],
-			isLoading: false,
-			isError: false,
-		})
-
+	test("refresh button requests a forced provider refresh", async () => {
 		render(
 			<ModelSelector
 				currentApiConfigName="chat-profile"
@@ -186,10 +128,45 @@ describe("ModelSelector", () => {
 		)
 
 		fireEvent.click(screen.getByTestId("dropdown-trigger"))
-		fireEvent.click(screen.getByRole("button", { name: "Model 2 model-2" }))
+		window.dispatchEvent(
+			new MessageEvent("message", {
+				data: {
+					type: "runtimeProviderModels",
+					runtimeProviderModels: runtimeModels,
+				},
+			}),
+		)
 
-		expect(vscode.postMessage).toHaveBeenCalledTimes(1)
-		expect(vscode.postMessage).toHaveBeenCalledWith({
+		await waitFor(() => expect(screen.getByRole("button", { name: /刷新/i })).not.toBeDisabled())
+		fireEvent.click(screen.getByRole("button", { name: /刷新/i }))
+
+		expect(vscode.postMessage).toHaveBeenNthCalledWith(1, { type: "fetchRuntimeProviderModels" })
+		expect(vscode.postMessage).toHaveBeenNthCalledWith(2, { type: "refreshRuntimeProviderModels" })
+	})
+
+	test("selecting a model updates only the current profile and runtime default model", async () => {
+		render(
+			<ModelSelector
+				currentApiConfigName="chat-profile"
+				apiConfiguration={baseApiConfiguration}
+				fallbackText="选择模型"
+			/>,
+		)
+
+		fireEvent.click(screen.getByTestId("dropdown-trigger"))
+		window.dispatchEvent(
+			new MessageEvent("message", {
+				data: {
+					type: "runtimeProviderModels",
+					runtimeProviderModels: runtimeModels,
+				},
+			}),
+		)
+
+		fireEvent.click(await screen.findByRole("button", { name: /Model 2/ }))
+
+		expect(vscode.postMessage).toHaveBeenNthCalledWith(1, { type: "fetchRuntimeProviderModels" })
+		expect(vscode.postMessage).toHaveBeenNthCalledWith(2, {
 			type: "upsertApiConfiguration",
 			text: "chat-profile",
 			apiConfiguration: expect.objectContaining({
@@ -198,59 +175,12 @@ describe("ModelSelector", () => {
 				openRouterSpecificProvider: OPENROUTER_DEFAULT_PROVIDER_NAME,
 			}),
 		})
-	})
-
-	test("selecting a model from another profile also loads that profile", () => {
-		mockUseProfileModelCatalog.mockReturnValue({
-			groups: [
-				createGroup({
-					profileName: "other-profile",
-					items: [
-						createModelItem({
-							key: "profile-2:model-9",
-							profileId: "profile-2",
-							profileName: "other-profile",
-							profileConfig: {
-								apiProvider: "openai",
-								openAiModelId: "model-9",
-							},
-							provider: "openai",
-							providerLabel: "OpenAI Compatible",
-							modelId: "model-9",
-							modelLabel: "Model 9",
-							isCurrentProfile: false,
-							isCurrentModel: false,
-							searchText: "openai other-profile model 9",
-						}),
-					],
-				}),
-			],
-			isLoading: false,
-			isError: false,
+		expect(vscode.postMessage).toHaveBeenNthCalledWith(3, {
+			type: "updateVcpRuntimeModelBindings",
+			defaultModelId: "model-2",
 		})
-
-		render(
-			<ModelSelector
-				currentApiConfigName="chat-profile"
-				apiConfiguration={baseApiConfiguration}
-				fallbackText="选择模型"
-			/>,
+		expect(vscode.postMessage).not.toHaveBeenCalledWith(
+			expect.objectContaining({ type: "loadApiConfigurationById" }),
 		)
-
-		fireEvent.click(screen.getByTestId("dropdown-trigger"))
-		fireEvent.click(screen.getByRole("button", { name: "Model 9 model-9" }))
-
-		expect(vscode.postMessage).toHaveBeenNthCalledWith(1, {
-			type: "upsertApiConfiguration",
-			text: "other-profile",
-			apiConfiguration: expect.objectContaining({
-				apiProvider: "openai",
-				openAiModelId: "model-9",
-			}),
-		})
-		expect(vscode.postMessage).toHaveBeenNthCalledWith(2, {
-			type: "loadApiConfigurationById",
-			text: "profile-2",
-		})
 	})
 })

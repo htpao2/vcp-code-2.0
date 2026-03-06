@@ -22,7 +22,17 @@ import type { McpServer } from "./mcp.js"
 import type { ModelRecord, RouterModels, ModelInfo } from "./model.js"
 import type { CommitRange } from "./nova/novacode.js"
 import type { OpenAiCodexRateLimitInfo } from "./providers/openai-codex-rate-limits.js"
-import type { AtomicMemoryItem, VcpBridgeLogEntry, VcpBridgeStatus, VcpBridgeTestResult, VcpConfig } from "./vcp.js"
+import type {
+	AtomicMemoryItem,
+	VcpBridgeLogEntry,
+	VcpBridgeStatus,
+	VcpBridgeTestResult,
+	VcpConfig,
+	VcpDistributedSkillRegistration,
+	VcpMediaAssetPayload,
+	VcpRuntimeConfig,
+	VcpRuntimeModelCatalogEntry,
+} from "./vcp.js"
 import type { SkillSettings } from "./skill.js"
 
 // novacode_change start: Type definitions for Nova Code-specific features
@@ -261,6 +271,9 @@ export interface ExtensionMessage {
 		| "vcpBridgeLog" // vcp_change
 		| "vcpBridgeTestResult" // vcp_change
 		| "vcpMemoryUpdated" // vcp_change
+		| "runtimeProviderModels" // vcp_change v1.0.8
+		| "vcpRuntimeConfigUpdated" // vcp_change v1.0.8
+		| "distributedSkillStatus" // vcp_change v1.0.8
 		| "skillSettingsUpdated"
 		| "claudeCodeRateLimits"
 		| "customToolsResult"
@@ -408,6 +421,10 @@ export interface ExtensionMessage {
 	vcpMemoryItems?: AtomicMemoryItem[] // vcp_change
 	status?: VcpBridgeStatus // vcp_change
 	entries?: VcpBridgeLogEntry[] // vcp_change
+	// vcp_change v1.0.8: Runtime model catalog and skill registration
+	runtimeProviderModels?: VcpRuntimeModelCatalogEntry[]
+	vcpRuntimeConfig?: VcpRuntimeConfig
+	distributedSkillRegistrations?: Record<string, VcpDistributedSkillRegistration>
 	commands?: Command[]
 	skills?: Array<{
 		// novacode_change: Skills data
@@ -925,6 +942,13 @@ export interface WebviewMessage {
 		| "requestVcpBridgeTest" // vcp_change
 		| "vcpMemoryQuery" // vcp_change
 		| "vcpMemoryDelete" // vcp_change
+		| "fetchRuntimeProviderModels" // vcp_change v1.0.8
+		| "refreshRuntimeProviderModels" // vcp_change v1.0.8
+		| "updateVcpRuntimeModelBindings" // vcp_change v1.0.8
+		| "sendMediaAsset" // vcp_change v1.0.8
+		| "registerSkillToToolbox" // vcp_change v1.0.8
+		| "unregisterSkillFromToolbox" // vcp_change v1.0.8
+		| "bootstrapPreinstalledSkills" // vcp_change v1.0.8
 		| "autoPurgeEnabled" // novacode_change
 		| "autoPurgeDefaultRetentionDays" // novacode_change
 		| "autoPurgeFavoritedTaskRetentionDays" // novacode_change
@@ -1117,6 +1141,12 @@ export interface WebviewMessage {
 	// novacode_change start: Review mode
 	reviewScope?: "uncommitted" | "branch"
 	// novacode_change end: Review mode
+	// vcp_change v1.0.8: Runtime model operations
+	profileId?: string
+	defaultModelId?: string
+	quickModelId?: string
+	mediaAsset?: VcpMediaAssetPayload
+	skillName?: string
 }
 
 // novacode_change: Create discriminated union for type-safe messages

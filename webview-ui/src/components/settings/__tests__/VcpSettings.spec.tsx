@@ -118,6 +118,7 @@ describe("VcpSettings", () => {
 
 	it("posts bridge connect messages with toolbox config", () => {
 		renderVcpSettings()
+		mockPostMessage.mockClear()
 
 		fireEvent.click(screen.getByTestId("vcp-toolbox-connect-button"))
 

@@ -2,6 +2,155 @@ import { z } from "zod"
 
 // novacode_change - new file
 
+// ─── VCP Runtime ─────────────────────────────────────────────────────────────
+
+export const vcpRuntimeModelRouteTargetSchema = z.enum(["default", "quick"])
+
+export const vcpRuntimeModelBindingSchema = z.object({
+	modelId: z.string(),
+	displayName: z.string().optional(),
+	providerId: z.string().optional(),
+})
+
+export const vcpRuntimeModelRoutesSchema = z.object({
+	autocomplete: vcpRuntimeModelRouteTargetSchema,
+	yoloGatekeeper: vcpRuntimeModelRouteTargetSchema,
+	fileSlice: vcpRuntimeModelRouteTargetSchema,
+	contextCondense: vcpRuntimeModelRouteTargetSchema,
+})
+
+export const vcpRuntimeModelCatalogEntrySchema = z.object({
+	id: z.string(),
+	displayName: z.string().optional(),
+	owned_by: z.string().optional(),
+})
+
+export const vcpRuntimeModelCatalogStateSchema = z.object({
+	models: z.array(vcpRuntimeModelCatalogEntrySchema),
+	fetchedAt: z.number(),
+	error: z.string().optional(),
+})
+
+export const vcpRuntimeModelsConfigSchema = z.object({
+	default: vcpRuntimeModelBindingSchema,
+	quick: vcpRuntimeModelBindingSchema,
+	routes: vcpRuntimeModelRoutesSchema,
+	catalogCache: z.object({
+		ttlMs: z.number().int().min(1000),
+		providers: z.record(z.string(), vcpRuntimeModelCatalogStateSchema),
+	}),
+})
+
+export const vcpMediaAssetPayloadSchema = z.object({
+	assetId: z.string(),
+	sourceType: z.enum(["local", "remote"]),
+	source: z.string(),
+	mimeType: z.string(),
+	alt: z.string().optional(),
+	title: z.string().optional(),
+	bytes: z.number().optional(),
+	metadata: z.record(z.string(), z.string()).optional(),
+})
+
+export const vcpRuntimeMediaConfigSchema = z.object({
+	enabled: z.boolean(),
+	maxAssetBytes: z.number().int().min(0),
+	allowedSchemes: z.array(z.string()),
+})
+
+export const vcpDistributedSkillStatusSchema = z.enum(["registered", "error", "unregistered", "drifted"])
+
+export const vcpDistributedSkillRegistrationSchema = z.object({
+	canonicalName: z.string(),
+	displayName: z.string().optional(),
+	version: z.string().optional(),
+	description: z.string().optional(),
+	sourceScope: z.enum(["global", "project"]).optional(),
+	status: vcpDistributedSkillStatusSchema,
+	registeredAt: z.number().optional(),
+	error: z.string().optional(),
+})
+
+export const vcpPreinstalledSkillsConfigSchema = z.object({
+	manifestVersion: z.string(),
+	globalSkills: z.array(z.string()),
+	workspaceSkills: z.array(z.string()),
+	internalOnly: z.array(z.string()),
+})
+
+export const vcpRuntimeConfigSchema = z.object({
+	models: vcpRuntimeModelsConfigSchema,
+	media: vcpRuntimeMediaConfigSchema,
+	distributedSkills: z.object({
+		registrations: z.record(z.string(), vcpDistributedSkillRegistrationSchema),
+	}),
+	preinstalledSkills: vcpPreinstalledSkillsConfigSchema,
+})
+
+export type VcpRuntimeModelRouteTarget = z.infer<typeof vcpRuntimeModelRouteTargetSchema>
+export type VcpRuntimeModelBinding = z.infer<typeof vcpRuntimeModelBindingSchema>
+export type VcpRuntimeModelRoutes = z.infer<typeof vcpRuntimeModelRoutesSchema>
+export type VcpRuntimeModelCatalogEntry = z.infer<typeof vcpRuntimeModelCatalogEntrySchema>
+export type VcpRuntimeModelCatalogState = z.infer<typeof vcpRuntimeModelCatalogStateSchema>
+export type VcpRuntimeModelsConfig = z.infer<typeof vcpRuntimeModelsConfigSchema>
+export type VcpMediaAssetPayload = z.infer<typeof vcpMediaAssetPayloadSchema>
+export type VcpRuntimeMediaConfig = z.infer<typeof vcpRuntimeMediaConfigSchema>
+export type VcpDistributedSkillStatus = z.infer<typeof vcpDistributedSkillStatusSchema>
+export type VcpDistributedSkillRegistration = z.infer<typeof vcpDistributedSkillRegistrationSchema>
+export type VcpPreinstalledSkillsConfig = z.infer<typeof vcpPreinstalledSkillsConfigSchema>
+export type VcpRuntimeConfig = z.infer<typeof vcpRuntimeConfigSchema>
+
+export function getDefaultVcpRuntimeConfig(): VcpRuntimeConfig {
+	return {
+		models: {
+			default: { modelId: "", displayName: "", providerId: "" },
+			quick: { modelId: "", displayName: "", providerId: "" },
+			routes: {
+				autocomplete: "quick",
+				yoloGatekeeper: "quick",
+				fileSlice: "quick",
+				contextCondense: "quick",
+			},
+			catalogCache: {
+				ttlMs: 300_000,
+				providers: {},
+			},
+		},
+		media: {
+			enabled: false,
+			maxAssetBytes: 10_485_760,
+			allowedSchemes: ["https"],
+		},
+		distributedSkills: {
+			registrations: {},
+		},
+		preinstalledSkills: {
+			manifestVersion: "1.0.8",
+			globalSkills: [
+				"agent-manager",
+				"codex-review",
+				"create-plan",
+				"gh-address-comments",
+				"gh-fix-ci",
+				"helloagents",
+				"humanizer-zh",
+				"mathprove-skill",
+				"planning-with-files",
+				"powershell-windows",
+				"receiving-code-review",
+				"requesting-code-review",
+				"session-handoff",
+				"using-git-worktrees",
+				"verification-before-completion",
+			],
+			workspaceSkills: ["translation"],
+			internalOnly: [".system"],
+		},
+	}
+}
+
+// ─── VCP Protocol Config ─────────────────────────────────────────────────────
+
 export const vcpContextFoldStyleSchema = z.enum(["details", "comment"])
 export const vcpToolBridgeModeSchema = z.enum(["execute", "event"])
 export const vcpAgentWaveStrategySchema = z.enum(["sequential", "parallel", "adaptive"])
@@ -127,6 +276,7 @@ export const vcpConfigSchema = z.object({
 	memory: vcpMemoryConfigSchema,
 	toolbox: vcpToolboxConfigSchema,
 	snowCompat: vcpSnowCompatConfigSchema,
+	runtime: vcpRuntimeConfigSchema.optional(),
 })
 
 export type VcpContextFoldConfig = z.infer<typeof vcpContextFoldConfigSchema>
@@ -274,5 +424,6 @@ export function getDefaultVcpConfig(): VcpConfig {
 				browserDebugPort: 9222,
 			},
 		},
+		runtime: getDefaultVcpRuntimeConfig(),
 	}
 }

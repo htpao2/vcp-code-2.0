@@ -1,0 +1,22 @@
+{
+	"manifestVersion": "1.0.8",
+	"globalSkills": [
+		"agent-manager",
+		"codex-review",
+		"create-plan",
+		"gh-address-comments",
+		"gh-fix-ci",
+		"helloagents",
+		"humanizer-zh",
+		"mathprove-skill",
+		"planning-with-files",
+		"powershell-windows",
+		"receiving-code-review",
+		"requesting-code-review",
+		"session-handoff",
+		"using-git-worktrees",
+		"verification-before-completion"
+	],
+	"workspaceSkills": ["translation"],
+	"internalOnly": [".system"]
+}

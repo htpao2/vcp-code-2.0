@@ -294,7 +294,7 @@ name: invalid-skill
 			expect(skills).toHaveLength(0)
 		})
 
-		it("should skip skills where name doesn't match directory", async () => {
+		it("should use frontmatter name as the canonical registration name when directory differs", async () => {
 			const mySkillDir = p(globalSkillsDir, "my-skill")
 			const mySkillMd = p(mySkillDir, "SKILL.md")
 
@@ -337,7 +337,19 @@ description: Name doesn't match directory
 			await skillsManager.discoverSkills()
 
 			const skills = skillsManager.getAllSkills()
-			expect(skills).toHaveLength(0)
+			expect(skills).toHaveLength(1)
+			expect(skills[0].name).toBe("different-name")
+
+			const registrations = skillsManager.getCanonicalRegistrations()
+			expect(registrations["different-name"]).toMatchObject({
+				canonicalName: "different-name",
+				displayName: "different-name",
+				description: "Name doesn't match directory",
+				sourceScope: "global",
+				status: "registered",
+			})
+			expect(registrations["my-skill"]).toBeUndefined()
+			expect(typeof registrations["different-name"].registeredAt).toBe("number")
 		})
 
 		it("should skip skills with invalid name formats (spec compliance)", async () => {

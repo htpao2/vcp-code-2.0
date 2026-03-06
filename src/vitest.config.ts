@@ -4,6 +4,7 @@ import fs from "fs"
 import { resolveVerbosity } from "./utils/vitest-verbosity"
 
 const { silent, reporters, onConsoleLog } = resolveVerbosity()
+const isWindows = process.platform === "win32"
 
 function resolvePdfParseEntry() {
 	const repoRoot = path.resolve(__dirname, "..")
@@ -45,8 +46,10 @@ export default defineConfig({
 		watch: false,
 		reporters,
 		silent,
-		testTimeout: 20_000,
-		hookTimeout: 20_000,
+		testTimeout: isWindows ? 60_000 : 20_000,
+		hookTimeout: isWindows ? 60_000 : 20_000,
+		minWorkers: 1,
+		maxWorkers: isWindows ? 4 : undefined,
 		onConsoleLog,
 	},
 	resolve: {

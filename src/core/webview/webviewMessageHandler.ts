@@ -11,10 +11,16 @@ import {
 	fastApplyApiProviderSchema,
 	getDefaultSkillSettings,
 	getDefaultVcpConfig,
+	getDefaultVcpRuntimeConfig,
+	getModelId,
 	getNovaUrlFromToken,
 	isGlobalStateKey,
+	type ProviderSettings,
 	type SkillSettings,
 	type VcpConfig,
+	type VcpDistributedSkillRegistration,
+	type VcpMediaAssetPayload,
+	type VcpRuntimeModelCatalogEntry,
 } from "@roo-code/types"
 import { getAppUrl } from "@roo-code/types"
 import {
@@ -179,6 +185,470 @@ export const webviewMessageHandler = async (
 			`[${context}] requestId=${meta.requestId} provider=${meta.provider} url=${meta.url ?? "n/a"}`,
 			error,
 		)
+	}
+
+	type ResolvedRuntimeProfile = {
+		profileId?: string
+		profileName: string
+		apiConfiguration: ProviderSettings
+		providerId: string
+		baseUrl?: string
+		cacheKey: string
+		currentModelId: string
+	}
+
+	const getMergedVcpConfig = (): VcpConfig => {
+		const defaults = getDefaultVcpConfig()
+		const runtimeDefaults = getDefaultVcpRuntimeConfig()
+		const storedConfig = getGlobalState("vcpConfig")
+
+		return {
+			...defaults,
+			...(storedConfig ?? {}),
+			contextFold: { ...defaults.contextFold, ...(storedConfig?.contextFold ?? {}) },
+			vcpInfo: { ...defaults.vcpInfo, ...(storedConfig?.vcpInfo ?? {}) },
+			html: { ...defaults.html, ...(storedConfig?.html ?? {}) },
+			toolRequest: { ...defaults.toolRequest, ...(storedConfig?.toolRequest ?? {}) },
+			agentTeam: { ...defaults.agentTeam, ...(storedConfig?.agentTeam ?? {}) },
+			memory: {
+				...defaults.memory,
+				...(storedConfig?.memory ?? {}),
+				passive: { ...defaults.memory.passive, ...(storedConfig?.memory?.passive ?? {}) },
+				writer: { ...defaults.memory.writer, ...(storedConfig?.memory?.writer ?? {}) },
+				retrieval: { ...defaults.memory.retrieval, ...(storedConfig?.memory?.retrieval ?? {}) },
+				refresh: { ...defaults.memory.refresh, ...(storedConfig?.memory?.refresh ?? {}) },
+			},
+			toolbox: { ...defaults.toolbox, ...(storedConfig?.toolbox ?? {}) },
+			snowCompat: {
+				...defaults.snowCompat,
+				...(storedConfig?.snowCompat ?? {}),
+				responsesReasoning: {
+					...defaults.snowCompat.responsesReasoning,
+					...(storedConfig?.snowCompat?.responsesReasoning ?? {}),
+				},
+				proxy: {
+					...defaults.snowCompat.proxy,
+					...(storedConfig?.snowCompat?.proxy ?? {}),
+				},
+			},
+			runtime: {
+				...runtimeDefaults,
+				...(storedConfig?.runtime ?? {}),
+				models: {
+					...runtimeDefaults.models,
+					...(storedConfig?.runtime?.models ?? {}),
+					default: { ...runtimeDefaults.models.default, ...(storedConfig?.runtime?.models?.default ?? {}) },
+					quick: { ...runtimeDefaults.models.quick, ...(storedConfig?.runtime?.models?.quick ?? {}) },
+					routes: { ...runtimeDefaults.models.routes, ...(storedConfig?.runtime?.models?.routes ?? {}) },
+					catalogCache: {
+						...runtimeDefaults.models.catalogCache,
+						...(storedConfig?.runtime?.models?.catalogCache ?? {}),
+						providers: {
+							...runtimeDefaults.models.catalogCache.providers,
+							...(storedConfig?.runtime?.models?.catalogCache?.providers ?? {}),
+						},
+					},
+				},
+				media: { ...runtimeDefaults.media, ...(storedConfig?.runtime?.media ?? {}) },
+				distributedSkills: {
+					...runtimeDefaults.distributedSkills,
+					...(storedConfig?.runtime?.distributedSkills ?? {}),
+					registrations: {
+						...runtimeDefaults.distributedSkills.registrations,
+						...(storedConfig?.runtime?.distributedSkills?.registrations ?? {}),
+					},
+				},
+				preinstalledSkills: {
+					...runtimeDefaults.preinstalledSkills,
+					...(storedConfig?.runtime?.preinstalledSkills ?? {}),
+				},
+			},
+		}
+	}
+
+	const mergeVcpConfigPatch = (incoming: Partial<VcpConfig>): VcpConfig => {
+		const current = getMergedVcpConfig()
+
+		return {
+			...current,
+			...incoming,
+			contextFold: { ...current.contextFold, ...(incoming.contextFold ?? {}) },
+			vcpInfo: { ...current.vcpInfo, ...(incoming.vcpInfo ?? {}) },
+			html: { ...current.html, ...(incoming.html ?? {}) },
+			toolRequest: { ...current.toolRequest, ...(incoming.toolRequest ?? {}) },
+			agentTeam: { ...current.agentTeam, ...(incoming.agentTeam ?? {}) },
+			memory: {
+				...current.memory,
+				...(incoming.memory ?? {}),
+				passive: { ...current.memory.passive, ...(incoming.memory?.passive ?? {}) },
+				writer: { ...current.memory.writer, ...(incoming.memory?.writer ?? {}) },
+				retrieval: { ...current.memory.retrieval, ...(incoming.memory?.retrieval ?? {}) },
+				refresh: { ...current.memory.refresh, ...(incoming.memory?.refresh ?? {}) },
+			},
+			toolbox: { ...current.toolbox, ...(incoming.toolbox ?? {}) },
+			snowCompat: {
+				...current.snowCompat,
+				...(incoming.snowCompat ?? {}),
+				responsesReasoning: {
+					...current.snowCompat.responsesReasoning,
+					...(incoming.snowCompat?.responsesReasoning ?? {}),
+				},
+				proxy: {
+					...current.snowCompat.proxy,
+					...(incoming.snowCompat?.proxy ?? {}),
+				},
+			},
+			runtime: incoming.runtime
+				? {
+						...current.runtime!,
+						...incoming.runtime,
+						models: {
+							...current.runtime!.models,
+							...(incoming.runtime.models ?? {}),
+							default: {
+								...current.runtime!.models.default,
+								...(incoming.runtime.models?.default ?? {}),
+							},
+							quick: { ...current.runtime!.models.quick, ...(incoming.runtime.models?.quick ?? {}) },
+							routes: { ...current.runtime!.models.routes, ...(incoming.runtime.models?.routes ?? {}) },
+							catalogCache: {
+								...current.runtime!.models.catalogCache,
+								...(incoming.runtime.models?.catalogCache ?? {}),
+								providers: {
+									...current.runtime!.models.catalogCache.providers,
+									...(incoming.runtime.models?.catalogCache?.providers ?? {}),
+								},
+							},
+						},
+						media: { ...current.runtime!.media, ...(incoming.runtime.media ?? {}) },
+						distributedSkills: {
+							...current.runtime!.distributedSkills,
+							...(incoming.runtime.distributedSkills ?? {}),
+							registrations: {
+								...current.runtime!.distributedSkills.registrations,
+								...(incoming.runtime.distributedSkills?.registrations ?? {}),
+							},
+						},
+						preinstalledSkills: {
+							...current.runtime!.preinstalledSkills,
+							...(incoming.runtime.preinstalledSkills ?? {}),
+						},
+					}
+				: current.runtime,
+		}
+	}
+
+	const persistVcpConfig = async (next: VcpConfig) => {
+		await updateGlobalState("vcpConfig", next)
+		provider.updateVcpBridgeConfig(next.toolbox)
+		await provider.postMessageToWebview({
+			type: "vcpConfigUpdated",
+			vcpConfig: next,
+		})
+		await provider.postStateToWebview()
+	}
+
+	const getSelectedModelIdFromSettings = (apiConfiguration: ProviderSettings): string => {
+		if (apiConfiguration.apiProvider === "vscode-lm") {
+			const selector = apiConfiguration.vsCodeLmModelSelector
+			return selector ? `${selector.vendor}/${selector.family}` : ""
+		}
+
+		return getModelId(apiConfiguration) ?? ""
+	}
+
+	const getProviderBaseUrl = (apiConfiguration: ProviderSettings): string | undefined => {
+		switch (apiConfiguration.apiProvider) {
+			case "openai":
+				return apiConfiguration.openAiBaseUrl
+			case "openrouter":
+				return apiConfiguration.openRouterBaseUrl
+			case "requesty":
+				return apiConfiguration.requestyBaseUrl
+			case "litellm":
+				return apiConfiguration.litellmBaseUrl
+			case "ollama":
+				return apiConfiguration.ollamaBaseUrl
+			case "lmstudio":
+				return apiConfiguration.lmStudioBaseUrl
+			case "deepinfra":
+				return apiConfiguration.deepInfraBaseUrl
+			case "aihubmix":
+				return apiConfiguration.aihubmixBaseUrl
+			case "ovhcloud":
+				return apiConfiguration.ovhCloudAiEndpointsBaseUrl
+			case "inception":
+				return apiConfiguration.inceptionLabsBaseUrl
+			case "zenmux":
+				return apiConfiguration.zenmuxBaseUrl
+			case "gemini":
+				return apiConfiguration.googleGeminiBaseUrl
+			case "roo":
+				return process.env.ROO_CODE_PROVIDER_URL ?? "https://api.roocode.com/proxy"
+			default:
+				return undefined
+		}
+	}
+
+	const getRuntimeCatalogCacheKey = (
+		providerId: string,
+		profileId?: string,
+		profileName?: string,
+		baseUrl?: string,
+	) => [providerId, profileId ?? profileName ?? "active", baseUrl ?? ""].join("::")
+
+	const resolveRuntimeProfile = async (): Promise<ResolvedRuntimeProfile> => {
+		const runtimeProfileId = typeof messageRecord.profileId === "string" ? messageRecord.profileId : undefined
+		const runtimeProfileName = typeof messageRecord.text === "string" ? messageRecord.text : undefined
+
+		if (runtimeProfileId) {
+			const { name, ...profileConfig } = await provider.providerSettingsManager.getProfile({
+				id: runtimeProfileId,
+			})
+			const providerId = profileConfig.apiProvider ?? "anthropic"
+			const baseUrl = getProviderBaseUrl(profileConfig)
+
+			return {
+				profileId: runtimeProfileId,
+				profileName: name,
+				apiConfiguration: profileConfig,
+				providerId,
+				baseUrl,
+				cacheKey: getRuntimeCatalogCacheKey(providerId, runtimeProfileId, name, baseUrl),
+				currentModelId: getSelectedModelIdFromSettings(profileConfig),
+			}
+		}
+
+		if (runtimeProfileName) {
+			const { name, ...profileConfig } = await provider.providerSettingsManager.getProfile({
+				name: runtimeProfileName,
+			})
+			const providerId = profileConfig.apiProvider ?? "anthropic"
+			const baseUrl = getProviderBaseUrl(profileConfig)
+
+			return {
+				profileId: profileConfig.id,
+				profileName: name,
+				apiConfiguration: profileConfig,
+				providerId,
+				baseUrl,
+				cacheKey: getRuntimeCatalogCacheKey(providerId, profileConfig.id, name, baseUrl),
+				currentModelId: getSelectedModelIdFromSettings(profileConfig),
+			}
+		}
+
+		const state = await provider.getState()
+		const profileName = getGlobalState("currentApiConfigName") || "default"
+		const providerId = state.apiConfiguration.apiProvider ?? "anthropic"
+		const baseUrl = getProviderBaseUrl(state.apiConfiguration)
+
+		return {
+			profileName,
+			apiConfiguration: state.apiConfiguration,
+			providerId,
+			baseUrl,
+			cacheKey: getRuntimeCatalogCacheKey(providerId, undefined, profileName, baseUrl),
+			currentModelId: getSelectedModelIdFromSettings(state.apiConfiguration),
+		}
+	}
+
+	const toRuntimeCatalogEntriesFromIds = (providerId: string, ids: string[]): VcpRuntimeModelCatalogEntry[] =>
+		Array.from(new Set(ids.filter((id): id is string => typeof id === "string" && id.length > 0)))
+			.sort((a, b) => a.localeCompare(b))
+			.map((id) => ({
+				id,
+				displayName: id,
+				owned_by: providerId,
+			}))
+
+	const toRuntimeCatalogEntriesFromRecord = (
+		providerId: string,
+		models: ModelRecord,
+	): VcpRuntimeModelCatalogEntry[] =>
+		Object.entries(models)
+			.sort(([leftId, leftInfo], [rightId, rightInfo]) =>
+				(leftInfo.displayName || leftId).localeCompare(rightInfo.displayName || rightId),
+			)
+			.map(([id, info]) => ({
+				id,
+				displayName: info.displayName || id,
+				owned_by: providerId,
+			}))
+
+	const buildRuntimeProviderOptions = (apiConfiguration: ProviderSettings): GetModelsOptions | undefined => {
+		switch (apiConfiguration.apiProvider) {
+			case "openrouter":
+				return {
+					provider: "openrouter",
+					apiKey: apiConfiguration.openRouterApiKey,
+					baseUrl: apiConfiguration.openRouterBaseUrl,
+				}
+			case "gemini":
+				return {
+					provider: "gemini",
+					apiKey: apiConfiguration.geminiApiKey,
+					baseUrl: apiConfiguration.googleGeminiBaseUrl,
+				}
+			case "requesty":
+				return {
+					provider: "requesty",
+					apiKey: apiConfiguration.requestyApiKey,
+					baseUrl: apiConfiguration.requestyBaseUrl,
+				}
+			case "glama":
+				return { provider: "glama" }
+			case "unbound":
+				return { provider: "unbound", apiKey: apiConfiguration.unboundApiKey }
+			case "novacode":
+				return {
+					provider: "novacode",
+					novacodeToken: apiConfiguration.novacodeToken,
+					novacodeOrganizationId: apiConfiguration.novacodeOrganizationId,
+				}
+			case "ollama":
+				return {
+					provider: "ollama",
+					baseUrl: apiConfiguration.ollamaBaseUrl,
+					apiKey: apiConfiguration.ollamaApiKey,
+					numCtx: apiConfiguration.ollamaNumCtx,
+				}
+			case "vercel-ai-gateway":
+				return { provider: "vercel-ai-gateway" }
+			case "deepinfra":
+				return {
+					provider: "deepinfra",
+					apiKey: apiConfiguration.deepInfraApiKey,
+					baseUrl: apiConfiguration.deepInfraBaseUrl,
+				}
+			case "nano-gpt":
+				return {
+					provider: "nano-gpt",
+					apiKey: apiConfiguration.nanoGptApiKey,
+					nanoGptModelList: apiConfiguration.nanoGptModelList,
+				}
+			case "aihubmix":
+				return {
+					provider: "aihubmix",
+					apiKey: apiConfiguration.aihubmixApiKey,
+					baseUrl: apiConfiguration.aihubmixBaseUrl,
+				}
+			case "ovhcloud":
+				return {
+					provider: "ovhcloud",
+					apiKey: apiConfiguration.ovhCloudAiEndpointsApiKey,
+					baseUrl: apiConfiguration.ovhCloudAiEndpointsBaseUrl,
+				}
+			case "inception":
+				return {
+					provider: "inception",
+					apiKey: apiConfiguration.inceptionLabsApiKey,
+					baseUrl: apiConfiguration.inceptionLabsBaseUrl,
+				}
+			case "synthetic":
+				return { provider: "synthetic", apiKey: apiConfiguration.syntheticApiKey }
+			case "roo":
+				return {
+					provider: "roo",
+					baseUrl: process.env.ROO_CODE_PROVIDER_URL ?? "https://api.roocode.com/proxy",
+					apiKey: CloudService.hasInstance()
+						? CloudService.instance.authService?.getSessionToken()
+						: undefined,
+				}
+			case "chutes":
+				return { provider: "chutes", apiKey: apiConfiguration.chutesApiKey }
+			case "poe":
+				return { provider: "poe", apiKey: apiConfiguration.poeApiKey }
+			case "zenmux":
+				return {
+					provider: "zenmux",
+					apiKey: apiConfiguration.zenmuxApiKey,
+					baseUrl: apiConfiguration.zenmuxBaseUrl ?? "https://zenmux.ai/api/v1",
+				}
+			case "io-intelligence":
+				return { provider: "io-intelligence", apiKey: apiConfiguration.ioIntelligenceApiKey }
+			case "litellm":
+				return {
+					provider: "litellm",
+					apiKey: apiConfiguration.litellmApiKey,
+					baseUrl: apiConfiguration.litellmBaseUrl,
+				}
+			case "lmstudio":
+				return { provider: "lmstudio", baseUrl: apiConfiguration.lmStudioBaseUrl }
+			default:
+				return undefined
+		}
+	}
+
+	const fetchRuntimeProviderCatalog = async (forceRefresh: boolean) => {
+		const currentConfig = getMergedVcpConfig()
+		const resolved = await resolveRuntimeProfile()
+		const currentRuntime = currentConfig.runtime!
+		const cached = currentRuntime.models.catalogCache.providers[resolved.cacheKey]
+
+		if (!forceRefresh && cached && Date.now() - cached.fetchedAt <= currentRuntime.models.catalogCache.ttlMs) {
+			return { resolved, entries: cached.models, error: cached.error, nextConfig: currentConfig }
+		}
+
+		let entries: VcpRuntimeModelCatalogEntry[] = []
+		let error: string | undefined
+
+		try {
+			if (resolved.providerId === "openai") {
+				entries = toRuntimeCatalogEntriesFromIds(
+					resolved.providerId,
+					await getOpenAiModels(
+						resolved.apiConfiguration.openAiBaseUrl,
+						resolved.apiConfiguration.openAiApiKey,
+						resolved.apiConfiguration.openAiHeaders,
+					),
+				)
+			} else if (resolved.providerId === "vscode-lm") {
+				entries = (await getVsCodeLmModels()).map((model: any) => ({
+					id: `${model.vendor}/${model.family}`,
+					displayName: model.name || `${model.vendor}/${model.family}`,
+					owned_by: model.vendor || resolved.providerId,
+				}))
+			} else {
+				const options = buildRuntimeProviderOptions(resolved.apiConfiguration)
+				if (options) {
+					if (forceRefresh) {
+						await flushModels(options, true)
+					}
+					entries = toRuntimeCatalogEntriesFromRecord(resolved.providerId, await getModels(options))
+				}
+			}
+		} catch (runtimeError) {
+			error = runtimeError instanceof Error ? runtimeError.message : String(runtimeError)
+			provider.log(`[fetchRuntimeProviderCatalog] ${error}`)
+		}
+
+		if (entries.length === 0 && resolved.currentModelId) {
+			entries = [
+				{
+					id: resolved.currentModelId,
+					displayName: resolved.currentModelId,
+					owned_by: resolved.providerId,
+				},
+			]
+		}
+
+		const nextConfig = mergeVcpConfigPatch({
+			runtime: {
+				models: {
+					catalogCache: {
+						providers: {
+							[resolved.cacheKey]: {
+								models: entries,
+								fetchedAt: Date.now(),
+								...(error ? { error } : {}),
+							},
+						},
+					},
+				},
+			},
+		} as any)
+
+		return { resolved, entries, error, nextConfig }
 	}
 
 	/**
@@ -4280,77 +4750,242 @@ export const webviewMessageHandler = async (
 			break
 		}
 		case "updateVcpConfig": {
-			const defaults = getDefaultVcpConfig()
-			const storedConfig = getGlobalState("vcpConfig")
-			const current: VcpConfig = {
-				...defaults,
-				...(storedConfig ?? {}),
-				contextFold: { ...defaults.contextFold, ...(storedConfig?.contextFold ?? {}) },
-				vcpInfo: { ...defaults.vcpInfo, ...(storedConfig?.vcpInfo ?? {}) },
-				html: { ...defaults.html, ...(storedConfig?.html ?? {}) },
-				toolRequest: { ...defaults.toolRequest, ...(storedConfig?.toolRequest ?? {}) },
-				agentTeam: { ...defaults.agentTeam, ...(storedConfig?.agentTeam ?? {}) },
-				memory: {
-					...defaults.memory,
-					...(storedConfig?.memory ?? {}),
-					passive: { ...defaults.memory.passive, ...(storedConfig?.memory?.passive ?? {}) },
-					writer: { ...defaults.memory.writer, ...(storedConfig?.memory?.writer ?? {}) },
-					retrieval: { ...defaults.memory.retrieval, ...(storedConfig?.memory?.retrieval ?? {}) },
-					refresh: { ...defaults.memory.refresh, ...(storedConfig?.memory?.refresh ?? {}) },
-				},
-				toolbox: { ...defaults.toolbox, ...(storedConfig?.toolbox ?? {}) },
-				snowCompat: {
-					...defaults.snowCompat,
-					...(storedConfig?.snowCompat ?? {}),
-					responsesReasoning: {
-						...defaults.snowCompat.responsesReasoning,
-						...(storedConfig?.snowCompat?.responsesReasoning ?? {}),
-					},
-					proxy: {
-						...defaults.snowCompat.proxy,
-						...(storedConfig?.snowCompat?.proxy ?? {}),
-					},
-				},
-			}
-			const incoming = (message.config ?? {}) as Partial<VcpConfig>
-			const merged: VcpConfig = {
-				...current,
-				...incoming,
-				contextFold: { ...current.contextFold, ...(incoming.contextFold ?? {}) },
-				vcpInfo: { ...current.vcpInfo, ...(incoming.vcpInfo ?? {}) },
-				html: { ...current.html, ...(incoming.html ?? {}) },
-				toolRequest: { ...current.toolRequest, ...(incoming.toolRequest ?? {}) },
-				agentTeam: { ...current.agentTeam, ...(incoming.agentTeam ?? {}) },
-				memory: {
-					...current.memory,
-					...(incoming.memory ?? {}),
-					passive: { ...current.memory.passive, ...(incoming.memory?.passive ?? {}) },
-					writer: { ...current.memory.writer, ...(incoming.memory?.writer ?? {}) },
-					retrieval: { ...current.memory.retrieval, ...(incoming.memory?.retrieval ?? {}) },
-					refresh: { ...current.memory.refresh, ...(incoming.memory?.refresh ?? {}) },
-				},
-				toolbox: { ...current.toolbox, ...(incoming.toolbox ?? {}) },
-				snowCompat: {
-					...current.snowCompat,
-					...(incoming.snowCompat ?? {}),
-					responsesReasoning: {
-						...current.snowCompat.responsesReasoning,
-						...(incoming.snowCompat?.responsesReasoning ?? {}),
-					},
-					proxy: {
-						...current.snowCompat.proxy,
-						...(incoming.snowCompat?.proxy ?? {}),
-					},
-				},
+			const merged = mergeVcpConfigPatch((message.config ?? {}) as Partial<VcpConfig>)
+			await persistVcpConfig(merged)
+			break
+		}
+		// novacode_change: v1.0.8 runtime message handlers
+		case "fetchRuntimeProviderModels":
+		case "refreshRuntimeProviderModels": {
+			const { entries, error, nextConfig } = await fetchRuntimeProviderCatalog(
+				message.type === "refreshRuntimeProviderModels",
+			)
+			await persistVcpConfig(nextConfig)
+			await provider.postMessageToWebview({
+				type: "runtimeProviderModels",
+				runtimeProviderModels: entries,
+				text: error,
+				vcpRuntimeConfig: nextConfig.runtime,
+			})
+			break
+		}
+		case "updateVcpRuntimeModelBindings": {
+			const defaultModelId = typeof message.defaultModelId === "string" ? message.defaultModelId.trim() : ""
+			const quickModelId = typeof message.quickModelId === "string" ? message.quickModelId.trim() : ""
+			if (!defaultModelId && !quickModelId) {
+				break
 			}
 
-			await updateGlobalState("vcpConfig", merged)
-			provider.updateVcpBridgeConfig(merged.toolbox)
-			await provider.postMessageToWebview({
-				type: "vcpConfigUpdated",
-				vcpConfig: merged,
-			})
-			await provider.postStateToWebview()
+			const currentConfig = getMergedVcpConfig()
+			const resolved = await resolveRuntimeProfile()
+			const catalogEntries = Object.values(currentConfig.runtime!.models.catalogCache.providers).flatMap(
+				(state) => state.models,
+			)
+			const findCatalogEntry = (modelId: string) => catalogEntries.find((entry) => entry.id === modelId)
+			const nextConfig = mergeVcpConfigPatch({
+				runtime: {
+					models: {
+						...(defaultModelId
+							? {
+									default: {
+										modelId: defaultModelId,
+										displayName: findCatalogEntry(defaultModelId)?.displayName ?? defaultModelId,
+										providerId: resolved.providerId,
+									},
+								}
+							: {}),
+						...(quickModelId
+							? {
+									quick: {
+										modelId: quickModelId,
+										displayName: findCatalogEntry(quickModelId)?.displayName ?? quickModelId,
+										providerId: resolved.providerId,
+									},
+								}
+							: {}),
+					},
+				},
+			} as any)
+			await persistVcpConfig(nextConfig)
+			break
+		}
+		case "sendMediaAsset": {
+			const mediaAsset = message.mediaAsset as VcpMediaAssetPayload | undefined
+			if (!mediaAsset) {
+				break
+			}
+
+			const mediaConfig = getMergedVcpConfig().runtime!.media
+			if (!mediaConfig.enabled) {
+				vscode.window.showWarningMessage("VCP 多媒体发送通道未启用。")
+				break
+			}
+
+			const source = mediaAsset.source?.trim()
+			if (!source) {
+				vscode.window.showWarningMessage("媒体资源缺少 source。")
+				break
+			}
+
+			try {
+				if (mediaAsset.sourceType === "remote") {
+					const url = new URL(source)
+					const scheme = url.protocol.replace(/:$/, "")
+					if (!mediaConfig.allowedSchemes.includes(scheme)) {
+						vscode.window.showWarningMessage(`媒体协议 ${scheme} 未在允许列表中。`)
+						break
+					}
+				} else {
+					const stat = await fs.stat(source)
+					const bytes = mediaAsset.bytes ?? stat.size
+					if (bytes > mediaConfig.maxAssetBytes) {
+						vscode.window.showWarningMessage("本地媒体资源超过大小限制。")
+						break
+					}
+				}
+
+				const title = mediaAsset.title?.replace(/"/g, '\\"')
+				const alt = mediaAsset.alt?.trim() || path.basename(source)
+				const markdown = title ? `![${alt}](${source} "${title}")` : `![${alt}](${source})`
+				await provider.postMessageToWebview({
+					type: "insertTextToChatArea",
+					text: markdown,
+				})
+			} catch (mediaError) {
+				vscode.window.showWarningMessage(
+					`媒体资源校验失败: ${mediaError instanceof Error ? mediaError.message : String(mediaError)}`,
+				)
+			}
+			break
+		}
+		case "registerSkillToToolbox":
+		case "unregisterSkillFromToolbox": {
+			const skillName = typeof message.skillName === "string" ? message.skillName.trim() : ""
+			if (!skillName) {
+				break
+			}
+
+			const currentConfig = getMergedVcpConfig()
+			const discovered = provider.getSkillsManager()?.getCanonicalRegistrations() ?? {}
+			const existing = currentConfig.runtime!.distributedSkills.registrations[skillName] ?? discovered[skillName]
+			const nextRegistration: VcpDistributedSkillRegistration =
+				message.type === "registerSkillToToolbox"
+					? existing
+						? {
+								...existing,
+								status: "registered",
+								registeredAt: Date.now(),
+								error: undefined,
+							}
+						: {
+								canonicalName: skillName,
+								displayName: skillName,
+								status: "error",
+								error: "Skill not found",
+								registeredAt: Date.now(),
+							}
+					: existing
+						? {
+								...existing,
+								status: "unregistered",
+								error: undefined,
+							}
+						: {
+								canonicalName: skillName,
+								displayName: skillName,
+								status: "unregistered",
+							}
+
+			const nextConfig = mergeVcpConfigPatch({
+				runtime: {
+					distributedSkills: {
+						registrations: {
+							[skillName]: nextRegistration,
+						},
+					},
+				},
+			} as any)
+			await persistVcpConfig(nextConfig)
+			break
+		}
+		case "bootstrapPreinstalledSkills": {
+			const currentConfig = getMergedVcpConfig()
+			let manifest = currentConfig.runtime!.preinstalledSkills
+			const manifestPath = path.join(
+				provider.context.extensionUri.fsPath,
+				"resources",
+				"preinstalled-skills",
+				"manifest.json",
+			)
+
+			try {
+				const parsed = JSON.parse(await fs.readFile(manifestPath, "utf8")) as typeof manifest
+				manifest = {
+					...manifest,
+					...parsed,
+				}
+			} catch (manifestError) {
+				provider.log(
+					`[bootstrapPreinstalledSkills] Failed to read manifest: ${
+						manifestError instanceof Error ? manifestError.message : String(manifestError)
+					}`,
+				)
+			}
+
+			const discovered = provider.getSkillsManager()?.getCanonicalRegistrations() ?? {}
+			const registrations: Record<string, VcpDistributedSkillRegistration> = {
+				...currentConfig.runtime!.distributedSkills.registrations,
+			}
+
+			for (const skillName of manifest.globalSkills) {
+				const discoveredSkill = discovered[skillName]
+				registrations[skillName] = discoveredSkill
+					? {
+							...discoveredSkill,
+							status: discoveredSkill.sourceScope === "global" ? "registered" : "drifted",
+							registeredAt: discoveredSkill.registeredAt ?? Date.now(),
+							error:
+								discoveredSkill.sourceScope === "global"
+									? undefined
+									: "Expected global scope but discovered from a different source",
+						}
+					: {
+							canonicalName: skillName,
+							displayName: skillName,
+							sourceScope: "global",
+							status: "unregistered",
+						}
+			}
+
+			for (const skillName of manifest.workspaceSkills) {
+				const discoveredSkill = discovered[skillName]
+				registrations[skillName] = discoveredSkill
+					? {
+							...discoveredSkill,
+							status: discoveredSkill.sourceScope === "project" ? "registered" : "drifted",
+							registeredAt: discoveredSkill.registeredAt ?? Date.now(),
+							error:
+								discoveredSkill.sourceScope === "project"
+									? undefined
+									: "Expected workspace scope but discovered from a different source",
+						}
+					: {
+							canonicalName: skillName,
+							displayName: skillName,
+							sourceScope: "project",
+							status: "unregistered",
+						}
+			}
+
+			const nextConfig = mergeVcpConfigPatch({
+				runtime: {
+					preinstalledSkills: manifest,
+					distributedSkills: {
+						registrations,
+					},
+				},
+			} as any)
+			await persistVcpConfig(nextConfig)
 			break
 		}
 		// novacode_change end

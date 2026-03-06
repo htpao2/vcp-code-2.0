@@ -9,7 +9,7 @@ import { directoryExists, fileExists } from "../roo-config"
 import { SkillMetadata, SkillContent } from "../../shared/skills"
 import { modes, getAllModes } from "../../shared/modes"
 import { ConfigChangeNotifier } from "../config/ConfigChangeNotifier" // novacode_change
-import type { SkillSettings } from "@roo-code/types"
+import type { SkillSettings, VcpDistributedSkillRegistration } from "@roo-code/types"
 
 // Re-export for convenience
 export type { SkillMetadata, SkillContent }
@@ -127,12 +127,14 @@ export class SkillsManager {
 				return
 			}
 
-			// Validate that frontmatter name matches the skill name (directory name or symlink name)
-			// Per the Agent Skills spec: "name field must match the parent directory name"
-			const effectiveSkillName = skillName || path.basename(skillDir)
-			if (frontmatter.name !== effectiveSkillName) {
-				console.error(`Skill name "${frontmatter.name}" doesn't match directory "${effectiveSkillName}"`)
-				return
+			// Treat frontmatter name as the canonical skill id so symlinked/legacy directory names
+			// can still be registered into VCP runtime and preinstalled manifests.
+			const discoveredSkillName = skillName || path.basename(skillDir)
+			const effectiveSkillName = frontmatter.name.trim()
+			if (effectiveSkillName !== discoveredSkillName) {
+				console.warn(
+					`Skill canonical name "${effectiveSkillName}" doesn't match directory "${discoveredSkillName}", using canonical name.`,
+				)
 			}
 
 			// Strict spec validation (https://agentskills.io/specification)
@@ -166,7 +168,7 @@ export class SkillsManager {
 				return
 			}
 
-			// Create unique key combining name, source, and mode for override resolution
+			// Create unique key combining canonical name, source, and mode for override resolution.
 			const skillKey = this.getSkillKey(effectiveSkillName, source, mode)
 
 			this.skills.set(skillKey, {
@@ -388,6 +390,33 @@ export class SkillsManager {
 
 		this.disposables.push(watcher)
 	}
+
+	// novacode_change start: v1.0.8 canonical metadata for distributed skill registration
+	/**
+	 * Get canonical metadata for all discovered skills, suitable for distributed registration.
+	 * Uses frontmatter `name` as the canonical skill id (not the directory name).
+	 */
+	getCanonicalRegistrations(): Record<string, VcpDistributedSkillRegistration> {
+		const registrations: Record<string, VcpDistributedSkillRegistration> = {}
+
+		for (const skill of this.skills.values()) {
+			// Use the canonical skill name; skip if already registered (first-wins).
+			if (registrations[skill.name]) continue
+
+			registrations[skill.name] = {
+				canonicalName: skill.name,
+				displayName: skill.name,
+				version: "0.0.0", // TODO: read from frontmatter when available
+				description: skill.description,
+				sourceScope: skill.source,
+				status: "registered",
+				registeredAt: Date.now(),
+			}
+		}
+
+		return registrations
+	}
+	// novacode_change end
 
 	async dispose(): Promise<void> {
 		this.isDisposed = true

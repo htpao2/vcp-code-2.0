@@ -4,6 +4,7 @@
 
 ### Patch Changes
 
+- Add the VCP runtime model switcher flow for the active profile/provider, including live catalog fetch, default/quick model bindings, media dispatch, distributed skill bootstrap, and Windows-stable test execution.
 - Fix benchmark extension activation to prefer `novacode.nova-code` with fallback support for `novacode.Nova-Code`.
 - Fix eval setup extension detection/installation to support `novacode.nova-code` (and keep legacy fallback).
 - Ignore local `.codex-logs/` artifacts to prevent accidental commits.
