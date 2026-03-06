@@ -41,8 +41,11 @@ function syncVersion() {
 	}
 }
 
-// Run the sync if this script is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Run the sync if this script is executed directly.
+const isDirectExecution =
+	process.argv[1] && fileURLToPath(import.meta.url).toLowerCase() === process.argv[1].toLowerCase()
+
+if (isDirectExecution) {
 	syncVersion()
 }
 

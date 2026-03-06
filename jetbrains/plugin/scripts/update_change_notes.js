@@ -33,13 +33,20 @@ function updateChangeNotes() {
 		const escapedVersion = version.replaceAll(".", "\\.")
 		const versionPattern = new RegExp(`## \\[?v?${escapedVersion}\\]?([\\s\\S]*?)(?=## \\[?v?\\d|$)`)
 		const changelogVersionMatch = changelogContent.match(versionPattern)
+		let changelogSection = changelogVersionMatch?.[1]?.trim()
 
-		if (!changelogVersionMatch) {
-			throw new Error(`Version ${version} not found in CHANGELOG.md`)
+		if (changelogSection) {
+			console.log(`Found changelog section for version ${version}`)
+		} else {
+			const unreleasedMatch = changelogContent.match(/## Unreleased([\s\S]*?)(?=## \[?v?\d|$)/)
+			changelogSection = unreleasedMatch?.[1]?.trim()
+
+			if (!changelogSection) {
+				throw new Error(`Version ${version} not found in CHANGELOG.md and no Unreleased section is available`)
+			}
+
+			console.log(`Version ${version} not found in CHANGELOG.md, falling back to Unreleased notes`)
 		}
-
-		const changelogSection = changelogVersionMatch[1].trim()
-		console.log(`Found changelog section for version ${version}`)
 
 		// Convert markdown to HTML format suitable for plugin.xml
 		const changeNotesHtml = convertMarkdownToHtml(changelogSection, version)
@@ -146,8 +153,11 @@ function escapeHtml(text) {
 		.replace(/'/g, "&#39;")
 }
 
-// Run the update if this script is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Run the update if this script is executed directly.
+const isDirectExecution =
+	process.argv[1] && fileURLToPath(import.meta.url).toLowerCase() === process.argv[1].toLowerCase()
+
+if (isDirectExecution) {
 	updateChangeNotes()
 }
 

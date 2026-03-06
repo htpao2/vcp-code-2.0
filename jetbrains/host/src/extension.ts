@@ -48,7 +48,7 @@ if (pipeName) {
 
 	// Save original process methods
 	const originalProcessOn = process.on
-	const originalProcessSend = process.send || (() => false)
+	const originalProcessSend = process.send?.bind(process) || (() => false)
 
 	// Store message event handlers
 	const messageHandlers: ((message: any, socket?: net.Socket) => void)[] = []
@@ -78,8 +78,13 @@ if (pipeName) {
 		return originalProcessOn.call(process, event, listener)
 	}
 
-	// Override process.send
-	process.send = function (message: any): boolean {
+	// Override process.send and preserve the full Node IPC signature.
+	process.send = function (
+		message: any,
+		sendHandle?: any,
+		options?: any,
+		callback?: (error: Error | null) => void,
+	): boolean {
 		if (message?.type === "VSCODE_EXTHOST_IPC_READY") {
 			console.log("Extension host process is ready to receive socket")
 			if (LISTEN_MODE) {
@@ -90,7 +95,7 @@ if (pipeName) {
 		}
 
 		// Call original process.send
-		return originalProcessSend.call(process, message)
+		return originalProcessSend(message, sendHandle, options, callback)
 	}
 
 	// Start server mode (for debugging)

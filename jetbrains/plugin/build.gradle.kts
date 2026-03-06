@@ -223,11 +223,15 @@ tasks {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
         if (ext.get("debugMode") == "idea") {
-            from("${project.projectDir.absolutePath}/src/main/resources/themes/") {
-                into("${ext.get("debugResource")}/${ext.get("vscodePlugin")}/integrations/theme/default-themes/")
-            }
             doLast {
                 val vscodePluginDir = File("${ext.get("debugResource")}/${ext.get("vscodePlugin")}")
+                val themeTargetDir = File(vscodePluginDir, "integrations/theme/default-themes")
+
+                copy {
+                    from("${project.projectDir.absolutePath}/src/main/resources/themes/")
+                    into(themeTargetDir)
+                }
+
                 vscodePluginDir.mkdirs()
                 File(vscodePluginDir, ".env").createNewFile()
             }
