@@ -100,6 +100,16 @@ function copyWasmsWithFallback(srcDir, distDir) {
 	console.log(`[copyWasmsWithFallback] Copied WASM assets to ${distDir}`)
 }
 
+function copyDirectory(sourcePath, targetPath) {
+	if (fs.existsSync(targetPath)) {
+		fs.rmSync(targetPath, { recursive: true, force: true })
+	}
+
+	fs.mkdirSync(path.dirname(targetPath), { recursive: true })
+	fs.cpSync(sourcePath, targetPath, { recursive: true })
+	console.log(`[copyDirectory] Copied ${sourcePath} to ${targetPath}`)
+}
+
 async function main() {
 	const name = "extension"
 	const production = process.argv.includes("--production")
@@ -174,11 +184,14 @@ async function main() {
 							["../CHANGELOG.md", "CHANGELOG.md"],
 							["../LICENSE", "LICENSE"],
 							["../.env", ".env", { optional: true }],
-							["../node_modules/vscode-material-icons/generated", "assets/vscode-material-icons"],
 							["../webview-ui/audio", "webview-ui/audio"],
 						],
 						srcDir,
 						buildDir,
+					)
+					copyDirectory(
+						resolveDependencyPath(srcDir, "vscode-material-icons", "generated"),
+						path.join(buildDir, "assets", "vscode-material-icons"),
 					)
 
 					// Copy walkthrough files to dist directory

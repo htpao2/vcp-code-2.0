@@ -10,6 +10,11 @@ import { SkillMetadata, SkillContent } from "../../shared/skills"
 import { modes, getAllModes } from "../../shared/modes"
 import { ConfigChangeNotifier } from "../config/ConfigChangeNotifier" // novacode_change
 import type { SkillSettings, VcpDistributedSkillRegistration } from "@roo-code/types"
+import {
+	toVcpDistributedSkillRegistration,
+	toVcpDistributedSkillSource,
+	type VcpDistributedSkillSource,
+} from "./vcpDistributedSkill"
 
 // Re-export for convenience
 export type { SkillMetadata, SkillContent }
@@ -396,22 +401,23 @@ export class SkillsManager {
 	 * Get canonical metadata for all discovered skills, suitable for distributed registration.
 	 * Uses frontmatter `name` as the canonical skill id (not the directory name).
 	 */
+	getCanonicalSkillSources(): Record<string, VcpDistributedSkillSource> {
+		const sources: Record<string, VcpDistributedSkillSource> = {}
+
+		for (const skill of this.skills.values()) {
+			if (sources[skill.name]) continue
+			sources[skill.name] = toVcpDistributedSkillSource(skill)
+		}
+
+		return sources
+	}
+
 	getCanonicalRegistrations(): Record<string, VcpDistributedSkillRegistration> {
 		const registrations: Record<string, VcpDistributedSkillRegistration> = {}
 
-		for (const skill of this.skills.values()) {
-			// Use the canonical skill name; skip if already registered (first-wins).
-			if (registrations[skill.name]) continue
-
-			registrations[skill.name] = {
-				canonicalName: skill.name,
-				displayName: skill.name,
-				version: "0.0.0", // TODO: read from frontmatter when available
-				description: skill.description,
-				sourceScope: skill.source,
-				status: "registered",
-				registeredAt: Date.now(),
-			}
+		for (const skill of Object.values(this.getCanonicalSkillSources())) {
+			if (registrations[skill.canonicalName]) continue
+			registrations[skill.canonicalName] = toVcpDistributedSkillRegistration(skill)
 		}
 
 		return registrations

@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+## [1.1.0]
+
+### Minor Changes
+
+- Register NovaCode-installed skills to VCPToolBox as distributed plugins by opening the dedicated `/vcp-distributed-server/VCP_Key=...` socket, publishing `register_tools`, `report_ip`, and `update_static_placeholders`, and serving `execute_tool` calls back to the extension skill catalog.
+- Fix VSIX bundling on pnpm and GitHub Actions layouts by resolving `vscode-material-icons/generated` through the dependency resolver instead of assuming a flat `node_modules` path.
+
+### Patch Changes
+
+- Align GitHub Actions compile and webview checks to Node 22 so optional native packages such as `@tailwindcss/oxide` no longer fail under the old Node 18 jobs.
+- Remove `lfs: true` from JetBrains CI/release checkout steps so repositories without accessible LFS objects no longer fail before the build starts.
+- Align packaged version metadata to 1.1.0 across VSIX, JetBrains, and preinstalled-skill manifests.
+
+## [1.0.9]
+
 ### Patch Changes
 
 - Add the VCP runtime model switcher flow for the active profile/provider, including live catalog fetch, default/quick model bindings, media dispatch, distributed skill bootstrap, and Windows-stable test execution.

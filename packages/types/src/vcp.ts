@@ -62,6 +62,7 @@ export const vcpDistributedSkillStatusSchema = z.enum(["registered", "error", "u
 
 export const vcpDistributedSkillRegistrationSchema = z.object({
 	canonicalName: z.string(),
+	remoteName: z.string().optional(),
 	displayName: z.string().optional(),
 	version: z.string().optional(),
 	description: z.string().optional(),
@@ -320,6 +321,7 @@ export interface VcpBridgeRuntimeStats {
 
 export interface VcpBridgeStatus {
 	connected: boolean
+	distributedConnected?: boolean
 	version?: string
 	stats?: VcpBridgeRuntimeStats
 	activePlugins: VcpBridgeActivePlugin[]
@@ -328,6 +330,7 @@ export interface VcpBridgeStatus {
 	lastConnected?: number
 	lastError?: string
 	endpoint?: string
+	distributedEndpoint?: string
 	lastLatencyMs?: number
 }
 

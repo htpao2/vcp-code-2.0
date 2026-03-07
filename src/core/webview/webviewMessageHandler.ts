@@ -339,14 +339,21 @@ export const webviewMessageHandler = async (
 	}
 
 	const persistVcpConfig = async (next: VcpConfig) => {
+		const previous = getMergedVcpConfig()
 		await updateGlobalState("vcpConfig", next)
-		provider.updateVcpBridgeConfig(next.toolbox)
+		if (JSON.stringify(previous.toolbox) !== JSON.stringify(next.toolbox)) {
+			provider.updateVcpBridgeConfig(next.toolbox)
+		}
 		await provider.postMessageToWebview({
 			type: "vcpConfigUpdated",
 			vcpConfig: next,
 		})
 		await provider.postStateToWebview()
 	}
+
+	const syncVcpDistributedSkillRegistrations = async (
+		registrations: Record<string, VcpDistributedSkillRegistration>,
+	) => await provider.syncVcpDistributedSkills(registrations, getMergedVcpConfig().toolbox)
 
 	const getSelectedModelIdFromSettings = (apiConfiguration: ProviderSettings): string => {
 		if (apiConfiguration.apiProvider === "vscode-lm") {
@@ -4721,7 +4728,15 @@ export const webviewMessageHandler = async (
 		}
 		case "requestVcpBridgeConnect": {
 			try {
-				await provider.connectVcpBridge()
+				const registrations = await provider.connectVcpBridge()
+				const nextConfig = mergeVcpConfigPatch({
+					runtime: {
+						distributedSkills: {
+							registrations,
+						},
+					},
+				} as any)
+				await persistVcpConfig(nextConfig)
 			} catch (error) {
 				provider.log(`Failed to connect VCP bridge: ${error instanceof Error ? error.message : String(error)}`)
 			}
@@ -4896,12 +4911,14 @@ export const webviewMessageHandler = async (
 								status: "unregistered",
 							}
 
+			const syncedRegistrations = await syncVcpDistributedSkillRegistrations({
+				...currentConfig.runtime!.distributedSkills.registrations,
+				[skillName]: nextRegistration,
+			})
 			const nextConfig = mergeVcpConfigPatch({
 				runtime: {
 					distributedSkills: {
-						registrations: {
-							[skillName]: nextRegistration,
-						},
+						registrations: syncedRegistrations,
 					},
 				},
 			} as any)
@@ -4977,11 +4994,12 @@ export const webviewMessageHandler = async (
 						}
 			}
 
+			const syncedRegistrations = await syncVcpDistributedSkillRegistrations(registrations)
 			const nextConfig = mergeVcpConfigPatch({
 				runtime: {
 					preinstalledSkills: manifest,
 					distributedSkills: {
-						registrations,
+						registrations: syncedRegistrations,
 					},
 				},
 			} as any)

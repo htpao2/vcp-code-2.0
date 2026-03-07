@@ -54,6 +54,7 @@ import {
 	type VcpBridgeLogEntry, // vcp_change
 	type VcpBridgeStatus, // vcp_change
 	type VcpBridgeTestResult, // vcp_change
+	type VcpDistributedSkillRegistration, // vcp_change
 	type VcpToolboxConfig, // vcp_change
 } from "@roo-code/types"
 import { aggregateTaskCostsRecursive, type AggregatedCosts } from "./aggregateTaskCosts"
@@ -86,6 +87,7 @@ import { MdmService } from "../../services/mdm/MdmService"
 import { VcpBridgeService } from "../../services/novacode/vcp-bridge" // vcp_change
 import { SessionManager } from "../../shared/nova/cli-sessions/core/SessionManager"
 import { SkillsManager } from "../../services/skills/SkillsManager"
+import type { VcpDistributedSkillSource } from "../../services/skills/vcpDistributedSkill"
 
 import { fileExistsAtPath } from "../../utils/fs"
 import { setTtsEnabled, setTtsSpeed } from "../../utils/tts"
@@ -2096,6 +2098,7 @@ export class ClineProvider
 					status,
 					vcpBridgeStatus: status,
 				})
+				void this.refreshVcpDistributedSkillRegistrationsFromStatus()
 			})
 			this.vcpBridge.onLogReceived((entries: VcpBridgeLogEntry[]) => {
 				void this.postVcpBridgeLogs(entries)
@@ -2105,10 +2108,137 @@ export class ClineProvider
 		return this.vcpBridge
 	}
 
-	public async connectVcpBridge(): Promise<void> {
+	private getCanonicalVcpDistributedSkillSources(): Record<string, VcpDistributedSkillSource> {
+		return this.skillsManager?.getCanonicalSkillSources() ?? {}
+	}
+
+	private async refreshVcpDistributedSkillRegistrationsFromStatus(): Promise<void> {
+		const currentConfig = this.getValue("vcpConfig") ?? getDefaultVcpConfig()
+		const currentRegistrations = currentConfig.runtime?.distributedSkills.registrations ?? {}
+		const nextRegistrations = this.reconcileVcpDistributedSkillRegistrations(
+			currentRegistrations,
+			this.getCanonicalVcpDistributedSkillSources(),
+			currentConfig.toolbox,
+		)
+
+		if (JSON.stringify(currentRegistrations) === JSON.stringify(nextRegistrations)) {
+			return
+		}
+
+		await this.contextProxy.setValue("vcpConfig", {
+			...currentConfig,
+			runtime: {
+				...(currentConfig.runtime ?? getDefaultVcpConfig().runtime!),
+				distributedSkills: {
+					...(currentConfig.runtime?.distributedSkills ?? { registrations: {} }),
+					registrations: nextRegistrations,
+				},
+			},
+		})
+		await this.postStateToWebview()
+	}
+
+	private reconcileVcpDistributedSkillRegistrations(
+		registrations: Record<string, VcpDistributedSkillRegistration>,
+		sources: Record<string, VcpDistributedSkillSource>,
+		toolboxConfig: VcpToolboxConfig,
+		syncError?: string,
+	): Record<string, VcpDistributedSkillRegistration> {
+		const bridgeStatus = this.getVcpBridgeStatus()
+		const activeRemotePlugins = new Set(
+			(bridgeStatus?.activePlugins ?? []).map((plugin) => plugin.name.trim().toLowerCase()),
+		)
+		const next: Record<string, VcpDistributedSkillRegistration> = {}
+		const discovered = this.skillsManager?.getCanonicalRegistrations() ?? {}
+		const allSkillNames = new Set([...Object.keys(discovered), ...Object.keys(registrations)])
+
+		for (const canonicalName of allSkillNames) {
+			const source = sources[canonicalName]
+			const base = {
+				...(source ? (discovered[canonicalName] ?? {}) : {}),
+				...(registrations[canonicalName] ?? {}),
+			} as VcpDistributedSkillRegistration
+
+			if (!base.canonicalName) {
+				continue
+			}
+
+			const remoteName = base.remoteName ?? source?.remoteName
+			const remoteActive = remoteName ? activeRemotePlugins.has(remoteName.toLowerCase()) : false
+
+			let status = base.status
+			let error = base.error
+
+			if (status === "unregistered") {
+				error = undefined
+			} else if (!source) {
+				status = "error"
+				error = error ?? "Skill not found"
+			} else if (status === "drifted") {
+				error = error ?? "Expected preinstalled scope does not match discovered skill source."
+			} else if (!toolboxConfig.enabled || !toolboxConfig.url.trim()) {
+				status = "unregistered"
+				error = undefined
+			} else if (remoteActive) {
+				status = "registered"
+				error = undefined
+			} else if (syncError) {
+				status = "error"
+				error = syncError
+			} else if (bridgeStatus?.distributedConnected) {
+				status = "unregistered"
+				error = undefined
+			} else {
+				status = "error"
+				error = bridgeStatus?.lastError ?? "Distributed bridge is not connected."
+			}
+
+			next[canonicalName] = {
+				...base,
+				remoteName,
+				displayName: source?.displayName ?? base.displayName,
+				description: source?.description ?? base.description,
+				sourceScope: source?.sourceScope ?? base.sourceScope,
+				version: source?.version ?? base.version,
+				status,
+				error,
+				registeredAt: remoteActive ? (base.registeredAt ?? Date.now()) : base.registeredAt,
+			}
+		}
+
+		return next
+	}
+
+	public async syncVcpDistributedSkills(
+		registrations: Record<string, VcpDistributedSkillRegistration>,
+		toolboxConfig?: VcpToolboxConfig,
+	): Promise<Record<string, VcpDistributedSkillRegistration>> {
+		const vcpConfig = this.getValue("vcpConfig") ?? getDefaultVcpConfig()
+		const effectiveToolbox = toolboxConfig ?? vcpConfig.toolbox
+		const bridge = this.ensureVcpBridgeService(effectiveToolbox)
+		const sources = this.getCanonicalVcpDistributedSkillSources()
+		const enabledSources = Object.values(sources).filter((source) => {
+			const current = registrations[source.canonicalName]
+			return current?.status !== "unregistered"
+		})
+
+		let syncError: string | undefined
+		if (effectiveToolbox.enabled && effectiveToolbox.url.trim()) {
+			const syncResult = await bridge.syncDistributedSkills(enabledSources)
+			syncError = syncResult.error
+		}
+
+		return this.reconcileVcpDistributedSkillRegistrations(registrations, sources, effectiveToolbox, syncError)
+	}
+
+	public async connectVcpBridge(): Promise<Record<string, VcpDistributedSkillRegistration>> {
 		const vcpConfig = this.getValue("vcpConfig") ?? getDefaultVcpConfig()
 		const bridge = this.ensureVcpBridgeService(vcpConfig.toolbox)
 		await bridge.connect()
+		return await this.syncVcpDistributedSkills(
+			this.skillsManager?.getCanonicalRegistrations() ?? {},
+			vcpConfig.toolbox,
+		)
 	}
 
 	public disconnectVcpBridge(): void {
