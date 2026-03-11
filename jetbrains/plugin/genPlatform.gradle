@@ -6,23 +6,31 @@ import java.nio.file.*
 import java.security.MessageDigest
 
 
-tasks.register('genPlatform', Zip) {
-    doFirst {
+tasks.register('genPlatform') {
+    outputs.file(new File(project.projectDir, "platform.zip"))
+
+    doLast {
         // Delete existing platform.zip right before regeneration
         def zipFile = new File(project.projectDir, "platform.zip")
         if (zipFile.exists()) {
             zipFile.delete()
             println "Deleted existing platform.zip before regeneration"
         }
-        
+
         // Download platform files only when task actually executes
         download(project)
+
+        def sourceDir = new File(project.buildDir, "genPlatform/gen")
+        if (!sourceDir.exists()) {
+            throw new GradleException("genPlatform source directory was not created: ${sourceDir.absolutePath}")
+        }
+
+        ant.zip(
+            destfile: zipFile.absolutePath,
+            basedir: sourceDir.absolutePath,
+        )
+        println "Generated platform.zip at ${zipFile.absolutePath}"
     }
-    
-    from(new File(project.buildDir, "genPlatform/gen"))
-    into("")
-    destinationDirectory = project.projectDir
-    archiveFileName = "platform.zip"
 }
 def download(Project project){
 

@@ -214,11 +214,12 @@ jobs:
               run: echo "NOVACODE_POSTHOG_API_KEY=${{ secrets.POSTHOG_API_KEY }}" >> .env
             - name: Prepare JetBrains platform bundle
               run: |
+                  git lfs pull --include="jetbrains/plugin/platform.zip" --exclude="" || true
                   cd jetbrains/plugin
                   if [ -f platform.zip ] && [ "$(stat -c%s platform.zip)" -ge 1048576 ]; then
                     echo "Using existing platform.zip"
                   else
-                    echo "platform.zip missing or unresolved; generating platform bundle"
+                    echo "platform.zip missing or unresolved after git lfs pull; generating platform bundle"
                     bash ./gradlew genPlatform
                   fi
               shell: bash
