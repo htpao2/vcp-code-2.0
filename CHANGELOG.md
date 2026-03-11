@@ -5,6 +5,7 @@
 ### Patch Changes
 
 - Generate the JetBrains release `platform.zip` on demand during the publish workflow when the checked-out file is only an unresolved Git LFS pointer.
+- Grant the JetBrains publish job release-upload permission so the built plugin ZIP can be attached to the existing GitHub release.
 
 ## [1.2.0]
 
