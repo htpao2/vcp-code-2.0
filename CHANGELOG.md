@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Patch Changes
+
+- Generate the JetBrains release `platform.zip` on demand during the publish workflow when the checked-out file is only an unresolved Git LFS pointer.
+
 ## [1.2.0]
 
 ### Minor Changes

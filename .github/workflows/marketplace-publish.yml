@@ -212,6 +212,16 @@ jobs:
               run: pnpm install
             - name: Create .env file
               run: echo "NOVACODE_POSTHOG_API_KEY=${{ secrets.POSTHOG_API_KEY }}" >> .env
+            - name: Prepare JetBrains platform bundle
+              run: |
+                  cd jetbrains/plugin
+                  if [ -f platform.zip ] && [ "$(stat -c%s platform.zip)" -ge 1048576 ]; then
+                    echo "Using existing platform.zip"
+                  else
+                    echo "platform.zip missing or unresolved; generating platform bundle"
+                    bash ./gradlew genPlatform
+                  fi
+              shell: bash
             - name: Build JetBrains Plugin
               run: pnpm run jetbrains:bundle
               shell: bash
